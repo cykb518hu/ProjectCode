@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>Use this area to provide additional information.</p>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#a_test").click(function () {
+            alert("1");
+        });
+    });
+    @*$(document).ready(function () {
+        $("#btn_search").click(function () {
+            alert("1");
+            var message = new Object();
+            message.PageNumber = 1;
+            message.PageSize = 1;
+            message.CityName = 1;
+            $.ajax({
+                url: '@Url.Action("GetDataLiast", "Home")',
+                data: $(message).serialize(),
+                dataType: 'json',
+                type: "POST",
+                success: function (result) {
+
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        });
+    });*@
+</script>
+
+<div class="row">
+    <a id="a_test">222</a>
+    <div class="col-lg-6">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="btn_search">Go!</button>
+            </span>
+        </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+</div>

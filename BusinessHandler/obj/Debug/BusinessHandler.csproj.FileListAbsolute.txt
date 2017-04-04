@@ -1,0 +1,43 @@
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\BusinessHandler.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\BusinessHandler.pdb
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\obj\Debug\BusinessHandler.csprojResolveAssemblyReference.cache
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\obj\Debug\BusinessHandler.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\obj\Debug\BusinessHandler.pdb
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\System.Web.Mvc.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\System.Web.Mvc.xml
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\Autofac.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\Autofac.xml
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.xml
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\BusinessHandler.dll
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\BusinessHandler.pdb
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\Autofac.dll
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.dll
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\System.Web.Mvc.dll
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\Autofac.xml
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.xml
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\bin\Debug\System.Web.Mvc.xml
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\obj\Debug\BusinessHandler.dll
+E:\elance\CityCouncilMeetingProject\SingleApplication\SingleApplication\BusinessHandler\obj\Debug\BusinessHandler.pdb
+D:\Code\BusinessHandler\bin\Debug\BusinessHandler.dll
+D:\Code\BusinessHandler\bin\Debug\BusinessHandler.pdb
+D:\Code\BusinessHandler\bin\Debug\Autofac.dll
+D:\Code\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.dll
+D:\Code\BusinessHandler\bin\Debug\System.Web.Mvc.dll
+D:\Code\BusinessHandler\bin\Debug\Autofac.xml
+D:\Code\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.xml
+D:\Code\BusinessHandler\bin\Debug\System.Web.Mvc.xml
+D:\Code\BusinessHandler\obj\Debug\BusinessHandler.csprojResolveAssemblyReference.cache
+D:\Code\BusinessHandler\obj\Debug\BusinessHandler.dll
+D:\Code\BusinessHandler\obj\Debug\BusinessHandler.pdb
+D:\Code\project\BusinessHandler\bin\Debug\BusinessHandler.dll
+D:\Code\project\BusinessHandler\bin\Debug\BusinessHandler.pdb
+D:\Code\project\BusinessHandler\bin\Debug\Autofac.dll
+D:\Code\project\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.dll
+D:\Code\project\BusinessHandler\bin\Debug\System.Web.Mvc.dll
+D:\Code\project\BusinessHandler\bin\Debug\Autofac.xml
+D:\Code\project\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.xml
+D:\Code\project\BusinessHandler\bin\Debug\System.Web.Mvc.xml
+D:\Code\project\BusinessHandler\obj\Debug\BusinessHandler.csprojResolveAssemblyReference.cache
+D:\Code\project\BusinessHandler\obj\Debug\BusinessHandler.dll
+D:\Code\project\BusinessHandler\obj\Debug\BusinessHandler.pdb

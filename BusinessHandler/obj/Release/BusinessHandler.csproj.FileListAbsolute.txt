@@ -1,0 +1,11 @@
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\BusinessHandler.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\BusinessHandler.pdb
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\obj\Release\BusinessHandler.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\obj\Release\BusinessHandler.pdb
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\System.Web.Mvc.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\System.Web.Mvc.xml
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\obj\Release\BusinessHandler.csprojResolveAssemblyReference.cache
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\Autofac.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\Autofac.Integration.Mvc.dll
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\Autofac.xml
+d:\我的文档\visual studio 2017\Projects\SingleApplication\BusinessHandler\bin\Release\Autofac.Integration.Mvc.xml
