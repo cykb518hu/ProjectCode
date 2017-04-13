@@ -41,3 +41,14 @@ D:\Code\project\BusinessHandler\bin\Debug\System.Web.Mvc.xml
 D:\Code\project\BusinessHandler\obj\Debug\BusinessHandler.csprojResolveAssemblyReference.cache
 D:\Code\project\BusinessHandler\obj\Debug\BusinessHandler.dll
 D:\Code\project\BusinessHandler\obj\Debug\BusinessHandler.pdb
+C:\TestCode\Project\BusinessHandler\bin\Debug\BusinessHandler.dll
+C:\TestCode\Project\BusinessHandler\bin\Debug\BusinessHandler.pdb
+C:\TestCode\Project\BusinessHandler\bin\Debug\Autofac.dll
+C:\TestCode\Project\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.dll
+C:\TestCode\Project\BusinessHandler\bin\Debug\System.Web.Mvc.dll
+C:\TestCode\Project\BusinessHandler\bin\Debug\Autofac.xml
+C:\TestCode\Project\BusinessHandler\bin\Debug\Autofac.Integration.Mvc.xml
+C:\TestCode\Project\BusinessHandler\bin\Debug\System.Web.Mvc.xml
+C:\TestCode\Project\BusinessHandler\obj\Debug\BusinessHandler.csprojResolveAssemblyReference.cache
+C:\TestCode\Project\BusinessHandler\obj\Debug\BusinessHandler.dll
+C:\TestCode\Project\BusinessHandler\obj\Debug\BusinessHandler.pdb
