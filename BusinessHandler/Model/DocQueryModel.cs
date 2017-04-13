@@ -33,6 +33,7 @@ namespace BusinessHandler.Model
         public string DocFilePath { get; set; }
         public string QueryFilePath { get; set; }
         public string Comment { get; set; }
+        public string PageNumber { get; set; }
     }
 
     public class DocData
@@ -58,6 +59,8 @@ namespace BusinessHandler.Model
         public string Content { get; set; }
         public string QueryFilePath { get; set; }
         public string Comment { get; set; }
+
+        public string PageNumber { get; set; }
     }
     public class City
     {

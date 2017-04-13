@@ -86,17 +86,19 @@ namespace BusinessHandler.MessageHandler
 
             var resultList = new List<DocQueryResultModel>();
 
+            var queriesList = new List<QueryData>();
+            for (int i = 0; i < queriesUrlList.Length; i++)
+            {
+                queriesList.AddRange(CSVFileHelper.OpenQueryCSV(queriesUrlList[i]));
+            }
+
             var docList = new List<DocData>();
            
             for (int i = 0; i < docUrlList.Length; i++)
             {
                 docList.AddRange(CSVFileHelper.OpenDocCSV(docUrlList[i]));
             }
-            var queriesList = new List<QueryData>();
-            for (int i = 0; i < docUrlList.Length; i++)
-            {
-                queriesList.AddRange(CSVFileHelper.OpenQueryCSV(queriesUrlList[i]));
-            }
+          
 
             foreach (var r in docList)
             {
@@ -120,7 +122,7 @@ namespace BusinessHandler.MessageHandler
                         result.QueryFilePath = s.QueryFilePath;
                         result.QueryGuid = s.QueryGuid;
                         result.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align' data-file='" + result.QueryFilePath + "' data-docid='" + result.DocId + "' data-queryguid='" + result.QueryGuid + "' onclick='OpenDataDetail(this); return false'></button>";
-
+                        result.PageNumber = s.PageNumber;
 
                         result.Comment = "<span id=" + result.QueryGuid + ">" + s.Comment + "</span>";
                         resultList.Add(result);
