@@ -31,7 +31,11 @@ namespace SingleApplication.Controllers
 
         public ActionResult DataDetail()
         {
-            return View();
+            var docQuery = new DocQueryFactory();
+            var message = new DocQueryMessage();
+            var docList = docQuery.GetDocQueryResult(message);
+            return View(docList);
+
         }
 
         public JsonResult GetDataList(DocQueryMessage message)
@@ -47,13 +51,6 @@ namespace SingleApplication.Controllers
             var docQuery = new DocQueryFactory();
             docQuery.UpdateQuery(message);
             return Json("Success", JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult LoadCityList()
-        {
-            var docQuery = new DocQueryFactory();
-            var result = docQuery.GetCityList();
-            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -37,18 +37,6 @@ namespace BusinessHandler.MessageHandler
                 cacheRepository.Clear(docQueryCacheKey);
             }
         }
-        public List<City> GetCityList()
-        {
-            var docList = docQueryRepository.GetDocQueryResult();
-            var list = new List<City>();
-            foreach (var r in docList.GroupBy(x => x.CityName))
-            {
-                list.Add(new City { CityName = r.Key });
-            }
-            return list;
-
-        }
-
 
     }
 }

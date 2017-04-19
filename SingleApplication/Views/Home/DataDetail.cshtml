@@ -1,10 +1,11 @@
-﻿
+﻿@using BusinessHandler.Model;
 @{
+
     ViewBag.Title = "DataDetail";
+    var model = (List<DocQueryResultModel>)Model;
 }
 
 <h2>Data Detail</h2>
-
 
 <div class="panel-body" style="padding-bottom:0px;">
     <div class="panel panel-default">
@@ -14,16 +15,36 @@
                 <div class="form-group" style="margin-top:15px">
                     <label class="control-label col-sm-2" for="txt_search_CityName " style="width:10%">City Name</label>
                     <div class="col-sm-2">
-                        <select id="sel_search_CityName" class="form-control"></select>
+                        <select id="sel_search_CityName" multiple="multiple">
+                            @{
+                                foreach (var r in model.GroupBy(x => x.CityName))
+                                {
+                                    <option value="@r.Key">@r.Key</option>
+
+                                }
+                            }
+
+                        </select>
                         @*<input type="text" class="form-control" id="txt_search_CityName">*@
                     </div>
                     <label class="control-label col-sm-2" for="txt_search_MeetingDate" style="width:12%">Meeting Date</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control" id="txt_search_MeetingDate">
                     </div>
-                    <label class="control-label col-sm-2" for="txt_search_KeyWord" style="width:10%">Key Word</label>
+                    <label class="control-label col-sm-2" for="sel_search_KeyWord" style="width:10%">Key Word</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="txt_search_KeyWord">
+                        @*<input type="text" class="form-control" id="txt_search_KeyWord">*@
+                        <select id="sel_search_KeyWord" multiple="multiple">
+                            @{
+                                foreach (var r in model.GroupBy(x => x.KeyWord))
+                                {
+                                    <option value="@r.Key">@r.Key</option>
+
+                                }
+                            }
+
+                        </select>
+
                     </div>
                     <div class="col-sm-2" style="text-align:left;">
                         <button type="button" style="margin-left:10px" id="btn_Query" class="btn btn-primary">Search</button>
@@ -63,7 +84,6 @@
 
 <script>
     $(function () {
-        loadCityData();
         var oTable = new TableInit();
         oTable.Init();
 
@@ -81,7 +101,7 @@
                 method: 'get',
                 cache: false,
                 pagination: true,
-                sortable: true, 
+                sortable: true,
                 queryParams: oTableInit.queryParams,
                 sidePagination: "server",
                 pageList: [10, 25, 50, 100],
@@ -142,12 +162,21 @@
 
 
         oTableInit.queryParams = function (params) {
+            var keyWord = "";
+            var cityName = "";
+            if ($("#sel_search_KeyWord").val() != null)
+            {
+                keyWord = $("#sel_search_KeyWord").val().toString();
+            }
+            if ($("#sel_search_CityName").val() != null) {
+                cityName = $("#sel_search_CityName").val().toString();
+            }
             var temp = {
                 limit: params.limit,
                 offset: params.offset,
-                CityName: $("#sel_search_CityName").val(),
+                CityName: cityName,
                 MeetingDate: $("#txt_search_MeetingDate").val(),
-                KeyWord: $("#txt_search_KeyWord").val(),
+                KeyWord: keyWord,
                 sortName:this.sortName,
                sortOrder: this.sortOrder
             };
@@ -169,33 +198,35 @@
     };
 
     $(document).ready(function () {
-        var active_dates = ["2017/4/16", "2017/4/18", "2017/3/16"];
-        $('#txt_search_MeetingDate').datepicker({
-            format: 'yyyy/mm/dd',
-            autoclose: true,
-            todayHighlight: true,
-            beforeShowDay: function (date) {
-                var d = date;
-                var curr_date = d.getDate();
-                var curr_month = d.getMonth() + 1; //Months are zero based
-                var curr_year = d.getFullYear();
-                var formattedDate = curr_year + "/" + curr_month + "/" + curr_date
-
-                if ($.inArray(formattedDate, active_dates) != -1) {
-                    return {
-                        classes: 'activeClass'
-                    };
-                }
-                return;
-            }
-            // minView: 2
+        $('#sel_search_CityName').multiselect({
+            buttonWidth: '160px',
+            includeSelectAllOption: true
         });
+        $('#sel_search_KeyWord').multiselect({
+            buttonWidth: '160px',
+            includeSelectAllOption: true
+        });
+        $('#txt_search_MeetingDate').datepicker({
+            format: 'yyyy/mm/dd'
+        });
+        $('#btn_Query').datepicker({
+            format: 'yyyy/mm/dd'
+        });
+        
         $("#btn_Query").click(function () {
+            var keyWord = "";
+            var cityName = "";
+            if ($("#sel_search_KeyWord").val() != null) {
+                keyWord = $("#sel_search_KeyWord").val().toString();
+            }
+            if ($("#sel_search_CityName").val() != null) {
+                cityName = $("#sel_search_CityName").val().toString();
+            }
             var tempQueryParams = function () {
                 var temp = {
-                    CityName: $("#sel_search_CityName").val(),
+                    CityName: cityName,
                     MeetingDate: $("#txt_search_MeetingDate").val(),
-                    KeyWord: $("#txt_search_KeyWord").val()
+                    KeyWord: keyWord
                 };
                 return temp;
             };
@@ -233,30 +264,9 @@
                 }
             });
         });
-     
+
 
     });
-    function loadCityData()
-    {
-          $.ajax({
-                url: '@Url.Action("LoadCityList", "Home")',
-                dataType: 'json',
-                type: "GET",
-                async: false,
-                success: function (citys) {
-                    for (var i = 0; i < citys.length; i++){
-                        $('#sel_search_CityName').append('<option value="' + citys[i].CityName + '" selected="selected">' + citys[i].CityName + '</option>');
-                    }
-                    $('#sel_search_CityName').append('<option value="" selected>Not Set</option>');
-                },
-                complete: function (XMLHttpRequest, textStatus) {
-
-                },
-                error: function (xhr, textStatus, errorThrown) {
-
-                }
-            });
-    }
     function OpenDataDetail(obj)
     {
         var docId = $(obj).attr("data-docid");

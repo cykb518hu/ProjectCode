@@ -62,8 +62,4 @@ namespace BusinessHandler.Model
 
         public string PageNumber { get; set; }
     }
-    public class City
-    {
-        public string CityName { get; set; }
-    }
 }

@@ -51,13 +51,11 @@ namespace BusinessHandler.MessageHandler
             
             if (!string.IsNullOrEmpty(message.CityName))
             {
-                resultList = resultList.Where(x => x.CityName.Equals(message.CityName)).ToList();
+                resultList = resultList.Where(x => message.CityName.Contains(x.CityName)).ToList();
             }
             if (!string.IsNullOrEmpty(message.KeyWord))
             {
-               
-                resultList = resultList.Where(x => x.KeyWord.Contains(message.KeyWord)).ToList();
-                //resultList.First().Content = Regex.Replace(resultList.First().Content, resultList.First().KeyWord, "<h2>22</h2>", RegexOptions.IgnoreCase);
+                resultList = resultList.Where(x => message.KeyWord.Contains(x.KeyWord)).ToList();
                 resultList.ForEach(x => { x.Content = Regex.Replace(x.Content, x.KeyWord, string.Format("<b style='color:red'>{0}</b>",x.KeyWord), RegexOptions.IgnoreCase); });
             }
             if (!string.IsNullOrEmpty(message.MeetingDate))
