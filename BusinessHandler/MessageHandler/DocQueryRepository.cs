@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -54,7 +55,10 @@ namespace BusinessHandler.MessageHandler
             }
             if (!string.IsNullOrEmpty(message.KeyWord))
             {
+               
                 resultList = resultList.Where(x => x.KeyWord.Contains(message.KeyWord)).ToList();
+                //resultList.First().Content = Regex.Replace(resultList.First().Content, resultList.First().KeyWord, "<h2>22</h2>", RegexOptions.IgnoreCase);
+                resultList.ForEach(x => { x.Content = Regex.Replace(x.Content, x.KeyWord, string.Format("<b style='color:red'>{0}</b>",x.KeyWord), RegexOptions.IgnoreCase); });
             }
             if (!string.IsNullOrEmpty(message.MeetingDate))
             {

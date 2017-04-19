@@ -5,6 +5,7 @@
 
 <h2>Data Detail</h2>
 
+
 <div class="panel-body" style="padding-bottom:0px;">
     <div class="panel panel-default">
         <div class="panel-heading">Searh Criteria</div>
@@ -168,10 +169,26 @@
     };
 
     $(document).ready(function () {
-
-        $('#txt_search_MeetingDate').datetimepicker({
+        var active_dates = ["2017/4/16", "2017/4/18", "2017/3/16"];
+        $('#txt_search_MeetingDate').datepicker({
             format: 'yyyy/mm/dd',
-            minView: 2
+            autoclose: true,
+            todayHighlight: true,
+            beforeShowDay: function (date) {
+                var d = date;
+                var curr_date = d.getDate();
+                var curr_month = d.getMonth() + 1; //Months are zero based
+                var curr_year = d.getFullYear();
+                var formattedDate = curr_year + "/" + curr_month + "/" + curr_date
+
+                if ($.inArray(formattedDate, active_dates) != -1) {
+                    return {
+                        classes: 'activeClass'
+                    };
+                }
+                return;
+            }
+            // minView: 2
         });
         $("#btn_Query").click(function () {
             var tempQueryParams = function () {
