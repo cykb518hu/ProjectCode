@@ -11,6 +11,22 @@
 }
 
 <h2>Data Detail</h2>
+<script>
+
+    @{foreach(var r in model.Select(x=>x.CityName).Distinct().ToList())
+     {
+         var cityName = r;
+         var subList = model.Where(x => x.CityName.Equals(r)).Select(y => y.MeetingDateDisplay).Distinct().ToArray();
+           <text>
+    localStorage.setItem('@cityName', JSON.stringify(@subList))
+    localStorage.setItem('1111', "2222");
+       </text>
+     }
+}
+</script>
+<script>
+    localStorage.setItem('1111', "2222");
+</script>
 
 <div class="panel-body" style="padding-bottom:0px;">
     <div class="panel panel-default">
@@ -116,19 +132,8 @@
                 columns: [
                     {
                         field: 'CityNameDispaly',
-                        title: 'City Name'
-                    },
-                    {
-                        field: 'DocUrl',
-                        title: ' Document Url'
-                    },
-                    {
-                        field: 'DocType',
-                        title: 'Document Type'
-                    },
-                    {
-                        field: 'MeetingTitle',
-                        title: 'Meeting Title'
+                        title: 'City',
+                        sortable: true
                     },
                     {
                         field: 'MeetingDateDisplay',
@@ -136,17 +141,35 @@
                         sortable: true
                     },
                     {
-                        field: 'MeetingLocation',
-                        title: 'Meeting Location'
+                        field: 'DocUrl',
+                        title: ' Document',
+                        sortable: true
                     },
                     {
-                        field: 'KeyWord',
-                        title: 'Key Word'
+                        field: 'PageNumber',
+                        title: 'Page',
+                        sortable: true
                     },
-                     {
-                         field: 'PageNumber',
-                         title: 'Page Number'
-                     },
+                    {
+                        field: 'DocType',
+                        title: 'Type',
+                        sortable: true
+                    },
+                    //{
+                    //    field: 'MeetingTitle',
+                    //    title: 'Title'
+                    //},
+                   
+                    //{
+                    //    field: 'MeetingLocation',
+                    //    title: 'Location'
+                    //},
+                    {
+                        field: 'KeyWord',
+                        title: 'Key Word',
+                        sortable: true
+                    },
+                     
                     {
                         field: 'Content',
                         title: 'Content'
@@ -160,7 +183,12 @@
                         title: 'Operation',
                         align: 'center'
                     }
-                ]
+                ],
+                onLoadSuccess: function (data) {
+                    $('.showDatePicker').datepicker({
+                        format: 'yyyy/mm/dd'
+                    });
+                },
 
             });
         };
@@ -214,11 +242,10 @@
         $('#txt_search_MeetingDate').datepicker({
             format: 'yyyy/mm/dd'
         });
-        $('#btn_Query').datepicker({
-            format: 'yyyy/mm/dd'
-        });
-        
         $("#btn_Query").click(function () {
+            alert(localStorage.getItem("1111"));
+            return;
+
             var keyWord = "";
             var cityName = "";
             if ($("#sel_search_KeyWord").val() != null) {
@@ -287,7 +314,7 @@
     function showDatePicker(obj) {
         $(obj).datepicker({
             format: 'yyyy/mm/dd'
-        }.show());
+        });
     }
 </script>
 

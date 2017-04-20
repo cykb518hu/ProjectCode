@@ -54,11 +54,53 @@ namespace BusinessHandler.MessageHandler
             {
                 if (message.sortOrder.Equals("asc"))
                 {
-                    resultList = resultList.OrderBy(x => x.MeetingDate).ToList();
+                    switch(message.sortName)
+                    {
+                        case "CityNameDispaly":
+                            resultList = resultList.OrderBy(x => x.CityName).ToList();
+                            break;
+                        case "MeetingDateDisplay":
+                            resultList = resultList.OrderBy(x => x.MeetingDate).ToList();
+                            break;
+                        case "DocUrl":
+                            resultList = resultList.OrderBy(x => x.DocUrl).ToList();
+                            break;
+                        case "PageNumber":
+                            resultList = resultList.OrderBy(x => x.PageNumber).ToList();
+                            break;
+                        case "DocType":
+                            resultList = resultList.OrderBy(x => x.DocType).ToList();
+                            break;
+                        case "KeyWord":
+                            resultList = resultList.OrderBy(x => x.KeyWord).ToList();
+                            break;
+
+                    }
                 }
                 else
                 {
-                    resultList = resultList.OrderByDescending(x => x.MeetingDate).ToList();
+                    switch (message.sortName)
+                    {
+                        case "CityNameDispaly":
+                            resultList = resultList.OrderByDescending(x => x.CityName).ToList();
+                            break;
+                        case "MeetingDateDisplay":
+                            resultList = resultList.OrderByDescending(x => x.MeetingDate).ToList();
+                            break;
+                        case "DocUrl":
+                            resultList = resultList.OrderByDescending(x => x.DocUrl).ToList();
+                            break;
+                        case "PageNumber":
+                            resultList = resultList.OrderByDescending(x => x.PageNumber).ToList();
+                            break;
+                        case "DocType":
+                            resultList = resultList.OrderByDescending(x => x.DocType).ToList();
+                            break;
+                        case "KeyWord":
+                            resultList = resultList.OrderByDescending(x => x.KeyWord).ToList();
+                            break;
+
+                    }
                 }
             }
             return resultList;
@@ -111,7 +153,8 @@ namespace BusinessHandler.MessageHandler
                     {
                         var result = new DocQueryResultModel();
                         result.CityName = r.CityName;
-                        result.CityNameDispaly = "<span onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";
+                      //  result.CityNameDispaly = "<span onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";
+                        result.CityNameDispaly = "<span class='showDatePicker' style='cursor: pointer'>" + r.CityName + "</span>";
                         result.DocId = r.DocId;
                         result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>" +  r.DocUrl.Substring(r.DocUrl.LastIndexOf('/') + 1) + " </a>";
                         result.DocType = r.DocType;
