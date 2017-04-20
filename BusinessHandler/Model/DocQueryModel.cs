@@ -21,6 +21,9 @@ namespace BusinessHandler.Model
         public string QueryGuid { get; set; }
         public string DocId { get; set; }
         public string CityName { get; set; }
+
+        public string CityNameDispaly { get; set; }
+
         public string DocUrl { get; set; }
         public string DocType { get; set; }
         public string MeetingTitle { get; set; }

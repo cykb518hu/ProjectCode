@@ -111,6 +111,7 @@ namespace BusinessHandler.MessageHandler
                     {
                         var result = new DocQueryResultModel();
                         result.CityName = r.CityName;
+                        result.CityNameDispaly = "<span onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";
                         result.DocId = r.DocId;
                         result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>" +  r.DocUrl.Substring(r.DocUrl.LastIndexOf('/') + 1) + " </a>";
                         result.DocType = r.DocType;

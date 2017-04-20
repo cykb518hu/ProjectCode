@@ -3,6 +3,11 @@
 
     ViewBag.Title = "DataDetail";
     var model = (List<DocQueryResultModel>)Model;
+
+    foreach(var r in model.Select(x=>x.CityName).Distinct().ToList())
+    {
+        var subList = model.Where(x => x.CityName.Equals(r)).Select(y => y.MeetingDateDisplay).Distinct().ToArray();
+    }
 }
 
 <h2>Data Detail</h2>
@@ -55,7 +60,7 @@
     </div>
 
     <div>
-        <table id="tb_departments"></table>
+        <table id="tb_departments" ></table>
 
     </div>
 
@@ -110,7 +115,7 @@
                 uniqueId: "DocId",
                 columns: [
                     {
-                        field: 'CityName',
+                        field: 'CityNameDispaly',
                         title: 'City Name'
                     },
                     {
@@ -279,10 +284,11 @@
         $("#hid_QueryGuid").val(queryGuid);
         $("#txt_Comments").val(comment);
     }
-    //function OpenDataDetail(docId) {
-    //    $("#hid_DocId").val(docId);
-    //    $("#myModal").modal('show');
-    //}
+    function showDatePicker(obj) {
+        $(obj).datepicker({
+            format: 'yyyy/mm/dd'
+        }.show());
+    }
 </script>
 
 
