@@ -53,5 +53,14 @@ namespace SingleApplication.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetDateBasedOnCity(DocQueryMessage message)
+        {
+            var docQuery = new DocQueryFactory();
+            var result = docQuery.GetDocQueryResult(message);
+            var dateList = result.Select(x => x.MeetingDateDisplay).Distinct().ToList();
+
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

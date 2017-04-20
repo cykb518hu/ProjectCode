@@ -16,7 +16,6 @@ namespace BusinessHandler.MessageHandler
     public interface IDocQueryRepository
     {
         List<DocQueryResultModel> GetDocQueryResult(DocQueryMessage message);
-        List<DocQueryResultModel> GetDocQueryResult();
 
         void UpdateQuery(DocQueryResultModel message);
        
@@ -24,31 +23,16 @@ namespace BusinessHandler.MessageHandler
     public class DocQueryCSVRepository : IDocQueryRepository
     {
         ICacheRepository cacheRepository;
-        public const string docQueryCacheKey = "docQueryCacheKey";
         public DocQueryCSVRepository()
         {
-           // cacheRepository = new AspNetCacheRepository();// DependencyResolver.Current.GetService<ICacheRepository>();
             cacheRepository =  DependencyResolver.Current.GetService<ICacheRepository>();
         }
-        public List<DocQueryResultModel> GetDocQueryResult()
-        {
-            var resultList = new List<DocQueryResultModel>();
-            if (cacheRepository.Exists(docQueryCacheKey))
-            {
-                resultList = cacheRepository.Get(docQueryCacheKey);
-            }
-            else
-            {
-                resultList = GetDocQueryList();
-                cacheRepository.Add(docQueryCacheKey, resultList);
-            }
-            return resultList;
-        }
+
         public List<DocQueryResultModel> GetDocQueryResult(DocQueryMessage message)
         {
 
             var resultList = GetDocQueryResult();
-            
+
             if (!string.IsNullOrEmpty(message.CityName))
             {
                 resultList = resultList.Where(x => message.CityName.Contains(x.CityName)).ToList();
@@ -56,7 +40,7 @@ namespace BusinessHandler.MessageHandler
             if (!string.IsNullOrEmpty(message.KeyWord))
             {
                 resultList = resultList.Where(x => message.KeyWord.Contains(x.KeyWord)).ToList();
-                resultList.ForEach(x => { x.Content = Regex.Replace(x.Content, x.KeyWord, string.Format("<b style='color:red'>{0}</b>",x.KeyWord), RegexOptions.IgnoreCase); });
+                resultList.ForEach(x => { x.Content = Regex.Replace(x.Content, x.KeyWord, string.Format("<b style='color:red'>{0}</b>", x.KeyWord), RegexOptions.IgnoreCase); });
             }
             if (!string.IsNullOrEmpty(message.MeetingDate))
             {
@@ -66,9 +50,9 @@ namespace BusinessHandler.MessageHandler
                     resultList = resultList.Where(x => x.MeetingDate >= dt).ToList();
                 }
             }
-            if(!string.IsNullOrEmpty(message.sortName))
+            if (!string.IsNullOrEmpty(message.sortName))
             {
-                if(message.sortOrder.Equals("asc"))
+                if (message.sortOrder.Equals("asc"))
                 {
                     resultList = resultList.OrderBy(x => x.MeetingDate).ToList();
                 }
@@ -79,6 +63,22 @@ namespace BusinessHandler.MessageHandler
             }
             return resultList;
         }
+
+        public List<DocQueryResultModel> GetDocQueryResult()
+        {
+            var resultList = new List<DocQueryResultModel>();
+            if (cacheRepository.Exists(GlobalKeyString.docQueryCacheKey))
+            {
+                resultList = cacheRepository.Get(GlobalKeyString.docQueryCacheKey);
+            }
+            else
+            {
+                resultList = GetDocQueryList();
+                cacheRepository.Add(GlobalKeyString.docQueryCacheKey, resultList);
+            }
+            return resultList;
+        }
+ 
 
         public List<DocQueryResultModel> GetDocQueryList()
         {
@@ -130,24 +130,6 @@ namespace BusinessHandler.MessageHandler
                         resultList.Add(result);
                     }
                 }
-                //else
-                //{
-                //    var result = new DocQueryResultModel();
-                //    result.CityName = r.CityName;
-                //    result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>" + r.DocUrl + " </a>";
-                //    result.DocId = r.DocId;
-                //    result.DocType = r.DocType;
-                //    result.MeetingTitle = string.Empty;
-                //    result.MeetingDate = DateTime.MinValue;
-                //    result.MeetingDateDisplay = string.Empty;
-                //    result.MeetingLocation = string.Empty;
-                //    result.Content = string.Empty;
-                //    result.Operation = string.Empty;
-                //    result.KeyWord = string.Empty;
-                //    result.DocFilePath = r.DocFilePath;
-                //    result.QueryFilePath = string.Empty;
-                //    resultList.Add(result);
-                //}
             }
             return resultList;
         }

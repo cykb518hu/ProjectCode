@@ -163,8 +163,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="HtmlPage1.html" />
-    <Content Include="HtmlPage2.html" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-table-editable.js" />
@@ -205,6 +203,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\DataDetail.cshtml" />
+    <Content Include="The requirement.docx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

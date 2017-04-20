@@ -13,11 +13,8 @@ namespace BusinessHandler.MessageHandler
     {
         IDocQueryRepository docQueryRepository;
         ICacheRepository cacheRepository;
-        public const string docQueryCacheKey = "docQueryCacheKey";
         public  DocQueryFactory()
         {
-            //docQueryRepository = new DocQueryCSVRepository();// DependencyResolver.Current.GetService<IDocQueryRepository>();
-            //cacheRepository = new AspNetCacheRepository();// DependencyResolver.Current.GetService<ICacheRepository>();
 
             docQueryRepository =  DependencyResolver.Current.GetService<IDocQueryRepository>();
             cacheRepository =  DependencyResolver.Current.GetService<ICacheRepository>();
@@ -32,11 +29,12 @@ namespace BusinessHandler.MessageHandler
         public void UpdateQuery(DocQueryResultModel message)
         {
             docQueryRepository.UpdateQuery(message);
-            if (cacheRepository.Exists(docQueryCacheKey))
+            if (cacheRepository.Exists(GlobalKeyString.docQueryCacheKey))
             {
-                cacheRepository.Clear(docQueryCacheKey);
+                cacheRepository.Clear(GlobalKeyString.docQueryCacheKey);
             }
         }
+
 
     }
 }

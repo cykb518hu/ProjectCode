@@ -55,6 +55,7 @@
     <Compile Include="MessageHandler\DocQueryFactory.cs" />
     <Compile Include="MessageHandler\CacheRepository.cs" />
     <Compile Include="MessageHandler\DocQueryRepository.cs" />
+    <Compile Include="MessageHandler\GlobalKeyString.cs" />
     <Compile Include="Model\DocQueryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

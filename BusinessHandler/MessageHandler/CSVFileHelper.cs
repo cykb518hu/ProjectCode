@@ -15,15 +15,7 @@ namespace BusinessLogic
         {
             var resultList = new List<DocData>();
             string wholeText = File.ReadAllText(filePath, Encoding.UTF8);
-            string[] records = null;
-            if (wholeText.IndexOf("\",\r\n")>0)
-            {
-                records = wholeText.Split(new string[] { "\",\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            }
-            else
-            {
-                records = wholeText.Split(new string[] { "\",\n" }, StringSplitOptions.RemoveEmptyEntries);
-            }
+            string[] records = wholeText.Split(new string[] { "\",\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string strLine in records)
             {
   
@@ -58,6 +50,8 @@ namespace BusinessLogic
 
                 var aryLine = strLine.Split(new string[] { "\",\"" }, StringSplitOptions.None);
                 var data = new QueryData();
+
+                data.QueryGuid = string.IsNullOrWhiteSpace(aryLine[0]) ? "" : aryLine[0].Trim('"');
                 data.CityName = string.IsNullOrWhiteSpace(aryLine[1]) ? "" : aryLine[1].Trim('"');
                 data.DocId = string.IsNullOrWhiteSpace(aryLine[2]) ? "" : aryLine[2].Trim('"');
                 data.MeetingTitle = string.IsNullOrWhiteSpace(aryLine[3]) ? "" : aryLine[3].Trim('"');
@@ -73,7 +67,7 @@ namespace BusinessLogic
                 data.KeyWord = string.IsNullOrWhiteSpace(aryLine[6]) ? "" : aryLine[6].Trim('"');
                 data.PageNumber = string.IsNullOrWhiteSpace(aryLine[7]) ? "" : aryLine[7].Trim('"');
                 data.Content = string.IsNullOrWhiteSpace(aryLine[8]) ? "" : aryLine[8].Trim('"');
-                data.QueryGuid = string.IsNullOrWhiteSpace(aryLine[0]) ? "" : aryLine[0].Trim('"');
+              
                 data.Comment = aryLine.Length < 10 ? "" : aryLine[9].Trim('"');
                 data.QueryFilePath = filePath;
                 resultList.Add(data);
