@@ -46,10 +46,24 @@ namespace SingleApplication.Controllers
             var rows = result.Skip(message.offset).Take(message.limit).ToList();
             return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetParentDataList(DocQueryMessage message)
+        {
+            var docQuery = new DocQueryFactory();
+            var result = docQuery.GetDocQueryParentResult(message);
+            var total = result.Count;
+            var rows = result.Skip(message.offset).Take(message.limit).ToList();
+            return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult SaveComment(DocQueryResultModel message)
         {
             var docQuery = new DocQueryFactory();
             docQuery.UpdateQuery(message);
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult UpdateDocStatus(DocQueryResultModel message)
+        {
+            var docQuery = new DocQueryFactory();
+            docQuery.UpdateDocStatus(message);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 

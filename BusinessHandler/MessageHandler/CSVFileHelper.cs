@@ -18,7 +18,7 @@ namespace BusinessLogic
             string[] records = wholeText.Split(new string[] { "\",\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string strLine in records)
             {
-  
+
                 var aryLine = strLine.Split(new string[] { "\",\"" }, StringSplitOptions.None);
                 var data = new DocData();
                 data.CityName = string.IsNullOrWhiteSpace(aryLine[0]) ? "" : aryLine[0].Trim('"');
@@ -27,6 +27,14 @@ namespace BusinessLogic
                 data.DocType = string.IsNullOrWhiteSpace(aryLine[3]) ? "" : aryLine[3].Trim('"');
                 data.DocUrl = string.IsNullOrWhiteSpace(aryLine[4]) ? "" : aryLine[4].Trim('"');
                 data.CanBeRead = string.IsNullOrWhiteSpace(aryLine[5]) ? "" : aryLine[5].Trim('"');
+                if (aryLine.Length > 6)
+                {
+                    data.IsViewed = string.IsNullOrWhiteSpace(aryLine[6]) ? "No" : aryLine[6].Trim('"');
+                }
+                else
+                {
+                    data.IsViewed = "No";
+                }
                 data.DocFilePath = filePath;
                 resultList.Add(data);
             }
@@ -86,7 +94,6 @@ namespace BusinessLogic
                 while ((strLine = sr.ReadLine()) != null)
                 {
                     aryLine = strLine.Split(',');
-                    var data = new QueryData();
                     var guid = string.IsNullOrWhiteSpace(aryLine[0]) ? "" : aryLine[0].Trim('"');
                     if (IsGuidByParse(guid))
                     {
@@ -113,40 +120,80 @@ namespace BusinessLogic
         public static void UpdateQueryCSV(DocQueryResultModel message)
         {
             List<String> lines = new List<String>();
-            if (File.Exists(message.QueryFilePath))
+            using (StreamReader sr = new StreamReader(message.QueryFilePath))
             {
-                string[] contents = File.ReadAllText(message.QueryFilePath).Split(new string[] { "\",\r\n", "\"\r\n" }, StringSplitOptions.None);
-
-                for (int i = 0; i < contents.Length; i++)
+                string strLine = "";
+                string[] aryLine = null;
+                while ((strLine = sr.ReadLine()) != null)
                 {
-                    string line = contents[i];
-
-                    if (line.Contains(","))
+                    string line = string.Empty;
+                    aryLine = strLine.Split(new string[] { "\",\"" }, StringSplitOptions.None);
+                    if (aryLine[2].Trim('"').Equals(message.DocId) && aryLine[0].Trim('"').Equals(message.QueryGuid))
                     {
-                        String[] split = line.Split(new string[] { "\",\"" }, StringSplitOptions.None);
-
-                        if (split[2].Trim('"').Equals(message.DocId) && split[0].Trim('"').Equals(message.QueryGuid))
-                        {
-                            //split[8] = '"' + message.Comment + "\",";
-                            split[split.Length - 1] = split.Length == 9 ?
-                                string.Format("\"{0}\",\"{1}\",", split[8].Trim(',', ('"'), (char)32, (char)160), message.Comment) :
-                                string.Format("{0}\",", message.Comment);
-                            line = String.Join("\",\"", split);
-                        }
-                        else
-                        {
-                            line = line + "\",";
-                        }
+                        aryLine[0] = aryLine[0].TrimStart('"');
+                        aryLine[9] = message.Comment;
+                        line = String.Join("\",\"", aryLine);
+                        line = "\"" + line + "\",";
+                        lines.Add(line);
+                    }
+                    else
+                    {
+                        lines.Add(strLine);
                     }
 
-                    lines.Add(line);
                 }
-
-                File.WriteAllLines(message.QueryFilePath, lines, Encoding.UTF8);
+            }
+            if (lines.Count > 0)
+            {
+                using (StreamWriter writer = new StreamWriter(message.QueryFilePath, false))
+                {
+                    foreach (String line in lines)
+                        writer.WriteLine(line);
+                }
             }
         }
 
+        public static void UpdateDocStautsCSV(DocQueryResultModel message)
+        {
+            List<String> lines = new List<String>();
+            using (StreamReader sr = new StreamReader(message.DocFilePath))
+            {
+                string strLine = "";
+                string[] aryLine = null;
+                while ((strLine = sr.ReadLine()) != null)
+                {
+                    string line = string.Empty;
+                    aryLine = strLine.Split(new string[] { "\",\"" }, StringSplitOptions.None);
+                    if (aryLine[1] == message.DocId)
+                    {
+                        aryLine[0] = aryLine[0].TrimStart('"');
+                        aryLine[5] = aryLine[5].Replace("\",", "");
+                        List<string> strList = aryLine.ToList();
+                        if (aryLine.Length == 6)
+                        {
+                            strList.Add("Yes");
+                        }
+                        line = String.Join("\",\"", strList);
+                        line = "\"" + line + "\",";
+                        lines.Add(line);
+                    }
+                    else {
+                        lines.Add(strLine);
 
+                    }
+                    
+                   
+                }
+            }
+            if (lines.Count > 0)
+            {
+                using (StreamWriter writer = new StreamWriter(message.DocFilePath, false))
+                {
+                    foreach (String line in lines)
+                        writer.WriteLine(line);
+                }
+            }
+        }
 
         public static bool IsGuidByParse(string strSrc)
 

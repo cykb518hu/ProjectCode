@@ -1,33 +1,27 @@
 ﻿@using BusinessHandler.Model;
+@using Newtonsoft.Json;
+@using System.Configuration;
 @{
 
     ViewBag.Title = "DataDetail";
     var model = (List<DocQueryResultModel>)Model;
+    var keyWords = ConfigurationManager.AppSettings["KeyWords"].Split(';');
 
-    foreach(var r in model.Select(x=>x.CityName).Distinct().ToList())
-    {
-        var subList = model.Where(x => x.CityName.Equals(r)).Select(y => y.MeetingDateDisplay).Distinct().ToArray();
-    }
 }
-
 <h2>Data Detail</h2>
 <script>
 
-    @{foreach(var r in model.Select(x=>x.CityName).Distinct().ToList())
-     {
-         var cityName = r;
-         var subList = model.Where(x => x.CityName.Equals(r)).Select(y => y.MeetingDateDisplay).Distinct().ToArray();
+    @{foreach (var r in model.Select(x=>x.CityName).Distinct().ToList())
+        {
+            var cityName = r;
+            var dates = model.Where(x => x.CityName.Equals(r)).Select(y => y.MeetingDateDisplay).Distinct().ToArray();
+            var json = new HtmlString(JsonConvert.SerializeObject(dates));
            <text>
-    localStorage.setItem('@cityName', JSON.stringify(@subList))
-    localStorage.setItem('1111', "2222");
+    sessionStorage.setItem("@cityName", '@json');
        </text>
      }
 }
 </script>
-<script>
-    localStorage.setItem('1111', "2222");
-</script>
-
 <div class="panel-body" style="padding-bottom:0px;">
     <div class="panel panel-default">
         <div class="panel-heading">Searh Criteria</div>
@@ -57,9 +51,9 @@
                         @*<input type="text" class="form-control" id="txt_search_KeyWord">*@
                         <select id="sel_search_KeyWord" multiple="multiple">
                             @{
-                                foreach (var r in model.GroupBy(x => x.KeyWord))
+                                foreach (var r in keyWords)
                                 {
-                                    <option value="@r.Key">@r.Key</option>
+                                    <option value="@r">@r</option>
 
                                 }
                             }
@@ -113,12 +107,11 @@
 
     });
 
-
     var TableInit = function () {
         var oTableInit = new Object();
         oTableInit.Init = function () {
             $('#tb_departments').bootstrapTable({
-                url: '/Home/GetDataList',
+                url: '/Home/GetParentDataList',
                 method: 'get',
                 cache: false,
                 pagination: true,
@@ -127,8 +120,112 @@
                 sidePagination: "server",
                 pageList: [10, 25, 50, 100],
                 showColumns: true,
-                minimumCountColumns: 2,
-                uniqueId: "DocId",
+                detailView: true,
+                showPaginationSwitch: true,
+                showRefresh: true,
+                showToggle: true,
+                achillesToolbar:true,
+                columns: [
+                    {
+                        field: 'DocUrl',
+                        title: ' Document',
+                        sortable: true
+                    },
+                    {
+                          field: 'DocType',
+                          title: 'Type',
+                          sortable: true
+                    },
+                    {
+                        field: 'KeyWordString',
+                        title: 'Key Words',
+                        sortable: true
+                    },
+                     
+                    {
+                        field: 'Number',
+                        title: 'Number',
+                        sortable: true
+                    },
+                    {
+                        field: 'IsViewed',
+                        title: 'View',
+                        sortable: true
+                    }
+                ],
+  
+                onExpandRow: function (index, row, $detail) {
+                    oTableInit.InitSubTable(index, row, $detail);
+                },
+                onLoadSuccess: function (data) {
+                    for (var i = 0; i < data.rows.length; i++) {
+                        var doc = data.rows[i];
+                        sessionStorage.setItem(doc.DocId, JSON.stringify(doc.DocQuerySubList));  
+                    }
+                    $("#tb_departments").children().eq(1).children().each(function () {
+                        if ($(this).children(":last").children().html() == "No") {
+                            $(this).css("background-color", "#eee");
+                        }
+                    });
+                },
+
+            });
+        };
+
+
+        oTableInit.queryParams = function (params) {
+            var keyWord = "";
+            var cityName = "";
+            var isViewed = "";
+            if ($("#sel_search_KeyWord").val() != null)
+            {
+                keyWord = $("#sel_search_KeyWord").val().toString();
+            }
+            if ($("#sel_search_CityName").val() != null) {
+                cityName = $("#sel_search_CityName").val().toString();
+            }
+            if ($("#div_status_select").attr("data-status") != null) {
+                isViewed = $("#div_status_select").attr("data-status");
+            }
+
+            var temp = {
+                limit: params.limit,
+                offset: params.offset,
+                CityName: cityName,
+                MeetingDate: $("#txt_search_MeetingDate").val(),
+                KeyWord: keyWord,
+                IsViewed: isViewed,
+                sortName:this.sortName,
+               sortOrder: this.sortOrder
+            };
+            return temp;
+        };
+
+        oTableInit.InitSubTable = function (index, row, $detail) {
+            var parentid = row.DocId;
+            var filePath = row.DocFilePath;
+            $(".sp_" + parentid).parent().parent().css("background-color", "#fff");
+            var isViewed = $(".sp_" + parentid).html();
+            if (isViewed != "Yes") {
+                $(".sp_" + parentid).html("Yes");
+                $.ajax({
+                    url: '@Url.Action("UpdateDocStatus", "Home")',
+                    data: { DocId: parentid, DocFilePath: filePath },
+                    dataType: 'json',
+                    type: "POST",
+                    success: function (result) {
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+
+                    }
+                });
+            }
+            var dataList = JSON.parse(sessionStorage.getItem(parentid));
+            var cur_table = $detail.html('<table></table>').find('table');
+            $(cur_table).bootstrapTable({
+                data: dataList,
                 columns: [
                     {
                         field: 'CityNameDispaly',
@@ -141,35 +238,17 @@
                         sortable: true
                     },
                     {
-                        field: 'DocUrl',
-                        title: ' Document',
-                        sortable: true
-                    },
-                    {
                         field: 'PageNumber',
                         title: 'Page',
                         sortable: true
                     },
-                    {
-                        field: 'DocType',
-                        title: 'Type',
-                        sortable: true
-                    },
-                    //{
-                    //    field: 'MeetingTitle',
-                    //    title: 'Title'
-                    //},
-                   
-                    //{
-                    //    field: 'MeetingLocation',
-                    //    title: 'Location'
-                    //},
+                  
                     {
                         field: 'KeyWord',
                         title: 'Key Word',
                         sortable: true
                     },
-                     
+
                     {
                         field: 'Content',
                         title: 'Content'
@@ -184,37 +263,10 @@
                         align: 'center'
                     }
                 ],
-                onLoadSuccess: function (data) {
-                    $('.showDatePicker').datepicker({
-                        format: 'yyyy/mm/dd'
-                    });
-                },
-
+ 
             });
         };
 
-
-        oTableInit.queryParams = function (params) {
-            var keyWord = "";
-            var cityName = "";
-            if ($("#sel_search_KeyWord").val() != null)
-            {
-                keyWord = $("#sel_search_KeyWord").val().toString();
-            }
-            if ($("#sel_search_CityName").val() != null) {
-                cityName = $("#sel_search_CityName").val().toString();
-            }
-            var temp = {
-                limit: params.limit,
-                offset: params.offset,
-                CityName: cityName,
-                MeetingDate: $("#txt_search_MeetingDate").val(),
-                KeyWord: keyWord,
-                sortName:this.sortName,
-               sortOrder: this.sortOrder
-            };
-            return temp;
-        };
         return oTableInit;
     };
 
@@ -243,40 +295,8 @@
             format: 'yyyy/mm/dd'
         });
         $("#btn_Query").click(function () {
-            alert(localStorage.getItem("1111"));
-            return;
 
-            var keyWord = "";
-            var cityName = "";
-            if ($("#sel_search_KeyWord").val() != null) {
-                keyWord = $("#sel_search_KeyWord").val().toString();
-            }
-            if ($("#sel_search_CityName").val() != null) {
-                cityName = $("#sel_search_CityName").val().toString();
-            }
-            var tempQueryParams = function () {
-                var temp = {
-                    CityName: cityName,
-                    MeetingDate: $("#txt_search_MeetingDate").val(),
-                    KeyWord: keyWord
-                };
-                return temp;
-            };
-
-            $("#tb_departments").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
-            //var dandomId = 1;
-            //$("#tb_departments").bootstrapTable('updateRow', {
-
-
-            //    index: 1,
-            //    row: {
-            //        Name: "1",
-            //        ParentName: "2",
-            //        Level: "3",
-            //        Desc: "5"
-            //    }
-            //});
-
+            SearchData();
         });
         $("#btn_Save_Comment").click(function () {
             $.ajax({
@@ -297,7 +317,6 @@
             });
         });
 
-
     });
     function OpenDataDetail(obj)
     {
@@ -312,9 +331,71 @@
         $("#txt_Comments").val(comment);
     }
     function showDatePicker(obj) {
+        var currentDate = $(obj).parent().next().html();
+        var city = $(obj).html();
+        var active_dates = JSON.parse(sessionStorage.getItem(city));
+
         $(obj).datepicker({
-            format: 'yyyy/mm/dd'
+            format: "yyyy/mm/dd",
+            autoclose: true,
+            beforeShowDay: function (date) {
+                var d = date;
+                var curr_date = d.getDate();
+                var month = d.getMonth() + 1;//Months are zero based
+                var curr_month = month < 10 ? '0' + month : '' + month;
+                var curr_year = d.getFullYear();
+                var formattedDate = curr_year + "/" + curr_month + "/" + curr_date
+
+                if ($.inArray(formattedDate, active_dates) != -1) {
+                    return {
+                        classes: 'activeClass'
+                    };
+                }
+                return;
+            }
         });
+        $(obj).datepicker('setDate', currentDate);
+        $(obj).datepicker('show');
+      //  $(obj)
+
+    }
+    function ShowStatus(obj) {
+        var selectedStatus = $(obj).children().html()
+        var isViewed = "";
+        if ($("#div_status_select").attr("data-status") != null) {
+            isViewed = $("#div_status_select").attr("data-status");
+        }
+        if (isViewed != selectedStatus) {
+            $("#div_status_select").attr("data-status", selectedStatus);
+            SearchData();
+        }
+    }
+    function SearchData()
+    {
+        var keyWord = "";
+        var cityName = "";
+        var isViewed = "";
+        if ($("#sel_search_KeyWord").val() != null) {
+            keyWord = $("#sel_search_KeyWord").val().toString();
+        }
+        if ($("#sel_search_CityName").val() != null) {
+            cityName = $("#sel_search_CityName").val().toString();
+        }
+        if ($("#div_status_select").attr("data-status") != null) {
+            isViewed = $("#div_status_select").attr("data-status");
+        }
+        
+        var tempQueryParams = function () {
+            var temp = {
+                CityName: cityName,
+                MeetingDate: $("#txt_search_MeetingDate").val(),
+                KeyWord: keyWord,
+                IsViewed: isViewed
+            };
+            return temp;
+        };
+
+        $("#tb_departments").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
     }
 </script>
 

@@ -18,6 +18,8 @@ namespace BusinessHandler.MessageHandler
         List<DocQueryResultModel> GetDocQueryResult(DocQueryMessage message);
 
         void UpdateQuery(DocQueryResultModel message);
+
+        void UpdateDocStatus(DocQueryResultModel message);
        
     }
     public class DocQueryCSVRepository : IDocQueryRepository
@@ -153,8 +155,9 @@ namespace BusinessHandler.MessageHandler
                     {
                         var result = new DocQueryResultModel();
                         result.CityName = r.CityName;
-                      //  result.CityNameDispaly = "<span onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";
-                        result.CityNameDispaly = "<span class='showDatePicker' style='cursor: pointer'>" + r.CityName + "</span>";
+                        result.CityNameDispaly = "<span class='showDatePicker' onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";
+                        // result.CityNameDispaly = "<span class='showDatePicker' style='cursor: pointer'>" + r.CityName + "</span>";
+                        result.IsViewed = "<span class='sp_" + r.DocId + "'>" + r.IsViewed + "</span>";
                         result.DocId = r.DocId;
                         result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>" +  r.DocUrl.Substring(r.DocUrl.LastIndexOf('/') + 1) + " </a>";
                         result.DocType = r.DocType;
@@ -181,6 +184,10 @@ namespace BusinessHandler.MessageHandler
         public void UpdateQuery(DocQueryResultModel message)
         {
             CSVFileHelper.UpdateQueryCSV(message);
+        }
+        public void UpdateDocStatus(DocQueryResultModel message)
+        {
+            CSVFileHelper.UpdateDocStautsCSV(message);
         }
     }
 

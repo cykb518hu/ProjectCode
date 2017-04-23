@@ -15,6 +15,21 @@ namespace BusinessHandler.Model
         public string KeyWord { get; set; }
         public string sortName { get; set; }
         public string sortOrder { get; set; }
+
+        public string IsViewed { get; set; }
+    }
+
+    public class DocQueryParentModel
+    {
+        public string IsViewed { get; set; }
+        public string DocUrl { get; set; }
+        public string DocId { get; set;}
+        public int Number { get; set; }
+        public string DocType { get; set; }
+        public string KeyWordString { get; set; }
+
+        public string DocFilePath { get; set; }
+        public List<DocQueryResultModel> DocQuerySubList { get; set; }
     }
     public class DocQueryResultModel
     {
@@ -37,6 +52,7 @@ namespace BusinessHandler.Model
         public string QueryFilePath { get; set; }
         public string Comment { get; set; }
         public string PageNumber { get; set; }
+        public string IsViewed { get; set; }
     }
 
     public class DocData
@@ -48,6 +64,8 @@ namespace BusinessHandler.Model
         public string DocUrl { get; set; }
         public string CanBeRead { get; set; }
         public string DocFilePath { get; set; }
+
+        public string IsViewed { get; set; }
     }
     public class QueryData
     {
