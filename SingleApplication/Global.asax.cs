@@ -30,6 +30,7 @@ namespace SingleApplication
                 builder.RegisterControllers(typeof(MvcApplication).Assembly);
                 builder.RegisterType<DocQueryCSVRepository>().As<IDocQueryRepository>();
                 builder.RegisterType<AspNetCacheRepository>().As<ICacheRepository>();
+                builder.RegisterType<UserRepository>().As<IUserRepository>();
                 builder.RegisterFilterProvider();
 
                 var container = builder.Build();

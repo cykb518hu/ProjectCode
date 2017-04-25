@@ -1,4 +1,6 @@
-﻿using SingleApplication.Models;
+﻿using BusinessHandler.MessageHandler;
+using BusinessHandler.Model;
+using SingleApplication.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,12 @@ namespace SingleApplication.Controllers
 {
     public class AccountController : Controller
     {
+        IUserRepository userRepository;
+        public AccountController()
+        {
+            userRepository = DependencyResolver.Current.GetService<IUserRepository>();
+
+        }
         // GET: Account
         public ActionResult Index()
         {
@@ -28,24 +36,54 @@ namespace SingleApplication.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public ActionResult Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
+            UserAccount user = new UserAccount();
+            user.Email = model.Email;
+            user.Password = model.Password;
+            string result = string.Empty;
+            user = userRepository.Login(user, out result);
+            if (result != "sccuess")
             {
+                ModelState.AddModelError("", result);
                 return View(model);
             }
-            ModelState.AddModelError("", "Invalid login attempt.");
-            return View(model);
+            else
+            {
+                Session["UserAccount"] = user;
+                return RedirectToAction("DataDetail", "Home");
+            }
 
-  
+
         }
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
+
             return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Register(RegisterViewModel model)
+        {
+            UserAccount user = new UserAccount();
+            user.Email = model.Email;
+            user.Password = model.Password;
+            user.Cityes = "";
+            user.Active = "No";
+            string result = userRepository.Register(user);
+            if (result != "sccuess")
+            {
+                ModelState.AddModelError("", result);
+            }
+            else
+            {
+                ModelState.AddModelError("", "You are successfully register, please waiting our Administrator to grant your access");
+            }
+            return View(model);
         }
     }
 }

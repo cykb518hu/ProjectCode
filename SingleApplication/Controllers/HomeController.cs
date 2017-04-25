@@ -31,8 +31,14 @@ namespace SingleApplication.Controllers
 
         public ActionResult DataDetail()
         {
-            var docQuery = new DocQueryFactory();
+            var user = (UserAccount)Session["UserAccount"];
+            if(user==null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var message = new DocQueryMessage();
+            var docQuery = new DocQueryFactory();
             var docList = docQuery.GetDocQueryResult(message);
             return View(docList);
 
@@ -49,10 +55,25 @@ namespace SingleApplication.Controllers
         public JsonResult GetParentDataList(DocQueryMessage message)
         {
             var docQuery = new DocQueryFactory();
+            if(string.IsNullOrEmpty(message.CityName))
+            {
+                message.CityName = GetCitys();
+            }
             var result = docQuery.GetDocQueryParentResult(message);
             var total = result.Count;
             var rows = result.Skip(message.offset).Take(message.limit).ToList();
             return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
+        }
+
+        public string GetCitys()
+        {
+            string citys = string.Empty;
+            var user = (UserAccount)Session["UserAccount"];
+            if (user != null&& user.RoleType == GlobalKeyString.roleTypeGeneral)
+            {
+                citys = user.Cityes;
+            }
+            return citys;
         }
         public JsonResult SaveComment(DocQueryResultModel message)
         {

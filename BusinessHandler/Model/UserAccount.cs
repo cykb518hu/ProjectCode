@@ -23,5 +23,7 @@ namespace BusinessHandler.Model
         [XmlElement("Active")]
         public string Active { get; set; }
 
+        public string RoleType { get; set; }
+
     }
 }
