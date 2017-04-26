@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace BusinessHandler.MessageHandler
 {
@@ -37,7 +38,7 @@ namespace BusinessHandler.MessageHandler
             var userList = ReadFromJsonFile();
             if (userList.Count(x => x.Email.Equals(message.Email, StringComparison.OrdinalIgnoreCase)) > 0)
             {
-                result = "This email already be registered";
+                result = "This email has been registered";
             }
             else
             {
@@ -70,7 +71,7 @@ namespace BusinessHandler.MessageHandler
             {
                 if (user.Active == "No")
                 {
-                    result = "Your account it not active, please reach out to your admnistrator";
+                    result = "Your account it not activated, please reach out to admnistrator";
                 }
                 else
                 {
@@ -79,7 +80,7 @@ namespace BusinessHandler.MessageHandler
             }
             else
             {
-                result = "Your login credentials has proplem ";
+                result = "Your login credentials has proplem, incorrect email or passwrod ";
             }
             return user;
         }

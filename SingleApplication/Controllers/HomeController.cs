@@ -36,8 +36,8 @@ namespace SingleApplication.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-
             var message = new DocQueryMessage();
+            message.CityName = GetCitys();
             var docQuery = new DocQueryFactory();
             var docList = docQuery.GetDocQueryResult(message);
             return View(docList);

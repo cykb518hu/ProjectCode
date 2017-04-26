@@ -38,11 +38,9 @@
                             @{
                                 foreach (var r in model.GroupBy(x => x.CityName))
                                 {
-                                    var user = (UserAccount)Session["UserAccount"];
-                                    if (user.Cityes.Contains(r.Key))
-                                    {
+
                                       <option value="@r.Key">@r.Key</option>
-                                        }
+
 
                                     }
                                 }
@@ -134,12 +132,14 @@
                     {
                         field: 'DocUrl',
                         title: ' Document',
-                        sortable: true
+                        sortable: true,
+                        width:'40%'
                     },
                     {
                           field: 'DocType',
                           title: 'Type',
-                          sortable: true
+                          sortable: true,
+                          width: '20%'
                     },
                     //{
                     //    field: 'KeyWordString',
@@ -150,12 +150,14 @@
                     {
                         field: 'Number',
                         title: 'Number',
-                        sortable: true
+                        sortable: true,
+                        width: '20%'
                     },
                     {
                         field: 'IsViewed',
-                        title: 'View',
-                        sortable: true
+                        title: 'Is checked',
+                        sortable: true,
+                        width: '20%'
                     }
                 ],
   
@@ -235,37 +237,44 @@
                     {
                         field: 'CityNameDispaly',
                         title: 'City',
-                        sortable: true
+                        sortable: true,
+                        width: '10%'
                     },
                     {
                         field: 'MeetingDateDisplay',
                         title: 'Meeting Date',
-                        sortable: true
+                        sortable: true,
+                        width: '15%'
                     },
                     {
                         field: 'PageNumber',
                         title: 'Page',
-                        sortable: true
+                        sortable: true,
+                        width: '5%'
                     },
                   
                     {
                         field: 'KeyWord',
                         title: 'Key Word',
-                        sortable: true
+                        sortable: true,
+                        width: '10%'
                     },
 
                     {
                         field: 'Content',
-                        title: 'Content'
+                        title: 'Content',
+                        width: '40%'
                     },
                     {
                         field: 'Comment',
-                        title: 'Comment'
+                        title: 'Comment',
+                        width: '10%'
                     },
                     {
                         field: 'Operation',
                         title: 'Operation',
-                        align: 'center'
+                        align: 'center',
+                        width: '10%'
                     }
                 ],
  

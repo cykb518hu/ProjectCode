@@ -81,15 +81,17 @@ namespace SingleApplication.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "You are successfully register, please waiting our Administrator to grant your access");
+                ModelState.AddModelError("", "You are successfully registered, please reach out to administrator to grant your access");
             }
             return View(model);
         }
 
         public ActionResult Manage()
         {
-
-            return View();
+            var message = new DocQueryMessage();
+            var docQuery = new DocQueryFactory();
+            var docList = docQuery.GetDocQueryResult(message);
+            return View(docList);
         }
         public JsonResult GetDataList()
         {
@@ -100,13 +102,20 @@ namespace SingleApplication.Controllers
                 r.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align' data-cities='" + r.Cityes + "' data-active='" + r.Active + "' data-email='" + r.Email + "' onclick='OpenDataDetail(this); return false'></button>";
 
             }
-            return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
+            return Json(new { total = total, data = result }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SaveUser(UserAccount message)
         {
             userRepository.ActiveUser(message);
             return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        public ActionResult LogOff()
+        {
+            Session["UserAccount"] = null;
+            return RedirectToAction("Login", "Account");
         }
     }
 }
