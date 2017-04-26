@@ -25,5 +25,7 @@ namespace BusinessHandler.Model
 
         public string RoleType { get; set; }
 
+        public string Operation { get; set; }
+
     }
 }

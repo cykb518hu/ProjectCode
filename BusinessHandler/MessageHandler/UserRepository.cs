@@ -17,7 +17,10 @@ namespace BusinessHandler.MessageHandler
         string Register(UserAccount message);
         void ActiveUser(UserAccount message);
         UserAccount Login(UserAccount message, out string result);
-        
+
+        List<UserAccount> GetUserList();
+
+
     }
 
     public class UserRepository:IUserRepository
@@ -51,7 +54,8 @@ namespace BusinessHandler.MessageHandler
         {
             var userList = ReadFromJsonFile();
             var user = userList.FirstOrDefault(x => x.Email.Equals(message.Email, StringComparison.OrdinalIgnoreCase));
-            user.Active = "Yes";
+            user.Active = message.Active;
+            user.Cityes = message.Cityes;
             SaveToJsonFile(userList);
 
         }
@@ -79,6 +83,11 @@ namespace BusinessHandler.MessageHandler
             }
             return user;
         }
+        public List<UserAccount> GetUserList()
+        {
+            return ReadFromJsonFile();
+        }
+
         public List<UserAccount> ReadFromJsonFile()
         {
             List<UserAccount> userList = new List<Model.UserAccount>();

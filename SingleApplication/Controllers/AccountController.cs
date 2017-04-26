@@ -85,5 +85,28 @@ namespace SingleApplication.Controllers
             }
             return View(model);
         }
+
+        public ActionResult Manage()
+        {
+
+            return View();
+        }
+        public JsonResult GetDataList()
+        {
+            var result = userRepository.GetUserList();
+            var total = result.Count;
+            foreach(var r in result)
+            {
+                r.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align' data-cities='" + r.Cityes + "' data-active='" + r.Active + "' data-email='" + r.Email + "' onclick='OpenDataDetail(this); return false'></button>";
+
+            }
+            return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SaveUser(UserAccount message)
+        {
+            userRepository.ActiveUser(message);
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
     }
 }
