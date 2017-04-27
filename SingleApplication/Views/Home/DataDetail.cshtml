@@ -13,16 +13,14 @@
 
     @{foreach (var r in model.Select(x => x.CityName).Distinct().ToList())
         {
-            var user = (UserAccount)Session["UserAccount"];
-            if (user.Cityes.Contains(r))
-            {
+
                 var cityName = r;
                 var dates = model.Where(x => x.CityName.Equals(r)).Select(y => y.MeetingDateDisplay).Distinct().ToArray();
                 var json = new HtmlString(JsonConvert.SerializeObject(dates));
            <text>
     sessionStorage.setItem("@cityName", '@json');
        </text>
-                }
+                
             }
         }
 </script>
@@ -133,31 +131,43 @@
                         field: 'DocUrl',
                         title: ' Document',
                         sortable: true,
-                        width:'40%'
+                        width:'35%'
                     },
                     {
                           field: 'DocType',
                           title: 'Type',
                           sortable: true,
-                          width: '20%'
+                          width: '15%'
                     },
-                    //{
-                    //    field: 'KeyWordString',
-                    //    title: 'Key Words',
-                    //    sortable: true
-                    //},
-                     
+                     {
+                         field: 'CityNameDispaly',
+                         title: 'City',
+                         sortable: true,
+                         width: '15%'
+                     },
+                      {
+                          field: 'MeetingDateDisplay',
+                          title: 'Meeting Date',
+                          sortable: true,
+                          width: '10%'
+                      },
+                       {
+                           field: 'ScrapeDate',
+                           title: 'Scrape Date',
+                           sortable: true,
+                           width: '10%'
+                       },
                     {
                         field: 'Number',
                         title: 'Number',
                         sortable: true,
-                        width: '20%'
+                        width: '7%'
                     },
                     {
                         field: 'IsViewed',
                         title: 'Is checked',
                         sortable: true,
-                        width: '20%'
+                        width: '8%'
                     }
                 ],
   
@@ -211,10 +221,8 @@
         oTableInit.InitSubTable = function (index, row, $detail) {
             var parentid = row.DocId;
             var filePath = row.DocFilePath;
-            $(".sp_" + parentid).parent().parent().css("background-color", "#fff");
             var isViewed = $(".sp_" + parentid).html();
-            if (isViewed != "Yes") {
-                $(".sp_" + parentid).html("Yes");
+            if (isViewed != "Yes") {  
                 $.ajax({
                     url: '@Url.Action("UpdateDocStatus", "Home")',
                     data: { DocId: parentid, DocFilePath: filePath },
@@ -223,9 +231,11 @@
                     success: function (result) {
                     },
                     complete: function (XMLHttpRequest, textStatus) {
+                        $(".sp_" + parentid).html("Yes");
+                        $(".sp_" + parentid).parent().parent().css("background-color", "#fff");
                     },
                     error: function (xhr, textStatus, errorThrown) {
-
+                       
                     }
                 });
             }
@@ -234,18 +244,8 @@
             $(cur_table).bootstrapTable({
                 data: dataList,
                 columns: [
-                    {
-                        field: 'CityNameDispaly',
-                        title: 'City',
-                        sortable: true,
-                        width: '10%'
-                    },
-                    {
-                        field: 'MeetingDateDisplay',
-                        title: 'Meeting Date',
-                        sortable: true,
-                        width: '15%'
-                    },
+                   
+                   
                     {
                         field: 'PageNumber',
                         title: 'Page',
@@ -257,13 +257,13 @@
                         field: 'KeyWord',
                         title: 'Key Word',
                         sortable: true,
-                        width: '10%'
+                        width: '15%'
                     },
 
                     {
                         field: 'Content',
                         title: 'Content',
-                        width: '40%'
+                        width: '60%'
                     },
                     {
                         field: 'Comment',
@@ -309,7 +309,7 @@
             format: 'yyyy/mm/dd'
         });
         $("#btn_Query").click(function () {
-
+        
             SearchData();
         });
         $("#btn_Save_Comment").click(function () {
@@ -410,6 +410,14 @@
         };
 
         $("#tb_departments").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+    }
+    function expandAllRows()
+    {
+        $("#tb_departments").bootstrapTable('expandAllRows');
+    }
+    function collapseAllRows()
+    {
+        $("#tb_departments").bootstrapTable('collapseAllRows');
     }
 </script>
 

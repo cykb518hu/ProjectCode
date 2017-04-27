@@ -1064,8 +1064,22 @@
 
         //Achilles
         if (this.options.achillesToolbar) {
-            this.$toolbar.append('<div class="dropdown pull-left columns" data-status="All" id="div_status_select"> <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Is Checked     <span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1"><li onclick="ShowStatus(this); return false"><a>All</a></li><li onclick="ShowStatus(this); return false"><a>Yes</a></li><li onclick="ShowStatus(this); return false"><a>No</a></li></ul></div>');
-        }
+
+            this.$toolbar.append('<div class="btn-group pull-left columns" role="group" data-status="All" id="div_status_select">' +
+  '<button type="button" class="btn btn-default" onclick="expandAllRows(this); return false">Expand All</button>' +
+  '<button type="button" class="btn btn-default" onclick="collapseAllRows(this); return false">Collapse All</button>' +
+
+  '<div class="btn-group" role="group">'+
+    '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+     ' Is Checked      ' +
+      '<span class="caret"></span>'+
+    '</button>'+
+    '<ul class="dropdown-menu" ><li onclick="ShowStatus(this); return false"><a>All</a></li><li onclick="ShowStatus(this); return false"><a>Yes</a></li><li onclick="ShowStatus(this); return false"><a>No</a></li></ul>'+
+ ' </div>'+
+'</div>');
+
+
+      }
         // showColumns, showToggle, showRefresh
         html = [sprintf('<div class="columns columns-%s btn-group pull-%s">',
             this.options.buttonsAlign, this.options.buttonsAlign)];

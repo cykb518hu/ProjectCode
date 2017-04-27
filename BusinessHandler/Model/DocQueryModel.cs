@@ -30,6 +30,11 @@ namespace BusinessHandler.Model
 
         public string DocFilePath { get; set; }
         public List<DocQueryResultModel> DocQuerySubList { get; set; }
+
+        public string ScrapeDate { get; set; }
+
+        public string CityNameDispaly { get; set; }
+        public string MeetingDateDisplay { get; set; }
     }
     public class DocQueryResultModel
     {
@@ -53,6 +58,8 @@ namespace BusinessHandler.Model
         public string Comment { get; set; }
         public string PageNumber { get; set; }
         public string IsViewed { get; set; }
+
+        public string ScrapeDate { get; set; }
     }
 
     public class DocData

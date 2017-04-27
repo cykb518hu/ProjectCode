@@ -94,7 +94,7 @@ namespace BusinessHandler.MessageHandler
             List<UserAccount> userList = new List<Model.UserAccount>();
             try
             {
-                var fileName = GlobalKeyString.userFilePath;
+                var fileName = HttpContext.Current.Server.MapPath("~/App_Data/Users.json");
                 var json = File.ReadAllText(fileName);
                 var jobj = JArray.Parse(json);
                 userList = jobj.Select(x => new UserAccount { Email = x["Email"].ToString(), Password = x["Password"].ToString(), Cityes = x["Cityes"].ToString(), Active = x["Active"].ToString() , RoleType = x["RoleType"].ToString() })
@@ -111,8 +111,8 @@ namespace BusinessHandler.MessageHandler
         {
             string json = JsonConvert.SerializeObject(userList.ToArray());
 
-            //write string to file
-            System.IO.File.WriteAllText(GlobalKeyString.userFilePath, json);
+            var fileName = HttpContext.Current.Server.MapPath("~/App_Data/Users.json");
+            System.IO.File.WriteAllText(fileName, json);
         }
 
         public  string Base64Encode(string plainText)

@@ -39,12 +39,15 @@ namespace BusinessHandler.MessageHandler
                     data.DocUrl = firstItem.DocUrl;
                     data.DocType = firstItem.DocType;
                     data.IsViewed = firstItem.IsViewed;
+                    data.ScrapeDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    data.CityNameDispaly = firstItem.CityNameDispaly;
+                    data.MeetingDateDisplay = firstItem.MeetingDateDisplay;
                     keyWordList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
                     data.Number = count;
                     data.KeyWordString = string.Join(",", keyWordList.Select(x => x.KeyWord).Distinct().ToArray());
                     data.DocQuerySubList = (List<DocQueryResultModel>)keyWordList;
                 }
-                if (message.IsViewed.Equals("All") || data.IsViewed.Contains(message.IsViewed))
+                if (string.IsNullOrEmpty(message.IsViewed) || message.IsViewed.Equals("All") || data.IsViewed.Contains(message.IsViewed))
                 {
                     list.Add(data);
                 }
@@ -64,6 +67,9 @@ namespace BusinessHandler.MessageHandler
                         case "IsViewed":
                             list = list.OrderBy(x => x.IsViewed).ToList();
                             break;
+                        case "ScrapeDate":
+                            list = list.OrderBy(x => x.ScrapeDate).ToList();
+                            break;
                     }
                 }
                 else
@@ -78,6 +84,9 @@ namespace BusinessHandler.MessageHandler
                             break;
                         case "IsViewed":
                             list = list.OrderByDescending(x => x.IsViewed).ToList();
+                            break;
+                        case "ScrapeDate":
+                            list = list.OrderByDescending(x => x.ScrapeDate).ToList();
                             break;
                     }
                 }

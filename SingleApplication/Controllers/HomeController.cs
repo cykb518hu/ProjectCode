@@ -32,7 +32,7 @@ namespace SingleApplication.Controllers
         public ActionResult DataDetail()
         {
             var user = (UserAccount)Session["UserAccount"];
-            if(user==null)
+            if (user == null)
             {
                 return RedirectToAction("Login", "Account");
             }
