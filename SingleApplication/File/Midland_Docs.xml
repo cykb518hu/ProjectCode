@@ -1,0 +1,713 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Docs>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>db3f5bf1-e6ca-4baa-9989-4cab4a5848ed</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04242017-1772</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-04-24_minute.pdf</DocLocalPath>
+    <Checked>True</Checked>
+    <Important>True</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>575e5765-8b2e-458f-ae6f-67889112bf86</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04172017-1768</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-04-17_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>06e9024c-d377-4d2f-8b91-45de8f004576</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04132017-1762</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-04-13_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>b2f16ebe-a020-4652-98cb-7120aa2d7d7b</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04102017-1765</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-04-10_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>41792c84-fc4c-4d15-8a8c-75cdbe94005c</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03272017-1755</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-03-27_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>2e6ad11a-9480-47a4-9ae8-d25783e62a65</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03132017-1746</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-03-13_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>301ac897-e09d-4093-b1a7-67c5bf1465c9</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03082017-1742</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-03-08_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>6c2298c6-7001-4d48-8a14-f6d7f592e6d6</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02202017-1739</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-02-20_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>0b877f01-d167-48e2-a972-c25a77fbe0bf</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02132017-1736</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-02-13_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>925c6c15-dca0-4d8d-81e7-915de799bee7</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01232017-1730</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-01-23_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>c497cb9c-299a-4554-ba6a-a316f547928e</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01092017-1723</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-01-09_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>4da2c6f9-f955-43c2-9871-abf50063acff</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01072017-1721</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2017-01-07_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>b50b3e79-297b-4f52-9bbd-1cfcac927bbe</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04112017-1764</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2017-04-11_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>5fc45713-33dd-4173-8737-1032528c148b</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03282017-1754</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2017-03-28_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>3e61b464-53c3-4069-b31a-452868010a83</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02282017-1740</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2017-02-28_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>7cdb8bfa-a603-4c79-b604-b275977e07c7</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02142017-1735</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2017-02-14_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>5b1209c4-ed69-43fc-be29-5b1294b3399a</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01102017-1722</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2017-01-10_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>abf10bae-2a42-4f9e-9739-71c93155219a</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_12122016-1717</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-12-12_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>6721d48c-afa3-4614-8464-7893d77c08d4</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_12052016-1713</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-12-05_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>b58b9eff-1bf3-444b-8875-c5a5a065767c</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_12052016-1711</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-12-05_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>fab54db3-0d5f-46ac-bd98-8fbde5b1fb1f</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_11212016-1709</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-11-21_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>c019d484-db9b-4bb0-ad72-429b4b476411</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_11142016-1705</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-11-14_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>af7a96a0-5f9c-4c7d-9acf-73d675043c7a</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_10242016-1699</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-10-24_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>821f9115-b8d5-4372-9022-642fbd3e6001</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_10102016-1692</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-10-10_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>074ba356-2202-4801-80d9-502c1b5640f0</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_10032016-1689</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-10-03_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>dc8e38c3-9221-4431-b71d-a3bbb939270e</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_09192016-1685</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-09-19_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>7dba3555-9eed-44e8-805d-5069db6fe2d3</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_09122016-1682</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-09-12_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>ea02ef2e-6a7c-4d83-8b1e-16656f72f7d3</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_08302016-1673</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-08-30_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>a5c08521-3114-4f01-8d59-771bd8a86f9b</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_08222016-1672</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-08-22_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>7da0a9d7-ccf3-467c-b7a6-9b47110a9a01</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_08152016-1668</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-08-15_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>a16c915a-8237-4878-8bc4-57697269b44b</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_07252016-1662</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-07-25_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>de382892-d292-4cac-9674-f50982f7ec98</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_07182016-1660</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-07-18_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>4dd4f43d-41fa-4c4c-a9ce-6e18b4b7964d</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_06272016-1654</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-06-27_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>a247570f-7644-4d49-b831-bb41a458fd4a</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_06132016-1651</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-06-13_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>f7eab985-4fae-48d8-baa4-846356c60770</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_06062016-1643</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-06-06_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>33d5d170-8f3f-41f7-9c77-2f32a3c9fbfd</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_05232016-1638</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-05-23_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>72d20574-7500-40de-a71e-a98db3835143</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_05232016-1639</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-05-23_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>54f36022-3e5d-4f1e-a9be-a116c4511a71</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_05092016-1632</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-05-09_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>b79e6b9d-c3dc-42f3-a16c-7501caaf79fd</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04252016-1626</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-04-25_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>8f593c2d-c296-4f6a-bd45-ce4c13c5fddc</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04182016-1622</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-04-18_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>95dbe539-8e82-463d-bb18-90ec566cc4de</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04112016-1619</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-04-11_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>b520d60d-394f-4fd6-96c2-92d05ae6f552</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03212016-1614</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-03-21_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>5c4f87d6-503c-4825-8f9e-b8b859f55ce7</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03162016-1610</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-03-16_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>059ac134-ee7c-44dc-b0de-f8a35e89f47a</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03152016-1606</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-03-15_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>45ff6144-cacc-43ca-ab38-c3b7ea9fc124</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03142016-1611</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-03-14_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>5a7f3b00-670e-4ce7-af0d-48adce040a3f</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03092016-1603</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-03-09_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>cd139816-dbad-479f-8e16-a501a28c0abf</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02292016-1598</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-02-29_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>688733ba-6c3f-45c3-83a1-aa55071e1eee</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02152016-1593</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-02-15_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>32128c0f-b607-46fa-8e7d-9110f02e278e</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01252016-1580</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-01-25_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>5a065576-4bff-4624-947f-c18cf1e89b71</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01162016-1574</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-01-16_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>c411311c-6edd-45d4-9994-6d988a2f65ec</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01162016-1575</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-01-16_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>b9cbc8be-d515-463e-968b-300cd0d062d2</DocId>
+    <DocType>City Council</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01112016-1573</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\City Council_2016-01-11_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>6a3252ed-e627-42cb-be7e-caedb287d5f7</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_11222016-1708</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-11-22_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>c6346204-4399-491c-8f4f-37c4c2f3e42e</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_10252016-1697</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-10-25_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>cc6f5bd3-5fbb-48bc-ab90-72af7f301f58</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_10112016-1691</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-10-11_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>ae00c394-861c-4f79-b8e8-18cfa0c0a085</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_10112016-1693</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-10-11_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>28327e28-3eb6-48ae-aec4-a627c48d94b5</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_09272016-1688</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-09-27_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>d3b70dd5-e5ad-4d47-9d96-ef4633088497</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_08232016-1670</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-08-23_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>dc270f3c-9d1e-41c5-90af-2e8151b9fd0f</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_07262016-1663</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-07-26_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>dc058231-b43f-44c5-b463-6869c584d0f8</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_07122016-1656</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-07-12_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>False</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>45423e38-1b48-49f5-9ef3-50560f68670d</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_06282016-1653</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-06-28_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>4603e18e-6ecf-437a-ae02-95cb02125484</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_06142016-1650</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-06-14_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>e504269b-30ff-48ac-9f9c-7476f35800ea</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_05242016-1637</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-05-24_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>ac8c3324-3c20-436c-9a3f-da046257e565</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_05102016-1631</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-05-10_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>3e69966b-ba13-421a-97ae-cad05e56a05a</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04262016-1627</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-04-26_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>43aab8a2-e1e7-45f9-b00a-0de2f6135579</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_04122016-1618</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-04-12_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>53073cfd-1556-46dc-883b-6a00f8ab6d09</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_03222016-1615</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-03-22_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>c5e4bc27-d557-445b-bd57-82290b1678df</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02232016-1596</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-02-23_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>False</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>a489f0ee-e39c-48cc-8fdb-29faff525a6e</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_02092016-1587</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-02-09_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>45ebb318-5a83-4b2a-804d-2e5725d13ba8</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01262016-1579</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-01-26_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+  <Doc>
+    <CityId>MidlandMICity</CityId>
+    <DocId>50806f2a-7810-4578-8784-849de174dde2</DocId>
+    <DocType>Planning Commission</DocType>
+    <DocSource>http://cityofmidlandmi.gov/AgendaCenter/ViewFile/Minutes/_01122016-1572</DocSource>
+    <DocLocalPath>E:\elance\CityCouncilMeetingProject\CityCouncilMeetingProject\bin\Debug\MidlandMICity\Planning Commission_2016-01-12_minute.pdf</DocLocalPath>
+    <Checked>False</Checked>
+    <Important>False</Important>
+    <Readable>True</Readable>
+  </Doc>
+</Docs>

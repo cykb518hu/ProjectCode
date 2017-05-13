@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Queries>
+  <Query>
+    <DocId>ea02ef2e-6a7c-4d83-8b1e-16656f72f7d3</DocId>
+    <CityId>MidlandMICity</CityId>
+    <MeetingDate>2016-08-20</MeetingDate>
+    <SearchDate>2017-05-11</SearchDate>
+    <MeetingTitle>
+    </MeetingTitle>
+    <MeetingLocation>
+    </MeetingLocation>
+    <Entries>
+      <Entry>
+        <PageNumber>1</PageNumber>
+        <Keyword>marijuana</Keyword>
+        <Contents>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95db">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited public comments at wh111</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dc">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited public comments at which time Mr. Andrew Koehlinger","</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dd">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited 2222</Content>
+        </Contents>
+      </Entry>
+    </Entries>
+  </Query>
+  <Query>
+    <DocId>db3f5bf1-e6ca-4baa-9989-4cab4a5848ed</DocId>
+    <CityId>MidlandMICity</CityId>
+    <MeetingDate>2016-08-30</MeetingDate>
+    <SearchDate>2017-05-11</SearchDate>
+    <MeetingTitle>
+    </MeetingTitle>
+    <MeetingLocation>
+    </MeetingLocation>
+    <Entries>
+      <Entry>
+        <PageNumber>3</PageNumber>
+        <Keyword>Dispensaries</Keyword>
+        <Contents>
+          <Content Comment="bbb" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95de">Stamas advised that attention should be paid to autonomous vehicle and medical Dispensaries policy. Mayor Donker solicited public comments at wh111</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95df">Stamas advised that attention should be paid to autonomous vehicle and medical Dispensaries policy. Mayor Donker solicited public comments at which time Mr. Andrew Koehlinger","</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dg">Stamas advised that attention should be paid to autonomous vehicle and medical Dispensaries policy. Mayor Donker solicited 2222</Content>
+        </Contents>
+      </Entry>
+    </Entries>
+  </Query>
+  <Query>
+    <DocId>06e9024c-d377-4d2f-8b91-45de8f004576</DocId>
+    <CityId>MidlandMICity</CityId>
+    <MeetingDate>2016-09-30</MeetingDate>
+    <SearchDate>2017-05-11</SearchDate>
+    <MeetingTitle>
+    </MeetingTitle>
+    <MeetingLocation>
+    </MeetingLocation>
+    <Entries>
+      <Entry>
+        <PageNumber>3</PageNumber>
+        <Keyword>marijuana</Keyword>
+        <Contents>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dh">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited public comments at wh111</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95di">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited public comments at which time Mr. Andrew Koehlinger","</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dj">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited 2222</Content>
+        </Contents>
+      </Entry>
+      <Entry>
+        <PageNumber>2</PageNumber>
+        <Keyword>marijuana</Keyword>
+        <Contents>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dk">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited public comments at wh111</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dl">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited public comments at which time Mr. Andrew Koehlinger","</Content>
+          <Content Comment="" GUID="6de54cc0-508e-44ec-949a-5cb3f47e95dm">Stamas advised that attention should be paid to autonomous vehicle and medical marijuana policy. Mayor Donker solicited 2222</Content>
+        </Contents>
+      </Entry>
+    </Entries>
+  </Query>
+</Queries>
