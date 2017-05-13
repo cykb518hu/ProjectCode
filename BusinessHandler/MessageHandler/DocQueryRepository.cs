@@ -20,7 +20,9 @@ namespace BusinessHandler.MessageHandler
         void UpdateQuery(DocQueryResultModel message);
 
         void UpdateDocStatus(DocQueryResultModel message);
-       
+
+        void UpdateDocImportant(DocQueryResultModel message);
+
     }
     public class DocQueryCSVRepository : IDocQueryRepository
     {
@@ -197,6 +199,10 @@ namespace BusinessHandler.MessageHandler
         public void UpdateDocStatus(DocQueryResultModel message)
         {
             readDataHelper.UpdateDocStauts(message);
+        }
+        public void UpdateDocImportant(DocQueryResultModel message)
+        {
+            readDataHelper.UpdateDocImportant(message);
         }
     }
 

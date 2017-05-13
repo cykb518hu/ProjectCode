@@ -10,9 +10,9 @@ using System.Text;
 
 namespace BusinessLogic
 {
-    public class CSVFileHelper: IDataFileHelper
+    public class CSVFileHelper : IDataFileHelper
     {
-        public  List<DocData> OpenDoc(string filePath)
+        public List<DocData> OpenDoc(string filePath)
         {
             var resultList = new List<DocData>();
             string wholeText = File.ReadAllText(filePath, Encoding.UTF8);
@@ -43,13 +43,13 @@ namespace BusinessLogic
             return resultList;
         }
 
-        public  List<QueryData> OpenQuery(string filePath)
+        public List<QueryData> OpenQuery(string filePath)
         {
             HandQueryGuid(filePath);
             var resultList = new List<QueryData>();
             string wholeText = File.ReadAllText(filePath);
             string[] records = wholeText.Split(new string[] { "\",\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            
+
             foreach (string strLine in records)
             {
                 if (string.IsNullOrEmpty(strLine.Trim('\r', '\n')))
@@ -76,7 +76,7 @@ namespace BusinessLogic
                 data.KeyWord = string.IsNullOrWhiteSpace(aryLine[6]) ? "" : aryLine[6].Trim('"');
                 data.PageNumber = string.IsNullOrWhiteSpace(aryLine[7]) ? "" : aryLine[7].Trim('"');
                 data.Content = string.IsNullOrWhiteSpace(aryLine[8]) ? "" : aryLine[8].Trim('"');
-              
+
                 data.Comment = aryLine.Length < 10 ? "" : aryLine[9].Trim('"');
                 data.QueryFilePath = filePath;
                 resultList.Add(data);
@@ -85,7 +85,7 @@ namespace BusinessLogic
             return resultList;
         }
 
-        public  void HandQueryGuid(string filePath)
+        public void HandQueryGuid(string filePath)
         {
             List<String> lines = new List<String>();
             using (StreamReader sr = new StreamReader(filePath))
@@ -118,7 +118,7 @@ namespace BusinessLogic
             }
         }
 
-        public  void UpdateQuery(DocQueryResultModel message)
+        public void UpdateQuery(DocQueryResultModel message)
         {
             List<String> lines = new List<String>();
             using (StreamReader sr = new StreamReader(message.QueryFilePath))
@@ -154,7 +154,7 @@ namespace BusinessLogic
             }
         }
 
-        public  void UpdateDocStauts(DocQueryResultModel message)
+        public void UpdateDocStauts(DocQueryResultModel message)
         {
             List<String> lines = new List<String>();
             using (StreamReader sr = new StreamReader(message.DocFilePath))
@@ -178,12 +178,13 @@ namespace BusinessLogic
                         line = "\"" + line + "\",";
                         lines.Add(line);
                     }
-                    else {
+                    else
+                    {
                         lines.Add(strLine);
 
                     }
-                    
-                   
+
+
                 }
             }
             if (lines.Count > 0)
@@ -196,7 +197,7 @@ namespace BusinessLogic
             }
         }
 
-        public  bool IsGuidByParse(string strSrc)
+        public bool IsGuidByParse(string strSrc)
 
         {
 
@@ -205,5 +206,7 @@ namespace BusinessLogic
             return Guid.TryParse(strSrc, out g);
 
         }
+        public void UpdateDocImportant(DocQueryResultModel message)
+        { }
     }
 }

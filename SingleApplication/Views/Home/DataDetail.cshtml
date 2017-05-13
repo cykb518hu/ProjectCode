@@ -94,7 +94,7 @@
                 <textarea class="form-control" rows="3" id="txt_Comments"></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="cursor:pointer">Close</button>
                 <button type="button" class="btn btn-primary" id="btn_Save_Comment">Save changes</button>
             </div>
         </div><!-- /.modal-content -->
@@ -131,19 +131,19 @@
                         field: 'DocUrl',
                         title: ' Document',
                         sortable: true,
-                        width:'27%'
+                        width:'25%'
                     },
                     {
                           field: 'DocType',
                           title: 'Type',
                           sortable: true,
-                          width: '15%'
+                          width: '13%'
                     },
                      {
                          field: 'CityNameDispaly',
                          title: 'City',
                          sortable: true,
-                         width: '15%'
+                         width: '13%'
                      },
                       {
                           field: 'MeetingDateDisplay',
@@ -161,19 +161,19 @@
                         field: 'Number',
                         title: 'Number',
                         sortable: true,
-                        width: '7%'
+                        width: '5%'
                     },
                     {
                         field: 'IsViewed',
                         title: 'Is checked',
                         sortable: true,
-                        width: '8%'
+                        width: '7%'
                     },
                     {
-                        field: 'Important',
+                        field: 'ImportantDisplay',
                         title: 'Important',
                         sortable: true,
-                        width: '8%'
+                        width: '17%'
                     }
                 ],
   
@@ -405,6 +405,41 @@
             $("#div_status_select").attr("data-important", selectedImportant);
             SearchData();
         }
+    }
+
+    function setImportant(obj)
+    {
+        var important = $(obj).attr("data-important");
+        var filePath = $(obj).attr("data-file");
+        var docId = $(obj).attr("data-docid");
+        if (important == "True") {
+            important = "False";
+        }
+        else {
+            important = "True";
+        }
+        $.ajax({
+            url: '@Url.Action("UpdateDocImportant", "Home")',
+            data: { DocId: docId, DocFilePath: filePath, Important:important },
+            dataType: 'json',
+            type: "POST",
+            success: function (result) {
+                alert("success");
+                if (important == "True") {
+                    $(obj).html("set to none-important");
+                }
+                else {
+                    $(obj).html("set to important");
+                }
+                $(obj).attr("data-important", important);
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+            },
+            error: function (xhr, textStatus, errorThrown) {
+
+            }
+        });
+       
     }
     function SearchData()
     {

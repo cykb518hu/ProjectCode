@@ -87,7 +87,12 @@ namespace SingleApplication.Controllers
             docQuery.UpdateDocStatus(message);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-
+        public JsonResult UpdateDocImportant(DocQueryResultModel message)
+        {
+            var docQuery = new DocQueryFactory();
+            docQuery.UpdateDocImportant(message);
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetDateBasedOnCity(DocQueryMessage message)
         {
             var docQuery = new DocQueryFactory();

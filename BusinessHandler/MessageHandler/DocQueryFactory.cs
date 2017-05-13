@@ -43,11 +43,14 @@ namespace BusinessHandler.MessageHandler
                     data.CityNameDispaly = firstItem.CityNameDispaly;
                     data.MeetingDateDisplay = firstItem.MeetingDateDisplay;
                     data.Important = firstItem.Important;
-                    //if(data.Important=="True")
-                    //{
-                    //    data.ImportantDisplay = firstItem.Important;
-
-                    //}
+                    if (data.Important == "True")
+                    {
+                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important+ "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' >set to none-important </a>";
+                    }
+                    else
+                    {
+                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important + "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "'>set to important </a>";
+                    }
                     keyWordList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
                     data.Number = count;
                     data.KeyWordString = string.Join(",", keyWordList.Select(x => x.KeyWord).Distinct().ToArray());
@@ -124,7 +127,14 @@ namespace BusinessHandler.MessageHandler
                 cacheRepository.Clear(GlobalKeyString.docQueryCacheKey);
             }
         }
-
+        public void UpdateDocImportant(DocQueryResultModel message)
+        {
+            docQueryRepository.UpdateDocImportant(message);
+            if (cacheRepository.Exists(GlobalKeyString.docQueryCacheKey))
+            {
+                cacheRepository.Clear(GlobalKeyString.docQueryCacheKey);
+            }
+        }
 
     }
 }
