@@ -131,7 +131,7 @@
                         field: 'DocUrl',
                         title: ' Document',
                         sortable: true,
-                        width:'35%'
+                        width:'27%'
                     },
                     {
                           field: 'DocType',
@@ -168,6 +168,12 @@
                         title: 'Is checked',
                         sortable: true,
                         width: '8%'
+                    },
+                    {
+                        field: 'Important',
+                        title: 'Important',
+                        sortable: true,
+                        width: '8%'
                     }
                 ],
   
@@ -180,7 +186,7 @@
                         sessionStorage.setItem(doc.DocId, JSON.stringify(doc.DocQuerySubList));  
                     }
                     $("#tb_departments").children().eq(1).children().each(function () {
-                        if ($(this).children(":last").children().html() == "No") {
+                        if ($(this).children(":last").prev().children().html() == "False") {
                             $(this).css("background-color", "#eee");
                         }
                     });
@@ -194,6 +200,7 @@
             var keyWord = "";
             var cityName = "";
             var isViewed = "";
+            var isImportant = "";
             if ($("#sel_search_KeyWord").val() != null)
             {
                 keyWord = $("#sel_search_KeyWord").val().toString();
@@ -204,6 +211,9 @@
             if ($("#div_status_select").attr("data-status") != null) {
                 isViewed = $("#div_status_select").attr("data-status");
             }
+            if ($("#div_status_select").attr("data-important") != null) {
+                isImportant = $("#div_status_select").attr("data-important");
+            }
 
             var temp = {
                 limit: params.limit,
@@ -212,8 +222,9 @@
                 MeetingDate: $("#txt_search_MeetingDate").val(),
                 KeyWord: keyWord,
                 IsViewed: isViewed,
-                sortName:this.sortName,
-               sortOrder: this.sortOrder
+                Important: isImportant,
+                sortName: this.sortName,
+                sortOrder: this.sortOrder
             };
             return temp;
         };
@@ -222,7 +233,7 @@
             var parentid = row.DocId;
             var filePath = row.DocFilePath;
             var isViewed = $(".sp_" + parentid).html();
-            if (isViewed != "Yes") {  
+            if (isViewed != "True") {  
                 $.ajax({
                     url: '@Url.Action("UpdateDocStatus", "Home")',
                     data: { DocId: parentid, DocFilePath: filePath },
@@ -231,7 +242,7 @@
                     success: function (result) {
                     },
                     complete: function (XMLHttpRequest, textStatus) {
-                        $(".sp_" + parentid).html("Yes");
+                        $(".sp_" + parentid).html("True");
                         $(".sp_" + parentid).parent().parent().css("background-color", "#fff");
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -384,11 +395,23 @@
             SearchData();
         }
     }
+    function ShowImportant(obj) {
+        var selectedImportant = $(obj).children().html()
+        var important= "";
+        if ($("#div_status_select").attr("data-important") != null) {
+            important = $("#div_status_select").attr("data-important");
+        }
+        if (important != selectedImportant) {
+            $("#div_status_select").attr("data-important", selectedImportant);
+            SearchData();
+        }
+    }
     function SearchData()
     {
         var keyWord = "";
         var cityName = "";
         var isViewed = "";
+        var isImportant = "";
         if ($("#sel_search_KeyWord").val() != null) {
             keyWord = $("#sel_search_KeyWord").val().toString();
         }
@@ -398,13 +421,16 @@
         if ($("#div_status_select").attr("data-status") != null) {
             isViewed = $("#div_status_select").attr("data-status");
         }
-        
+        if ($("#div_status_select").attr("data-important") != null) {
+            isImportant = $("#div_status_select").attr("data-important");
+        }
         var tempQueryParams = function () {
             var temp = {
                 CityName: cityName,
                 MeetingDate: $("#txt_search_MeetingDate").val(),
                 KeyWord: keyWord,
-                IsViewed: isViewed
+                IsViewed: isViewed,
+                Important: isImportant
             };
             return temp;
         };

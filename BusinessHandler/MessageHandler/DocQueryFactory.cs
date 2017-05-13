@@ -39,9 +39,15 @@ namespace BusinessHandler.MessageHandler
                     data.DocUrl = firstItem.DocUrl;
                     data.DocType = firstItem.DocType;
                     data.IsViewed = firstItem.IsViewed;
-                    data.ScrapeDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    data.ScrapeDate = firstItem.ScrapeDate;
                     data.CityNameDispaly = firstItem.CityNameDispaly;
                     data.MeetingDateDisplay = firstItem.MeetingDateDisplay;
+                    data.Important = firstItem.Important;
+                    //if(data.Important=="True")
+                    //{
+                    //    data.ImportantDisplay = firstItem.Important;
+
+                    //}
                     keyWordList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
                     data.Number = count;
                     data.KeyWordString = string.Join(",", keyWordList.Select(x => x.KeyWord).Distinct().ToArray());
@@ -49,7 +55,10 @@ namespace BusinessHandler.MessageHandler
                 }
                 if (string.IsNullOrEmpty(message.IsViewed) || message.IsViewed.Equals("All") || data.IsViewed.Contains(message.IsViewed))
                 {
-                    list.Add(data);
+                    if (string.IsNullOrEmpty(message.Important) || message.Important.Equals("All") || data.Important.Contains(message.Important))
+                    {
+                        list.Add(data);
+                    }
                 }
             }
             if (!string.IsNullOrEmpty(message.sortName))

@@ -1,4 +1,5 @@
 ﻿
+using BusinessHandler.MessageHandler;
 using BusinessHandler.Model;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ using System.Text;
 
 namespace BusinessLogic
 {
-    public class CSVFileHelper
+    public class CSVFileHelper: IDataFileHelper
     {
-        public static List<DocData> OpenDocCSV(string filePath)
+        public  List<DocData> OpenDoc(string filePath)
         {
             var resultList = new List<DocData>();
             string wholeText = File.ReadAllText(filePath, Encoding.UTF8);
@@ -42,7 +43,7 @@ namespace BusinessLogic
             return resultList;
         }
 
-        public static List<QueryData> OpenQueryCSV(string filePath)
+        public  List<QueryData> OpenQuery(string filePath)
         {
             HandQueryGuid(filePath);
             var resultList = new List<QueryData>();
@@ -84,7 +85,7 @@ namespace BusinessLogic
             return resultList;
         }
 
-        public static void HandQueryGuid(string filePath)
+        public  void HandQueryGuid(string filePath)
         {
             List<String> lines = new List<String>();
             using (StreamReader sr = new StreamReader(filePath))
@@ -117,7 +118,7 @@ namespace BusinessLogic
             }
         }
 
-        public static void UpdateQueryCSV(DocQueryResultModel message)
+        public  void UpdateQuery(DocQueryResultModel message)
         {
             List<String> lines = new List<String>();
             using (StreamReader sr = new StreamReader(message.QueryFilePath))
@@ -153,7 +154,7 @@ namespace BusinessLogic
             }
         }
 
-        public static void UpdateDocStautsCSV(DocQueryResultModel message)
+        public  void UpdateDocStauts(DocQueryResultModel message)
         {
             List<String> lines = new List<String>();
             using (StreamReader sr = new StreamReader(message.DocFilePath))
@@ -195,7 +196,7 @@ namespace BusinessLogic
             }
         }
 
-        public static bool IsGuidByParse(string strSrc)
+        public  bool IsGuidByParse(string strSrc)
 
         {
 

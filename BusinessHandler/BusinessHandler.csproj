@@ -61,6 +61,7 @@
     <Compile Include="MessageHandler\DocQueryRepository.cs" />
     <Compile Include="MessageHandler\GlobalKeyString.cs" />
     <Compile Include="MessageHandler\UserRepository.cs" />
+    <Compile Include="MessageHandler\XmlHelper.cs" />
     <Compile Include="Model\DocQueryModel.cs" />
     <Compile Include="Model\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

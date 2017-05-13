@@ -1065,7 +1065,7 @@
         //Achilles
         if (this.options.achillesToolbar) {
 
-            this.$toolbar.append('<div class="btn-group pull-left columns" role="group" data-status="All" id="div_status_select">' +
+            this.$toolbar.append('<div class="btn-group pull-left columns" role="group" data-status="All" data-important="All" id="div_status_select">' +
   '<button type="button" class="btn btn-default" onclick="expandAllRows(this); return false">Expand All</button>' +
   '<button type="button" class="btn btn-default" onclick="collapseAllRows(this); return false">Collapse All</button>' +
 
@@ -1074,8 +1074,15 @@
      ' Is Checked      ' +
       '<span class="caret"></span>'+
     '</button>'+
-    '<ul class="dropdown-menu" ><li onclick="ShowStatus(this); return false"><a>All</a></li><li onclick="ShowStatus(this); return false"><a>Yes</a></li><li onclick="ShowStatus(this); return false"><a>No</a></li></ul>'+
- ' </div>'+
+    '<ul class="dropdown-menu" ><li onclick="ShowStatus(this); return false"><a>All</a></li><li onclick="ShowStatus(this); return false"><a>True</a></li><li onclick="ShowStatus(this); return false"><a>False</a></li></ul>'+
+ ' </div>' +
+ '<div class="btn-group" role="group">' +
+    '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+     ' Important      ' +
+      '<span class="caret"></span>' +
+    '</button>' +
+    '<ul class="dropdown-menu" ><li onclick="ShowImportant(this); return false"><a>All</a></li><li onclick="ShowImportant(this); return false"><a>True</a></li><li onclick="ShowImportant(this); return false"><a>False</a></li></ul>' +
+ ' </div>' +
 '</div>');
 
 

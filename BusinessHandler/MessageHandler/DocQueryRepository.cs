@@ -25,9 +25,11 @@ namespace BusinessHandler.MessageHandler
     public class DocQueryCSVRepository : IDocQueryRepository
     {
         ICacheRepository cacheRepository;
+        IDataFileHelper readDataHelper;
         public DocQueryCSVRepository()
         {
             cacheRepository =  DependencyResolver.Current.GetService<ICacheRepository>();
+            readDataHelper = DependencyResolver.Current.GetService<IDataFileHelper>();
         }
 
         public List<DocQueryResultModel> GetDocQueryResult(DocQueryMessage message)
@@ -76,6 +78,9 @@ namespace BusinessHandler.MessageHandler
                         case "KeyWord":
                             resultList = resultList.OrderBy(x => x.KeyWord).ToList();
                             break;
+                        case "Important":
+                            resultList = resultList.OrderBy(x => x.Important).ToList();
+                            break;
 
                     }
                 }
@@ -100,6 +105,9 @@ namespace BusinessHandler.MessageHandler
                             break;
                         case "KeyWord":
                             resultList = resultList.OrderByDescending(x => x.KeyWord).ToList();
+                            break;
+                        case "Important":
+                            resultList = resultList.OrderByDescending(x => x.Important).ToList();
                             break;
 
                     }
@@ -127,22 +135,22 @@ namespace BusinessHandler.MessageHandler
         public List<DocQueryResultModel> GetDocQueryList()
         {
             var filePath = ConfigurationManager.AppSettings.Get("DocQueryFilePath").ToString();
-            var docUrlList = Directory.GetFiles(filePath, "*Docs.csv");
-            var queriesUrlList = Directory.GetFiles(filePath, "*Queries.csv");
+            var docUrlList = Directory.GetFiles(filePath, "*Docs*");
+            var queriesUrlList = Directory.GetFiles(filePath, "*Queries*");
 
             var resultList = new List<DocQueryResultModel>();
 
             var queriesList = new List<QueryData>();
             for (int i = 0; i < queriesUrlList.Length; i++)
             {
-                queriesList.AddRange(CSVFileHelper.OpenQueryCSV(queriesUrlList[i]));
+                queriesList.AddRange(readDataHelper.OpenQuery(queriesUrlList[i]));
             }
 
             var docList = new List<DocData>();
            
             for (int i = 0; i < docUrlList.Length; i++)
             {
-                docList.AddRange(CSVFileHelper.OpenDocCSV(docUrlList[i]));
+                docList.AddRange(readDataHelper.OpenDoc(docUrlList[i]));
             }
           
 
@@ -165,6 +173,7 @@ namespace BusinessHandler.MessageHandler
                         result.MeetingDate = s.MeetingDate;
                         result.MeetingDateDisplay = s.MeetingDateDisplay;
                         result.MeetingLocation = s.MeetingLocation;
+                        result.ScrapeDate = s.ScrapeDate;
                         result.Content = s.Content;
                         result.KeyWord = s.KeyWord;
                         result.DocFilePath = r.DocFilePath;
@@ -172,7 +181,7 @@ namespace BusinessHandler.MessageHandler
                         result.QueryGuid = s.QueryGuid;
                         result.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align' data-file='" + result.QueryFilePath + "' data-docid='" + result.DocId + "' data-queryguid='" + result.QueryGuid + "' onclick='OpenDataDetail(this); return false'></button>";
                         result.PageNumber = s.PageNumber;
-
+                        result.Important = r.Important;
                         result.Comment = "<span id=" + result.QueryGuid + ">" + s.Comment + "</span>";
                         resultList.Add(result);
                     }
@@ -183,11 +192,11 @@ namespace BusinessHandler.MessageHandler
 
         public void UpdateQuery(DocQueryResultModel message)
         {
-            CSVFileHelper.UpdateQueryCSV(message);
+            readDataHelper.UpdateQuery(message);
         }
         public void UpdateDocStatus(DocQueryResultModel message)
         {
-            CSVFileHelper.UpdateDocStautsCSV(message);
+            readDataHelper.UpdateDocStauts(message);
         }
     }
 

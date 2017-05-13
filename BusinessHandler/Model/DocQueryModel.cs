@@ -17,6 +17,7 @@ namespace BusinessHandler.Model
         public string sortOrder { get; set; }
 
         public string IsViewed { get; set; }
+        public string Important { get; set; }
     }
 
     public class DocQueryParentModel
@@ -35,6 +36,10 @@ namespace BusinessHandler.Model
 
         public string CityNameDispaly { get; set; }
         public string MeetingDateDisplay { get; set; }
+
+        public string Important { get; set; }
+
+        public string ImportantDisplay { get; set; }
     }
     public class DocQueryResultModel
     {
@@ -60,6 +65,7 @@ namespace BusinessHandler.Model
         public string IsViewed { get; set; }
 
         public string ScrapeDate { get; set; }
+        public string Important { get; set; }
     }
 
     public class DocData
@@ -73,6 +79,8 @@ namespace BusinessHandler.Model
         public string DocFilePath { get; set; }
 
         public string IsViewed { get; set; }
+
+        public string Important { get; set; }
     }
     public class QueryData
     {
@@ -89,5 +97,35 @@ namespace BusinessHandler.Model
         public string Comment { get; set; }
 
         public string PageNumber { get; set; }
+        public string ScrapeDate { get; set; }
     }
+
+    public class QueryXmlData
+    {
+        public string CityName { get; set; }
+        public string DocId { get; set; }
+        public string MeetingTitle { get; set; }
+        public string MeetingDateDisplay { get; set; }
+        public string MeetingLocation { get; set; }
+        public DateTime MeetingDate { get; set; }
+        public string SearchDate { get; set; }
+        public List<QueryEntryXmlData> Entries { get; set; }
+
+    }
+    public class QueryEntryXmlData
+    {
+        public string KeyWord { get; set; }
+     
+        public string PageNumber { get; set; }
+
+        public List<QueryContentXmlData> ContentList { get; set; }
+    }
+    public class QueryContentXmlData
+    {
+        public string Comment { get; set; }
+        public string Content { get; set; }
+
+        public string QueryGuid { get; set; }
+    }
+
 }
