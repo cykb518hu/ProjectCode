@@ -34,7 +34,7 @@ namespace SingleApplication.Controllers
             var user = (UserAccount)Session["UserAccount"];
             if (user == null)
             {
-              //  return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Account");
             }
             var message = new DocQueryMessage();
             message.CityName = GetCitys();

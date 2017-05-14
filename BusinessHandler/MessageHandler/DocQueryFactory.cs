@@ -45,11 +45,11 @@ namespace BusinessHandler.MessageHandler
                     data.Important = firstItem.Important;
                     if (data.Important == "True")
                     {
-                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important+ "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' >set to none-important </a>";
+                        data.ImportantDisplay = @"<input type='checkbox' onchange='setImportant(this); return false' data-important='" + data.Important+ "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' checked />";
                     }
                     else
                     {
-                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important + "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "'>set to important </a>";
+                        data.ImportantDisplay = @"<input type='checkbox' onchange='setImportant(this); return false' data-important='" + data.Important + "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "'  />";
                     }
                     keyWordList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
                     data.Number = count;

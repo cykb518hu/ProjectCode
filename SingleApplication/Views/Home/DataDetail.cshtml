@@ -409,14 +409,15 @@
 
     function setImportant(obj)
     {
-        var important = $(obj).attr("data-important");
+
+        var important = "";
         var filePath = $(obj).attr("data-file");
         var docId = $(obj).attr("data-docid");
-        if (important == "True") {
-            important = "False";
+        if ($(obj).is(':checked')) {
+            important = "True";
         }
         else {
-            important = "True";
+            important = "False";
         }
         $.ajax({
             url: '@Url.Action("UpdateDocImportant", "Home")',
@@ -425,13 +426,6 @@
             type: "POST",
             success: function (result) {
                 alert("success");
-                if (important == "True") {
-                    $(obj).html("set to none-important");
-                }
-                else {
-                    $(obj).html("set to important");
-                }
-                $(obj).attr("data-important", important);
             },
             complete: function (XMLHttpRequest, textStatus) {
             },
