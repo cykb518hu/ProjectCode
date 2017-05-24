@@ -169,7 +169,7 @@ namespace BusinessHandler.MessageHandler
                         // result.CityNameDispaly = "<span class='showDatePicker' style='cursor: pointer'>" + r.CityName + "</span>";
                         result.IsViewed = "<span class='sp_" + r.DocId + "'>" + r.IsViewed + "</span>";
                         result.DocId = r.DocId;
-                        result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>" +  r.DocUrl.Substring(r.DocUrl.LastIndexOf('/') + 1) + " </a>";
+                        result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>Download File</a>";
                         result.DocType = r.DocType;
                         result.MeetingTitle = s.MeetingTitle;
                         result.MeetingDate = s.MeetingDate;
