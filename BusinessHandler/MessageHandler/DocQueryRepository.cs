@@ -46,7 +46,6 @@ namespace BusinessHandler.MessageHandler
             if (!string.IsNullOrEmpty(message.KeyWord))
             {
                 resultList = resultList.Where(x => message.KeyWord.Contains(x.KeyWord)).ToList();
-                resultList.ForEach(x => { x.Content = Regex.Replace(x.Content, x.KeyWord, string.Format("<b style='color:red'>{0}</b>", x.KeyWord), RegexOptions.IgnoreCase); });
             }
             if (!string.IsNullOrEmpty(message.MeetingDate))
             {
@@ -176,7 +175,7 @@ namespace BusinessHandler.MessageHandler
                         result.MeetingDateDisplay = s.MeetingDateDisplay;
                         result.MeetingLocation = s.MeetingLocation;
                         result.ScrapeDate = s.ScrapeDate;
-                        result.Content = s.Content;
+                        result.Content = Regex.Replace(s.Content, s.KeyWord, string.Format("<b style='color:red'>{0}</b>", s.KeyWord), RegexOptions.IgnoreCase);
                         result.KeyWord = s.KeyWord;
                         result.DocFilePath = r.DocFilePath;
                         result.QueryFilePath = s.QueryFilePath;
