@@ -1071,7 +1071,7 @@
 
   '<div class="btn-group" role="group">'+
     '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-     ' Is Checked      ' +
+     ' Viewed      ' +
       '<span class="caret"></span>'+
     '</button>'+
     '<ul class="dropdown-menu" ><li onclick="ShowStatus(this); return false"><a>All</a></li><li onclick="ShowStatus(this); return false"><a>True</a></li><li onclick="ShowStatus(this); return false"><a>False</a></li></ul>'+
