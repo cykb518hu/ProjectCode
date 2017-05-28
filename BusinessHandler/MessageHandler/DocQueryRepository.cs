@@ -175,8 +175,25 @@ namespace BusinessHandler.MessageHandler
                         result.MeetingDateDisplay = s.MeetingDateDisplay;
                         result.MeetingLocation = s.MeetingLocation;
                         result.ScrapeDate = s.ScrapeDate;
-                        result.Content = Regex.Replace(s.Content, s.KeyWord, string.Format("<b style='color:red'>{0}</b>", s.KeyWord), RegexOptions.IgnoreCase);
+                       
                         result.KeyWord = s.KeyWord;
+                        if (s.KeyWord.IndexOf('*') >= 0)
+                        {
+                            var arr = s.Content.Split(' ');
+                            for (int i = 0; i < arr.Length; i++)
+                            {
+                                if (Regex.IsMatch(arr[i], s.KeyWord, RegexOptions.IgnoreCase))
+                                {
+                                    arr[i] = string.Format("<b style='color:red'>{0}</b>", arr[i]);
+                                }
+                            }
+                            result.Content = String.Join(" ", arr);
+                        }
+                        else
+                        {
+                            result.Content = Regex.Replace(s.Content, s.KeyWord, string.Format("<b style='color:red'>{0}</b>", s.KeyWord), RegexOptions.IgnoreCase);
+                        }
+                        
                         result.DocFilePath = r.DocFilePath;
                         result.QueryFilePath = s.QueryFilePath;
                         result.QueryGuid = s.QueryGuid;
