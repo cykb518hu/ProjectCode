@@ -151,19 +151,19 @@
                         field: 'DocUrl',
                         title: ' Document',
                         sortable: true,
-                        width:'25%'
+                        width:'15%'
                     },
                     {
                           field: 'DocType',
                           title: 'Type',
                           sortable: true,
-                          width: '13%'
+                          width: '18%'
                     },
                      {
                          field: 'CityNameDispaly',
                          title: 'City',
                          sortable: true,
-                         width: '13%'
+                         width: '18%'
                      },
                       {
                           field: 'MeetingDateDisplay',
@@ -446,14 +446,15 @@
     }
     function RemoveData(obj)
     {
-        var important = $(obj).attr("data-important");
+
+        var important = "";
         var filePath = $(obj).attr("data-file");
         var docId = $(obj).attr("data-docid");
         if (important == "No") {
             important = "False";
         }
         else {
-            important = "True";
+            important = "False";
         }
         $.ajax({
             url: '@Url.Action("UpdateDocImportant", "Home")',

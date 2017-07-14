@@ -46,7 +46,6 @@ namespace BusinessHandler.MessageHandler
             if (!string.IsNullOrEmpty(message.KeyWord))
             {
                 resultList = resultList.Where(x => message.KeyWord.Contains(x.KeyWord)).ToList();
-                resultList.ForEach(x => { x.Content = Regex.Replace(x.Content, x.KeyWord, string.Format("<b style='color:red'>{0}</b>", x.KeyWord), RegexOptions.IgnoreCase); });
             }
             if (!string.IsNullOrEmpty(message.MeetingDate))
             {
@@ -169,15 +168,32 @@ namespace BusinessHandler.MessageHandler
                         // result.CityNameDispaly = "<span class='showDatePicker' style='cursor: pointer'>" + r.CityName + "</span>";
                         result.IsViewed = "<span class='sp_" + r.DocId + "'>" + (r.IsViewed.Equals("True") ? "Yes" : "No") + "</span>";
                         result.DocId = r.DocId;
-                        result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>" +  r.DocUrl.Substring(r.DocUrl.LastIndexOf('/') + 1) + " </a>";
+                        result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>Download File</a>";
                         result.DocType = r.DocType;
                         result.MeetingTitle = s.MeetingTitle;
                         result.MeetingDate = s.MeetingDate;
                         result.MeetingDateDisplay = s.MeetingDateDisplay;
                         result.MeetingLocation = s.MeetingLocation;
                         result.ScrapeDate = s.ScrapeDate;
-                        result.Content = s.Content;
+                       
                         result.KeyWord = s.KeyWord;
+                        if (s.KeyWord.IndexOf('*') >= 0)
+                        {
+                            var arr = s.Content.Split(' ');
+                            for (int i = 0; i < arr.Length; i++)
+                            {
+                                if (Regex.IsMatch(arr[i], s.KeyWord, RegexOptions.IgnoreCase))
+                                {
+                                    arr[i] = string.Format("<b style='color:red'>{0}</b>", arr[i]);
+                                }
+                            }
+                            result.Content = String.Join(" ", arr);
+                        }
+                        else
+                        {
+                            result.Content = Regex.Replace(s.Content, s.KeyWord, string.Format("<b style='color:red'>{0}</b>", s.KeyWord), RegexOptions.IgnoreCase);
+                        }
+                        
                         result.DocFilePath = r.DocFilePath;
                         result.QueryFilePath = s.QueryFilePath;
                         result.QueryGuid = s.QueryGuid;
