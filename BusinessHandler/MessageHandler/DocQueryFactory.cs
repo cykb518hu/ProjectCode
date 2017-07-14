@@ -42,23 +42,25 @@ namespace BusinessHandler.MessageHandler
                     data.ScrapeDate = firstItem.ScrapeDate;
                     data.CityNameDispaly = firstItem.CityNameDispaly;
                     data.MeetingDateDisplay = firstItem.MeetingDateDisplay;
-                    data.Important = firstItem.Important;
-                    if (data.Important == "True")
+                    // user asked to change the name, so if it's important that means not be removed , 
+                    data.Removed = firstItem.Important.Equals("True") ? "No" : "Yes";
+                    if (data.Removed == "No")
                     {
-                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important+ "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' >set to none-important </a>";
+                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='RemoveData(this); return false' data-important='" + data.Removed+ "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' >Remove</a>";
                     }
                     else
                     {
-                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important + "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "'>set to important </a>";
+                        data.ImportantDisplay = "";
+                        //data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important + "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "'>set to important </a>";
                     }
                     keyWordList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
                     data.Number = count;
                     data.KeyWordString = string.Join(",", keyWordList.Select(x => x.KeyWord).Distinct().ToArray());
                     data.DocQuerySubList = (List<DocQueryResultModel>)keyWordList;
                 }
-                if (string.IsNullOrEmpty(message.IsViewed) || message.IsViewed.Equals("All") || data.IsViewed.Contains(message.IsViewed))
+                if (string.IsNullOrEmpty(message.IsViewed) || message.IsViewed.Equals("All", StringComparison.InvariantCultureIgnoreCase) || data.IsViewed.ToLower().Contains(message.IsViewed.ToLower()))
                 {
-                    if (string.IsNullOrEmpty(message.Important) || message.Important.Equals("All") || data.Important.Contains(message.Important))
+                    if (string.IsNullOrEmpty(message.Important) || message.Important.Equals("All", StringComparison.InvariantCultureIgnoreCase) || data.Removed.ToLower().Contains(message.Important.ToLower()))
                     {
                         list.Add(data);
                     }

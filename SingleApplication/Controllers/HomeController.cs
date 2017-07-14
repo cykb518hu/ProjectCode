@@ -34,12 +34,15 @@ namespace SingleApplication.Controllers
             var user = (UserAccount)Session["UserAccount"];
             if (user == null)
             {
-              //  return RedirectToAction("Login", "Account");
+                //  return RedirectToAction("Login", "Account");
             }
             var message = new DocQueryMessage();
             message.CityName = GetCitys();
             var docQuery = new DocQueryFactory();
             var docList = docQuery.GetDocQueryResult(message);
+            var searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
+            ViewData["searchQuery"] = searchQueryRepository.GetSearchQuery();
+
             return View(docList);
 
         }

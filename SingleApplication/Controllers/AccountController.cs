@@ -1,5 +1,6 @@
 ﻿using BusinessHandler.MessageHandler;
 using BusinessHandler.Model;
+using Newtonsoft.Json;
 using SingleApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace SingleApplication.Controllers
     public class AccountController : Controller
     {
         IUserRepository userRepository;
+        ISearchQueryRepository searchQueryRepository;
         public AccountController()
         {
             userRepository = DependencyResolver.Current.GetService<IUserRepository>();
+            searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
 
         }
         // GET: Account
@@ -117,5 +120,18 @@ namespace SingleApplication.Controllers
             Session["UserAccount"] = null;
             return RedirectToAction("Login", "Account");
         }
+
+        [HttpPost]
+        public JsonResult SaveSearchQuery(string query)
+        {
+            var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
+            if (!string.IsNullOrWhiteSpace(data.CityName) || !string.IsNullOrWhiteSpace(data.KeyWord) || !string.IsNullOrWhiteSpace(data.MeetingDate))
+            {
+                var title = data.CityName + data.KeyWord + data.MeetingDate;
+                searchQueryRepository.AddSearchQuery(query, title);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

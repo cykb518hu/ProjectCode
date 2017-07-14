@@ -37,7 +37,7 @@ namespace BusinessHandler.Model
         public string CityNameDispaly { get; set; }
         public string MeetingDateDisplay { get; set; }
 
-        public string Important { get; set; }
+        public string Removed { get; set; }
 
         public string ImportantDisplay { get; set; }
     }

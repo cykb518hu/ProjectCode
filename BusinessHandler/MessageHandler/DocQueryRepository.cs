@@ -167,7 +167,7 @@ namespace BusinessHandler.MessageHandler
                         result.CityName = r.CityName;
                         result.CityNameDispaly = "<span class='showDatePicker' onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";
                         // result.CityNameDispaly = "<span class='showDatePicker' style='cursor: pointer'>" + r.CityName + "</span>";
-                        result.IsViewed = "<span class='sp_" + r.DocId + "'>" + r.IsViewed + "</span>";
+                        result.IsViewed = "<span class='sp_" + r.DocId + "'>" + (r.IsViewed.Equals("True") ? "Yes" : "No") + "</span>";
                         result.DocId = r.DocId;
                         result.DocUrl = @"<a href='" + r.DocUrl + "' target='_blank'>" +  r.DocUrl.Substring(r.DocUrl.LastIndexOf('/') + 1) + " </a>";
                         result.DocType = r.DocType;
@@ -183,6 +183,7 @@ namespace BusinessHandler.MessageHandler
                         result.QueryGuid = s.QueryGuid;
                         result.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align' data-file='" + result.QueryFilePath + "' data-docid='" + result.DocId + "' data-queryguid='" + result.QueryGuid + "' onclick='OpenDataDetail(this); return false'></button>";
                         result.PageNumber = s.PageNumber;
+                     
                         result.Important = r.Important;
                         result.Comment = "<span id=" + result.QueryGuid + ">" + s.Comment + "</span>";
                         resultList.Add(result);

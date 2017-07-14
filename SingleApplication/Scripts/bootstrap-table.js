@@ -1065,25 +1065,26 @@
         //Achilles
         if (this.options.achillesToolbar) {
 
-            this.$toolbar.append('<div class="btn-group pull-left columns" role="group" data-status="All" data-important="All" id="div_status_select">' +
+            this.$toolbar.append('<div class="btn-group pull-left columns" role="group" data-status="All" data-important="No" id="div_status_select">' +
   '<button type="button" class="btn btn-default" onclick="expandAllRows(this); return false">Expand All</button>' +
   '<button type="button" class="btn btn-default" onclick="collapseAllRows(this); return false">Collapse All</button>' +
 
   '<div class="btn-group" role="group">'+
     '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-     ' Is Checked      ' +
-      '<span class="caret"></span>'+
+     ' Viewed      ' +
+      '<span class="caret"></span>    <span id="sp_view_status">All</span>' +
     '</button>'+
-    '<ul class="dropdown-menu" ><li onclick="ShowStatus(this); return false"><a>All</a></li><li onclick="ShowStatus(this); return false"><a>True</a></li><li onclick="ShowStatus(this); return false"><a>False</a></li></ul>'+
+    '<ul class="dropdown-menu" ><li onclick="ShowStatus(this); return false"><a data-tag="All">All</a></li><li onclick="ShowStatus(this); return false"><a data-tag="Yes">Yes</a></li><li onclick="ShowStatus(this); return false"><a data-tag="No">No</a></li></ul>' +
  ' </div>' +
  '<div class="btn-group" role="group">' +
     '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-     ' Important      ' +
-      '<span class="caret"></span>' +
+     ' Removed      ' +
+      '<span class="caret"></span>    <span id="sp_important_status">No</span>' +
     '</button>' +
-    '<ul class="dropdown-menu" ><li onclick="ShowImportant(this); return false"><a>All</a></li><li onclick="ShowImportant(this); return false"><a>True</a></li><li onclick="ShowImportant(this); return false"><a>False</a></li></ul>' +
+    '<ul class="dropdown-menu" ><li onclick="ShowImportant(this); return false"><a data-tag="All">Show all</a></li><li onclick="ShowImportant(this); return false"><a data-tag="Yes">Yes</a></li><li onclick="ShowImportant(this); return false"><a data-tag="No">No</a></li></ul>' +
  ' </div>' +
 '</div>');
+            this.$toolbar.append()
 
 
       }
