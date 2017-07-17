@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace BusinessHandler.MessageHandler
@@ -13,10 +14,16 @@ namespace BusinessHandler.MessageHandler
 
     public interface ISearchQueryRepository
     {
-        void AddSearchQuery(string query,string title);
+        void AddSearchQuery(string query, string title);
         List<SearchQueryModel> GetSearchQuery();
+
+        void UpdateSearchQuery(string guid, string title);
+
+        void DeleteSearchQuery(string guid);
+
+        void AddSearchQueryAmount(string guid);
     }
-    public class SearchQueryRepository: ISearchQueryRepository
+    public class SearchQueryRepository : ISearchQueryRepository
     {
         XmlSerializer serializer;
         string fileName = string.Empty;
@@ -25,7 +32,7 @@ namespace BusinessHandler.MessageHandler
             fileName = HttpContext.Current.Server.MapPath("~/File/SearchQuery.xml");
             serializer = new XmlSerializer(typeof(List<SearchQueryModel>), new XmlRootAttribute("SearyQueries"));
         }
-        public void AddSearchQuery(string query,string title)
+        public void AddSearchQuery(string query, string title)
         {
             var dezerializedList = new List<SearchQueryModel>();
             using (FileStream stream = File.OpenRead(fileName))
@@ -52,9 +59,50 @@ namespace BusinessHandler.MessageHandler
                 if (dezerializedList.Any())
                 {
                     dezerializedList = dezerializedList.Where(x => x.Disabled == false && !string.IsNullOrWhiteSpace(x.Title)).ToList();
+                    dezerializedList.OrderByDescending(x => x.FrequentlyUsed).ThenByDescending(x => x.ModifyDate).ToList();
                 }
             }
             return dezerializedList;
         }
+
+        public void UpdateSearchQuery(string guid, string title)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(fileName);
+            XmlNode myNode = doc.SelectNodes("SearyQueries/SearchQuery").OfType<XmlNode>().FirstOrDefault(n => n["Guid"].InnerText == guid);
+            if (myNode != null)
+            {
+                myNode["Title"].InnerText = title;
+                myNode["ModifyDate"].InnerText = DateTime.Now.ToString("o");
+                doc.Save(fileName);
+            }
+        }
+
+        public void DeleteSearchQuery(string guid)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(fileName);
+            XmlNode myNode = doc.SelectNodes("SearyQueries/SearchQuery").OfType<XmlNode>().FirstOrDefault(n => n["Guid"].InnerText == guid);
+            if (myNode != null)
+            {
+                myNode.ParentNode.RemoveChild(myNode);
+                doc.Save(fileName);
+            }
+        }
+        public void AddSearchQueryAmount(string guid)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(fileName);
+            XmlNode myNode = doc.SelectNodes("SearyQueries/SearchQuery").OfType<XmlNode>().FirstOrDefault(n => n["Guid"].InnerText == guid);
+            if (myNode != null)
+            {
+                var amount = Convert.ToInt32(myNode["FrequentlyUsed"].InnerText);
+                amount++;
+                myNode["ModifyDate"].InnerText = DateTime.Now.ToString("o");
+                myNode["FrequentlyUsed"].InnerText = amount.ToString();
+                doc.Save(fileName);
+            }
+        }
+
     }
 }

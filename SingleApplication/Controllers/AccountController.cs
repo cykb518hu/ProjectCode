@@ -133,5 +133,36 @@ namespace SingleApplication.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult UpdateSearchQuery(string guid,string title)
+        {
+            if (!string.IsNullOrWhiteSpace(title) &&!string.IsNullOrWhiteSpace(guid))
+            {
+                searchQueryRepository.UpdateSearchQuery(guid, title);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteSearchQuery(string guid)
+        {
+            if ( !string.IsNullOrWhiteSpace(guid))
+            {
+                searchQueryRepository.DeleteSearchQuery(guid);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult AddSearchQueryAmount(string guid)
+        {
+            if (!string.IsNullOrWhiteSpace(guid))
+            {
+                searchQueryRepository.AddSearchQueryAmount(guid);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

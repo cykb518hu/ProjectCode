@@ -26,26 +26,33 @@
 </script>
 <div class="panel-body" style="padding-bottom:0px; padding-left:0px">
 
-    <div class="col-xs-2" style="padding-left:0px">
-        <div class="list-group">
-            <a class="list-group-item active">
+    <div class="col-xs-2" style="padding-left:0px" id="div-query">
+        <ul class="list-group">
+            <li class="list-group-item active">
                 Query Group
-            </a>
+            </li>
             @{
                 var searchQueryList = (List<SearchQueryModel>)ViewData["searchQuery"];
                 if (searchQueryList.Any())
                 {
                     foreach (var r in searchQueryList)
                     {
-                    <a href="#" class="list-group-item" onclick="SearchFromQuery(@r.Content)">
-                        <span class="badge">×</span>
-                        @r.Title
-                    </a>
-                        }
+                        <li class="list-group-item"  id="query_@r.Guid">
+                            <a href="JavaScript:void(0)" onclick="SearchFromQuery(@r.Content,'@r.Guid')" style="color:#333333;" title="@r.Title">
+                              
+                                @{
+                                    var str = r.Title.Length > 15 ? r.Title.Substring(0, 12) + "..." : r.Title;
+                                }
+                                @str
+                                    
+                            </a>
+                            <span style="cursor:pointer;" class="badge editIcon" data-title="@r.Title" data-content="@r.Content" onclick="ShowQueryDetail(this) ;return false" data-query-guid="@r.Guid" >Edit</span>
+                        </li>
                     }
                 }
+            }
            
-        </div>
+        </ul>
     </div>
     <div class="col-xs-10" style="padding-left:0px">
         <div class="panel panel-default">
@@ -120,6 +127,35 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div class="modal fade" id="queryModal" tabindex="-1" role="dialog" aria-labelledby="queryModalLabel" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Query Detail</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="query-title" class="control-label">Query Title:</label>
+                        <input type="text" class="form-control" id="query-title">
+                    </div>
+                    <div class="form-group">
+                        <label for="query-content" class="control-label">Query Content:</label>
+                        <pre  id="query-content"></pre> 
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn_SaveQuery">Save</button>
+                <button type="button" class="btn btn-danger" id="btn_DeleteQuery">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(function () {
@@ -376,6 +412,46 @@
                 }
             });
         });
+        $("#btn_SaveQuery").click(function () {
+            var queryGuid = sessionStorage.getItem("QueryGuid");
+            $.ajax({
+                url: '@Url.Action("UpdateSearchQuery", "Account")',
+                data: { guid: queryGuid, title: $("#query-title").val() },
+                dataType: 'json',
+                type: "POST",
+                success: function (result) {
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    var title = $("#query-title").val();
+                    var str = title.length > 15 ? title.substring(0, 12) + "..." : title;
+                    $('#query_' + queryGuid).children().eq(0).html(str);
+                    $("#queryModal").modal('hide');
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        });
+
+        $("#btn_DeleteQuery").click(function () {
+            var queryGuid = sessionStorage.getItem("QueryGuid");
+            $.ajax({
+                url: '@Url.Action("DeleteSearchQuery", "Account")',
+                data: { guid: queryGuid },
+                dataType: 'json',
+                type: "POST",
+                success: function (result) {
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    $('#query_' + queryGuid).hide();
+                    $("#queryModal").modal('hide');
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        });
+
 
     });
     function OpenDataDetail(obj)
@@ -473,7 +549,7 @@
         });
        
     }
-    function SearchFromQuery(temp) {
+    function SearchFromQuery(temp, guid) {
 
         var cityArray = temp.CityName.split(",");
         $("#sel_search_CityName").val(cityArray);
@@ -496,6 +572,20 @@
         $("#sp_important_status").html(importantStatus);
 
         SearchData();
+
+        $.ajax({
+            url: '@Url.Action("AddSearchQueryAmount", "Account")',
+            data: { guid: guid },
+            dataType: 'json',
+            type: "POST",
+            success: function (result) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+            },
+            error: function (xhr, textStatus, errorThrown) {
+
+            }
+        });
     }
     function SearchData()
     {
@@ -537,6 +627,16 @@
     function collapseAllRows()
     {
         $("#tb_departments").bootstrapTable('collapseAllRows');
+    }
+    function ShowQueryDetail(obj)
+    {
+        $("#query-title").val($(obj).attr("data-title"));
+        $("#query-content").text(JSON.stringify($(obj).attr("data-content"), null, 2));
+        sessionStorage.setItem("QueryGuid", $(obj).attr("data-query-guid"));
+        $("#queryModal").find('.modal-dialog').css({
+            width: '500px'
+        });
+        $("#queryModal").modal('show');
     }
 </script>
 
