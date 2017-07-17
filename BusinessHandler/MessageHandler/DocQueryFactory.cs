@@ -44,15 +44,10 @@ namespace BusinessHandler.MessageHandler
                     data.MeetingDateDisplay = firstItem.MeetingDateDisplay;
                     // user asked to change the name, so if it's important that means not be removed , 
                     data.Removed = firstItem.Important.Equals("True") ? "No" : "Yes";
-                    if (data.Removed == "No")
-                    {
-                        data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='RemoveData(this); return false' data-important='" + data.Removed+ "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' >Remove</a>";
-                    }
-                    else
-                    {
-                        data.ImportantDisplay = "";
-                        //data.ImportantDisplay = @"<a  style='cursor: pointer'  onclick='setImportant(this); return false' data-important='" + data.Important + "'  data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "'>set to important </a>";
-                    }
+                    var checkStr = data.Removed.Equals("Yes") ? "checked" : "";
+
+                    data.ImportantDisplay = @"<input type='checkbox'  onclick='RemoveData(this);'   data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' " + checkStr + " />";
+
                     keyWordList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
                     data.Number = count;
                     data.KeyWordString = string.Join(",", keyWordList.Select(x => x.KeyWord).Distinct().ToArray());

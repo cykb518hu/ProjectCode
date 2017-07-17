@@ -31,6 +31,7 @@ namespace SingleApplication
                 builder.RegisterType<DocQueryCSVRepository>().As<IDocQueryRepository>();
                 builder.RegisterType<AspNetCacheRepository>().As<ICacheRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
+                builder.RegisterType<SearchQueryRepository>().As<ISearchQueryRepository>();
                 builder.RegisterType<XmlHelper>().As<IDataFileHelper>();
                 builder.RegisterFilterProvider();
 

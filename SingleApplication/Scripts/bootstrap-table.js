@@ -1079,9 +1079,9 @@
  '<div class="btn-group" role="group">' +
     '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
      ' Removed      ' +
-      '<span class="caret"></span>    <span id="sp_important_status">No</span>' +
+      '<span class="caret"></span>    <span id="sp_important_status"></span>' +
     '</button>' +
-    '<ul class="dropdown-menu" ><li onclick="ShowImportant(this); return false"><a data-tag="All">Show all</a></li><li onclick="ShowImportant(this); return false"><a data-tag="Yes">Yes</a></li><li onclick="ShowImportant(this); return false"><a data-tag="No">No</a></li></ul>' +
+    '<ul class="dropdown-menu" ><li onclick="ShowImportant(this); return false"><a data-tag="All">Show all</a></li><li onclick="ShowImportant(this); return false" style="display:none"><a data-tag="Yes">Yes</a></li><li onclick="ShowImportant(this); return false"  style="display:none"><a data-tag="No">No</a></li></ul>' +
  ' </div>' +
 '</div>');
             this.$toolbar.append()

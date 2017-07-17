@@ -447,14 +447,14 @@
     function RemoveData(obj)
     {
 
-        var important = "";
+        var important = "False";
         var filePath = $(obj).attr("data-file");
         var docId = $(obj).attr("data-docid");
-        if (important == "No") {
+        if ($(obj).prop('checked')) {
             important = "False";
         }
         else {
-            important = "False";
+            important = "True";
         }
         $.ajax({
             url: '@Url.Action("UpdateDocImportant", "Home")',
@@ -462,7 +462,7 @@
             dataType: 'json',
             type: "POST",
             success: function (result) {
-                $(obj).parent().parent().hide();
+               // $(obj).parent().parent().hide();
 
             },
             complete: function (XMLHttpRequest, textStatus) {
