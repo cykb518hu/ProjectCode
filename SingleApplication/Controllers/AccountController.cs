@@ -127,10 +127,17 @@ namespace SingleApplication.Controllers
             var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
             if (!string.IsNullOrWhiteSpace(data.CityName) || !string.IsNullOrWhiteSpace(data.KeyWord) || !string.IsNullOrWhiteSpace(data.MeetingDate))
             {
-                var title = data.CityName + data.KeyWord + data.MeetingDate;
+                var title = data.CityName + "-" + data.KeyWord + "-" + data.MeetingDate;
                 searchQueryRepository.AddSearchQuery(query, title);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetSearchQuery()
+        {
+            var data  = searchQueryRepository.GetSearchQuery();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

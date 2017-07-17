@@ -56,8 +56,8 @@ namespace BusinessHandler.MessageHandler
                                DocId = lv1.Element("DocId").Value,
 
                                MeetingDate = DateTime.Parse(lv1.Element("MeetingDate").Value),
-                               MeetingDateDisplay = DateTime.Parse(lv1.Element("MeetingDate").Value).ToString("yyyy/MM/dd"),
-                               SearchDate = DateTime.Parse(lv1.Element("SearchDate").Value).ToString("yyyy/MM/dd"),
+                               MeetingDateDisplay = DateTime.Parse(lv1.Element("MeetingDate").Value).ToString("yyyy-MM-dd"),
+                               SearchDate = DateTime.Parse(lv1.Element("SearchDate").Value).ToString("yyyy-MM-dd"),
                                MeetingTitle = lv1.Element("MeetingTitle").Value,
                                MeetingLocation = lv1.Element("MeetingLocation").Value,
                                Entries = (from lv2 in lv1.Element("Entries").Elements("Entry")

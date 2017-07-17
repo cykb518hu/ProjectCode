@@ -68,7 +68,7 @@ namespace BusinessLogic
                 if (DateTime.TryParse(string.IsNullOrWhiteSpace(aryLine[4]) ? "" : aryLine[4].Trim('"'), out dt))
                 {
                     data.MeetingDate = dt;
-                    data.MeetingDateDisplay = data.MeetingDate.ToString("yyyy/MM/dd");
+                    data.MeetingDateDisplay = data.MeetingDate.ToString("yyyy-MM-dd");
                 }
 
                 data.MeetingLocation = string.IsNullOrWhiteSpace(aryLine[5]) ? "" : aryLine[5].Trim('"');

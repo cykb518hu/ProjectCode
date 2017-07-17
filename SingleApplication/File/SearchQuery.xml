@@ -25,12 +25,21 @@
     <Disabled>false</Disabled>
   </SearchQuery>
   <SearchQuery>
-    <Guid>59800d6a-8c56-402f-9d1b-b95f8291d614</Guid>
-    <Title>marihuana2234567890</Title>
-    <Content>{"CityName":"","MeetingDate":"","KeyWord":"marihuana","IsViewed":"All","Important":"All"}</Content>
-    <CreateDate>2017-07-14T16:11:52.2056713+08:00</CreateDate>
-    <ModifyDate>2017-07-17T18:28:25.0552392+08:00</ModifyDate>
-    <FrequentlyUsed>2</FrequentlyUsed>
+    <Guid>d3d540a8-f090-4f39-a112-fae34d25fd4a</Guid>
+    <Title>Cultivat*</Title>
+    <Content>{"CityName":"","MeetingDate":"","KeyWord":"Cultivat*","IsViewed":"All","Important":"All"}</Content>
+    <CreateDate>2017-07-17T20:11:01.9943195+08:00</CreateDate>
+    <ModifyDate>2017-07-17T21:21:41.6274834+08:00</ModifyDate>
+    <FrequentlyUsed>4</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>fcbb3b6f-c27d-4996-8249-4e65109c5f70</Guid>
+    <Title>cannabis,Cultivat*</Title>
+    <Content>{"CityName":"","MeetingDate":"","KeyWord":"cannabis,Cultivat*","IsViewed":"All"}</Content>
+    <CreateDate>2017-07-17T20:30:47.3204052+08:00</CreateDate>
+    <ModifyDate>2017-07-17T21:24:09.6256452+08:00</ModifyDate>
+    <FrequentlyUsed>8</FrequentlyUsed>
     <Disabled>false</Disabled>
   </SearchQuery>
 </SearyQueries>

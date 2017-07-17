@@ -27,7 +27,7 @@
 <div class="panel-body" style="padding-bottom:0px; padding-left:0px">
 
     <div class="col-xs-2" style="padding-left:0px" id="div-query">
-        <ul class="list-group">
+        <ul class="list-group" id="ul_queryGourp">
             <li class="list-group-item active">
                 Query Group
             </li>
@@ -73,7 +73,7 @@
                             </select>
                             @*<input type="text" class="form-control" id="txt_search_CityName">*@
                         </div>
-                        <label class="control-label col-md-1" for="txt_search_MeetingDate" style="width:12%">Meeting Date:</label>
+                        <label class="control-label col-md-1" for="txt_search_MeetingDate" style="width:15%">Meeting Date:</label>
                         <div class="col-md-2">
                             <input type="text" class="form-control" id="txt_search_MeetingDate">
                         </div>
@@ -232,14 +232,14 @@
                         width: '17%'
                     }
                 ],
-  
+
                 onExpandRow: function (index, row, $detail) {
                     oTableInit.InitSubTable(index, row, $detail);
                 },
                 onLoadSuccess: function (data) {
                     for (var i = 0; i < data.rows.length; i++) {
                         var doc = data.rows[i];
-                        sessionStorage.setItem(doc.DocId, JSON.stringify(doc.DocQuerySubList));  
+                        sessionStorage.setItem(doc.DocId, JSON.stringify(doc.DocQuerySubList));
                     }
                     $("#tb_departments").children().eq(1).children().each(function () {
                         if ($(this).children(":last").prev().children().html() == "No") {
@@ -289,7 +289,7 @@
             var parentid = row.DocId;
             var filePath = row.DocFilePath;
             var isViewed = $(".sp_" + parentid).html();
-            if (isViewed != "Yes") {  
+            if (isViewed != "Yes") {
                 $.ajax({
                     url: '@Url.Action("UpdateDocStatus", "Home")',
                     data: { DocId: parentid, DocFilePath: filePath },
@@ -302,7 +302,7 @@
                         $(".sp_" + parentid).parent().parent().css("background-color", "#fff");
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                       
+
                     }
                 });
             }
@@ -311,15 +311,15 @@
             $(cur_table).bootstrapTable({
                 data: dataList,
                 columns: [
-                   
-                   
+
+
                     {
                         field: 'PageNumber',
                         title: 'Page',
                         sortable: true,
                         width: '5%'
                     },
-                  
+
                     {
                         field: 'KeyWord',
                         title: 'Key Word',
@@ -344,7 +344,7 @@
                         width: '10%'
                     }
                 ],
- 
+
             });
         };
 
@@ -364,6 +364,7 @@
     };
 
     $(document).ready(function () {
+       // loadQueryGroup();
         $('#sel_search_CityName').multiselect({
             buttonWidth: '160px',
             includeSelectAllOption: true
@@ -373,10 +374,10 @@
             includeSelectAllOption: true
         });
         $('#txt_search_MeetingDate').datepicker({
-            format: 'yyyy/mm/dd'
+            format: 'yyyy-mm-dd'
         });
         $("#btn_Query").click(function () {
-        
+
             var data = SearchData();
             $.ajax({
                 url: '@Url.Action("SaveSearchQuery", "Account")',
@@ -392,7 +393,7 @@
 
                 }
             });
-            
+
         });
         $("#btn_Save_Comment").click(function () {
             $.ajax({
@@ -454,6 +455,8 @@
 
 
     });
+
+
     function OpenDataDetail(obj)
     {
         var docId = $(obj).attr("data-docid");
@@ -472,7 +475,7 @@
         var active_dates = JSON.parse(sessionStorage.getItem(city));
 
         $(obj).datepicker({
-            format: "yyyy/mm/dd",
+            format: "yyyy-mm-dd",
             autoclose: true,
             beforeShowDay: function (date) {
                 var d = date;
@@ -506,7 +509,7 @@
             $("#sp_view_status").html(selectedStatus);
             SearchData();
         }
-       
+
     }
     function ShowImportant(obj) {
         var selectedImportant = $(obj).children().attr("data-tag");
@@ -547,7 +550,7 @@
 
             }
         });
-       
+
     }
     function SearchFromQuery(temp, guid) {
 
@@ -561,15 +564,16 @@
         $("#sel_search_KeyWord").multiselect("refresh");
 
         $("#txt_search_MeetingDate").val(temp.MeetingDate)
-        $("#div_status_select").attr("data-important", temp.Important);
+       // $("#div_status_select").attr("data-important", temp.Important);
+        $("#div_status_select").attr("data-important", "No");
         $("#div_status_select").attr("data-status", temp.IsViewed);
         $("#sp_view_status").html(temp.IsViewed);
 
-        var importantStatus = temp.Important;
-        if (temp.Important == "All") {
-            importantStatus = "Show All";
-        }
-        $("#sp_important_status").html(importantStatus);
+        //var importantStatus = temp.Important;
+        //if (temp.Important == "All") {
+        //    importantStatus = "Show All";
+        //}
+        $("#sp_important_status").html("");
 
         SearchData();
 
@@ -605,6 +609,12 @@
         if ($("#div_status_select").attr("data-important") != null) {
             isImportant = $("#div_status_select").attr("data-important");
         }
+        var result = {
+            CityName: cityName,
+            MeetingDate: $("#txt_search_MeetingDate").val(),
+            KeyWord: keyWord,
+            IsViewed: isViewed
+        };
         var temp = {
             CityName: cityName,
             MeetingDate: $("#txt_search_MeetingDate").val(),
@@ -615,10 +625,10 @@
         var tempQueryParams = function () {
             return temp;
         };
-        
+
 
         $("#tb_departments").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
-        return temp;
+        return result;
     }
     function expandAllRows()
     {
@@ -631,12 +641,41 @@
     function ShowQueryDetail(obj)
     {
         $("#query-title").val($(obj).attr("data-title"));
-        $("#query-content").text(JSON.stringify($(obj).attr("data-content"), null, 2));
+        $("#query-content").text($(obj).attr("data-content"));
         sessionStorage.setItem("QueryGuid", $(obj).attr("data-query-guid"));
         $("#queryModal").find('.modal-dialog').css({
             width: '500px'
         });
         $("#queryModal").modal('show');
+    }
+    function loadQueryGroup()
+    {
+          $.ajax({
+            url: '@Url.Action("GetSearchQuery", "Account")',
+            dataType: 'json',
+            type: "GET",
+            success: function (result) {
+              //  var obj = jQuery.parseJSON(result);
+                if (result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        var data = result[i];
+                        var title = data.Title;
+                        var subTitle = title.length > 15 ? title.substring(0, 12) + "..." : title;
+                        var str = '<li class="list-group-item"  id="query_' + data.Guid + '">';
+                        str += '  <a href="JavaScript:void(0)" onclick="SearchFromQuery(' + data.Content + ',\'' + data.Guid + '\')" style="color:#333333;" title="' + data.Title + '">' + subTitle+'</a>';
+                        //str += '<a onclick="SearchFromQuery(' + data.Content + ', \'' + data.Guid + '\')" style="color:#333333;" title="' + data.Title + '">' + sbuTitle + '</a>';
+                        str += '<span style="cursor:pointer;" class="badge editIcon" data-title="' + data.Title + '" data-content="' + data.Content + '" onclick="ShowQueryDetail(this) ;return false" data-query-guid="' + data.Guid + '" >Edit</span>';
+                        str += '</li>';
+                        $("#ul_queryGourp").append(str);
+                    }
+                }
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+            },
+            error: function (xhr, textStatus, errorThrown) {
+
+            }
+        });
     }
 </script>
 
