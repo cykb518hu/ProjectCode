@@ -127,7 +127,17 @@ namespace SingleApplication.Controllers
             var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
             if (!string.IsNullOrWhiteSpace(data.CityName) || !string.IsNullOrWhiteSpace(data.KeyWord) || !string.IsNullOrWhiteSpace(data.MeetingDate))
             {
-                var title = data.CityName + "-" + data.KeyWord + "-" + data.MeetingDate;
+                var firsrBreak = string.Empty;
+                var secondBreak = string.Empty;
+                if(!string.IsNullOrEmpty(data.CityName)&&(!string.IsNullOrEmpty(data.KeyWord) || !string.IsNullOrEmpty(data.MeetingDate)))
+                {
+                    firsrBreak = "&";
+                }
+                if (!string.IsNullOrEmpty(data.MeetingDate) && (!string.IsNullOrEmpty(data.KeyWord) || !string.IsNullOrEmpty(data.CityName)))
+                {
+                    secondBreak = "&";
+                }
+                var title = data.CityName + firsrBreak + data.KeyWord + secondBreak + data.MeetingDate;
                 searchQueryRepository.AddSearchQuery(query, title);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);

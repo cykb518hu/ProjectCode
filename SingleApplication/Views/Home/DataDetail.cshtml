@@ -31,26 +31,7 @@
             <li class="list-group-item active">
                 Query Group
             </li>
-            @{
-                var searchQueryList = (List<SearchQueryModel>)ViewData["searchQuery"];
-                if (searchQueryList.Any())
-                {
-                    foreach (var r in searchQueryList)
-                    {
-                        <li class="list-group-item"  id="query_@r.Guid">
-                            <a href="JavaScript:void(0)" onclick="SearchFromQuery(@r.Content,'@r.Guid')" style="color:#333333;" title="@r.Title">
-                              
-                                @{
-                                    var str = r.Title.Length > 15 ? r.Title.Substring(0, 12) + "..." : r.Title;
-                                }
-                                @str
-                                    
-                            </a>
-                            <span style="cursor:pointer;" class="badge editIcon" data-title="@r.Title" data-content="@r.Content" onclick="ShowQueryDetail(this) ;return false" data-query-guid="@r.Guid" >Edit</span>
-                        </li>
-                    }
-                }
-            }
+    
            
         </ul>
     </div>
@@ -73,7 +54,7 @@
                             </select>
                             @*<input type="text" class="form-control" id="txt_search_CityName">*@
                         </div>
-                        <label class="control-label col-md-1" for="txt_search_MeetingDate" style="width:15%">Meeting Date:</label>
+                        <label class="control-label col-md-1" for="txt_search_MeetingDate" style="width:15%">Meeting Date ></label>
                         <div class="col-md-2">
                             <input type="text" class="form-control" id="txt_search_MeetingDate">
                         </div>
@@ -156,6 +137,8 @@
         </div>
     </div>
 </div>
+
+<div id="div_encode" style="display:none"></div>
 
 <script>
     $(function () {
@@ -364,7 +347,7 @@
     };
 
     $(document).ready(function () {
-       // loadQueryGroup();
+        loadQueryGroup();
         $('#sel_search_CityName').multiselect({
             buttonWidth: '160px',
             includeSelectAllOption: true
@@ -385,6 +368,7 @@
                 dataType: 'json',
                 type: "POST",
                 success: function (result) {
+                    loadQueryGroup();
                 },
                 complete: function (XMLHttpRequest, textStatus) {
 
@@ -628,6 +612,7 @@
 
 
         $("#tb_departments").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+ 
         return result;
     }
     function expandAllRows()
@@ -650,21 +635,28 @@
     }
     function loadQueryGroup()
     {
+
           $.ajax({
             url: '@Url.Action("GetSearchQuery", "Account")',
             dataType: 'json',
             type: "GET",
+            cache:false,
             success: function (result) {
               //  var obj = jQuery.parseJSON(result);
                 if (result.length > 0) {
+                    $("#ul_queryGourp").children().each(function (index) {
+                        if (index > 0) {
+                            $(this).remove();
+                        }
+                    });
                     for (var i = 0; i < result.length; i++) {
                         var data = result[i];
                         var title = data.Title;
                         var subTitle = title.length > 15 ? title.substring(0, 12) + "..." : title;
                         var str = '<li class="list-group-item"  id="query_' + data.Guid + '">';
-                        str += '  <a href="JavaScript:void(0)" onclick="SearchFromQuery(' + data.Content + ',\'' + data.Guid + '\')" style="color:#333333;" title="' + data.Title + '">' + subTitle+'</a>';
+                        str += '  <a href="JavaScript:void(0)" onclick="SearchFromQuery(' + htmlEncode(data.Content) + ',\'' + data.Guid + '\')" style="color:#333333;" title="' + data.Title + '">' + subTitle + '</a>';
                         //str += '<a onclick="SearchFromQuery(' + data.Content + ', \'' + data.Guid + '\')" style="color:#333333;" title="' + data.Title + '">' + sbuTitle + '</a>';
-                        str += '<span style="cursor:pointer;" class="badge editIcon" data-title="' + data.Title + '" data-content="' + data.Content + '" onclick="ShowQueryDetail(this) ;return false" data-query-guid="' + data.Guid + '" >Edit</span>';
+                        str += '<span style="cursor:pointer;" class="badge editIcon" data-title="' + data.Title + '" data-content="' + htmlEncode(data.Content) + '" onclick="ShowQueryDetail(this) ;return false" data-query-guid="' + data.Guid + '" >Edit</span>';
                         str += '</li>';
                         $("#ul_queryGourp").append(str);
                     }
@@ -676,6 +668,11 @@
 
             }
         });
+    }
+    function htmlEncode(str) {
+        var find = '"';
+        var re = new RegExp(find, 'g');
+        return str.replace(re, '&quot;');
     }
 </script>
 
