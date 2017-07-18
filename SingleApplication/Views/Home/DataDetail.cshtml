@@ -58,7 +58,7 @@
                         <div class="col-md-2">
                             <input type="text" class="form-control" id="txt_search_MeetingDate">
                         </div>
-                        <label class="control-label col-md-1" for="sel_search_KeyWord" style="width:10%">Key Word:</label>
+                        <label class="control-label col-md-1" for="sel_search_KeyWord" style="width:12%">Key Word:</label>
                         <div class="col-md-2">
                             @*<input type="text" class="form-control" id="txt_search_KeyWord">*@
                             <select id="sel_search_KeyWord" multiple="multiple">
@@ -510,18 +510,18 @@
     function RemoveData(obj)
     {
 
-        var important = "False";
+        var removed = "False";
         var filePath = $(obj).attr("data-file");
         var docId = $(obj).attr("data-docid");
         if ($(obj).prop('checked')) {
-            important = "False";
+            removed = "True";
         }
         else {
-            important = "True";
+            removed = "False";
         }
         $.ajax({
             url: '@Url.Action("UpdateDocImportant", "Home")',
-            data: { DocId: docId, DocFilePath: filePath, Important: important },
+            data: { DocId: docId, DocFilePath: filePath, Important: removed },
             dataType: 'json',
             type: "POST",
             success: function (result) {

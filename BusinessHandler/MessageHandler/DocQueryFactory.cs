@@ -42,8 +42,8 @@ namespace BusinessHandler.MessageHandler
                     data.ScrapeDate = firstItem.ScrapeDate;
                     data.CityNameDispaly = firstItem.CityNameDispaly;
                     data.MeetingDateDisplay = firstItem.MeetingDateDisplay;
-                    // user asked to change the name, so if it's important that means not be removed , 
-                    data.Removed = firstItem.Important.Equals("True") ? "No" : "Yes";
+                    // user asked to change the name, so if it's important eqal removed
+                    data.Removed = firstItem.Important.Equals("True") ? "Yes" : "No";
                     var checkStr = data.Removed.Equals("Yes") ? "checked" : "";
 
                     data.ImportantDisplay = @"<input type='checkbox'  onclick='RemoveData(this);'   data-file='" + data.DocFilePath + "' data-docid='" + data.DocId + "' " + checkStr + " />";
@@ -79,6 +79,10 @@ namespace BusinessHandler.MessageHandler
                         case "ScrapeDate":
                             list = list.OrderBy(x => x.ScrapeDate).ToList();
                             break;
+                        case "ImportantDisplay":
+                            list = list.OrderBy(x => x.Removed).ToList();
+                            break;
+                            
                     }
                 }
                 else
@@ -96,6 +100,9 @@ namespace BusinessHandler.MessageHandler
                             break;
                         case "ScrapeDate":
                             list = list.OrderByDescending(x => x.ScrapeDate).ToList();
+                            break;
+                        case "ImportantDisplay":
+                            list = list.OrderByDescending(x => x.Removed).ToList();
                             break;
                     }
                 }
