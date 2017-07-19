@@ -39,45 +39,42 @@
         <div class="panel panel-default">
             <div class="panel-heading">Searh Criteria</div>
             <div>
-                <form id="formSearch" class="form-horizontal">
-                    <div class="form-group" style="margin-top:15px">
-                        <label class="control-label col-md-1" for="txt_search_CityName " style="width:10%">City:</label>
-                        <div class="col-md-2">
+                <table style="margin-left:15px; margin-top:15px; margin-bottom:15px; text-align:center; vertical-align:central">
+                    <tr>
+                        <td style="width:5%"><label>City:</label></td>
+                        <td style="width:10%">
                             <select id="sel_search_CityName" multiple="multiple">
                                 @{
-                                foreach (var r in model.GroupBy(x => x.CityName))
-                                {
+                                    foreach (var r in model.GroupBy(x => x.CityName))
+                                    {
                                         <option value="@r.Key">@r.Key</option>
                                     }
                                 }
 
                             </select>
-                            @*<input type="text" class="form-control" id="txt_search_CityName">*@
-                        </div>
-                        <label class="control-label col-md-1" for="txt_search_MeetingDate" style="width:15%">Meeting Date ></label>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" id="txt_search_MeetingDate">
-                        </div>
-                        <label class="control-label col-md-1" for="sel_search_KeyWord" style="width:12%">Key Word:</label>
-                        <div class="col-md-2">
-                            @*<input type="text" class="form-control" id="txt_search_KeyWord">*@
+                        </td>
+                        <td style="width:15%"><label>Meeting Date ></label></td>
+                        <td style="width:15%"><input type="text" class="form-control" id="txt_search_MeetingDate"></td>
+                        <td style="width:13%"><label>Key Word:</label></td>
+                        <td style="width:15%">
+
                             <select id="sel_search_KeyWord" multiple="multiple">
                                 @{
-                                foreach (var r in keyWords)
-                                {
+                                    foreach (var r in keyWords)
+                                    {
                                         <option value="@r">@r</option>
 
-                                }
+                                    }
                                 }
 
                             </select>
+                        </td>
+                        <td style="width:8%"><button type="button" id="btn_Query" class="btn btn-primary">Search</button></td>
+                        <td><button type="button" id="btn_SaveInnitialQuery" class="btn btn-primary">Save Query</button></td>
 
-                        </div>
-                        <div class="col-md-1" style="text-align:left;">
-                            <button type="button" style="margin-left:10px" id="btn_Query" class="btn btn-primary">Search</button>
-                        </div>
-                    </div>
-                </form>
+                    </tr>
+                </table>
+           
             </div>
         </div>
 
@@ -361,7 +358,31 @@
         });
         $("#btn_Query").click(function () {
 
-            var data = SearchData();
+            SearchData();
+        });
+        $("#btn_SaveInnitialQuery").click(function () {
+            var keyWord = "";
+            var cityName = "";
+            var isViewed = "";
+            var isImportant = "";
+            if ($("#sel_search_KeyWord").val() != null) {
+                keyWord = $("#sel_search_KeyWord").val().toString();
+            }
+            if ($("#sel_search_CityName").val() != null) {
+                cityName = $("#sel_search_CityName").val().toString();
+            }
+            if ($("#div_status_select").attr("data-status") != null) {
+                isViewed = $("#div_status_select").attr("data-status");
+            }
+            if ($("#div_status_select").attr("data-important") != null) {
+                isImportant = $("#div_status_select").attr("data-important");
+            }
+            var data = {
+                CityName: cityName,
+                MeetingDate: $("#txt_search_MeetingDate").val(),
+                KeyWord: keyWord,
+                IsViewed: isViewed
+            };
             $.ajax({
                 url: '@Url.Action("SaveSearchQuery", "Account")',
                 data: { query: JSON.stringify(data) },
@@ -377,7 +398,6 @@
 
                 }
             });
-
         });
         $("#btn_Save_Comment").click(function () {
             $.ajax({
