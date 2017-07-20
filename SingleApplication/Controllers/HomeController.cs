@@ -40,8 +40,11 @@ namespace SingleApplication.Controllers
             message.CityName = GetCitys();
             var docQuery = new DocQueryFactory();
             var docList = docQuery.GetDocQueryResult(message);
-            var searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
-            ViewData["searchQuery"] = searchQueryRepository.GetSearchQuery();
+         //   var searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
+          //  ViewData["searchQuery"] = searchQueryRepository.GetSearchQuery();
+            ViewData["CityScrapeDateList"] = docQuery.GetCityScrapeDateList();
+
+
 
             return View(docList);
 

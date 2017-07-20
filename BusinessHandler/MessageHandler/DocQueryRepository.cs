@@ -60,11 +60,7 @@ namespace BusinessHandler.MessageHandler
             }
             if (!string.IsNullOrEmpty(message.CityScrapeDate))
             {
-                var dt = DateTime.Now;
-                if (DateTime.TryParse(message.CityScrapeDate, out dt))
-                {
-                    resultList = resultList.Where(x => x.CityScrapeDateTime >= dt).ToList();
-                }
+                resultList = resultList.Where(x => message.CityScrapeDate.Contains(x.CityScrapeDate)&&!string.IsNullOrWhiteSpace(x.CityScrapeDate)).ToList();
             }
             if (!string.IsNullOrEmpty(message.sortName))
             {

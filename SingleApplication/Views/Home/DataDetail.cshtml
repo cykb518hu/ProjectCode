@@ -7,6 +7,8 @@
     var model = (List<DocQueryResultModel>)Model;
     var keyWords = ConfigurationManager.AppSettings["KeyWords"].Split(';');
 
+    var cityScrapeDateList = (Dictionary<string, string>)ViewData["CityScrapeDateList"];
+
 }
 <h2>MI Municipality Public Meeting Search</h2>
 <script>
@@ -68,10 +70,21 @@
 
                             </select>
                         </td>
+                        <td style="width:10%"><label>Deploy Date</label></td>
+                        <td style="width:12%">
+                            <select id="sel_search_AddDate" multiple="multiple">
+                                @{
+                                    foreach (var r in cityScrapeDateList)
+                                    {
+                                        <option value="@r.Value">@r.Value</option>
+                                    }
+                                }
+
+                            </select>
+                        </td>
                         <td style="width:13%"><label>Meeting Date></label></td>
                         <td style="width:12%"><input type="text" class="form-control" id="txt_search_MeetingDate"></td>
-                        <td style="width:10%"><label>Add Date></label></td>
-                        <td style="width:12%"><input type="text" class="form-control" id="txt_search_AddDate"></td>
+                    
                         <td style="width:8%"><button type="button" id="btn_Query" class="btn btn-primary">Search</button></td>
                         <td><button type="button" id="btn_SaveInnitialQuery" class="btn btn-primary">Save Query</button></td>
 
@@ -188,19 +201,19 @@
                           field: 'MeetingDateDisplay',
                           title: 'Meeting Date',
                           sortable: true,
-                          width: '10%'
+                          width: '8%'
                       },
                        {
                            field: 'ScrapeDate',
                            title: 'Scrape Date',
                            sortable: true,
-                           width: '10%'
+                           width: '8%'
                        },
                         {
                             field: 'CityScrapeDate',
-                            title: 'City Add Date',
+                            title: 'Deploy Date',
                             sortable: true,
-                            width: '10%'
+                            width: '8%'
                         },
                     {
                         field: 'Number',
@@ -331,17 +344,18 @@
     $(document).ready(function () {
         loadQueryGroup();
         $('#sel_search_CityName').multiselect({
-            buttonWidth: '130px',
+            buttonWidth: '125px',
             includeSelectAllOption: true
         });
         $('#sel_search_KeyWord').multiselect({
-            buttonWidth: '130px',
+            buttonWidth: '125px',
+            includeSelectAllOption: true
+        });
+        $('#sel_search_AddDate').multiselect({
+            buttonWidth: '125px',
             includeSelectAllOption: true
         });
         $('#txt_search_MeetingDate').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-        $('#txt_search_AddDate').datepicker({
             format: 'yyyy-mm-dd'
         });
         $("#btn_Query").click(function () {
@@ -534,8 +548,12 @@
         $("#sel_search_KeyWord").val(keyArray);
         $("#sel_search_KeyWord").multiselect("refresh");
 
+
+        var dateArray = temp.CityScrapeDate.split(",");
+        $("#sel_search_AddDate").val(dateArray);
+        $("#sel_search_AddDate").multiselect("refresh");
+
         $("#txt_search_MeetingDate").val(temp.MeetingDate)
-        $("#txt_search_AddDate").val(temp.CityScrapeDate)
 
         $("#div_status_select").attr("data-important", "No");
         $("#div_status_select").attr("data-status", "All");
@@ -569,11 +587,16 @@
         if ($("#sel_search_CityName").val() != null) {
             cityName = $("#sel_search_CityName").val().toString();
         }
+        var scrapeDate = "";
+        if ($("#sel_search_AddDate").val() != null) {
+            scrapeDate = $("#sel_search_AddDate").val().toString();
+        }
         var result = {
             CityName: cityName,
             KeyWord: keyWord,
-            MeetingDate: $("#txt_search_MeetingDate").val(),
-            CityScrapeDate: $("#txt_search_AddDate").val()
+            CityScrapeDate: scrapeDate,
+            MeetingDate: $("#txt_search_MeetingDate").val()
+          
         };
         return result;
     }
@@ -614,7 +637,7 @@
     function ShowQueryDetail(obj)
     {
         $("#query-title").val($(obj).attr("data-title"));
-        $("#query-content").text($(obj).attr("data-content"));
+        $("#query-content").text($(obj).attr("data-content").replace("CityScrapeDate","Deploy Date"));
         sessionStorage.setItem("QueryGuid", $(obj).attr("data-query-guid"));
         $("#queryModal").find('.modal-dialog').css({
             width: '500px'

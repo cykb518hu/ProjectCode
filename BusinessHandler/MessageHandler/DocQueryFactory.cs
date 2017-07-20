@@ -152,5 +152,22 @@ namespace BusinessHandler.MessageHandler
             }
         }
 
+        public Dictionary<string, string> GetCityScrapeDateList()
+        {
+            Dictionary<string, string> cityScrapeList = new Dictionary<string, string>();
+            var cityScrapeFileName = HttpContext.Current.Server.MapPath("~/App_Data/city.json");
+            var json = File.ReadAllText(cityScrapeFileName);
+            var jobj = JArray.Parse(json);
+
+            foreach (var r in jobj)
+            {
+                if (!cityScrapeList.ContainsKey(r["City"].ToString().ToLower()))
+                {
+                    cityScrapeList.Add(r["City"].ToString().ToLower(), r["Date"].ToString());
+                }
+            }
+            return cityScrapeList;
+        }
+
     }
 }

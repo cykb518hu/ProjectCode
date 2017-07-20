@@ -125,19 +125,37 @@ namespace SingleApplication.Controllers
         public JsonResult SaveSearchQuery(string query)
         {
             var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
-            if (!string.IsNullOrWhiteSpace(data.CityName) || !string.IsNullOrWhiteSpace(data.KeyWord) || !string.IsNullOrWhiteSpace(data.MeetingDate))
+            var title = string.Empty;
+            if (!string.IsNullOrWhiteSpace(data.CityName))
             {
-                var firsrBreak = string.Empty;
-                var secondBreak = string.Empty;
-                if(!string.IsNullOrEmpty(data.CityName)&&(!string.IsNullOrEmpty(data.KeyWord) || !string.IsNullOrEmpty(data.MeetingDate)))
+                title = data.CityName;
+            }
+            if (!string.IsNullOrWhiteSpace(data.KeyWord))
+            {
+                if (!string.IsNullOrEmpty(title))
                 {
-                    firsrBreak = "&";
+                    title += "&";
                 }
-                if (!string.IsNullOrEmpty(data.MeetingDate) && (!string.IsNullOrEmpty(data.KeyWord) || !string.IsNullOrEmpty(data.CityName)))
+                title += data.KeyWord;
+            }
+            if (!string.IsNullOrWhiteSpace(data.CityScrapeDate))
+            {
+                if (!string.IsNullOrEmpty(title))
                 {
-                    secondBreak = "&";
+                    title += "&";
                 }
-                var title = data.CityName + firsrBreak + data.KeyWord + secondBreak + data.MeetingDate;
+                title += data.CityScrapeDate;
+            }
+            if (!string.IsNullOrWhiteSpace(data.MeetingDate))
+            {
+                if (!string.IsNullOrEmpty(title))
+                {
+                    title += "&";
+                }
+                title += data.MeetingDate;
+            }
+            if (!string.IsNullOrEmpty(title))
+            {
                 searchQueryRepository.AddSearchQuery(query, title);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);

@@ -52,18 +52,6 @@ namespace BusinessHandler.Model
         public string CityName { get; set; }
         
         public string CityScrapeDate { get; set; }
-        public DateTime CityScrapeDateTime
-        {
-            get
-            {
-                var dt = DateTime.MinValue;
-                DateTime.TryParse(CityScrapeDate, out dt);
-                return dt;
-
-
-            }
-        }
-
         public string CityNameDispaly { get; set; }
 
         public string DocUrl { get; set; }
