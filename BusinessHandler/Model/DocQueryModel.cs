@@ -13,6 +13,7 @@ namespace BusinessHandler.Model
         public string CityName { get; set; }
         public string MeetingDate { get; set; }
         public string KeyWord { get; set; }
+        public string CityScrapeDate { get; set; }
         public string sortName { get; set; }
         public string sortOrder { get; set; }
 
@@ -28,6 +29,9 @@ namespace BusinessHandler.Model
         public int Number { get; set; }
         public string DocType { get; set; }
         public string KeyWordString { get; set; }
+        public string CityScrapeDate { get; set; }
+
+     
 
         public string DocFilePath { get; set; }
         public List<DocQueryResultModel> DocQuerySubList { get; set; }
@@ -46,6 +50,19 @@ namespace BusinessHandler.Model
         public string QueryGuid { get; set; }
         public string DocId { get; set; }
         public string CityName { get; set; }
+        
+        public string CityScrapeDate { get; set; }
+        public DateTime CityScrapeDateTime
+        {
+            get
+            {
+                var dt = DateTime.MinValue;
+                DateTime.TryParse(CityScrapeDate, out dt);
+                return dt;
+
+
+            }
+        }
 
         public string CityNameDispaly { get; set; }
 

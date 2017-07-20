@@ -1,14 +1,17 @@
 ﻿
 using BusinessHandler.Model;
 using BusinessLogic;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace BusinessHandler.MessageHandler
@@ -53,6 +56,14 @@ namespace BusinessHandler.MessageHandler
                 if (DateTime.TryParse(message.MeetingDate, out dt))
                 {
                     resultList = resultList.Where(x => x.MeetingDate >= dt).ToList();
+                }
+            }
+            if (!string.IsNullOrEmpty(message.CityScrapeDate))
+            {
+                var dt = DateTime.Now;
+                if (DateTime.TryParse(message.CityScrapeDate, out dt))
+                {
+                    resultList = resultList.Where(x => x.CityScrapeDateTime >= dt).ToList();
                 }
             }
             if (!string.IsNullOrEmpty(message.sortName))
@@ -127,7 +138,8 @@ namespace BusinessHandler.MessageHandler
             else
             {
                 resultList = GetDocQueryList();
-                cacheRepository.Add(GlobalKeyString.docQueryCacheKey, resultList);
+                var cityScrapeFileName = HttpContext.Current.Server.MapPath("~/App_Data/city.json");
+                cacheRepository.Add(GlobalKeyString.docQueryCacheKey, resultList, cityScrapeFileName);
             }
             return resultList;
         }
@@ -138,6 +150,8 @@ namespace BusinessHandler.MessageHandler
             var filePath = ConfigurationManager.AppSettings.Get("DocQueryFilePath").ToString();
             var docUrlList = Directory.GetFiles(filePath, "*Docs*");
             var queriesUrlList = Directory.GetFiles(filePath, "*Queries*");
+
+           
 
             var resultList = new List<DocQueryResultModel>();
 
@@ -153,7 +167,25 @@ namespace BusinessHandler.MessageHandler
             {
                 docList.AddRange(readDataHelper.OpenDoc(docUrlList[i]));
             }
-          
+            Dictionary<string, string> cityScrapeList = new Dictionary<string, string>();
+            try
+            {
+                var cityScrapeFileName = HttpContext.Current.Server.MapPath("~/App_Data/city.json");
+                var json = File.ReadAllText(cityScrapeFileName);
+                var jobj = JArray.Parse(json);
+
+                foreach (var r in jobj)
+                {
+                    if (!cityScrapeList.ContainsKey(r["City"].ToString().ToLower()))
+                    {
+                        cityScrapeList.Add(r["City"].ToString().ToLower(), r["Date"].ToString());
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+               
+            }
 
             foreach (var r in docList)
             {
@@ -164,6 +196,17 @@ namespace BusinessHandler.MessageHandler
                     {
                         var result = new DocQueryResultModel();
                         result.CityName = r.CityName;
+                        var cityScrapeDate = string.Empty;
+
+                        if (cityScrapeList.TryGetValue(r.CityName.ToLower(), out cityScrapeDate))
+                        {
+                            result.CityScrapeDate = cityScrapeDate;
+                        }
+                        else
+                        {
+                            result.CityScrapeDate = "";
+                        }
+
                         result.CityNameDispaly = "<span class='showDatePicker' onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";
                         // result.CityNameDispaly = "<span class='showDatePicker' style='cursor: pointer'>" + r.CityName + "</span>";
                         result.IsViewed = "<span class='sp_" + r.DocId + "'>" + (r.IsViewed.Equals("True") ? "Yes" : "No") + "</span>";
@@ -175,7 +218,7 @@ namespace BusinessHandler.MessageHandler
                         result.MeetingDateDisplay = s.MeetingDateDisplay;
                         result.MeetingLocation = s.MeetingLocation;
                         result.ScrapeDate = s.ScrapeDate;
-                       
+
                         result.KeyWord = s.KeyWord;
                         if (s.KeyWord.IndexOf('*') >= 0)
                         {
@@ -193,13 +236,13 @@ namespace BusinessHandler.MessageHandler
                         {
                             result.Content = Regex.Replace(s.Content, s.KeyWord, string.Format("<b style='color:red'>{0}</b>", s.KeyWord), RegexOptions.IgnoreCase);
                         }
-                        
+
                         result.DocFilePath = r.DocFilePath;
                         result.QueryFilePath = s.QueryFilePath;
                         result.QueryGuid = s.QueryGuid;
                         result.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align' data-file='" + result.QueryFilePath + "' data-docid='" + result.DocId + "' data-queryguid='" + result.QueryGuid + "' onclick='OpenDataDetail(this); return false'></button>";
                         result.PageNumber = s.PageNumber;
-                     
+
                         result.Important = r.Important;
                         result.Comment = "<span id=" + result.QueryGuid + ">" + s.Comment + "</span>";
                         resultList.Add(result);

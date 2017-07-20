@@ -10,7 +10,7 @@ namespace BusinessHandler.MessageHandler
 {
     public interface ICacheRepository
     {
-        void Add(string key, List<DocQueryResultModel> docQueryList);
+        void Add(string key, List<DocQueryResultModel> docQueryList,string file);
         void Clear(string key);
         bool Exists(string key);
         List<DocQueryResultModel> Get (string key);
@@ -19,12 +19,12 @@ namespace BusinessHandler.MessageHandler
 
     public class AspNetCacheRepository : ICacheRepository
     {
-        public void Add(string key, List<DocQueryResultModel> docQueryList)
+        public void Add(string key, List<DocQueryResultModel> docQueryList, string file)
         {
             HttpContext.Current.Cache.Insert(
              key,
              docQueryList,
-             null,
+             new System.Web.Caching.CacheDependency(file),
              DateTime.Now.AddMinutes(20),
              System.Web.Caching.Cache.NoSlidingExpiration);
         }

@@ -1,11 +1,14 @@
 ﻿
 using BusinessHandler.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace BusinessHandler.MessageHandler
@@ -26,7 +29,9 @@ namespace BusinessHandler.MessageHandler
         {
             var list = new List<DocQueryParentModel>();
             var tempList = GetDocQueryResult(message);
-            foreach(var r in tempList.GroupBy(x=>x.DocId))
+
+       
+            foreach (var r in tempList.GroupBy(x=>x.DocId))
             {
                 var data = new DocQueryParentModel();
                 data.DocId = r.Key;
@@ -37,6 +42,7 @@ namespace BusinessHandler.MessageHandler
                     var firstItem = keyWordList.FirstOrDefault();
                     data.DocFilePath = firstItem.DocFilePath;
                     data.DocUrl = firstItem.DocUrl;
+                    data.CityScrapeDate = firstItem.CityScrapeDate;
                     data.DocType = firstItem.DocType;
                     data.IsViewed = firstItem.IsViewed;
                     data.ScrapeDate = firstItem.ScrapeDate;
@@ -79,6 +85,9 @@ namespace BusinessHandler.MessageHandler
                         case "ScrapeDate":
                             list = list.OrderBy(x => x.ScrapeDate).ToList();
                             break;
+                        case "CityScrapeDate":
+                            list = list.OrderBy(x => x.CityScrapeDate).ToList();
+                            break;
                         case "ImportantDisplay":
                             list = list.OrderBy(x => x.Removed).ToList();
                             break;
@@ -100,6 +109,9 @@ namespace BusinessHandler.MessageHandler
                             break;
                         case "ScrapeDate":
                             list = list.OrderByDescending(x => x.ScrapeDate).ToList();
+                            break;
+                        case "CityScrapeDate":
+                            list = list.OrderByDescending(x => x.CityScrapeDate).ToList();
                             break;
                         case "ImportantDisplay":
                             list = list.OrderByDescending(x => x.Removed).ToList();

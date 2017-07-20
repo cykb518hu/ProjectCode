@@ -53,10 +53,9 @@
 
                             </select>
                         </td>
-                        <td style="width:15%"><label>Meeting Date ></label></td>
-                        <td style="width:15%"><input type="text" class="form-control" id="txt_search_MeetingDate"></td>
-                        <td style="width:13%"><label>Key Word:</label></td>
-                        <td style="width:15%">
+                       
+                        <td style="width:10%"><label>Key Word:</label></td>
+                        <td style="width:12%">
 
                             <select id="sel_search_KeyWord" multiple="multiple">
                                 @{
@@ -69,6 +68,10 @@
 
                             </select>
                         </td>
+                        <td style="width:13%"><label>Meeting Date></label></td>
+                        <td style="width:12%"><input type="text" class="form-control" id="txt_search_MeetingDate"></td>
+                        <td style="width:10%"><label>Add Date></label></td>
+                        <td style="width:12%"><input type="text" class="form-control" id="txt_search_AddDate"></td>
                         <td style="width:8%"><button type="button" id="btn_Query" class="btn btn-primary">Search</button></td>
                         <td><button type="button" id="btn_SaveInnitialQuery" class="btn btn-primary">Save Query</button></td>
 
@@ -173,13 +176,13 @@
                           field: 'DocType',
                           title: 'Type',
                           sortable: true,
-                          width: '18%'
+                          width: '20%'
                     },
                      {
                          field: 'CityNameDispaly',
                          title: 'City',
                          sortable: true,
-                         width: '18%'
+                         width: '20%'
                      },
                       {
                           field: 'MeetingDateDisplay',
@@ -193,6 +196,12 @@
                            sortable: true,
                            width: '10%'
                        },
+                        {
+                            field: 'CityScrapeDate',
+                            title: 'City Add Date',
+                            sortable: true,
+                            width: '10%'
+                        },
                     {
                         field: 'Number',
                         title: 'Number',
@@ -203,13 +212,13 @@
                         field: 'IsViewed',
                         title: 'Viewed',
                         sortable: true,
-                        width: '7%'
+                        width: '5%'
                     },
                     {
                         field: 'ImportantDisplay',
                         title: 'Removed',
                         sortable: true,
-                        width: '17%'
+                        width: '5%'
                     }
                 ],
 
@@ -233,35 +242,11 @@
 
 
         oTableInit.queryParams = function (params) {
-            var keyWord = "";
-            var cityName = "";
-            var isViewed = "";
-            var isImportant = "";
-            if ($("#sel_search_KeyWord").val() != null)
-            {
-                keyWord = $("#sel_search_KeyWord").val().toString();
-            }
-            if ($("#sel_search_CityName").val() != null) {
-                cityName = $("#sel_search_CityName").val().toString();
-            }
-            if ($("#div_status_select").attr("data-status") != null) {
-                isViewed = $("#div_status_select").attr("data-status");
-            }
-            if ($("#div_status_select").attr("data-important") != null) {
-                isImportant = $("#div_status_select").attr("data-important");
-            }
-
-            var temp = {
-                limit: params.limit,
-                offset: params.offset,
-                CityName: cityName,
-                MeetingDate: $("#txt_search_MeetingDate").val(),
-                KeyWord: keyWord,
-                IsViewed: isViewed,
-                Important: isImportant,
-                sortName: this.sortName,
-                sortOrder: this.sortOrder
-            };
+            var temp = getSearchData();
+            temp.limit = params.limit;
+            temp.offset = params.offset;
+            temp.sortName = this.sortName;
+            temp.sortOrder = this.sortOrder;
             return temp;
         };
 
@@ -346,14 +331,17 @@
     $(document).ready(function () {
         loadQueryGroup();
         $('#sel_search_CityName').multiselect({
-            buttonWidth: '160px',
+            buttonWidth: '130px',
             includeSelectAllOption: true
         });
         $('#sel_search_KeyWord').multiselect({
-            buttonWidth: '160px',
+            buttonWidth: '130px',
             includeSelectAllOption: true
         });
         $('#txt_search_MeetingDate').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#txt_search_AddDate').datepicker({
             format: 'yyyy-mm-dd'
         });
         $("#btn_Query").click(function () {
@@ -361,28 +349,7 @@
             SearchData();
         });
         $("#btn_SaveInnitialQuery").click(function () {
-            var keyWord = "";
-            var cityName = "";
-            var isViewed = "";
-            var isImportant = "";
-            if ($("#sel_search_KeyWord").val() != null) {
-                keyWord = $("#sel_search_KeyWord").val().toString();
-            }
-            if ($("#sel_search_CityName").val() != null) {
-                cityName = $("#sel_search_CityName").val().toString();
-            }
-            if ($("#div_status_select").attr("data-status") != null) {
-                isViewed = $("#div_status_select").attr("data-status");
-            }
-            if ($("#div_status_select").attr("data-important") != null) {
-                isImportant = $("#div_status_select").attr("data-important");
-            }
-            var data = {
-                CityName: cityName,
-                MeetingDate: $("#txt_search_MeetingDate").val(),
-                KeyWord: keyWord,
-                IsViewed: isViewed
-            };
+            var data = getQueryData();
             $.ajax({
                 url: '@Url.Action("SaveSearchQuery", "Account")',
                 data: { query: JSON.stringify(data) },
@@ -568,15 +535,12 @@
         $("#sel_search_KeyWord").multiselect("refresh");
 
         $("#txt_search_MeetingDate").val(temp.MeetingDate)
-       // $("#div_status_select").attr("data-important", temp.Important);
-        $("#div_status_select").attr("data-important", "No");
-        $("#div_status_select").attr("data-status", temp.IsViewed);
-        $("#sp_view_status").html(temp.IsViewed);
+        $("#txt_search_AddDate").val(temp.CityScrapeDate)
 
-        //var importantStatus = temp.Important;
-        //if (temp.Important == "All") {
-        //    importantStatus = "Show All";
-        //}
+        $("#div_status_select").attr("data-important", "No");
+        $("#div_status_select").attr("data-status", "All");
+        $("#sp_view_status").html("All");
+
         $("#sp_important_status").html("");
 
         SearchData();
@@ -595,42 +559,46 @@
             }
         });
     }
-    function SearchData()
+    function getQueryData()
     {
         var keyWord = "";
         var cityName = "";
-        var isViewed = "";
-        var isImportant = "";
         if ($("#sel_search_KeyWord").val() != null) {
             keyWord = $("#sel_search_KeyWord").val().toString();
         }
         if ($("#sel_search_CityName").val() != null) {
             cityName = $("#sel_search_CityName").val().toString();
         }
+        var result = {
+            CityName: cityName,
+            KeyWord: keyWord,
+            MeetingDate: $("#txt_search_MeetingDate").val(),
+            CityScrapeDate: $("#txt_search_AddDate").val()
+        };
+        return result;
+    }
+    function getSearchData() {
+
+        var isViewed = "";
+        var isImportant = "";
         if ($("#div_status_select").attr("data-status") != null) {
             isViewed = $("#div_status_select").attr("data-status");
         }
         if ($("#div_status_select").attr("data-important") != null) {
             isImportant = $("#div_status_select").attr("data-important");
         }
-        var result = {
-            CityName: cityName,
-            MeetingDate: $("#txt_search_MeetingDate").val(),
-            KeyWord: keyWord,
-            IsViewed: isViewed
-        };
-        var temp = {
-            CityName: cityName,
-            MeetingDate: $("#txt_search_MeetingDate").val(),
-            KeyWord: keyWord,
-            IsViewed: isViewed,
-            Important: isImportant
-        };
+        var result = getQueryData();
+        result.IsViewed = isViewed;
+        result.Important = isImportant;
+        return result;
+    }
+    function SearchData()
+    {
+
+        var temp = getSearchData();
         var tempQueryParams = function () {
             return temp;
         };
-
-
         $("#tb_departments").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
  
         return result;
