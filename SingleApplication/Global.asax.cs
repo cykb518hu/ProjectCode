@@ -33,6 +33,7 @@ namespace SingleApplication
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
                 builder.RegisterType<SearchQueryRepository>().As<ISearchQueryRepository>();
                 builder.RegisterType<XmlHelper>().As<IDataFileHelper>();
+                builder.RegisterType<KeyWordRepository>().As<IKeyWord>();
                 builder.RegisterFilterProvider();
 
                 var container = builder.Build();

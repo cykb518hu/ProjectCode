@@ -40,8 +40,8 @@ namespace SingleApplication.Controllers
             message.CityName = GetCitys();
             var docQuery = new DocQueryFactory();
             var docList = docQuery.GetDocQueryResult(message);
-         //   var searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
-          //  ViewData["searchQuery"] = searchQueryRepository.GetSearchQuery();
+            var keyWordRepository = DependencyResolver.Current.GetService<IKeyWord>();
+            ViewData["KeyWordList"] = keyWordRepository.GetKeyWordList();
             ViewData["CityScrapeDateList"] = docQuery.GetCityScrapeDateList();
 
 
@@ -108,5 +108,15 @@ namespace SingleApplication.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult AddNewKeyWord(string keyWord)
+        {
+            string result = "Success";
+            if(!string.IsNullOrWhiteSpace(keyWord))
+            {
+                var keyWordRepository = DependencyResolver.Current.GetService<IKeyWord>();
+                keyWordRepository.AddKeyWord(keyWord, out result);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

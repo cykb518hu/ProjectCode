@@ -157,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Users.xml" />
+    <Content Include="Content\bootstrap-combobox.css" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-multiselect.css" />
@@ -172,6 +173,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="HtmlPage1.html" />
     <Content Include="img\edit_icon.png" />
+    <Content Include="Scripts\bootstrap-combobox.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
@@ -184,6 +186,7 @@
     </Content>
     <Content Include="App_Data\Users.json" />
     <Content Include="App_Data\city.json" />
+    <Content Include="App_Data\KeyWord.json" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
