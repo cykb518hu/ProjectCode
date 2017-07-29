@@ -592,13 +592,16 @@
         $("#sel_search_KeyWord").val(keyArray);
         $("#sel_search_KeyWord").multiselect("refresh");
 
-
-        var dateArray = temp.CityScrapeDate.split(",");
+        var cityScrapDate = "";
+        if (temp.CityScrapeDate != null) {
+            cityScrapDate = temp.CityScrapeDate;   
+        }
+        var dateArray = cityScrapDate.split(",");
         $("#sel_search_AddDate").val(dateArray);
         $("#sel_search_AddDate").multiselect("refresh");
 
-        $("#txt_search_MeetingDate").val(temp.MeetingDate)
 
+        $("#txt_search_MeetingDate").val(temp.MeetingDate)
         $("#div_status_select").attr("data-important", "No");
         $("#div_status_select").attr("data-status", "All");
         $("#sp_view_status").html("All");
@@ -668,8 +671,6 @@
             return temp;
         };
         $("#tb_departments").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
-
-        return result;
     }
     function expandAllRows()
     {
