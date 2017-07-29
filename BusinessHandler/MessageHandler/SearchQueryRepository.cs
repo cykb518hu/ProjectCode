@@ -17,7 +17,7 @@ namespace BusinessHandler.MessageHandler
         void AddSearchQuery(string query, string title);
         List<SearchQueryModel> GetSearchQuery();
 
-        void UpdateSearchQuery(string guid, string title);
+        void UpdateSearchQuery(string guid, string title,string query);
 
         void DeleteSearchQuery(string guid);
 
@@ -65,7 +65,7 @@ namespace BusinessHandler.MessageHandler
             return dezerializedList;
         }
 
-        public void UpdateSearchQuery(string guid, string title)
+        public void UpdateSearchQuery(string guid, string title,string query)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
@@ -73,6 +73,7 @@ namespace BusinessHandler.MessageHandler
             if (myNode != null)
             {
                 myNode["Title"].InnerText = title;
+                myNode["Content"].InnerText = query;
                 myNode["ModifyDate"].InnerText = DateTime.Now.ToString("o");
                 doc.Save(fileName);
             }

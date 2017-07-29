@@ -169,11 +169,11 @@ namespace SingleApplication.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateSearchQuery(string guid,string title)
+        public JsonResult UpdateSearchQuery(string guid,string title, string query)
         {
             if (!string.IsNullOrWhiteSpace(title) &&!string.IsNullOrWhiteSpace(guid))
             {
-                searchQueryRepository.UpdateSearchQuery(guid, title);
+                searchQueryRepository.UpdateSearchQuery(guid, title,query);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }

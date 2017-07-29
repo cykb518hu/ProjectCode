@@ -70,7 +70,7 @@
 
                             </select>
                         </td>
-                        <td style="width:10%"><label>Deploy Date</label></td>
+                        <td style="width:11%"><label>Deploy Date:</label></td>
                         <td style="width:12%; text-align:left">
                             <select id="sel_search_AddDate" multiple="multiple">
                                 @{
@@ -82,11 +82,11 @@
 
                             </select>
                         </td>
-                        <td style="width:13%"><label>Meeting Date></label></td>
-                        <td style="width:12%"><input type="text" class="form-control" id="txt_search_MeetingDate"></td>
+                        <td style="width:13%"><label>Meeting Date:</label></td>
+                        <td style="width:13%"><input type="text" class="form-control" id="txt_search_MeetingDate"></td>
 
-                        <td style="width:8%"><button type="button" id="btn_Query" class="btn btn-primary">Search</button></td>
-                        <td><button type="button" id="btn_SaveInnitialQuery" class="btn btn-primary">Save Query</button></td>
+                        <td style="width:7%"><button type="button" id="btn_Query" class="btn btn-primary">Search</button></td>
+                        <td style="width:10%" ><button type="button" id="btn_SaveInnitialQuery" class="btn btn-primary">Save Query</button></td>
 
                     </tr>
                     <tr>
@@ -147,8 +147,11 @@
                         <input type="text" class="form-control" id="query-title">
                     </div>
                     <div class="form-group">
-                        <label for="query-content" class="control-label">Query Content:</label>
-                        <pre  id="query-content"></pre> 
+                     
+                            <label for="query-content" class="control-label">Query Content:</label>
+                    
+                            <textarea rows="5"  class="form-control" id="query-content" style="max-width:435px !important"></textarea>
+                    
                     </div>
                 </form>
             </div>
@@ -414,17 +417,16 @@
         });
         $("#btn_SaveQuery").click(function () {
             var queryGuid = sessionStorage.getItem("QueryGuid");
+            var query = $("#query-content").val();
             $.ajax({
                 url: '@Url.Action("UpdateSearchQuery", "Account")',
-                data: { guid: queryGuid, title: $("#query-title").val() },
+                data: { guid: queryGuid, title: $("#query-title").val(), query: query },
                 dataType: 'json',
                 type: "POST",
                 success: function (result) {
                 },
                 complete: function (XMLHttpRequest, textStatus) {
-                    var title = $("#query-title").val();
-                    var str = title.length > 15 ? title.substring(0, 12) + "..." : title;
-                    $('#query_' + queryGuid).children().eq(0).html(str);
+                    loadQueryGroup();
                     $("#queryModal").modal('hide');
                 },
                 error: function (xhr, textStatus, errorThrown) {
@@ -602,6 +604,7 @@
         $("#sp_view_status").html("All");
 
         $("#sp_important_status").html("");
+        queryGroupHighlight(guid);
 
         SearchData();
 
@@ -681,6 +684,7 @@
         $("#query-title").val($(obj).attr("data-title"));
         $("#query-content").text($(obj).attr("data-content").replace("CityScrapeDate","Deploy Date"));
         sessionStorage.setItem("QueryGuid", $(obj).attr("data-query-guid"));
+ 
         $("#queryModal").find('.modal-dialog').css({
             width: '500px'
         });
@@ -726,6 +730,15 @@
         var find = '"';
         var re = new RegExp(find, 'g');
         return str.replace(re, '&quot;');
+    }
+    function queryGroupHighlight(guid)
+    {
+        $("#ul_queryGourp").children().each(function (index) {
+            if (index > 0) {
+                $(this).removeClass("highlight");
+            }
+        });
+        $("#query_" + guid).addClass("highlight");
     }
 </script>
 
