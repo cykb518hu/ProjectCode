@@ -186,7 +186,7 @@
     </Content>
     <Content Include="App_Data\Users.json" />
     <Content Include="App_Data\city.json" />
-    <Content Include="App_Data\KeyWord.json" />
+    <Content Include="File\KeyWord.json" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

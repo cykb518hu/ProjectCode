@@ -23,7 +23,7 @@ namespace BusinessHandler.MessageHandler
         {
             List<KeyWordModel> list = new List<KeyWordModel>();
 
-            var fileName = HttpContext.Current.Server.MapPath("~/App_Data/KeyWord.json");
+            var fileName = HttpContext.Current.Server.MapPath("~/File/KeyWord.json");
             var json = File.ReadAllText(fileName);
             var jobj = JArray.Parse(json);
             list = jobj.Select(x => new KeyWordModel { KeyWord = x["KeyWord"].ToString(), AddDate = x["AddDate"].ToString() })
@@ -47,7 +47,7 @@ namespace BusinessHandler.MessageHandler
             }
             string json = JsonConvert.SerializeObject(list.ToArray());
 
-            var fileName = HttpContext.Current.Server.MapPath("~/App_Data/KeyWord.json");
+            var fileName = HttpContext.Current.Server.MapPath("~/File/KeyWord.json");
             System.IO.File.WriteAllText(fileName, json);
             return true;
         }
