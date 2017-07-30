@@ -138,13 +138,13 @@ namespace SingleApplication.Controllers
                 }
                 title += data.KeyWord;
             }
-            if (!string.IsNullOrWhiteSpace(data.CityScrapeDate))
+            if (!string.IsNullOrWhiteSpace(data.DeployDate))
             {
                 if (!string.IsNullOrEmpty(title))
                 {
                     title += "&";
                 }
-                title += data.CityScrapeDate;
+                title += data.DeployDate;
             }
             if (!string.IsNullOrWhiteSpace(data.MeetingDate))
             {

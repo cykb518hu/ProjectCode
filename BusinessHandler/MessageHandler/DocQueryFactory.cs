@@ -42,7 +42,7 @@ namespace BusinessHandler.MessageHandler
                     var firstItem = keyWordList.FirstOrDefault();
                     data.DocFilePath = firstItem.DocFilePath;
                     data.DocUrl = firstItem.DocUrl;
-                    data.CityScrapeDate = firstItem.CityScrapeDate;
+                    data.CityDeployDate = firstItem.CityDeployDate;
                     data.DocType = firstItem.DocType;
                     data.IsViewed = firstItem.IsViewed;
                     data.ScrapeDate = firstItem.ScrapeDate;
@@ -85,8 +85,8 @@ namespace BusinessHandler.MessageHandler
                         case "ScrapeDate":
                             list = list.OrderBy(x => x.ScrapeDate).ToList();
                             break;
-                        case "CityScrapeDate":
-                            list = list.OrderBy(x => x.CityScrapeDate).ToList();
+                        case "CityDeployDate":
+                            list = list.OrderBy(x => x.CityDeployDate).ToList();
                             break;
                         case "ImportantDisplay":
                             list = list.OrderBy(x => x.Removed).ToList();
@@ -110,8 +110,8 @@ namespace BusinessHandler.MessageHandler
                         case "ScrapeDate":
                             list = list.OrderByDescending(x => x.ScrapeDate).ToList();
                             break;
-                        case "CityScrapeDate":
-                            list = list.OrderByDescending(x => x.CityScrapeDate).ToList();
+                        case "CityDeployDate":
+                            list = list.OrderByDescending(x => x.CityDeployDate).ToList();
                             break;
                         case "ImportantDisplay":
                             list = list.OrderByDescending(x => x.Removed).ToList();

@@ -42,7 +42,7 @@ namespace SingleApplication.Controllers
             var docList = docQuery.GetDocQueryResult(message);
             var keyWordRepository = DependencyResolver.Current.GetService<IKeyWord>();
             ViewData["KeyWordList"] = keyWordRepository.GetKeyWordList();
-            ViewData["CityScrapeDateList"] = docQuery.GetCityScrapeDateList();
+            ViewData["cityDeployDateList"] = docQuery.GetCityScrapeDateList();
 
 
 
@@ -61,7 +61,7 @@ namespace SingleApplication.Controllers
         public JsonResult GetParentDataList(DocQueryMessage message)
         {
             var docQuery = new DocQueryFactory();
-            if(string.IsNullOrEmpty(message.CityName))
+            if (string.IsNullOrEmpty(message.CityName) || message.CityName.Equals("All", StringComparison.OrdinalIgnoreCase))
             {
                 message.CityName = GetCitys();
             }

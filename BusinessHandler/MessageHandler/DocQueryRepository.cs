@@ -46,7 +46,7 @@ namespace BusinessHandler.MessageHandler
             {
                 resultList = resultList.Where(x => message.CityName.Contains(x.CityName)).ToList();
             }
-            if (!string.IsNullOrEmpty(message.KeyWord))
+            if (!string.IsNullOrEmpty(message.KeyWord) && !message.KeyWord.Equals("All", StringComparison.OrdinalIgnoreCase))
             {
                 resultList = resultList.Where(x => message.KeyWord.Contains(x.KeyWord)).ToList();
             }
@@ -58,9 +58,9 @@ namespace BusinessHandler.MessageHandler
                     resultList = resultList.Where(x => x.MeetingDate >= dt).ToList();
                 }
             }
-            if (!string.IsNullOrEmpty(message.CityScrapeDate))
+            if (!string.IsNullOrEmpty(message.DeployDate))
             {
-                resultList = resultList.Where(x => message.CityScrapeDate.Contains(x.CityScrapeDate)&&!string.IsNullOrWhiteSpace(x.CityScrapeDate)).ToList();
+                resultList = resultList.Where(x => message.DeployDate.Contains(x.CityDeployDate) &&!string.IsNullOrWhiteSpace(x.CityDeployDate)).ToList();
             }
             if (!string.IsNullOrEmpty(message.sortName))
             {
@@ -192,15 +192,15 @@ namespace BusinessHandler.MessageHandler
                     {
                         var result = new DocQueryResultModel();
                         result.CityName = r.CityName;
-                        var cityScrapeDate = string.Empty;
+                        var cityDeployDate = string.Empty;
 
-                        if (cityScrapeList.TryGetValue(r.CityName.ToLower(), out cityScrapeDate))
+                        if (cityScrapeList.TryGetValue(r.CityName.ToLower(), out cityDeployDate))
                         {
-                            result.CityScrapeDate = cityScrapeDate;
+                            result.CityDeployDate = cityDeployDate;
                         }
                         else
                         {
-                            result.CityScrapeDate = "";
+                            result.CityDeployDate = "";
                         }
 
                         result.CityNameDispaly = "<span class='showDatePicker' onclick='showDatePicker(this); return false' style='cursor: pointer'>" + r.CityName + "</span>";

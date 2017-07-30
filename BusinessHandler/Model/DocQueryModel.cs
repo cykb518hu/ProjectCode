@@ -13,7 +13,7 @@ namespace BusinessHandler.Model
         public string CityName { get; set; }
         public string MeetingDate { get; set; }
         public string KeyWord { get; set; }
-        public string CityScrapeDate { get; set; }
+        public string DeployDate { get; set; }
         public string sortName { get; set; }
         public string sortOrder { get; set; }
 
@@ -29,7 +29,7 @@ namespace BusinessHandler.Model
         public int Number { get; set; }
         public string DocType { get; set; }
         public string KeyWordString { get; set; }
-        public string CityScrapeDate { get; set; }
+        public string CityDeployDate { get; set; }
 
      
 
@@ -51,7 +51,7 @@ namespace BusinessHandler.Model
         public string DocId { get; set; }
         public string CityName { get; set; }
         
-        public string CityScrapeDate { get; set; }
+        public string CityDeployDate { get; set; }
         public string CityNameDispaly { get; set; }
 
         public string DocUrl { get; set; }

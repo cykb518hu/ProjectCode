@@ -7,7 +7,7 @@
     var model = (List<DocQueryResultModel>)Model;
     var keyWords = (List<BusinessHandler.MessageHandler.KeyWordModel>)ViewData["KeyWordList"];
 
-    var cityScrapeDateList = (Dictionary<string, string>)ViewData["CityScrapeDateList"];
+    var cityDeployDateList = (Dictionary<string, string>)ViewData["cityDeployDateList"];
 
 }
 <h2>MI Municipality Public Meeting Search</h2>
@@ -45,7 +45,9 @@
                     <tr>
                         <td style="width:5%"><label>City:</label></td>
                         <td style="width:10%; text-align:left">
+                        
                             <select id="sel_search_CityName" multiple="multiple">
+                                <option value="All">All</option>
                                 @{
                                     foreach (var r in model.GroupBy(x => x.CityName))
                                     {
@@ -60,6 +62,7 @@
                         <td style="width:12%; text-align:left">
 
                             <select id="sel_search_KeyWord" multiple="multiple">
+                                <option value="All">All</option>
                                 @{
                                     foreach (var r in keyWords)
                                     {
@@ -74,7 +77,7 @@
                         <td style="width:12%; text-align:left">
                             <select id="sel_search_AddDate" multiple="multiple">
                                 @{
-                                    foreach (var r in cityScrapeDateList)
+                                    foreach (var r in cityDeployDateList)
                                     {
                                         <option value="@r.Value">@r.Value</option>
                                     }
@@ -223,7 +226,7 @@
                            width: '8%'
                        },
                         {
-                            field: 'CityScrapeDate',
+                            field: 'CityDeployDate',
                             title: 'Deploy Date',
                             sortable: true,
                             width: '8%'
@@ -584,19 +587,33 @@
     function SearchFromQuery(temp, guid) {
 
         var cityArray = temp.CityName.split(",");
+        if (cityArray.length > 0) {
+            for (var i = 0; i < cityArray.length; i++) {
+                if (cityArray[i] == "all") {
+                    cityArray[i] = "All";
+                }
+            }
+        }
         $("#sel_search_CityName").val(cityArray);
         $("#sel_search_CityName").multiselect("refresh");
 
 
         var keyArray = temp.KeyWord.split(",");
+        if (keyArray.length > 0) {
+            for (var i = 0; i < keyArray.length; i++) {
+                if (keyArray[i] == "all") {
+                    keyArray[i] = "All";
+                }
+            }
+        }
         $("#sel_search_KeyWord").val(keyArray);
         $("#sel_search_KeyWord").multiselect("refresh");
 
-        var cityScrapDate = "";
-        if (temp.CityScrapeDate != null) {
-            cityScrapDate = temp.CityScrapeDate;   
+        var cityDeployDate = "";
+        if (temp.DeployDate != null) {
+            cityDeployDate = temp.DeployDate;   
         }
-        var dateArray = cityScrapDate.split(",");
+        var dateArray = cityDeployDate.split(",");
         $("#sel_search_AddDate").val(dateArray);
         $("#sel_search_AddDate").multiselect("refresh");
 
@@ -635,14 +652,14 @@
         if ($("#sel_search_CityName").val() != null) {
             cityName = $("#sel_search_CityName").val().toString();
         }
-        var scrapeDate = "";
+        var deployDate = "";
         if ($("#sel_search_AddDate").val() != null) {
-            scrapeDate = $("#sel_search_AddDate").val().toString();
+            deployDate = $("#sel_search_AddDate").val().toString();
         }
         var result = {
             CityName: cityName,
             KeyWord: keyWord,
-            CityScrapeDate: scrapeDate,
+            DeployDate: deployDate,
             MeetingDate: $("#txt_search_MeetingDate").val()
 
         };
@@ -683,7 +700,7 @@
     function ShowQueryDetail(obj)
     {
         $("#query-title").val($(obj).attr("data-title"));
-        $("#query-content").text($(obj).attr("data-content").replace("CityScrapeDate","Deploy Date"));
+        $("#query-content").text($(obj).attr("data-content"));
         sessionStorage.setItem("QueryGuid", $(obj).attr("data-query-guid"));
  
         $("#queryModal").find('.modal-dialog').css({
