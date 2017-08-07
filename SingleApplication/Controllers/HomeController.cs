@@ -39,10 +39,36 @@ namespace SingleApplication.Controllers
             var message = new DocQueryMessage();
             message.CityName = GetCitys();
             var docQuery = new DocQueryFactory();
-            var docList = docQuery.GetDocQueryResult(message);
+            var docList = new List<DocQueryResultModel>();
+            if (StaticSetting.GetDataFromDB())
+            {
+                docList = DocQueryDB.GetCityDate();
+            }
+            else
+            {
+                docList= docQuery.GetDocQueryResult(message);
+            }
             var keyWordRepository = DependencyResolver.Current.GetService<IKeyWord>();
             ViewData["KeyWordList"] = keyWordRepository.GetKeyWordList();
-            ViewData["cityDeployDateList"] = docQuery.GetCityScrapeDateList();
+
+            if (StaticSetting.GetDataFromDB())
+            {
+                Dictionary<string, string> cityDployeList = new Dictionary<string, string>();
+    
+                foreach (var r in docList)
+                {
+                    if (!cityDployeList.ContainsKey(r.CityName)&&!string.IsNullOrWhiteSpace(r.CityDeployDate))
+                    {
+                        cityDployeList.Add(r.CityName, r.CityDeployDate);
+                    }
+                }
+                ViewData["cityDeployDateList"] = cityDployeList;
+            }
+            else
+            {
+                ViewData["cityDeployDateList"] = docQuery.GetCityScrapeDateList();
+            }
+           
 
 
 
@@ -65,10 +91,21 @@ namespace SingleApplication.Controllers
             {
                 message.CityName = GetCitys();
             }
-            var result = docQuery.GetDocQueryParentResult(message);
-            var total = result.Count;
-            var rows = result.Skip(message.offset).Take(message.limit).ToList();
-            return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
+            var result = new List<DocQueryParentModel>();
+            if (StaticSetting.GetDataFromDB())
+            {
+                int total = 0;
+                result = DocQueryDB.GetAllDataList(message, out total);
+                return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                result = docQuery.GetDocQueryParentResult(message);
+                var total = result.Count;
+                var rows = result.Skip(message.offset).Take(message.limit).ToList();
+                return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
+            }
+          
         }
 
         public string GetCitys()
@@ -83,26 +120,51 @@ namespace SingleApplication.Controllers
         }
         public JsonResult SaveComment(DocQueryResultModel message)
         {
-            var docQuery = new DocQueryFactory();
-            docQuery.UpdateQuery(message);
+       
+            if (StaticSetting.GetDataFromDB())
+            {
+                DocQueryDB.UpdateQueryComment(message);
+            }
+            else
+            {
+                var docQuery = new DocQueryFactory();
+                docQuery.UpdateQuery(message);
+            }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
         public JsonResult UpdateDocStatus(DocQueryResultModel message)
         {
-            var docQuery = new DocQueryFactory();
-            docQuery.UpdateDocStatus(message);
+            if (StaticSetting.GetDataFromDB())
+            {
+                DocQueryDB.UpdateDocStatus(message);
+            }
+            else
+            {
+                var docQuery = new DocQueryFactory();
+                docQuery.UpdateDocStatus(message);
+            }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
         public JsonResult UpdateDocImportant(DocQueryResultModel message)
         {
-            var docQuery = new DocQueryFactory();
-            docQuery.UpdateDocImportant(message);
+            if (StaticSetting.GetDataFromDB())
+            {
+                DocQueryDB.UpdateDocImportant(message);
+            }
+            else
+            {
+                var docQuery = new DocQueryFactory();
+                docQuery.UpdateDocImportant(message);
+            }
+      
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetDateBasedOnCity(DocQueryMessage message)
         {
             var docQuery = new DocQueryFactory();
             var result = docQuery.GetDocQueryResult(message);
+
+
             var dateList = result.Select(x => x.MeetingDateDisplay).Distinct().ToList();
 
             return Json("Success", JsonRequestBehavior.AllowGet);

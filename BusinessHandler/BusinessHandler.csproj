@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MessageHandler\CSVFileHelper.cs" />
+    <Compile Include="MessageHandler\DocQueryDB.cs" />
     <Compile Include="MessageHandler\DocQueryFactory.cs" />
     <Compile Include="MessageHandler\CacheRepository.cs" />
     <Compile Include="MessageHandler\DocQueryRepository.cs" />
@@ -66,8 +67,14 @@
     <Compile Include="MessageHandler\XmlHelper.cs" />
     <Compile Include="Model\DocQueryModel.cs" />
     <Compile Include="Model\SearchQueryModel.cs" />
+    <Compile Include="Model\StaticSetting.cs" />
     <Compile Include="Model\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlScript\DOC_QUERY.sql" />
+    <Content Include="SqlScript\DOC_QUERY_detail.sql" />
+    <Content Include="SqlScript\Project_Master_DDL.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

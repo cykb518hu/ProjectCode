@@ -93,7 +93,15 @@ namespace SingleApplication.Controllers
         {
             var message = new DocQueryMessage();
             var docQuery = new DocQueryFactory();
-            var docList = docQuery.GetDocQueryResult(message);
+            var docList = new List<DocQueryResultModel>();
+            if (StaticSetting.GetDataFromDB())
+            {
+                docList = DocQueryDB.GetCityDate();
+            }
+            else
+            {
+                docList = docQuery.GetDocQueryResult(message);
+            }
             return View(docList);
         }
         public JsonResult GetDataList()
