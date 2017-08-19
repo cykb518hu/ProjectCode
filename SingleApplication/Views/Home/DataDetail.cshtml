@@ -77,9 +77,9 @@
                         <td style="width:12%; text-align:left">
                             <select id="sel_search_AddDate" multiple="multiple">
                                 @{
-                                    foreach (var r in cityDeployDateList)
+                                    foreach (var r in cityDeployDateList.Select(x=>x.Value).Distinct())
                                     {
-                                        <option value="@r.Value">@r.Value</option>
+                                        <option value="@r">@r</option>
                                     }
                                 }
 
