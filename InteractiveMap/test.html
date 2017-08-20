@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title>setCartoCSS with CARTO.js</title>
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/bootstrap-multiselect.js"></script>
+
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap-multiselect.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        $(function () {
+            $('#minrooms').multiselect({
+                includeSelectAllOption: true
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+    <select name="minrooms" id="minrooms" class="form-control" multiple="multiple">
+        <option value="">Min. rooms</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+
+
+</body>
+</html>
