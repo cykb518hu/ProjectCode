@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessHandler.MessageHandler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -34,8 +35,10 @@ namespace InteractiveMap.Controllers
         }
         public ActionResult CityMap()
         {
-            ViewBag.Message = "Your contact page.";
-
+            var cityDployeList = DocQueryDB.GetCityAndDeployDateList();
+            ViewData["cityDeployDateList"] = cityDployeList;
+            var keyList = DocQueryDB.GetKeyWordList();
+            ViewData["KeyWordList"] = keyList;
             return View();
         }
     }

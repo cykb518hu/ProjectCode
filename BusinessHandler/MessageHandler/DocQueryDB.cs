@@ -1,8 +1,10 @@
 ﻿using BusinessHandler.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,6 +29,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 {
                     var data = new DocQueryResultModel();
                     data.CityName = DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    data.MeetingDateDisplay = "";
                     var dt = DateTime.MinValue;
                     if (DateTime.TryParse(DBNull.Value == reader["MEETING_DATE"] ? "" : reader["MEETING_DATE"].ToString(), out dt))
                     {
@@ -257,6 +260,43 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 command.ExecuteNonQuery();
             }
         }
+
+        #region map
+        public static Dictionary<string, string> GetCityAndDeployDateList()
+        {
+            Dictionary<string, string> cityDployeList = new Dictionary<string, string>();
+            string queryString = @"select  * from [dbo].[CITY]";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var cityName = DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    var deployDate = DBNull.Value == reader["DEPLOYE_DATE"] ? "" : Convert.ToDateTime(reader["DEPLOYE_DATE"]).ToString("yyyy-MM-dd");
+                    if (!cityDployeList.ContainsKey(cityName))
+                    {
+                        cityDployeList.Add(cityName, deployDate);
+                    }
+                }
+            }
+            return cityDployeList;
+        }
+
+        public static List<KeyWordModel> GetKeyWordList()
+        {
+            List<KeyWordModel> list = new List<KeyWordModel>();
+
+            var fileName = StaticSetting.filePath + @"\KeyWord.json";
+            var json = File.ReadAllText(fileName);
+            var jobj = JArray.Parse(json);
+            list = jobj.Select(x => new KeyWordModel { KeyWord = x["KeyWord"].ToString(), AddDate = x["AddDate"].ToString() })
+                       .ToList();
+
+            return list;
+        }
+        #endregion
 
 
     }

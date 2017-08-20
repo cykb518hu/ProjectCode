@@ -150,6 +150,7 @@
   <ItemGroup>
     <Content Include="carto.html" />
     <Content Include="center.html" />
+    <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -172,6 +173,7 @@
     <Content Include="Map.html" />
     <Content Include="PopUp.html" />
     <Content Include="Scripts\ballot.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -238,6 +240,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessHandler\BusinessHandler.csproj">
+      <Project>{43EB003C-5BB9-4F06-A356-81FCF3CDAAF7}</Project>
+      <Name>BusinessHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
