@@ -2428,9 +2428,7 @@ hr {
   border-top: 1px solid #e6e6e6;
 }
 
-table {
-  margin-bottom: 30px;
-}
+
 
 td, th {
   padding: 0 1em 0 0;
@@ -6565,11 +6563,13 @@ div.ppt {
 }
 
 .property-meta {
-  padding: 15px;
+  padding: 10px;
   font-size: 0.9em;
   line-height: 2;
   color: #999;
   text-align: center;
+  height:200px;
+  overflow-y:auto;
 }
 
 @media (min-width: 768px) {
