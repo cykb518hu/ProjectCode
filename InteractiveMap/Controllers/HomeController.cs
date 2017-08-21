@@ -1,4 +1,5 @@
 ﻿using BusinessHandler.MessageHandler;
+using BusinessHandler.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,14 @@ namespace InteractiveMap.Controllers
             var keyList = DocQueryDB.GetKeyWordList();
             ViewData["KeyWordList"] = keyList;
             return View();
+        }
+
+        public JsonResult GetDataList()
+        {
+            var result = MapCounty.GetMapCountyList();
+            var total = result.Count;
+            var rows = result.Skip(0).Take(10).ToList();
+            return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
         }
     }
 }

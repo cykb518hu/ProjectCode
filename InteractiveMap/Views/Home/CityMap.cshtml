@@ -27,11 +27,20 @@
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+
     <script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/bootstrap-multiselect.js"></script>
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
-
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <style>
+        #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 
 </head>
 
@@ -111,8 +120,8 @@
                     <div id="property-search-results" data-view="grid-view">
                         <div class="property-items show-compare">
 
-                            <ul class="row list-unstyled">
-                                <li class="col-lg-6">
+                            <ul class="row list-unstyled" id="map-city-data-ul">
+                                @*<li class="col-lg-6">
 
                                     <div class="property-item border-box  featured">
 
@@ -125,15 +134,7 @@
                                                    <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
                                                    <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
                                                    <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                   <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
+                    
                                                </table>
                                             </div>
 
@@ -152,528 +153,9 @@
                                         </div><!-- .property-content -->
 
                                     </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
+                                </li>*@
+                                
 
-                                    <div class="property-item border-box  featured">
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <h3 class="title" style="margin-top:0px">London</h3> </div>
-                                            <div class="property-meta clearfix">
-                                                <table>
-                                                    <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                    <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                    <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                                    <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>
-                                             </table>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $950,000
-                                                </div>
-                                                <div class="property-icons">
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="140" data-toggle="tooltip" title="Add To Favorites"></i><a href="//vimeo.com/105744291" class="property-video-popup"><i class="icon-video-camera" data-toggle="tooltip" title="Watch Trailer"></i></a><i class="icon-add compare-property" data-compare-id="140" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box  featured" data-sync-id="2">
-                                        <a href="http://demo.themetrail.com/realty/property/apartment-on-stamford/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-living-room-light-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">20 Stamford Street, London, United Kingdom</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/apartment-on-stamford/"><h3 class="title">Apartment On Stamford</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">350 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">3 Rooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bedrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bedrooms">1 Bedroom</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">1 Bathroom</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $3,000&nbsp; per month
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fapartment-on-stamford%2F&amp;t=Apartment+On+Stamford"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Apartment+On+Stamford+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fapartment-on-stamford%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/apartment-on-stamford/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/apartment-on-stamford/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fapartment-on-stamford%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="149" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="149" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box  featured" data-sync-id="3">
-                                        <a href="http://demo.themetrail.com/realty/property/loft-above-the-city/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-bedroom-modern-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">180 York Road, London, UK</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                    <div class="property-tag tag-left">
-                                                        Bargain
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/loft-above-the-city/"><h3 class="title">Loft Above The City</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">450 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">2 Rooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bedrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bedrooms">1 Bedroom</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">1 Bathroom</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-
-                                                <div class="price-tag">
-                                                    $2,500&nbsp;&nbsp;per month
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Floft-above-the-city%2F&amp;t=Loft+Above+The+City"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Loft+Above+The+City+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Floft-above-the-city%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/loft-above-the-city/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/loft-above-the-city/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Floft-above-the-city%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="143" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="143" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box  featured" data-sync-id="4">
-                                        <a href="http://demo.themetrail.com/realty/property/futuristic-nest/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-one-story-house-2-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">125 Oakley Street, London, UK</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                    <div class="property-tag tag-left">
-                                                        Rented Out
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/futuristic-nest/"><h3 class="title">Futuristic Nest</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">1500 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">8 Rooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bedrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bedrooms">3 Bedrooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">2 Bathrooms</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $5,000&nbsp; per month
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Ffuturistic-nest%2F&amp;t=Futuristic+Nest"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Futuristic+Nest+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Ffuturistic-nest%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/futuristic-nest/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/futuristic-nest/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Ffuturistic-nest%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="142" data-toggle="tooltip" title="Add To Favorites"></i><a href="//vimeo.com/63241912" class="property-video-popup"><i class="icon-video-camera" data-toggle="tooltip" title="Watch Trailer"></i></a><i class="icon-add compare-property" data-compare-id="142" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box" data-sync-id="5">
-                                        <a href="http://demo.themetrail.com/realty/property/country-house/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-red-bricks-entrance-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">Great Dover Street, London, UK</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/country-house/"><h3 class="title">Country House</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">750 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">5 Rooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bedrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bedrooms">2 Bedrooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">2 Bathrooms</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $350,000
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fcountry-house%2F&amp;t=Country+House"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Country+House+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fcountry-house%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/country-house/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/country-house/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fcountry-house%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="146" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="146" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box" data-sync-id="6">
-                                        <a href="http://demo.themetrail.com/realty/property/central-office/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-office-huge-2-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">5 Walbrook, London, United Kingdom</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/central-office/"><h3 class="title">Central Office</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">250 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">1 Room</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">1 Bathroom</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $6,000&nbsp;&nbsp;per month
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fcentral-office%2F&amp;t=Central+Office"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Central+Office+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fcentral-office%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/central-office/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/central-office/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fcentral-office%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="147" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="147" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box" data-sync-id="7">
-                                        <a href="http://demo.themetrail.com/realty/property/living-the-dream/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-mansion-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">St. James's, London, UK</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/living-the-dream/"><h3 class="title">Living The Dream</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">1500 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">7 Rooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bedrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bedrooms">2 Bedrooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">2 Bathrooms</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $7,500&nbsp;&nbsp;per month
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fliving-the-dream%2F&amp;t=Living+The+Dream"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Living+The+Dream+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fliving-the-dream%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/living-the-dream/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/living-the-dream/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fliving-the-dream%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="144" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="144" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box" data-sync-id="8">
-                                        <a href="http://demo.themetrail.com/realty/property/green-oasis/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-mansion-lavender-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">Smith Square, London, UK</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/green-oasis/"><h3 class="title">Green Oasis</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">500 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">5 Rooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bedrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bedrooms">2 Bedrooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">2 Bathrooms</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $825,000
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fgreen-oasis%2F&amp;t=Green+Oasis"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Green+Oasis+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fgreen-oasis%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/green-oasis/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/green-oasis/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fgreen-oasis%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="148" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="148" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
-                                <li class="col-lg-6">
-
-                                    <div class="property-item border-box" data-sync-id="9">
-                                        <a href="http://demo.themetrail.com/realty/property/modern-office/">
-                                            <figure class="property-thumbnail">
-                                                <img width="600" height="300" src="http://demo.themetrail.com/realty/wp-content/uploads/2015/10/realty-property-office-building3-600x300.jpg" class=" wp-post-image" alt="" />			<figcaption>
-                                                    <div class="property-excerpt">
-                                                        <h4 class="address">30 Webber Street, London, UK</h4>
-                                                        <p>This is dummy copy. It is not meant to be read. It has been placed here solely to demonstrate the ..</p>
-                                                    </div>
-                                                    <div class="property-tag tag-left">
-                                                        Sold
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </a>
-                                        <div class="property-content content">
-                                            <div class="property-title">
-                                                <a href="http://demo.themetrail.com/realty/property/modern-office/"><h3 class="title">Modern Office</h3></a>
-                                            </div>
-                                            <div class="property-meta clearfix">
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-size"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Size">500 sq ft</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-rooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Rooms">4 Rooms</div>
-                                                </div>
-                                                <div>
-                                                    <div class="meta-title"><i class="icon-bathrooms"></i></div>
-                                                    <div class="meta-data" data-toggle="tooltip" title="Bathrooms">1 Bathroom</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="property-price">
-                                                <div class="price-tag">
-                                                    $600,000
-                                                </div>
-                                                <div class="property-icons">
-                                                    <span style="position: relative">
-                                                        <div class="share-unit" style="display: none;">
-                                                            <a class="social-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fmodern-office%2F&amp;t=Modern+Office"><i class="icon-facebook"></i></a>
-                                                            <a target="_blank" class="social-twitter" href="http://twitter.com/home?status=Modern+Office+http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fmodern-office%2F"><i class="icon-twitter"></i></a>
-                                                            <a class="social-google" target="_blank" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://plus.google.com/share?url=http://demo.themetrail.com/realty/property/modern-office/"><i class="icon-google-plus"></i></a>
-                                                            <a class="social-pinterest" target="_blank" href="http://pinterest.com/pin/create/button/?url=http://demo.themetrail.com/realty/property/modern-office/&amp;description=http%3A%2F%2Fdemo.themetrail.com%2Frealty%2Fproperty%2Fmodern-office%2F"><i class="icon-pinterest"></i></a>
-                                                        </div>
-                                                        <i class="icon-share share-property" data-toggle="tooltip" data-original-title="Share" title="Share"></i>
-                                                    </span>
-
-                                                    <i class="add-to-favorites icon-heart-1" data-fav-id="141" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="141" data-toggle="tooltip" title="Compare"></i>
-
-                                                </div><!-- .property-icons -->
-                                                <div class="clearfix"></div>
-                                            </div><!-- .property-price -->
-                                        </div><!-- .property-content -->
-
-                                    </div><!-- .property-item -->
-                                </li>
                             </ul>
 
                             <div id="pagination">
@@ -687,16 +169,37 @@
                         </div>
                     </div>
                 </div>
-
-            </div><!-- .row -->
+                <div class="col-sm-6" style="height:1400px; padding-top:30px;">
+                    <div id="map"></div>
+                </div>           
+             </div><!-- .row -->
         </div><!-- .container -->
     </div><!-- #content -->
 
 
+    <div id="pop-window" class="cartodb-popup header orange v2" style="display:none">
+        <a id="pop-window-close" href="#close" class="cartodb-popup-close-button close">x</a>
+        <div class="cartodb-popup-header">
+            <h1>1111</h1>
+            <span class="separator"></span>
+        </div>
+        <div class="cartodb-popup-content-wrapper">
+            <div class="cartodb-popup-content">
+                <h4>uri</h4>
+                <p>111111</p>
+                <h4>url</h4>
+                <p>222222</p>
+            </div>
+            <p style="text-align:right;font-size:small;">Custom infowindow</p>
+        </div>
+        <div class="cartodb-popup-tip-container">
+        </div>
+    </div>
+
 
     <script>
 
-        jQuery(document).ready(function ($) {
+        $(document).ready(function () {
             $("#sel_search_CityName").multiselect({
                 buttonWidth: '100%'
             });
@@ -710,69 +213,159 @@
             $('#txt_search_MeetingDate').datepicker({
                 format: 'yyyy-mm-dd'
             });
+          
+            searchData();
+           
         });
 
        function loader() {
-            jQuery('.property-items').addClass('loading');
-            jQuery('.property-items').html('<div class="loader-container"><div class="svg-loader"></div></div>');
+           $('.property-items').addClass('loading');
+           $('.property-items').html('<div class="loader-container"><div class="svg-loader"></div></div>');
         }
 
         // AJAX script for pagination
-        jQuery(function ($) {
-            $('.pagination-ajax a').live('click', function (e) {
-                e.preventDefault();
+        //jQuery(function ($) {
+        //    $('.pagination-ajax a').on('click', function (e) {
+        //        e.preventDefault();
 
-                var link_page = $(this).attr('href');
-                var page_number = $(this).text();
+        //        var link_page = $(this).attr('href');
+        //        var page_number = $(this).text();
 
-                if ($(this).hasClass("next")) {
-                    var next_from = parseInt($('.pagination-ajax li span').text());
-                    page_number = next_from + 1;
-                }
+        //        if ($(this).hasClass("next")) {
+        //            var next_from = parseInt($('.pagination-ajax li span').text());
+        //            page_number = next_from + 1;
+        //        }
 
-                if ($(this).hasClass("prev")) {
-                    var prev_from = parseInt($('.pagination-ajax li span').text());
-                    page_number = prev_from - 1;
-                }
+        //        if ($(this).hasClass("prev")) {
+        //            var prev_from = parseInt($('.pagination-ajax li span').text());
+        //            page_number = prev_from - 1;
+        //        }
 
-                $('.property-items').fadeOut(500);
-                removeMarkers();
+        //        $('.property-items').fadeOut(500);
+        //        removeMarkers();
 
-                var ajaxData = jQuery('.property-search-form').first().serialize() + "&action=tt_ajax_search&base=" + window.location.pathname + "&pagenumber=" + page_number;
-                //console.log(ajaxData);
-                $.ajax({
-                    type: 'GET',
-                    url: ajax_object.ajax_url,
-                    data: ajaxData,
-                    success: function (response) {
-                        $(".property-items").html(response);
-                        $(".property-items").fadeIn(500);
-                        window.history.pushState(".property-items", "Properties", link_page);
-                    },
-                    error: function () {
-                        console.log('failed');
-                    }
-                });
+        //        var ajaxData = jQuery('.property-search-form').first().serialize() + "&action=tt_ajax_search&base=" + window.location.pathname + "&pagenumber=" + page_number;
+        //        //console.log(ajaxData);
+        //        $.ajax({
+        //            type: 'GET',
+        //            url: ajax_object.ajax_url,
+        //            data: ajaxData,
+        //            success: function (response) {
+        //                $(".property-items").html(response);
+        //                $(".property-items").fadeIn(500);
+        //                window.history.pushState(".property-items", "Properties", link_page);
+        //            },
+        //            error: function () {
+        //                console.log('failed');
+        //            }
+        //        });
 
-            });
-        });
+        //    });
+        //});
     </script>
 
     <script>
 
-        jQuery('.container').on("click", '.add-to-favorites', function () {
+        $('.container').on("click", '.add-to-favorites', function () {
 
-            jQuery('#msg-login-to-add-favorites').removeClass('hide');
-            jQuery('a[href="#tab-login"]').tab('show');
-            jQuery('#login-modal').modal();
-            jQuery('#login-modal').on('hidden.bs.modal', function () {
-                jQuery('#msg-login-to-add-favorites').addClass('hide');
+            $('#msg-login-to-add-favorites').removeClass('hide');
+            $('a[href="#tab-login"]').tab('show');
+            $('#login-modal').modal();
+            $('#login-modal').on('hidden.bs.modal', function () {
+                $('#msg-login-to-add-favorites').addClass('hide');
             });
 
         });
     </script>
 
+    <script type="text/javascript">
+        var countyList = new Array();
+        function searchData()
+        {
+            $.ajax({
+                url: '@Url.Action("GetDataList", "Home")',
+                dataType: 'json',
+                type: "GET",
+                success: function (result) {
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var data = result.rows[i];
+                        var str = '<li class="col-lg-6"> <div class="property-item border-box  featured"><div class="property-content content"><div class="property-title">';
+                        str += ' <h3 class="title" style="margin-top:0px">' + data.County + '</h3> </div>';
+                        str += '<div class="property-meta clearfix"><table>';
+                        str += '  <tr><td style="width:25%;">Download</td><td style="width:50%;">Doc Type</td><td style="width:25%;">2017-08-11</td></tr>';
+                        str += '</table></div>';
+                        str += '<div class="property-price">';
+                        str += '<div class="price-tag">' + data.ModifyDate + '</div>';
+                        str += '  <div class="property-icons"><i class="add-to-favorites icon-heart-1" data-fav-id="140" data-toggle="tooltip" title="Add To Favorites"></i><i class="icon-add compare-property" data-compare-id="140" data-toggle="tooltip" title="Compare"></i> </div>';
+                        str += '<div class="clearfix"></div></div></div></div></li>';
+                        $("#map-city-data-ul").append(str);
+                        countyList.push(data.County)
+                    }
+                    main();
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (xhr, textStatus, errorThrown) {
 
+                }
+            });
+        }
+    </script>
+
+    <script>
+        // create layer selector
+        var layer;
+        function createSelector() {
+            var counties = "";
+            for (var i = 0; i < countyList.length; i++)
+            {
+                counties += "'" + countyList[i] + "',";
+            }
+            if (countyList.length > 0) {
+                counties = counties.substring(0, counties.length - 1);
+            }
+            var sql = new cartodb.SQL({ user: 'documentation' });
+            var fquery = "SELECT * FROM cartodb_query where name in (" + counties + ")";
+            layer.setSQL(fquery);
+
+    //        sql.getBounds(query).done(function (bounds) {
+    //            var southWest = L.latLng(bounds[0]),
+    //northEast = L.latLng(bounds[1]),
+    //bb = L.latLngBounds(southWest, northEast);
+    //            layer.getNativeMap().fitBounds(bb);
+    //        });
+            var cartocss = "#cartodb_query{polygon-fill: #fc9f58; line-color: white; } #cartodb_query[name='Wayne']{polygon-fill: #c8fc55; line-color: white; }";
+            //var cartocss1 = "#cartodb_query[name='Wayne']{polygon-fill: #c8fc55; line-color: white; }";
+            //layer.setCartoCSS(cartocss);
+            layer.setCartoCSS(cartocss);
+        }
+      function main() {
+          cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/4b83115e-8283-11e7-bb9f-0ef7f98ade21/viz.json', {
+          tiles_loader: true,
+          center_lat: 44,
+          center_lon:-85,
+          zoom: 7,
+          search: false,
+          infowindow: true
+        })
+        .done(function (vis, layers) {
+            var subLayer = layers[1].getSubLayer(0);
+            layer = subLayer;
+            createSelector();
+            subLayer.set({ 'interactivity': ['cartodb_id', 'name'] });
+            subLayer.setInteraction(true);
+            subLayer.on('featureClick', function (e, latlng, pos, data, layerNumber) {
+                $("#pop-window").css({ 'display': 'block', 'left': pos.x - 75, 'bottom': ($(window).height() - pos.y + 20), 'cursor': 'pointer' });
+                $("#pop-window").find('p').text(data.name);
+            });
+        })
+        .error(function(err) {
+          console.log(err);
+        });
+      }
+    //  window.onload = main;
+
+    </script>
 
 </body>
 

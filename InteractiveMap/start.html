@@ -109,16 +109,16 @@
                 layer.setSQL(query);
             });
             var fquery = "SELECT * FROM cartodb_query where name in ('Clare','Wayne','Kent','Genesee')";
-            //layer.setSQL(fquery);
+            layer.setSQL(fquery);
 
-            sql.getBounds(query).done(function (bounds) {
-                var southWest = L.latLng(bounds[0]),
-    northEast = L.latLng(bounds[1]),
-    bb = L.latLngBounds(southWest, northEast);
+    //        sql.getBounds(query).done(function (bounds) {
+    //            var southWest = L.latLng(bounds[0]),
+    //northEast = L.latLng(bounds[1]),
+    //bb = L.latLngBounds(southWest, northEast);
 
 
-                layer.getNativeMap().fitBounds(bb);
-            });
+    //            layer.getNativeMap().fitBounds(bb);
+    //        });
             var cartocss = "#cartodb_query{polygon-fill: #fc9f58; line-color: white; } #cartodb_query[name='Wayne']{polygon-fill: #c8fc55; line-color: white; }";
             //var cartocss1 = "#cartodb_query[name='Wayne']{polygon-fill: #c8fc55; line-color: white; }";
             //layer.setCartoCSS(cartocss);
