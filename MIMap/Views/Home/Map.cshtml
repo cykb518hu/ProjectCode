@@ -1,0 +1,105 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Map</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/bootstrap-table.js"></script>
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-multiselect.js"></script>
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-combobox.js"></script>
+    <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
+    <style>
+                .activeClass {
+                    background: #006dcc;
+                    color: #fff;
+                }
+
+                .navbar-collapse a {
+                    color: #ffffff !important;
+                }
+
+                #div-query a {
+                    text-decoration: none;
+                }
+
+                    #div-query a:hover {
+                        text-decoration: none;
+                    }
+
+        .highlight {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="search-container">
+                <div class="row property-search-form">
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
+                            <option value="all" selected>Any City</option>
+                            <option value="belgravia"> Belgravia</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <select name="sel_search_KeyWord" id="sel_search_KeyWord" class="form-control" multiple="multiple">
+                            <option value="all" selected>Any City</option>
+                            <option value="belgravia"> Belgravia</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <select name="sel_search_DeployDate" id="sel_search_DeployDate" class="form-control" multiple="multiple">
+                            <option value="all" selected>Any City</option>
+                            <option value="belgravia"> Belgravia</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="text" name="txt_search_MeetingDate" id="txt_search_MeetingDate" placeholder="Meeting Date" class="form-control" />
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="submit" value="Search" class="btn btn-primary btn-block form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6" style="border-color:blue; border-width:1px; height:500px;">.col-md-6</div>
+    </div>
+    <script>
+
+        jQuery(document).ready(function ($) {
+            $("#sel_search_CityName").multiselect({
+                buttonWidth: '100%'
+            });
+            $("#sel_search_KeyWord").multiselect({
+                buttonWidth: '100%'
+            });
+            $("#sel_search_DeployDate").multiselect({
+                buttonWidth: '100%'
+            });
+            $('#txt_search_MeetingDate').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+
+        });
+    </script>
+</body>
+
+</html>
