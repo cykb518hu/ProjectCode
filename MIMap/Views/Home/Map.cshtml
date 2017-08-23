@@ -1,6 +1,10 @@
-﻿
+﻿@using BusinessHandler.Model;
 @{
     Layout = null;
+
+    var keyWords = (List<BusinessHandler.MessageHandler.KeyWordModel>)ViewData["KeyWordList"];
+
+    var municipalityList = (List<MapMunicipality>)ViewData["municipalityList"];
 }
 
 <!DOCTYPE html>
@@ -52,20 +56,46 @@
                 <div class="row property-search-form">
                     <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
-                            <option value="all" selected>Any City</option>
-                            <option value="belgravia"> Belgravia</option>
+                            <option value="All" >ALL</option>
+                            @{
+                                foreach (var r in municipalityList)
+                                {
+                                    <option value="@r.MunicipalityName">@r.MunicipalityName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
+                            <option value="All">ALL</option>
+                            @{
+                                foreach (var r in municipalityList.Select(x => x.CountyName).Distinct())
+                                {
+                                    <option value="@r">@r</option>
+                                }
+                            }
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_KeyWord" id="sel_search_KeyWord" class="form-control" multiple="multiple">
-                            <option value="all" selected>Any City</option>
-                            <option value="belgravia"> Belgravia</option>
+                            <option value="All" >All</option>
+                            @{
+                                foreach (var r in keyWords)
+                                {
+                                    <option value="@r.KeyWord">@r.KeyWord</option>
+                                }
+                            }
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_DeployDate" id="sel_search_DeployDate" class="form-control" multiple="multiple">
-                            <option value="all" selected>Any City</option>
-                            <option value="belgravia"> Belgravia</option>
+                            <option value="all" >All</option>
+                            @{
+                                foreach (var r in municipalityList.Select(x => x.DeployDate).Distinct())
+                                {
+                                    <option value="@r">@r</option>
+                                }
+                            }
                         </select>
                     </div>
 
@@ -74,28 +104,370 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="submit" value="Search" class="btn btn-primary btn-block form-control" />
+                        <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
                     </div>
                 </div>
+            </div>
+
+            <div style="margin-top:20px;">
+                <table id="tb_municipality"></table>
             </div>
         </div>
 
         <div class="col-md-6" style="border-color:blue; border-width:1px; height:500px;">.col-md-6</div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Comments</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="hid_DocId" />
+                    <input type="hidden" id="hid_QueryGuid" />
+                    <textarea class="form-control" rows="3" id="txt_Comments"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="cursor:pointer">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn_Save_Comment">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script>
+        //load table data
+        $(function () {
+            var oTable = new TableInit();
+            oTable.Init();
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+        });
+
+        var TableInit = function () {
+            var oTableInit = new Object();
+            oTableInit.Init = function () {
+                $('#tb_municipality').bootstrapTable({
+                    url: '/Home/GetParentDataList',
+                    method: 'get',
+                    cache: false,
+                    pagination: true,
+                    sortable: true,
+                    queryParams: oTableInit.queryParams,
+                    sidePagination: "server",
+                    pageList: [10, 25, 50, 100],
+                    showColumns: true,
+                    detailView: true,
+                    achillesToolbar: true,
+                    columns: [
+                         {
+                             field: 'MunicipalityDispaly',
+                             title: 'Municipality',
+                             sortable: true,
+                             width: '25%'
+                         },
+                        {
+                            field: 'DocType',
+                            title: 'Type',
+                            sortable: true,
+                            width: '20%'
+                        },
+                        
+                          {
+                              field: 'MeetingDateDisplay',
+                              title: 'Meeting Date',
+                              sortable: true,
+                              width: '15%'
+                          },
+                           {
+                               field: 'ScrapeDate',
+                               title: 'Scrape Date',
+                               sortable: true,
+                               width: '15%'
+                           },
+                            {
+                                field: 'IsViewed',
+                                title: 'Viewed',
+                                'class': 'hideColumn'
+                            },
+         
+                        {
+                            field: 'MinicipalityOperation',
+                            title: '',
+                            sortable: false,
+                            width: '20%'
+                        }
+                    ],
+
+                    onExpandRow: function (index, row, $detail) {
+                        oTableInit.InitSubTable(index, row, $detail);
+                    },
+                    onLoadSuccess: function (data) {
+                        for (var i = 0; i < data.rows.length; i++) {
+                            var doc = data.rows[i];
+                            sessionStorage.setItem(doc.DocId, JSON.stringify(doc.DocQuerySubList));
+                        }
+                        $("#tb_municipality").children().eq(1).children().each(function () {
+                            if ($(this).children(":last").prev().children().html() == "No") {
+                                $(this).css("background-color", "#eee");
+                            }
+                        });
+                    },
+
+                });
+            };
+
+
+            oTableInit.queryParams = function (params) {
+                var temp = getSearchData();
+                temp.limit = params.limit;
+                temp.offset = params.offset;
+                temp.sortName = this.sortName;
+                temp.sortOrder = this.sortOrder;
+                return temp;
+            };
+
+            oTableInit.InitSubTable = function (index, row, $detail) {
+                var parentid = row.DocId;
+                var filePath = row.DocFilePath;
+                var isViewed = $(".sp_" + parentid).html();
+                if (isViewed != "Yes") {
+                    $.ajax({
+                        url: '@Url.Action("UpdateDocStatus", "Home")',
+                        data: { DocId: parentid, DocFilePath: filePath },
+                        dataType: 'json',
+                        type: "POST",
+                        success: function (result) {
+                        },
+                        complete: function (XMLHttpRequest, textStatus) {
+                            $(".sp_" + parentid).html("Yes");
+                            $(".sp_" + parentid).parent().parent().css("background-color", "#fff");
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+
+                        }
+                    });
+                }
+                var dataList = JSON.parse(sessionStorage.getItem(parentid));
+                var cur_table = $detail.html('<table></table>').find('table');
+                $(cur_table).bootstrapTable({
+                    data: dataList,
+                    columns: [
+
+                        {
+                            field: 'PageNumber',
+                            title: 'Page',
+                            sortable: true,
+                            width: '5%'
+                        },
+
+                        {
+                            field: 'KeyWord',
+                            title: 'Key Word',
+                            sortable: true,
+                            width: '15%'
+                        },
+
+                        {
+                            field: 'Content',
+                            title: 'Content',
+                            width: '60%'
+                        },
+                        {
+                            field: 'Comment',
+                            title: 'Comment',
+                            width: '10%'
+                        },
+                        {
+                            field: 'Operation',
+                            title: 'Operation',
+                            align: 'center',
+                            width: '10%'
+                        }
+                    ],
+
+                });
+            };
+
+            return oTableInit;
+        };
+        var ButtonInit = function () {
+            var oInit = new Object();
+            var postdata = {};
+            oInit.Init = function () {
+                //初始化页面上面的按钮事件
+            };
+            return oInit;
+        };
+        function expandAllRows() {
+            $("#tb_municipality").bootstrapTable('expandAllRows');
+        }
+        function collapseAllRows() {
+            $("#tb_municipality").bootstrapTable('collapseAllRows');
+        }
+        function OpenDataDetail(obj) {
+            var queryGuid = $(obj).attr("data-queryguid");
+            var comment = $(obj).parent().prev().children().html();
+            $("#hid_DocId").val("");
+            $("#hid_QueryGuid").val(queryGuid);
+            $("#txt_Comments").val(comment);
+            $("#myModal").modal('show');
+        }
+        function OpenDocNoteDetail(obj) {
+            var docId = $(obj).attr("data-docid");
+            var comment = $(obj).attr("data-comment");
+            $("#hid_DocId").val(docId);
+            $("#hid_QueryGuid").val("");
+            $("#txt_Comments").val(comment);
+            $("#myModal").modal('show');
+        }
+        function ShowStatus(obj) {
+            var selectedStatus = $(obj).children().attr("data-tag");
+            var isViewed = "";
+            if ($("#div_status_select").attr("data-status") != null) {
+                isViewed = $("#div_status_select").attr("data-status");
+            }
+            if (isViewed != selectedStatus) {
+                $("#div_status_select").attr("data-status", selectedStatus);
+                $("#sp_view_status").html(selectedStatus);
+                searchData();
+            }
+
+        }
+        function ShowImportant(obj) {
+            var selectedImportant = $(obj).children().attr("data-tag");
+            var important = "";
+            if ($("#div_status_select").attr("data-important") != null) {
+                important = $("#div_status_select").attr("data-important");
+            }
+            if (important != selectedImportant) {
+                $("#div_status_select").attr("data-important", selectedImportant);
+                $("#sp_important_status").html($(obj).children().html());
+                searchData();
+            }
+        }
+        function RemoveData(obj) {
+            var removed = "False";
+          ;
+            var docId = $(obj).attr("data-docid");
+            if ($(obj).attr("data-removed")=="Yes") {
+                removed = "True";
+            }
+            else {
+                removed = "False";
+            }
+            $.ajax({
+                url: '@Url.Action("UpdateDocImportant", "Home")',
+                data: { DocId: docId, Important: removed },
+                dataType: 'json',
+                type: "POST",
+                success: function (result) {
+                    // $(obj).parent().parent().hide();
+
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+
+        }
+        function getSearchData() {
+
+            var isViewed = "";
+            var isImportant = "";
+            if ($("#div_status_select").attr("data-status") != null) {
+                isViewed = $("#div_status_select").attr("data-status");
+            }
+            if ($("#div_status_select").attr("data-important") != null) {
+                isImportant = $("#div_status_select").attr("data-important");
+            }
+            var result = getQueryData();
+            result.IsViewed = isViewed;
+            result.Important = isImportant;
+            return result;
+        }
+        function getQueryData() {
+            var keyWord = "";
+            var cityName = "";
+            var countyName = "";
+            if ($("#sel_search_KeyWord").val() != null) {
+                keyWord = $("#sel_search_KeyWord").val().toString();
+            }
+            if ($("#sel_search_CityName").val() != null) {
+                cityName = $("#sel_search_CityName").val().toString();
+            }
+            if ($("#sel_search_CountyName").val() != null) {
+                countyName = $("#sel_search_CountyName").val().toString();
+            }
+            var deployDate = "";
+            if ($("#sel_search_DeployDate").val() != null) {
+                deployDate = $("#sel_search_DeployDate").val().toString();
+            }
+            var result = {
+                CityName: cityName,
+                KeyWord: keyWord,
+                DeployDate: deployDate,
+                CountyName:countyName,
+                MeetingDate: $("#txt_search_MeetingDate").val()
+
+            };
+            return result;
+        }
+        function searchData() {
+
+            var temp = getSearchData();
+            var tempQueryParams = function () {
+                return temp;
+            };
+            $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+        }
+    </script>
     <script>
 
         jQuery(document).ready(function ($) {
             $("#sel_search_CityName").multiselect({
-                buttonWidth: '100%'
+                buttonWidth: '100%',
+                nonSelectedText: 'No Municipality Selected'
+            });
+            $("#sel_search_CountyName").multiselect({
+                buttonWidth: '100%',
+                nonSelectedText: 'No County Selected'
             });
             $("#sel_search_KeyWord").multiselect({
-                buttonWidth: '100%'
+                buttonWidth: '100%',
+                nonSelectedText: 'No Key Word Selected'
             });
             $("#sel_search_DeployDate").multiselect({
-                buttonWidth: '100%'
+                buttonWidth: '100%',
+                nonSelectedText: 'No Deploy Date Selected'
             });
             $('#txt_search_MeetingDate').datepicker({
                 format: 'yyyy-mm-dd'
+            });
+            $("#btn_Search").click(function () {
+                searchData();
+            });
+            $("#btn_Save_Comment").click(function () {
+                $.ajax({
+                    url: '@Url.Action("SaveComment", "Home")',
+                    data: { DocId: $("#hid_DocId").val(), Comment: $("#txt_Comments").val(), QueryGuid: $("#hid_QueryGuid").val() },
+                    dataType: 'json',
+                    type: "POST",
+                    success: function (result) {
+                        alert("success");
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                        $('#' + $("#hid_QueryGuid").val()).html($("#txt_Comments").val());
+                        $("#myModal").modal('hide');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+
+                    }
+                });
             });
 
         });

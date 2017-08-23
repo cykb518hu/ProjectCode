@@ -54,11 +54,15 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                if (!string.IsNullOrWhiteSpace(message.CityName) && !message.CityName.Equals("All", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(message.CityName) && !message.CityName.Split(',').Any(x => x.Equals("All")))
                 {
                     command.Parameters.AddWithValue("@CityName", GetArrayQuery(message.CityName));
                 }
-                if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Equals("All", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(message.CountyName) && !message.CountyName.Split(',').Any(x => x.Equals("All")))
+                {
+                    command.Parameters.AddWithValue("@CountyName", GetArrayQuery(message.CountyName));
+                }
+                if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All")))
                 {
                     command.Parameters.AddWithValue("@KeyWord", GetArrayQuery(message.KeyWord));
                 }
@@ -92,6 +96,9 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         orderBy = "DOC_TYPE";
                         break;
                     case "CityNameDispaly":
+                        orderBy = "CITY_NM";
+                        break;
+                    case "MunicipalityDispaly":
                         orderBy = "CITY_NM";
                         break;
                     case "MeetingDateDisplay":
@@ -139,6 +146,22 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         var checkStr = important.Equals("Yes") ? "checked" : "";
                         result.ImportantDisplay = @"<input type='checkbox'  onclick='RemoveData(this);'   data-file='" + important + "' data-docid='" + result.DocId + "' " + checkStr + " />";
 
+                        result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString() + "</a>";
+                        result.COMMENT = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
+                        result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note' data-docid='" + result.DocId + "' data-comment='" + result.COMMENT + "' onclick='OpenDocNoteDetail(this); return false'></button>";
+                    
+                        //importan means removed
+                        if (important.Equals("Yes"))
+                        {
+                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-plus'  data-removed='" + important + "' title='Add data back' data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
+
+                        }
+                        else
+                        {
+                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove'  data-removed='" + important + "' title='Remove data' data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
+
+                        }
+                        result.MinicipalityOperation += "</div>";
                         list.Add(result);
 
                     }
@@ -197,7 +220,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         {
                             result.Content = Regex.Replace(result.Content, result.KeyWord, string.Format("<b style='color:red'>{0}</b>", result.KeyWord), RegexOptions.IgnoreCase);
                         }
-                        result.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align' data-file='' data-docid='" + result.DocId + "' data-queryguid='" + result.QueryGuid + "' onclick='OpenDataDetail(this); return false'></button>";
+                        result.Operation = @"<button type='button' class='btn btn-default glyphicon glyphicon-edit' aria-label='Left Align'  data-queryguid='" + result.QueryGuid + "' onclick='OpenDataDetail(this); return false'></button>";
                         resultList.Add(result);
                     }
                 }
@@ -252,19 +275,32 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
         }
         public static void UpdateQueryComment(DocQueryResultModel message)
         {
-            string queryString = @"UPDATE QUERY_ENTRY SET COMMENT='" + message.Comment + "'  WHERE ENTRY_GUID='" + message.QueryGuid + "'";
-            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            if (!string.IsNullOrEmpty(message.QueryGuid))
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-                connection.Open();
-                command.ExecuteNonQuery();
+                string queryString = @"UPDATE QUERY_ENTRY SET COMMENT='" + message.Comment + "'  WHERE ENTRY_GUID='" + message.QueryGuid + "'";
+                using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            else
+            {
+                string queryString = @"UPDATE DOCUMENT SET COMMENT='" + message.Comment + "'  WHERE DOC_GUID='" + message.DocId + "'";
+                using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
         #region map
-        public static Dictionary<string, string> GetCityAndDeployDateList()
+        public static List<MapMunicipality> GetMapMunicipality()
         {
-            Dictionary<string, string> cityDployeList = new Dictionary<string, string>();
+            var list = new List<MapMunicipality>();
             string queryString = @"select  * from [dbo].[CITY]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -273,15 +309,14 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    var cityName = DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
-                    var deployDate = DBNull.Value == reader["DEPLOYE_DATE"] ? "" : Convert.ToDateTime(reader["DEPLOYE_DATE"]).ToString("yyyy-MM-dd");
-                    if (!cityDployeList.ContainsKey(cityName))
-                    {
-                        cityDployeList.Add(cityName, deployDate);
-                    }
+                    var data = new MapMunicipality();
+                    data .MunicipalityName= DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    data.DeployDate = DBNull.Value == reader["DEPLOYE_DATE"] ? "" : Convert.ToDateTime(reader["DEPLOYE_DATE"]).ToString("yyyy-MM-dd");
+                    data.CountyName= DBNull.Value == reader["COUNTY_NM"] ? "" : reader["COUNTY_NM"].ToString();
+                    list.Add(data);
                 }
             }
-            return cityDployeList;
+            return list;
         }
 
         public static List<KeyWordModel> GetKeyWordList()

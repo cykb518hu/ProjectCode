@@ -11,6 +11,7 @@ namespace BusinessHandler.Model
         public int limit { get; set; }
         public int offset { get; set; }
         public string CityName { get; set; }
+        public string CountyName { get; set; }
         public string MeetingDate { get; set; }
         public string KeyWord { get; set; }
         public string DeployDate { get; set; }
@@ -44,6 +45,10 @@ namespace BusinessHandler.Model
         public string Removed { get; set; }
 
         public string ImportantDisplay { get; set; }
+
+        public string MunicipalityDispaly { get; set; }
+        public string MinicipalityOperation { get; set; }
+        public string COMMENT { get; set; }
     }
     public class DocQueryResultModel
     {
@@ -132,5 +137,18 @@ namespace BusinessHandler.Model
 
         public string QueryGuid { get; set; }
     }
+
+
+    #region map model
+
+    public class MapMunicipality
+    {
+        public string MunicipalityName { get; set; }
+
+        public string CountyName { get; set; }
+
+        public string DeployDate { get; set; }
+    }
+    #endregion
 
 }

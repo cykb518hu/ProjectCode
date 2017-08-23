@@ -12,6 +12,7 @@ CREATE PROCEDURE [dbo].[GET_DOC_QUERY]
 (
 @OrderByField nvarchar(100)=null,
 @CityName varchar(max) =null,
+@CountyName varchar(max) =null,
 @KeyWord varchar(max) =null,
 @MeetingDate varchar(50)=null,
 @DeployeDate varchar(50)=null,
@@ -27,13 +28,17 @@ begin
 
 set @sqlstr='
 SELECT DISTINCT D.DOC_GUID, D.CITY_NM , D.DOC_TYPE,D.DOC_SOURCE, D.DOC_PATH,D.CHECKED,D.IMPORTANT,D.READABLE,
-Q.MEETING_DATE,Q.SEARCH_DATE, C.DEPLOYE_DATE
+Q.MEETING_DATE,Q.SEARCH_DATE, C.DEPLOYE_DATE,D.COMMENT
  FROM  DBO.DOCUMENT D INNER JOIN DBO.QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID 
- LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM where 1=1'
+ INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM where 1=1'
 
 if @CityName is not null 
 	begin
 		set @sqlstr=@sqlstr+' and D.CITY_NM IN ('+ @CityName+')'
+	end
+if @CountyName is not null 
+	begin
+		set @sqlstr=@sqlstr+' and C.COUNTY_NM IN ('+ @CountyName+')'
 	end
 if @KeyWord is not null 
 	begin
