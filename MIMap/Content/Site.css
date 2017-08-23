@@ -43,3 +43,14 @@
 .hideColumn {
     display:none;
 }
+
+#div-query {
+    position: fixed; /* now it will stay fixed on the screen, even while you scroll*/
+    left: 0px; /* it will be stuck to the left*/
+    top: 50px; /* it will be in the middle (vertically)*/
+    z-index:10;
+}
+#ul_queryGourp
+{
+    width:200px;
+}

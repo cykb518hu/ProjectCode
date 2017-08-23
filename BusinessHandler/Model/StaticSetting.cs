@@ -21,5 +21,7 @@ namespace BusinessHandler.Model
         public static string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
         public static string filePath = ConfigurationManager.AppSettings["FilePath"].ToString();
+
+        public static string queryFile = ConfigurationManager.AppSettings["queryFile"].ToString();
     }
 }

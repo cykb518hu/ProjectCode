@@ -27,9 +27,16 @@ namespace BusinessHandler.MessageHandler
     {
         XmlSerializer serializer;
         string fileName = string.Empty;
-        public SearchQueryRepository()
+        public SearchQueryRepository(string file = "")
         {
-            fileName = HttpContext.Current.Server.MapPath("~/File/SearchQuery.xml");
+            if (string.IsNullOrEmpty(file))
+            {
+                fileName = HttpContext.Current.Server.MapPath("~/File/SearchQuery.xml");
+            }
+            else
+            {
+                fileName = file;
+            }
             serializer = new XmlSerializer(typeof(List<SearchQueryModel>), new XmlRootAttribute("SearyQueries"));
         }
         public void AddSearchQuery(string query, string title)

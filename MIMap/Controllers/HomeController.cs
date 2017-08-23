@@ -1,5 +1,6 @@
 ﻿using BusinessHandler.MessageHandler;
 using BusinessHandler.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,96 @@ namespace MIMap.Controllers
         public JsonResult SaveComment(DocQueryResultModel message)
         {
             DocQueryDB.UpdateQueryComment(message);
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetSearchQuery()
+        {
+            var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
+            var data = searchQueryRepository.GetSearchQuery();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult SaveSearchQuery(string query)
+        {
+            var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
+            var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
+            var title = string.Empty;
+            if (!string.IsNullOrWhiteSpace(data.CityName))
+            {
+                title = data.CityName;
+            }
+            if (!string.IsNullOrWhiteSpace(data.CountyName))
+            {
+                if (!string.IsNullOrEmpty(title))
+                {
+                    title += "&";
+                }
+                title += data.CountyName;
+            }
+            if (!string.IsNullOrWhiteSpace(data.KeyWord))
+            {
+                if (!string.IsNullOrEmpty(title))
+                {
+                    title += "&";
+                }
+                title += data.KeyWord;
+            }
+            if (!string.IsNullOrWhiteSpace(data.DeployDate))
+            {
+                if (!string.IsNullOrEmpty(title))
+                {
+                    title += "&";
+                }
+                title += data.DeployDate;
+            }
+            if (!string.IsNullOrWhiteSpace(data.MeetingDate))
+            {
+                if (!string.IsNullOrEmpty(title))
+                {
+                    title += "&";
+                }
+                title += data.MeetingDate;
+            }
+            if (!string.IsNullOrEmpty(title))
+            {
+                searchQueryRepository.AddSearchQuery(query, title);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateSearchQuery(string guid, string title, string query)
+        {
+            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(guid))
+            {
+                var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
+                searchQueryRepository.UpdateSearchQuery(guid, title, query);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteSearchQuery(string guid)
+        {
+            if (!string.IsNullOrWhiteSpace(guid))
+            {
+                var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
+                searchQueryRepository.DeleteSearchQuery(guid);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult AddSearchQueryAmount(string guid)
+        {
+            if (!string.IsNullOrWhiteSpace(guid))
+            {
+                var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
+                searchQueryRepository.AddSearchQueryAmount(guid);
+            }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
     }
