@@ -49,6 +49,8 @@ namespace BusinessHandler.Model
         public string MunicipalityDispaly { get; set; }
         public string MinicipalityOperation { get; set; }
         public string COMMENT { get; set; }
+
+        public string LongName { get; set; }
     }
     public class DocQueryResultModel
     {
@@ -138,7 +140,6 @@ namespace BusinessHandler.Model
         public string QueryGuid { get; set; }
     }
 
-
     #region map model
 
     public class MapMunicipality
@@ -148,6 +149,11 @@ namespace BusinessHandler.Model
         public string CountyName { get; set; }
 
         public string DeployDate { get; set; }
+    }
+    public class MapMunicipalityColor
+    {
+        public string MunicipalityName { get; set; }
+        public string Color { get; set; }
     }
     #endregion
 

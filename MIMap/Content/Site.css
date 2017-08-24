@@ -54,3 +54,8 @@
 {
     width:200px;
 }
+  #map {
+            height: 800px;
+            padding: 0;
+            margin: 0;
+        }

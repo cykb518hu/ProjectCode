@@ -45,10 +45,15 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
             return list;
         }
 
-        public static List<DocQueryParentModel> GetAllDataList(DocQueryMessage message, out int total)
+        public static List<DocQueryParentModel> GetAllDataList(DocQueryMessage message, out int total,bool getMunicipality=false)
         {
             var list = new List<DocQueryParentModel>();
+            
             string queryString = @"[dbo].[GET_DOC_QUERY]";
+            if(getMunicipality)
+            {
+                queryString = @"[dbo].[GET_Municipality]";
+            }
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -86,6 +91,21 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                     command.Parameters.AddWithValue("@IsImportant", isImportant);
                 }
                 connection.Open();
+                if (getMunicipality)
+                {
+                    total = 0;
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var result = new DocQueryParentModel();
+                            result.LongName = DBNull.Value == reader["LONG_NM"] ? "" : reader["LONG_NM"].ToString();
+                            result.Number = DBNull.Value == reader["Number"] ? 0 : Convert.ToInt32(reader["Number"]);
+                            list.Add(result);
+                        }
+                    }
+                    return list;
+                }
 
                 total = Convert.ToInt32(command.ExecuteScalar());
 
@@ -162,6 +182,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
 
                         }
                         result.MinicipalityOperation += "</div>";
+                        result.LongName = DBNull.Value == reader["LONG_NM"] ? "" : reader["LONG_NM"].ToString();
                         list.Add(result);
 
                     }
@@ -330,6 +351,33 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                        .ToList();
 
             return list;
+        }
+
+
+        public static List<MapMunicipalityColor> GetMapMunicipalityColor(List<DocQueryParentModel> list)
+        {
+            var result = new List<MapMunicipalityColor>();
+            if (list.Any())
+            {
+                int max = list.First().Number;
+                int min = list.Last().Number;
+
+                int level = (max - min) / 3;
+                level = level == 0 ? 1 : level;
+                foreach (var l in list)
+                {
+                    var data = new MapMunicipalityColor();
+                    data.MunicipalityName = l.LongName;
+                    var index = l.Number / level;
+                    if (index >= StaticSetting.MapColorList().Count)
+                    {
+                        index = StaticSetting.MapColorList().Count - 1;
+                    }
+                    data.Color = " #mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + StaticSetting.MapColorList()[index] + "; line-color: white; }";
+                    result.Add(data);
+                }
+            }
+            return result;
         }
         #endregion
 

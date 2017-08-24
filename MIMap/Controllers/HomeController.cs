@@ -47,7 +47,16 @@ namespace MIMap.Controllers
             return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
 
         }
+        public JsonResult GetMunicipalityList(DocQueryMessage message)
+        {
+            int total = 0;
+            var list = DocQueryDB.GetAllDataList(message, out total, true);
+            list = list.OrderByDescending(x => x.Number).ToList();
 
+            var result = DocQueryDB.GetMapMunicipalityColor(list);
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
         public JsonResult UpdateDocStatus(DocQueryResultModel message)
         {
             DocQueryDB.UpdateDocStatus(message);

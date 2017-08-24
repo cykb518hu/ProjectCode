@@ -23,5 +23,15 @@ namespace BusinessHandler.Model
         public static string filePath = ConfigurationManager.AppSettings["FilePath"].ToString();
 
         public static string queryFile = ConfigurationManager.AppSettings["queryFile"].ToString();
+
+        public static List<string> MapColorList()
+        {
+            List<string> list = new List<string>();
+            list.Add("#00FF7F");
+            list.Add("#00EE76");
+            list.Add("#00CD66");
+            list.Add("#008B45");
+            return list;
+        }
     }
 }

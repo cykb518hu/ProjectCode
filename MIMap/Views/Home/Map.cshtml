@@ -23,6 +23,8 @@
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-combobox.js"></script>
     <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <style>
         .activeClass {
             background: #006dcc;
@@ -48,14 +50,20 @@
 </head>
 <body>
     <div id="div-query">
-        <ul class="list-group" id="ul_queryGourp">
-            <li class="list-group-item active">
-                Query
-            </li>
+        <div class="col-md-6">
+            <ul class="list-group" id="ul_queryGourp" style="display:none" >
+                <li class="list-group-item active" style="border-top-right-radius:unset">
+                    Query
+                </li>
+            </ul>
+            </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"  title='Hide Query Group' style="margin-left:32px;height:42px; top:0px; display:none" id="btn_hideQueryDiv"></button>
+            <button type="button" class="btn btn-primary glyphicon glyphicon-forward" title='Show Query Group' style="margin-left:-42px;height:32px; top:0px" id="btn_showQueryDiv"></button>
 
+         </div>
 
-        </ul>
-    </div>
+        </div>
     <div class="row">
         <div class="col-md-6">
             <div class="search-container">
@@ -108,10 +116,11 @@
                         <input type="text" name="txt_search_MeetingDate" id="txt_search_MeetingDate" placeholder="Meeting Date" class="form-control" />
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
+     
                         <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="submit" value="Search" id="btn_SaveInnitialQuery" class="btn btn-primary btn-block form-control" />
+                        <input type="submit" value="Save Search Query" id="btn_SaveInnitialQuery" class="btn btn-primary btn-block form-control" />
                     </div>
                 </div>
             </div>
@@ -119,7 +128,9 @@
                 <table id="tb_municipality"></table>
             </div>
         </div>
-        <div class="col-md-6" style="border-color:blue; border-width:1px; height:500px;">.col-md-6</div>
+        <div class="col-md-6" >
+            <div id="map"></div>
+        </div>
     </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
         <div class="modal-dialog" role="document">
@@ -459,11 +470,14 @@
                 return temp;
             };
             $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+
+            loadMapData();
         }
         function loadQueryGroup() {
             $.ajax({
                 url: '@Url.Action("GetSearchQuery", "Home")',
                 dataType: 'json',
+
                 type: "GET",
                 cache: false,
                 success: function (result) {
@@ -627,6 +641,16 @@
                 });
             });
 
+            $("#btn_showQueryDiv").click(function () {
+                $("#ul_queryGourp").show();
+                $("#btn_hideQueryDiv").show();
+                $(this).hide();
+            });
+            $("#btn_hideQueryDiv").click(function () {
+                $("#ul_queryGourp").hide();
+                $("#btn_showQueryDiv").show();
+                $(this).hide();
+            });
             $("#btn_SaveInnitialQuery").click(function () {
                 var data = getQueryData();
                 $.ajax({
@@ -684,8 +708,75 @@
                     }
                 });
             });
-
+            initialMap();
         });
+    </script>
+
+
+    <script>
+        //map
+        var map;
+        var layer;
+        var municipalityList = new Array();
+        function initialMap() {
+            cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json', {
+                tiles_loader: true,
+                search: false
+            })
+          .done(function (vis, layers) {
+              map = vis.getNativeMap();
+              var subLayer = layers[1].getSubLayer(0);
+              layer = subLayer;
+              loadMapData();
+          })
+          .error(function (err) {
+              console.log(err);
+          });
+        }
+        function loadMapData() {
+            municipalityList = new Array();
+            $.ajax({
+                url: '@Url.Action("GetMunicipalityList", "Home")',
+                dataType: 'json',
+                data: getSearchData(),
+                type: "GET",
+                cache: false,
+                success: function (result) {
+                    if (result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            var data = result[i];
+                            municipalityList.push(data);
+                        }
+                    }
+                    createSelector();
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                }
+            });
+        }
+        function createSelector() {
+            var municipalities = "'nodata'";
+            var cartocss = "#mi_mun{polygon-fill: #00FF7F; line-color: white; }";
+            
+            if (municipalityList.length > 0) {
+                municipalities = "";
+                cartocss = "";
+                for (var i = 0; i < municipalityList.length; i++) {
+                    municipalities += "'" + municipalityList[i].MunicipalityName + "',";
+                    cartocss += municipalityList[i].Color;
+                }
+                municipalities = municipalities.substring(0, municipalities.length - 1);
+            }
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            var query = "SELECT * FROM mi_mun where label in (" + municipalities + ")";
+            layer.setSQL(query);
+            layer.setCartoCSS(cartocss);
+            sql.getBounds(query).done(function (bounds) {
+                map.fitBounds(bounds);
+            });
+        }
     </script>
 </body>
 </html>
