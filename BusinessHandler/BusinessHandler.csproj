@@ -73,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SqlScript\GET_Municipality.sql" />
     <Content Include="SqlScript\DOC_QUERY.sql" />
     <Content Include="SqlScript\DOC_QUERY_detail.sql" />
     <Content Include="SqlScript\Project_Master_DDL.sql" />
