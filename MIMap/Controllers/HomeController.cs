@@ -162,5 +162,12 @@ namespace MIMap.Controllers
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult GetMapPopUpInfo(string municipality)
+        {
+            var data = DocQueryDB.GetMapPopUpInfo(municipality);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }

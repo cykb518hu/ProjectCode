@@ -128,7 +128,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         orderBy = "SEARCH_DATE";
                         break;
                     case "CityDeployDate":
-                        orderBy = "DEPLOYE_DATE";
+                        orderBy = "SEARCH_DATE";
                         break;
                     case "IsViewed":
                         orderBy = "CHECKED";
@@ -308,7 +308,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
             }
             else
             {
-                string queryString = @"UPDATE DOCUMENT SET COMMENT='" + message.Comment + "'  WHERE DOC_GUID='" + message.DocId + "'";
+                string queryString = @"UPDATE DOCUMENT SET COMMENT='" + message.Comment + "' , USR_MDFN_TS='" + DateTime.Now.ToString("yyyy-MM-dd") + "' WHERE DOC_GUID='" + message.DocId + "'";
                 using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
@@ -377,6 +377,46 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                     result.Add(data);
                 }
             }
+            return result;
+        }
+
+
+        public static  MapMunicipality GetMapPopUpInfo(string municipality)
+        {
+            var result = new MapMunicipality();
+            string queryString = @" select CITY_NM, count(*) DOC_AMOUNT, SUM(amount) AS KEY_AMOUNT from (select D.CITY_NM, Q.QUERY_GUID ,count(*) amount
+ FROM  DBO.DOCUMENT D INNER JOIN DBO.QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID 
+ INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM
+ where c.LONG_NM='" + municipality + "' group by d.CITY_NM, q.QUERY_GUID) list group by CITY_NM";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                if(reader.Read())
+                {
+                    result.MunicipalityName =DBNull.Value== reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    result.DocAmount = DBNull.Value == reader["DOC_AMOUNT"] ? 0 : Convert.ToInt32(reader["DOC_AMOUNT"]);
+                    result.KeyWordAmount = DBNull.Value == reader["KEY_AMOUNT"] ? 0 : Convert.ToInt32(reader["KEY_AMOUNT"]);
+                }
+            }
+
+            var commentList = new List<MapMunicipalityComment>();
+            var commentStr = @" SELECT COMMENT ,D.USR_MDFN_TS FROM DBO.DOCUMENT D  INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM  where c.LONG_NM ='" + municipality + "' AND COMMENT IS NOT NULL";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(commentStr, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new MapMunicipalityComment();
+                    data.Comment = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
+                    data.AddDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");
+                    commentList.Add(data);
+                }
+            }
+            result.CommentList = commentList;
             return result;
         }
         #endregion

@@ -149,11 +149,20 @@ namespace BusinessHandler.Model
         public string CountyName { get; set; }
 
         public string DeployDate { get; set; }
+
+        public int DocAmount { get; set; }
+        public int KeyWordAmount { get; set; }
+        public List<MapMunicipalityComment> CommentList { get; set; }
     }
     public class MapMunicipalityColor
     {
         public string MunicipalityName { get; set; }
         public string Color { get; set; }
+    }
+    public class MapMunicipalityComment
+    {
+        public string Comment { get; set; }
+        public string AddDate { get; set; }
     }
     #endregion
 

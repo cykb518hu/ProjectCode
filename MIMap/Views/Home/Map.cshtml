@@ -193,6 +193,29 @@
             </div>
         </div>
     </div>
+
+    <div id="pop-window" class="cartodb-popup header blue v2" style="display:none">
+        <a id="pop-window-close" href="#close" class="cartodb-popup-close-button close">x</a>
+        <div class="cartodb-popup-header">
+            <h2></h2>
+            <span class="separator"></span>
+        </div>
+        <div class="cartodb-popup-content-wrapper">
+            <div class="cartodb-popup-content">
+                <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
+                <p>This municipality has <span id="pop-map-key-amount"></span> key words scraped</p>
+                <h3>Time Line of this municipality</h3>
+                <div id="pop-map-timeLine">
+
+                </div>
+                
+            </div>
+        </div>
+        <div class="cartodb-popup-tip-container">
+        </div>
+    </div>
+
+
     <script>
         //load table data
         $(function () {
@@ -632,7 +655,7 @@
                 //            }
                 //        }
                 //    }
-                //}
+                }
             });
             $("#sel_search_CityName").multiselect({
                 buttonWidth: '100%',
@@ -739,7 +762,10 @@
                     }
                 });
             });
-            //initialMap();
+            $("#pop-window-close").click(function () {
+                $("#pop-window").css({ 'display': 'none' });
+            });
+            initialMap();
         });
     </script>
 
@@ -758,7 +784,15 @@
               map = vis.getNativeMap();
               var subLayer = layers[1].getSubLayer(0);
               layer = subLayer;
+              layer.set({ interactivity: "label"});
+              layer.setInteraction(true);
+              layer.on('featureClick', function (e, latlng, pos, data, layerNumber) {
+
+                  showMapPopUp(data.label, pos);
+              });
               loadMapData();
+
+             
           })
           .error(function (err) {
               console.log(err);
@@ -806,6 +840,38 @@
             layer.setCartoCSS(cartocss);
             sql.getBounds(query).done(function (bounds) {
                 map.fitBounds(bounds);
+            });
+        }
+        function showMapPopUp(str, pos)
+        {
+            $.ajax({
+                url: '@Url.Action("GetMapPopUpInfo", "Home")',
+                dataType: 'json',
+                data: { municipality: str },
+                type: "GET",
+                cache: false,
+                success: function (result) {
+                    $("#pop-window").find('h2').text(str);
+                    $("#pop-map-doc-amount").text(result.DocAmount);
+                    $("#pop-map-key-amount").text(result.KeyWordAmount);
+                   
+                    if (result.CommentList.length > 0) {
+                        var comments = "";
+                        for (var i = 0; i < result.CommentList.length; i++) {
+                            var data = result.CommentList[i];
+                            comments += "<p>" + data.AddDate + ":" + data.Comment + "</p>";
+                        }
+                        $("#pop-map-timeLine").html(comments);
+                    }
+                    else {
+                        $("#pop-map-timeLine").html("No comment added");
+                    }
+                    $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x), 'top': (pos.y - $("#pop-window").height()), 'cursor': 'pointer' });
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                }
             });
         }
     </script>
