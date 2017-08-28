@@ -108,12 +108,43 @@ namespace BusinessHandler.MessageHandler.Tests
 
             foreach (var r in queriesUrlList)
             {
-                var resultList = new List<QueryData>();
-                resultList = xml.OpenQuery(r);
+                var xmlDataList = new List<QueryXmlData>();
+
+                XDocument xdoc = XDocument.Load(r);
+                xmlDataList = (from lv1 in xdoc.Descendants("Query")
+                               select new QueryXmlData
+                               {
+                                   CityName = lv1.Element("CityId").Value,
+                                   DocId = lv1.Element("DocId").Value,
+
+                                   MeetingDate = DateTime.Parse(lv1.Element("MeetingDate").Value),
+                                   MeetingDateDisplay = DateTime.Parse(lv1.Element("MeetingDate").Value).ToString("yyyy-MM-dd"),
+                                   SearchDate = DateTime.Parse(lv1.Element("SearchDate").Value).ToString("yyyy-MM-dd"),
+                                   MeetingTitle = lv1.Element("MeetingTitle").Value,
+                                   MeetingLocation = lv1.Element("MeetingLocation").Value,
+                                   Entries = (from lv2 in lv1.Element("Entries").Elements("Entry")
+                                              select new QueryEntryXmlData
+                                              {
+
+                                                  KeyWord = lv2.Element("Keyword").Value,
+                                                  PageNumber = lv2.Element("PageNumber").Value,
+                                                  ContentList = (from lv3 in lv2.Element("Contents").Elements("Content")
+                                                                 select new QueryContentXmlData
+                                                                 {
+                                                                     Content = lv3.Value,
+                                                                     QueryGuid = lv3.Attribute("GUID").Value,
+                                                                     Comment = lv3.Attribute("Comment").Value
+                                                                 }
+                                                               ).ToList()
+                                              }
+
+                                   ).ToList()
+                               }).ToList();
+
                 string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
-                foreach (var rr in resultList)
+                foreach (var q in xmlDataList)
                 {
-                    string queryString = @"insert into QUERY(QUERY_GUID,DOC_GUID,MEETING_DATE,MEETING_LOCATION, MEETING_TITLE,SEARCH_DATE) values ('" + Guid.NewGuid().ToString() + "','" + rr.DocId + "','" + rr.MeetingDate + "','" + rr.MeetingLocation + "','" + rr.MeetingTitle + "','" + rr.ScrapeDate + "')";
+                    string queryString = @"insert into QUERY(QUERY_GUID,DOC_GUID,MEETING_DATE,MEETING_LOCATION, MEETING_TITLE,SEARCH_DATE) values ('" + Guid.NewGuid().ToString() + "','" + q.DocId + "','" + q.MeetingDate + "','" + q.MeetingLocation + "','" + q.MeetingTitle + "','" + q.SearchDate + "')";
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         // Create the Command and Parameter objects.
@@ -136,23 +167,28 @@ namespace BusinessHandler.MessageHandler.Tests
                         connection.Open();
                         queryGuid = command.ExecuteScalar().ToString();
                     }
-
-                    string queryString3 = @"insert into QUERY_ENTRY(ENTRY_GUID, QUERY_GUID,PAGE_NUMBER,KEYWORD,CONTENT, COMMENT) values (@ENTRY_GUID,@QUERY_GUID,@PAGE_NUMBER,@KEYWORD,@CONTENT,@COMMENT)";
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    foreach (var d in q.Entries)
                     {
-                        // Create the Command and Parameter objects.
-                        SqlCommand command = new SqlCommand(queryString3, connection);
-                        command.Parameters.AddWithValue("@ENTRY_GUID", rr.QueryGuid);
-                        command.Parameters.AddWithValue("@QUERY_GUID", queryGuid);
-                        command.Parameters.AddWithValue("@PAGE_NUMBER", rr.PageNumber);
-                        command.Parameters.AddWithValue("@KEYWORD", rr.KeyWord);
-                        command.Parameters.AddWithValue("@CONTENT", rr.Content);
-                        command.Parameters.AddWithValue("@COMMENT", rr.Comment);
-                        // Open the connection in a try/catch block. 
-                        // Create and execute the DataReader, writing the result
-                        // set to the console window.
-                        connection.Open();
-                        command.ExecuteNonQuery();
+                        foreach (var rr in d.ContentList)
+                        {
+                            string queryString3 = @"insert into QUERY_ENTRY(ENTRY_GUID, QUERY_GUID,PAGE_NUMBER,KEYWORD,CONTENT, COMMENT) values (@ENTRY_GUID,@QUERY_GUID,@PAGE_NUMBER,@KEYWORD,@CONTENT,@COMMENT)";
+                            using (SqlConnection connection = new SqlConnection(connectionString))
+                            {
+                                // Create the Command and Parameter objects.
+                                SqlCommand command = new SqlCommand(queryString3, connection);
+                                command.Parameters.AddWithValue("@ENTRY_GUID", rr.QueryGuid);
+                                command.Parameters.AddWithValue("@QUERY_GUID", queryGuid);
+                                command.Parameters.AddWithValue("@PAGE_NUMBER", d.PageNumber);
+                                command.Parameters.AddWithValue("@KEYWORD", d.KeyWord);
+                                command.Parameters.AddWithValue("@CONTENT", rr.Content);
+                                command.Parameters.AddWithValue("@COMMENT", rr.Comment);
+                                // Open the connection in a try/catch block. 
+                                // Create and execute the DataReader, writing the result
+                                // set to the console window.
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                            }
+                        }
                     }
                 }
             }
@@ -164,7 +200,19 @@ namespace BusinessHandler.MessageHandler.Tests
         [TestMethod()]
         public void InsertCity()
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
+            string queryString = @"select * from city";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Create the Command and Parameter objects.
+                SqlCommand command = new SqlCommand(queryString, connection);
+                // Open the connection in a try/catch block. 
+                // Create and execute the DataReader, writing the result
+                // set to the console window.
+                connection.Open();
+                command.ExecuteReader();
+            }
         }
 
         public CardType Get()

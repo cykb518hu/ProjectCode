@@ -128,7 +128,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         orderBy = "SEARCH_DATE";
                         break;
                     case "CityDeployDate":
-                        orderBy = "SEARCH_DATE";
+                        orderBy = "DEPLOYE_DATE";
                         break;
                     case "IsViewed":
                         orderBy = "CHECKED";
@@ -137,7 +137,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         orderBy = "IMPORTANT";
                         break;
                     default:
-                        orderBy = "CITY_NM";
+                        orderBy = "DEPLOYE_DATE desc, CITY_NM ";
                         break;
                 }
                 message.sortOrder = string.IsNullOrWhiteSpace(message.sortOrder) ? "asc" : message.sortOrder;
@@ -168,17 +168,17 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
 
                         result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString() + "</a>";
                         result.COMMENT = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
-                        result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note' data-docid='" + result.DocId + "' data-comment='" + result.COMMENT + "' onclick='OpenDocNoteDetail(this); return false'></button>";
+                        result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note' data-toggle='tooltip' data-placement='top' data-docid='" + result.DocId + "' data-comment='" + result.COMMENT + "' onclick='OpenDocNoteDetail(this); return false'></button>";
                     
                         //importan means removed
                         if (important.Equals("Yes"))
                         {
-                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-plus'  data-removed='" + important + "' title='Add data back' data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
+                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-plus'  data-removed='" + important + "' title='Add data back'  data-toggle='tooltip' data-placement='top'  data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
 
                         }
                         else
                         {
-                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove'  data-removed='" + important + "' title='Remove data' data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
+                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove'  data-removed='" + important + "' title='Remove data'   data-toggle='tooltip' data-placement='top' data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
 
                         }
                         result.MinicipalityOperation += "</div>";

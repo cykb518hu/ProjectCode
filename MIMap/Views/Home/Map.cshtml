@@ -34,6 +34,7 @@
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-combobox.js"></script>
     <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-tooltip.js"></script>
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <style>
@@ -69,8 +70,8 @@
             </ul>
             </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"  title='Hide Query Group' style="margin-left:6px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
-            <button type="button" class="btn btn-primary glyphicon glyphicon-forward" title='Show Query Group' style="margin-left:-46px;height:32px; " id="btn_showQueryDiv"></button>
+            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"  data-toggle='tooltip'  data-placement='right' title='Hide Query Group' style="margin-left:6px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
+            <button type="button" class="btn btn-primary glyphicon glyphicon-forward"  data-toggle='tooltip' data-placement='right'  title='Show Query Group' style="margin-left:-46px;height:32px; " id="btn_showQueryDiv"></button>
 
          </div>
 
@@ -204,7 +205,9 @@
             <div class="cartodb-popup-content">
                 <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
                 <p>This municipality has <span id="pop-map-key-amount"></span> key words scraped</p>
+                <br />
                 <h3>Time Line of this municipality</h3>
+                <br />
                 <div id="pop-map-timeLine">
 
                 </div>
@@ -245,6 +248,7 @@
                              field: 'MunicipalityDispaly',
                              title: 'Municipality',
                              sortable: true,
+                            
                              width: '25%'
                          },
                         {
@@ -258,12 +262,14 @@
                               field: 'MeetingDateDisplay',
                               title: 'Meeting Date',
                               sortable: true,
+                              order:"desc",
                               width: '15%'
                           },
                            {
                                field: 'ScrapeDate',
                                title: 'Scrape Date',
                                sortable: true,
+                               order: "desc",
                                width: '15%'
                            },
                             {
@@ -293,6 +299,9 @@
                                 $(this).css("background-color", "#eee");
                             }
                         });
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip()
+                        })
                     },
 
                 });
@@ -765,6 +774,7 @@
             $("#pop-window-close").click(function () {
                 $("#pop-window").css({ 'display': 'none' });
             });
+         
             initialMap();
         });
     </script>
@@ -866,7 +876,7 @@
                     else {
                         $("#pop-map-timeLine").html("No comment added");
                     }
-                    $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x), 'top': (pos.y - $("#pop-window").height()), 'cursor': 'pointer' });
+                    $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x-20), 'top': (pos.y - $("#pop-window").height()-10), 'cursor': 'pointer' });
                 },
                 complete: function (XMLHttpRequest, textStatus) {
                 },
