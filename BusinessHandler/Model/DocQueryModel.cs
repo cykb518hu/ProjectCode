@@ -161,6 +161,7 @@ namespace BusinessHandler.Model
     }
     public class MapMunicipalityComment
     {
+        public string MeetingDate { get; set; }
         public string Comment { get; set; }
         public string AddDate { get; set; }
     }

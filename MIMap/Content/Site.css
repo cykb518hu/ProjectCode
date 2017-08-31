@@ -87,3 +87,15 @@ div.cartodb-popup.v2
  {
      width:326px !important;
  }
+.navbar-nav > li > a
+{
+color:#999999 !important;
+}
+.navbar-nav > li > a:hover {
+    color:#999999 !important;
+}
+.navbar .container
+{
+    width:100% !important;
+    max-width:none;
+}

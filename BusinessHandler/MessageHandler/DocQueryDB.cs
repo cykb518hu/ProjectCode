@@ -402,7 +402,9 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
             }
 
             var commentList = new List<MapMunicipalityComment>();
-            var commentStr = @" SELECT COMMENT ,D.USR_MDFN_TS FROM DBO.DOCUMENT D  INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM  where c.LONG_NM ='" + municipality + "' AND COMMENT IS NOT NULL";
+            var commentStr = @" SELECT  Q.MEETING_DATE, d.COMMENT ,D.USR_MDFN_TS FROM DBO.DOCUMENT D  INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM 
+ inner join dbo.QUERY Q on Q.DOC_GUID =d.DOC_GUID
+  where c.LONG_NM ='" + municipality + "' ORDER BY Q.MEETING_DATE DESC";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(commentStr, connection);
@@ -411,8 +413,13 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 while (reader.Read())
                 {
                     var data = new MapMunicipalityComment();
+                    data.AddDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
                     data.Comment = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
-                    data.AddDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");
+                    data.AddDate = "";
+                    if (!string.IsNullOrEmpty(data.Comment))
+                    {
+                        data.AddDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");
+                    }
                     commentList.Add(data);
                 }
             }

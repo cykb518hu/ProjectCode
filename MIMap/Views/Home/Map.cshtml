@@ -61,6 +61,8 @@
     </style>
 </head>
 <body>
+    @Html.Partial("_LoginPartial")
+  
     <div id="div-query">
         <div class="col-md-6">
             <ul class="list-group" id="ul_queryGourp" style="display:none" >
@@ -76,7 +78,7 @@
          </div>
 
         </div>
-    <div class="row" style="margin-left:0px; margin-right:0px;">
+    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:200px;">
         <div class="col-md-6" id="div-data-area">
             <div class="search-container">
                 <div class="row property-search-form">
@@ -776,7 +778,7 @@
                 hideMapPopUp();
             });
          
-            initialMap();
+           // initialMap();
            
         });
     </script>
@@ -811,6 +813,7 @@
           });
         }
         function loadMapData() {
+            return;
             municipalityList = new Array();
             $.ajax({
                 url: '@Url.Action("GetMunicipalityList", "Home")',
@@ -872,7 +875,12 @@
                         var comments = "";
                         for (var i = 0; i < result.CommentList.length; i++) {
                             var data = result.CommentList[i];
-                            comments += "<p>" + data.AddDate + ":" + data.Comment + "</p>";
+                            comments += "<p>" + data.MeetingDate;
+                            if(data.Comment.length>0)
+                            {
+                                comments += "-" + data.Comment + "(" + data.AddDate + ")";
+                            }
+                            comments += "</p>";
                         }
                         $("#pop-map-timeLine").html(comments);
                     }

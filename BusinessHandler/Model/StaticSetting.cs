@@ -24,6 +24,8 @@ namespace BusinessHandler.Model
 
         public static string queryFile = ConfigurationManager.AppSettings["queryFile"].ToString();
 
+        public static string userFile = ConfigurationManager.AppSettings["userFile"].ToString();
+
         public static List<string> MapColorList()
         {
             List<string> list = new List<string>();
