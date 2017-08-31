@@ -47,7 +47,7 @@
 #div-query {
     position: fixed; /* now it will stay fixed on the screen, even while you scroll*/
     left: 0px; /* it will be stuck to the left*/
-    top: 50px; /* it will be in the middle (vertically)*/
+    top: 100px; /* it will be in the middle (vertically)*/
     z-index:10;
 }
 #ul_queryGourp
@@ -87,9 +87,8 @@ div.cartodb-popup.v2
  {
      width:326px !important;
  }
-.navbar-nav > li > a
-{
-color:#999999 !important;
+.navbar-nav > li > a {
+    color: #787878 !important;
 }
 .navbar-nav > li > a:hover {
     color:#999999 !important;
@@ -98,4 +97,17 @@ color:#999999 !important;
 {
     width:100% !important;
     max-width:none;
+}
+.container > p {
+    cursor:pointer;
+}
+.a-menu {
+    font-size: 15px !important;
+    color: #787878;
+}
+#small-menu .icon-bar {
+    background-color: #787878 !important;
+}
+#small-menu {
+    border-color: #787878 !important;
 }

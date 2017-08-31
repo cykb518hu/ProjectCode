@@ -5,96 +5,51 @@
 
 
 
-<div class="navbar navbar-inverse navbar-fixed-top" style="background-color:rgba(0, 0, 0, 0.05); border-color:rgba(0, 0, 0, 0.05)">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @*@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-        </div>
-        <div class="navbar-collapse collapse">
-          @if (user != null)
-          {
-              using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-              {
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">Hello @user.Email</a>
-                    </li>
-                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                </ul>
-              }
-          }
-          else
-          {
-            <ul class="nav navbar-nav navbar-right">
-                <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-            </ul>
-          }
-        </div>
-    </div>
-    @{
-        if (Session["UserAccount"] != null)
-        {
+<div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#F5F5F5; border-color:#F5F5F5">
 
-            <div class="container" style="background-color:#fff">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @*@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+    @if (user != null)
+    {
+
+        <div class="row" style="height:70px">
+            <div class="col-md-4 hidden-xs">
+                <div style="margin-top:20px; margin-left:30px">
+                    <img src="~/Image/MiMapLogo1.png" />
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        @{
-                            if (Session["UserAccount"] != null)
-                            {
-                                <li>@Html.ActionLink("Data Detail", "DataDetail", "Home")</li>
-                                @*var user = (UserAccount)Session["UserAccount"];
-                                    if (user.RoleType == GlobalKeyString.roleTypeAdmin)
-                                    {
-                                        <li>@Html.ActionLink("Manage User", "Manage", "Account")</li>
-                                    }*@
-                            }
-                        }
+            </div>
+            <div class="col-md-8">
+                <div class="container" style="margin-top:10px;">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" id="small-menu">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @*@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                    </div>
+                    <div class="navbar-collapse collapse">
 
-                    </ul>
-                    @if (user != null)
-                    {
-                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        {
-                            @Html.AntiForgeryToken()
-
-                            <ul class="nav navbar-nav navbar-right">
-                                <li>
-                                    <a href="#">Hello @user.Email</a>
-                                </li>
-                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                            </ul>
-                        }
-                    }
-                    else
-                    {
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        <ul class="nav navbar-nav navbar-right ">
+                            <li><a href="#">Hello @user.Email</a></li>
+                            <li><a class="a-menu" href="#">Michigan</a></li>
+                            <li><a class="a-menu" href="#">Massachusetts</a></li>
+                            <li><a class="a-menu" href="#">Florida</a></li>
+                            <li><a class="a-menu" href="#">Notes</a></li>
+                            <li>@Html.ActionLink("Log off", "Login", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
                         </ul>
-                    }
+                    </div>
                 </div>
             </div>
-
-            <div id="div-menu" style="background-color:#fff; height:30px;">
-                <div>
-                    <img src="~/Image/MiMapLogo.png" />
-                </div>
-                <div></div>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                </ul>
             </div>
-        }
+        </div>
     }
 </div>

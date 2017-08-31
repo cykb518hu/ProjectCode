@@ -38,14 +38,6 @@
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <style>
-        .activeClass {
-            background: #006dcc;
-            color: #fff;
-        }
-
-        .navbar-collapse a {
-            color: #ffffff !important;
-        }
 
         #div-query a {
             text-decoration: none;
@@ -78,7 +70,7 @@
          </div>
 
         </div>
-    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:200px;">
+    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;">
         <div class="col-md-6" id="div-data-area">
             <div class="search-container">
                 <div class="row property-search-form">
@@ -778,7 +770,7 @@
                 hideMapPopUp();
             });
          
-           // initialMap();
+           initialMap();
            
         });
     </script>
@@ -813,7 +805,6 @@
           });
         }
         function loadMapData() {
-            return;
             municipalityList = new Array();
             $.ajax({
                 url: '@Url.Action("GetMunicipalityList", "Home")',
