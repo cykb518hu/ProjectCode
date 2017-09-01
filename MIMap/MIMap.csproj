@@ -169,6 +169,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Image\MiMapLogo.png" />
+    <Content Include="Image\MiMapLogo1.png" />
     <Content Include="Scripts\bootstrap-combobox.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
