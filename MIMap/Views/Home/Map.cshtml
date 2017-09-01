@@ -21,7 +21,7 @@
         }
     </script>
     <meta name="viewport" content="width=device-width" />
-    <title>Map</title>
+    <title>GovMash</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -35,7 +35,7 @@
     <script src="~/Scripts/bootstrap-combobox.js"></script>
     <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-tooltip.js"></script>
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <style>
 
@@ -135,9 +135,11 @@
                 <table id="tb_municipality"></table>
             </div>
         </div>
-        <div class="col-md-6" >
-            <div id="map"></div>
-        </div>
+        <div class="col-md-6 " >
+            <div class="h-scroll" style="width:49%; height:100%">
+                <div id="map"></div>
+                </div>
+            </div>
     </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
         <div class="modal-dialog" role="document">
@@ -198,10 +200,8 @@
         <div class="cartodb-popup-content-wrapper">
             <div class="cartodb-popup-content">
                 <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
-                <p>This municipality has <span id="pop-map-key-amount"></span> key words scraped</p>
-                <br />
-                <h3>Time Line of this municipality</h3>
-                <br />
+                <p>This municipality has <span id="pop-map-key-amount"></span> key words matched</p>
+                <h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>
                 <div id="pop-map-timeLine">
 
                 </div>
@@ -296,7 +296,7 @@
                         $(function () {
                             $('[data-toggle="tooltip"]').tooltip()
                         })
-                        $("#map").css("height", $("#div-data-area").height() + "px");
+                        $("#map").css("height", ($(window).height() - 100) + "px");
                     },
 
                 });
@@ -775,7 +775,29 @@
         });
     </script>
 
+    <script type="infowindow/html" id="infowindow_template">
+        <div id="pop-window" class="cartodb-popup header blue v2" style="display:none">
+            <a id="pop-window-close" href="#close" class="cartodb-popup-close-button close">x</a>
+            <div class="cartodb-popup-header">
+                <h2></h2>
+                <span class="separator"></span>
+            </div>
+            <div class="cartodb-popup-content-wrapper">
+                <div class="cartodb-popup-content">
+                    <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
+                    <p>This municipality has <span id="pop-map-key-amount"></span> key words matched</p>
+                    <h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>
+                    <div id="pop-map-timeLine">
 
+                    </div>
+
+                </div>
+            </div>
+            <div class="cartodb-popup-tip-container">
+            </div>
+        </div>
+    </script>
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
     <script>
         //map
         var map;
@@ -784,21 +806,22 @@
         function initialMap() {
             cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json', {
                 tiles_loader: true,
-                search: false
+                search: false,
+                scrollwheel: false,
+                infowindow:true
             })
           .done(function (vis, layers) {
               map = vis.getNativeMap();
               var subLayer = layers[1].getSubLayer(0);
               layer = subLayer;
-              layer.set({ interactivity: "label"});
+              layer.set({ interactivity: "label" });
               layer.setInteraction(true);
-              layer.on('featureClick', function (e, latlng, pos, data, layerNumber) {
 
+              layer.on('featureClick', function (e, latlng, pos, data, layerNumber) {
                   showMapPopUp(data.label, pos);
               });
               loadMapData();
 
-            
           })
           .error(function (err) {
               console.log(err);
@@ -869,7 +892,7 @@
                             comments += "<p>" + data.MeetingDate;
                             if(data.Comment.length>0)
                             {
-                                comments += "-" + data.Comment + "(" + data.AddDate + ")";
+                                comments += " - " + data.Comment + " (" + data.AddDate + ")";
                             }
                             comments += "</p>";
                         }
@@ -878,7 +901,7 @@
                     else {
                         $("#pop-map-timeLine").html("No comment added");
                     }
-                    $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x-20), 'top': (pos.y - $("#pop-window").height()-10), 'cursor': 'pointer' });
+                    $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x-20), 'top': (pos.y - $("#pop-window").height()+60), 'cursor': 'pointer' });
                 },
                 complete: function (XMLHttpRequest, textStatus) {
                 },

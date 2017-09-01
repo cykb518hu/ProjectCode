@@ -376,7 +376,32 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                     data.Color = " #mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + StaticSetting.MapColorList()[index] + "; line-color: white; }";
                     result.Add(data);
                 }
+
             }
+            //if (list.Any())
+            //{
+            //    foreach (var l in list)
+            //    {
+            //        var data = new MapMunicipalityColor();
+            //        if (l.Number <= 50)
+            //        {
+            //            data.Color = " #mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + StaticSetting.MapColorList()[0] + "; line-color: white; }";      
+            //        }
+            //        if (l.Number > 50 && l.Number < 200)
+            //        {
+            //            data.Color = " #mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + StaticSetting.MapColorList()[1] + "; line-color: white; }";
+            //        }
+            //        if (l.Number > 200 && l.Number < 500)
+            //        {
+            //            data.Color = " #mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + StaticSetting.MapColorList()[2] + "; line-color: white; }";
+            //        }
+            //        if (l.Number > 500)
+            //        {
+            //            data.Color = " #mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + StaticSetting.MapColorList()[3] + "; line-color: white; }";
+            //        }
+            //        result.Add(data);
+            //    }
+            //}
             return result;
         }
 
@@ -413,7 +438,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 while (reader.Read())
                 {
                     var data = new MapMunicipalityComment();
-                    data.AddDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                    data.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
                     data.Comment = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
                     data.AddDate = "";
                     if (!string.IsNullOrEmpty(data.Comment))

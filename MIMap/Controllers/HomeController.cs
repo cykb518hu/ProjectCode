@@ -32,6 +32,11 @@ namespace MIMap.Controllers
 
         public ActionResult Map()
         {
+            var user = (UserAccount)Session["UserAccount"];
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var municipalityList = DocQueryDB.GetMapMunicipality();
             var keyWordList = DocQueryDB.GetKeyWordList();
             ViewData["municipalityList"] = municipalityList;

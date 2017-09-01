@@ -29,10 +29,10 @@ namespace BusinessHandler.Model
         public static List<string> MapColorList()
         {
             List<string> list = new List<string>();
-            list.Add("#00FF7F");
-            list.Add("#00EE76");
-            list.Add("#00CD66");
-            list.Add("#008B45");
+            list.Add("#00FF7F"); //<50
+            list.Add("#00EE76");//<200
+            list.Add("#00CD66"); //<500
+            list.Add("#008B45"); //>500
             return list;
         }
     }

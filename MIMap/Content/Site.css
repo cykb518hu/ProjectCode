@@ -55,7 +55,6 @@
     width:200px;
 }
   #map {
-            height: 800px;
             padding: 0;
             margin: 0;
         }
@@ -110,4 +109,20 @@ div.cartodb-popup.v2
 }
 #small-menu {
     border-color: #787878 !important;
+}
+
+@media (min-width: 992px) {
+    .h-scroll {
+        position: fixed;
+    }
+}
+
+.navbar-inverse .navbar-collapse
+{
+    background-color:#F5F5F5;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+  background-color:#DCDCDC !important;
 }
