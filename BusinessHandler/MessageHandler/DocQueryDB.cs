@@ -59,15 +59,15 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                if (!string.IsNullOrWhiteSpace(message.CityName) && !message.CityName.Split(',').Any(x => x.Equals("All")))
+                if (!string.IsNullOrWhiteSpace(message.CityName) && !message.CityName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
                     command.Parameters.AddWithValue("@CityName", GetArrayQuery(message.CityName));
                 }
-                if (!string.IsNullOrWhiteSpace(message.CountyName) && !message.CountyName.Split(',').Any(x => x.Equals("All")))
+                if (!string.IsNullOrWhiteSpace(message.CountyName) && !message.CountyName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
                     command.Parameters.AddWithValue("@CountyName", GetArrayQuery(message.CountyName));
                 }
-                if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All")))
+                if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
                     command.Parameters.AddWithValue("@KeyWord", GetArrayQuery(message.KeyWord));
                 }

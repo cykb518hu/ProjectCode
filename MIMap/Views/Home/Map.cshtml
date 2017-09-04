@@ -80,7 +80,10 @@
                             @{
                                 foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
                                 {
+                                    if (!string.IsNullOrEmpty(r))
+                                    {
                                     <option value="@r">@r</option>
+                                        }
                                     }
                                 }
                         </select>
@@ -91,9 +94,12 @@
                             @{
                                 foreach (var r in municipalityList.OrderBy(x=>x.MunicipalityName))
                                 {
+                                    if (!string.IsNullOrEmpty(r.MunicipalityName))
+                                    {
                                     <option value="@r.MunicipalityName">@r.MunicipalityName</option>
+                                        }
+                                    }
                                 }
-                            }
                         </select>
                     </div>
                   
@@ -136,7 +142,7 @@
             </div>
         </div>
         <div class="col-md-6 " >
-            <div class="h-scroll" style="width:49%; height:100%">
+            <div class="h-scroll">
                 <div id="map"></div>
                 </div>
             </div>
@@ -191,26 +197,7 @@
         </div>
     </div>
 
-    <div id="pop-window" class="cartodb-popup header blue v2" style="display:none">
-        <a id="pop-window-close" href="#close" class="cartodb-popup-close-button close">x</a>
-        <div class="cartodb-popup-header">
-            <h2></h2>
-            <span class="separator"></span>
-        </div>
-        <div class="cartodb-popup-content-wrapper">
-            <div class="cartodb-popup-content">
-                <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
-                <p>This municipality has <span id="pop-map-key-amount"></span> key words matched</p>
-                <h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>
-                <div id="pop-map-timeLine">
-
-                </div>
-                
-            </div>
-        </div>
-        <div class="cartodb-popup-tip-container">
-        </div>
-    </div>
+    
 
 
     <script>
@@ -570,26 +557,20 @@
             $("#queryModal").modal('show');
         }
         function searchFromQuery(temp, guid) {
-            var cityArray = temp.CityName.split(",");
-            if (cityArray.length > 0) {
-                for (var i = 0; i < cityArray.length; i++) {
-                    if (cityArray[i] == "all") {
-                        cityArray[i] = "All";
-                    }
-                }
+            var municipalityStr = "";
+            if (temp.CityName != null) {
+                municipalityStr = temp.CityName;
             }
+            var cityArray = municipalityStr.split(",");
             $("#sel_search_CityName").val(cityArray);
             $("#sel_search_CityName").multiselect("refresh");
 
 
-            var keyArray = temp.KeyWord.split(",");
-            if (keyArray.length > 0) {
-                for (var i = 0; i < keyArray.length; i++) {
-                    if (keyArray[i] == "all") {
-                        keyArray[i] = "All";
-                    }
-                }
+            var kwyWordStr = "";
+            if (temp.KeyWord != null) {
+                kwyWordStr = temp.KeyWord;
             }
+            var keyArray = kwyWordStr.split(",");
             $("#sel_search_KeyWord").val(keyArray);
             $("#sel_search_KeyWord").multiselect("refresh");
 
@@ -644,21 +625,28 @@
                 buttonWidth: '100%',
                 nonSelectedText: 'No County Selected',
                 onChange: function (element, checked) {
-                //    var cityArr = new Array();
-                //    var dataList = JSON.parse(sessionStorage.getItem("municipalityList"));
-                //    var countyStr = $("#sel_search_CountyName").val().toString();
-                //    var countyArr = countyStr.split(",");
-                //    if (countyArr.length > 0) {
-                //        if (countyArr[0] == "All")
-                //        {
-                //            for
-                //        }
-                //        for (var i = 0; i < countyArr.length; i++) {
-                //            if (countyArr[i] == "All") {
-                //                countyArr[i] = "All";
-                //            }
-                //        }
-                //    }
+                    //var cityArr = new Array();
+                    //var dataList = JSON.parse(sessionStorage.getItem("municipalityList"));
+                    //var countyStr = $("#sel_search_CountyName").val().toString();
+                    //var countyArr = countyStr.split(",");
+                    //if (countyArr.length > 0) {
+                    //    if (countyArr[0] != "All")
+                    //    {
+                    //        for (var i = 1; i < countyArr.length; i++) {
+                    //            for(var j=0;j<dataList.length;j++)
+                    //            {
+                    //                if( dataList[j].CountyName==countyArr[i])
+                    //                {
+                    //                    cityArr.push(dataList[j].MunicipalityName);
+                    //                }
+                    //            }
+                    //        }
+                    //        $("#sel_search_CityName").val(cityArr);
+                    //        $("#sel_search_CityName").multiselect("refresh");
+
+                    //    }
+                      
+                    //}
                 }
             });
             $("#sel_search_CityName").multiselect({
@@ -776,7 +764,7 @@
     </script>
 
     <script type="infowindow/html" id="infowindow_template">
-        <div id="pop-window" class="cartodb-popup header blue v2" style="display:none">
+        <div id="pop-window" class="cartodb-popup header blue v2" >
             <a id="pop-window-close" href="#close" class="cartodb-popup-close-button close">x</a>
             <div class="cartodb-popup-header">
                 <h2></h2>
@@ -817,9 +805,22 @@
               layer.set({ interactivity: "label" });
               layer.setInteraction(true);
 
-              layer.on('featureClick', function (e, latlng, pos, data, layerNumber) {
-                  showMapPopUp(data.label, pos);
+              var newlayer = layers[1];
+              var infowindow_model = newlayer.infowindow;
+              newlayer.unbind('featureClick');
+              newlayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+                  infowindow_model.set({
+                      latlng: latlng,
+                      content: {
+                          data: data.rows
+                      },
+                      visibility: true
+                  });
+                  infowindow_model.set('template_type', 'underscore');
+                  infowindow_model.set('template', $('#infowindow_template').html());
+                  showMapPopUp(data.label);
               });
+          
               loadMapData();
 
           })
@@ -872,13 +873,14 @@
                 map.fitBounds(bounds);
             });
         }
-        function showMapPopUp(str, pos)
+        function showMapPopUp(str)
         {
             $.ajax({
                 url: '@Url.Action("GetMapPopUpInfo", "Home")',
                 dataType: 'json',
                 data: { municipality: str },
                 type: "GET",
+                async:false,
                 cache: false,
                 success: function (result) {
                     $("#pop-window").find('h2').text(str);
@@ -901,7 +903,7 @@
                     else {
                         $("#pop-map-timeLine").html("No comment added");
                     }
-                    $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x-20), 'top': (pos.y - $("#pop-window").height()+60), 'cursor': 'pointer' });
+                   // $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x-20), 'top': (pos.y - $("#pop-window").height()+60), 'cursor': 'pointer' });
                 },
                 complete: function (XMLHttpRequest, textStatus) {
                 },

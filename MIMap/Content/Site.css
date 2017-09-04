@@ -110,10 +110,13 @@ div.cartodb-popup.v2
 #small-menu {
     border-color: #787878 !important;
 }
-
+ .h-scroll {
+     width:100%; height:100%
+    }
 @media (min-width: 992px) {
     .h-scroll {
         position: fixed;
+        width:49%
     }
 }
 
