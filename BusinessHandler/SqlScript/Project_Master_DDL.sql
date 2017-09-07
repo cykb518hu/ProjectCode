@@ -30,6 +30,7 @@ SET ANSI_PADDING OFF
 GO
 
 
+alter table dbo.DOCUMENT add  COMMENT varchar(500)
 
 
 /****** Object:  Table [dbo].[QUERY]    Script Date: 2017-08-04 14:06:53 ******/
@@ -101,6 +102,10 @@ GO
 CREATE TABLE [dbo].[CITY](
 	[CITY_NM] [nvarchar](100),
 	[DEPLOYE_DATE] [nvarchar](100),
+	[SHORT_NM] [varchar](50),
+	[COUNTY_NM] [varchar](50),
+	[TYP] [varchar](50),
+	[LONG_NM] [varchar](50),
 ) 
 GO
 

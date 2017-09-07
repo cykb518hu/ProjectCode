@@ -168,6 +168,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Image\Loading_icon.gif" />
     <Content Include="Image\MiMapLogo.png" />
     <Content Include="Image\MiMapLogo1.png" />
     <Content Include="Scripts\bootstrap-combobox.js" />

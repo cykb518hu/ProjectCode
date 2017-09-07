@@ -13,7 +13,8 @@ CREATE PROCEDURE [dbo].[GET_Municipality]
 @CityName varchar(max) =null,
 @CountyName varchar(max) =null,
 @KeyWord varchar(max) =null,
-@MeetingDate varchar(50)=null,
+@StartMeetingDate varchar(50)=null,
+@EndMeetingDate varchar(50)=null,
 @DeployeDate varchar(50)=null,
 @IsChecked varchar(5)=null,
 @IsImportant varchar(5)=null
@@ -39,13 +40,17 @@ if @KeyWord is not null
 	begin
 		set @sqlstr=@sqlstr+' and QE.KEYWORD IN ('+ @KeyWord+')'
 	end
-if @MeetingDate is not null 
+if @StartMeetingDate is not null 
 	begin
-		set @sqlstr=@sqlstr+' and Q.MEETING_DATE > '''+ @MeetingDate+''''
+		set @sqlstr=@sqlstr+' and Q.MEETING_DATE >= '''+ @StartMeetingDate+''''
+	end
+if @EndMeetingDate is not null 
+	begin
+		set @sqlstr=@sqlstr+' and Q.MEETING_DATE <= '''+ @EndMeetingDate+''''
 	end
 if @DeployeDate is not null 
 	begin
-		set @sqlstr=@sqlstr+' and C.DEPLOYE_DATE = '''+ @DeployeDate+''''
+		set @sqlstr=@sqlstr+' and C.DEPLOYE_DATE IN ('+ @DeployeDate+')'
 	end
 if @IsChecked is not null
    begin

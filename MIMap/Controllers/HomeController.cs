@@ -41,6 +41,15 @@ namespace MIMap.Controllers
             var keyWordList = DocQueryDB.GetKeyWordList();
             ViewData["municipalityList"] = municipalityList;
             ViewData["keyWordList"] = keyWordList;
+            var message = new DocQueryMessage();
+
+            int total = 0;
+            var list = DocQueryDB.GetAllDataList(message, out total, true);
+            list = list.OrderByDescending(x => x.Number).ToList();
+
+            var result = DocQueryDB.GetMapMunicipalityColor(list);
+
+            ViewData["mapInitialData"] = result;
             return View();
         }
 
@@ -87,46 +96,48 @@ namespace MIMap.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveSearchQuery(string query)
+        public JsonResult SaveSearchQuery(string query,string title)
         {
             var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
             var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
-            var title = string.Empty;
-            if (!string.IsNullOrWhiteSpace(data.CityName))
+            if (string.IsNullOrEmpty(title))
             {
-                title = data.CityName;
-            }
-            if (!string.IsNullOrWhiteSpace(data.CountyName))
-            {
-                if (!string.IsNullOrEmpty(title))
+                if (!string.IsNullOrWhiteSpace(data.CityName))
                 {
-                    title += "&";
+                    title = data.CityName;
                 }
-                title += data.CountyName;
-            }
-            if (!string.IsNullOrWhiteSpace(data.KeyWord))
-            {
-                if (!string.IsNullOrEmpty(title))
+                if (!string.IsNullOrWhiteSpace(data.CountyName))
                 {
-                    title += "&";
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        title += "&";
+                    }
+                    title += data.CountyName;
                 }
-                title += data.KeyWord;
-            }
-            if (!string.IsNullOrWhiteSpace(data.DeployDate))
-            {
-                if (!string.IsNullOrEmpty(title))
+                if (!string.IsNullOrWhiteSpace(data.KeyWord))
                 {
-                    title += "&";
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        title += "&";
+                    }
+                    title += data.KeyWord;
                 }
-                title += data.DeployDate;
-            }
-            if (!string.IsNullOrWhiteSpace(data.MeetingDate))
-            {
-                if (!string.IsNullOrEmpty(title))
+                if (!string.IsNullOrWhiteSpace(data.DeployDate))
                 {
-                    title += "&";
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        title += "&";
+                    }
+                    title += data.DeployDate;
                 }
-                title += data.MeetingDate;
+                if (!string.IsNullOrWhiteSpace(data.MeetingDate))
+                {
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        title += "&";
+                    }
+                    title += data.MeetingDate;
+                }
             }
             if (!string.IsNullOrEmpty(title))
             {

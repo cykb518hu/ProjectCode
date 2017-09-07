@@ -73,11 +73,19 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 }
                 if (!string.IsNullOrWhiteSpace(message.MeetingDate))
                 {
-                    command.Parameters.AddWithValue("@MeetingDate", message.MeetingDate);
+                    command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);
                 }
-                if (!string.IsNullOrWhiteSpace(message.DeployDate))
+                if (!string.IsNullOrWhiteSpace(message.StartMeetingDate))
                 {
-                    command.Parameters.AddWithValue("@DeployeDate", message.DeployDate);
+                    command.Parameters.AddWithValue("@StartMeetingDate", message.StartMeetingDate);
+                }
+                if (!string.IsNullOrWhiteSpace(message.EndMeetingDate))
+                {
+                    command.Parameters.AddWithValue("@EndMeetingDate", message.EndMeetingDate);
+                }
+                if (!string.IsNullOrWhiteSpace(message.DeployDate) && !message.DeployDate.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+                {
+                    command.Parameters.AddWithValue("@DeployeDate", GetArrayQuery(message.DeployDate));
                 }
                 if (!string.IsNullOrWhiteSpace(message.IsViewed) && !message.IsViewed.Equals("All", StringComparison.OrdinalIgnoreCase))
                 {
@@ -322,7 +330,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
         public static List<MapMunicipality> GetMapMunicipality()
         {
             var list = new List<MapMunicipality>();
-            string queryString = @"select  * from [dbo].[CITY]";
+            string queryString = @"select  * from [dbo].[CITY] order by DEPLOYE_DATE desc";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);

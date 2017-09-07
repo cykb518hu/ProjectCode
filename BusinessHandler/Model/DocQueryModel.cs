@@ -17,6 +17,8 @@ namespace BusinessHandler.Model
         public string DeployDate { get; set; }
         public string sortName { get; set; }
         public string sortOrder { get; set; }
+        public string StartMeetingDate { get; set; }
+        public string EndMeetingDate { get; set; }
 
         public string IsViewed { get; set; }
         public string Important { get; set; }

@@ -36,10 +36,7 @@ namespace InteractiveMap.Controllers
         }
         public ActionResult CityMap()
         {
-            var cityDployeList = DocQueryDB.GetCityAndDeployDateList();
-            ViewData["cityDeployDateList"] = cityDployeList;
-            var keyList = DocQueryDB.GetKeyWordList();
-            ViewData["KeyWordList"] = keyList;
+            
             return View();
         }
 

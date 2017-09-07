@@ -14,6 +14,7 @@ using System.Data.SqlClient;
 using System.Xml.Linq;
 using RestSharp;
 using System.Net;
+using Microsoft.Office.Interop.Excel;
 
 namespace BusinessHandler.MessageHandler.Tests
 {
@@ -200,7 +201,33 @@ namespace BusinessHandler.MessageHandler.Tests
         [TestMethod()]
         public void InsertCity()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
+
+            var path = @"C:\TestCode\Document\Map\mi_mun_data.xlsx";
+            List<MuniciplityCounty> list = new List<MuniciplityCounty>();
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Sheets sheets;
+            Microsoft.Office.Interop.Excel.Workbook workbook = null;
+            object oMissiong = System.Reflection.Missing.Value;
+            workbook = xlApp.Workbooks.Open(path, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong,
+           oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong);
+            sheets = workbook.Worksheets;
+
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = (Worksheet)sheets.get_Item(1);//读取第一张表  
+
+            int iRowCount = worksheet.UsedRange.Rows.Count;
+            int iColCount = worksheet.UsedRange.Columns.Count;
+            Range range;
+            var str = "";
+            for (int iRow = 2; iRow <= 1300; iRow++)
+            {
+                var o1 = ((Range)worksheet.Cells[iRow, 3]).Text.ToString();
+                str += "'" + o1 + "',";
+                //var o2 = ((Range)worksheet.Cells[iRow, 2]).Text.ToString();
+
+            }
+            var r = 1;
+            return;
+            string connectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
 
             string queryString = @"select * from city";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -211,8 +238,15 @@ namespace BusinessHandler.MessageHandler.Tests
                 // Create and execute the DataReader, writing the result
                 // set to the console window.
                 connection.Open();
-                command.ExecuteReader();
+                var reader = command.ExecuteReader();
+                if(reader.Read())
+                {
+                   // var data=
+                }
+
             }
+
+            string connectionString1 = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
         }
 
         public CardType Get()
@@ -442,5 +476,17 @@ namespace BusinessHandler.MessageHandler.Tests
             }
             return "";
         }
+    }
+
+    public class MuniciplityCounty
+    {
+        public string Municiplity { get; set; }
+        public string ShortNm { get; set; }
+        public string County { get; set; }
+        public string DeployDate { get; set; }
+
+        public string Typ { get; set; }
+        public string LongNm { get; set; }
+        public int GId { get; set; }
     }
 }

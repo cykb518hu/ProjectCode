@@ -11,17 +11,28 @@
 <html>
 <head>
     <script>
-    @{
-        var json = new HtmlString(JsonConvert.SerializeObject(municipalityList.OrderBy(x => x.MunicipalityName)));
+        var municipalityList = new Array();
+        @{
+        var json = new HtmlString(JsonConvert.SerializeObject(municipalityList));
            <text>
-    sessionStorage.setItem("municipalityList", '@json');
-       </text>
+        sessionStorage.setItem("municipalityList", '@json');
+        </text>
 
+            var mapMasterData = (List<MapMunicipalityColor>)ViewData["mapInitialData"];
+            if (mapMasterData.Any())
+            {
+         <text>
+        municipalityList=@Html.Raw(JsonConvert.SerializeObject(mapMasterData));
+        </text>
+                }
 
-        }
+            }
     </script>
     <meta name="viewport" content="width=device-width" />
     <title>GovMash</title>
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -36,7 +47,9 @@
     <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-tooltip.js"></script>
 
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     <style>
 
         #div-query a {
@@ -76,7 +89,6 @@
                 <div class="row property-search-form">
                     <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
-                            <option value="All">ALL</option>
                             @{
                                 foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
                                 {
@@ -90,7 +102,6 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
-                            <option value="All">ALL</option>
                             @{
                                 foreach (var r in municipalityList.OrderBy(x=>x.MunicipalityName))
                                 {
@@ -105,7 +116,6 @@
                   
                     <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_KeyWord" id="sel_search_KeyWord" class="form-control" multiple="multiple">
-                            <option value="All">All</option>
                             @{
                                 foreach (var r in keyWords)
                                 {
@@ -116,7 +126,6 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_DeployDate" id="sel_search_DeployDate" class="form-control" multiple="multiple">
-                            <option value="all">All</option>
                             @{
                                 foreach (var r in municipalityList.Select(x => x.DeployDate).Distinct())
                                 {
@@ -126,14 +135,17 @@
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text" name="txt_search_MeetingDate" id="txt_search_MeetingDate" placeholder="Meeting Date" class="form-control" />
+                        <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Meeting Date" class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Meeting Date" class="form-control" />
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
      
                         <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
                     </div>
                     <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="submit" value="Save Search Query" id="btn_SaveInnitialQuery" class="btn btn-primary btn-block form-control" />
+                        <input type="submit" value="Save Search Query" id="btn_SaveInnitialQuery" class="btn btn-info btn-block form-control" />
                     </div>
                 </div>
             </div>
@@ -197,17 +209,49 @@
         </div>
     </div>
 
-    
+    <div class="modal fade" id="queryInnitialModal" tabindex="-1" role="dialog" aria-labelledby="queryModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Query Title</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="query-title" class="control-label">Query Title:</label>
+                            <input type="text" class="form-control" id="query-Innitial-title">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_InnitialSaveQuery">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <script>
         //load table data
         $(function () {
+            loadAllDataBySequence();
+        });
+        function loadAllDataBySequence()
+        {
+            initialMap();
+            loadListData();
+            loadQueryGroup();
+        }
+     
+        function loadListData()
+        {
             var oTable = new TableInit();
             oTable.Init();
             var oButtonInit = new ButtonInit();
             oButtonInit.Init();
-        });
+        }
 
         var TableInit = function () {
             var oTableInit = new Object();
@@ -247,8 +291,8 @@
                               width: '15%'
                           },
                            {
-                               field: 'ScrapeDate',
-                               title: 'Scrape Date',
+                               field: 'CityDeployDate',
+                               title: 'Deploy Date',
                                sortable: true,
                                order: "desc",
                                width: '15%'
@@ -283,7 +327,6 @@
                         $(function () {
                             $('[data-toggle="tooltip"]').tooltip()
                         })
-                        $("#map").css("height", ($(window).height() - 100) + "px");
                     },
 
                 });
@@ -418,6 +461,7 @@
                 searchData();
             }
         }
+
         function RemoveData(obj) {
             var removed = "False";
             var docId = $(obj).attr("data-docid");
@@ -433,7 +477,7 @@
                 dataType: 'json',
                 type: "POST",
                 success: function (result) {
-                    alert("success");
+                    successTips();
                     if (removed == "True") {
                         $(obj).parent().parent().parent().hide();
                     }
@@ -467,24 +511,45 @@
             var cityName = "";
             var countyName = "";
             if ($("#sel_search_KeyWord").val() != null) {
-                keyWord = $("#sel_search_KeyWord").val().toString();
+                if ($("#sel_search_KeyWord").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    keyWord = "All";
+                }
+                else {
+                    keyWord = $("#sel_search_KeyWord").val().toString();
+                }
             }
             if ($("#sel_search_CityName").val() != null) {
-                cityName = $("#sel_search_CityName").val().toString();
+                if ($("#sel_search_CityName").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    cityName = "All";
+                }
+                else {
+                    cityName = $("#sel_search_CityName").val().toString();
+                }
             }
             if ($("#sel_search_CountyName").val() != null) {
-                countyName = $("#sel_search_CountyName").val().toString();
+                if ($("#sel_search_CountyName").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    countyName = "All";
+                }
+                else {
+                    countyName = $("#sel_search_CountyName").val().toString();
+                }
             }
             var deployDate = "";
             if ($("#sel_search_DeployDate").val() != null) {
-                deployDate = $("#sel_search_DeployDate").val().toString();
+                if ($("#sel_search_DeployDate").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    deployDate = "All";
+                }
+                else {
+                    deployDate = $("#sel_search_DeployDate").val().toString();
+                }
             }
             var result = {
+                CountyName: countyName,
                 CityName: cityName,
                 KeyWord: keyWord,
                 DeployDate: deployDate,
-                CountyName:countyName,
-                MeetingDate: $("#txt_search_MeetingDate").val()
+                StartMeetingDate: $("#txt_search_StartMeetingDate").val(),
+                EndMeetingDate: $("#txt_search_EndMeetingDate").val()
 
             };
             return result;
@@ -556,15 +621,38 @@
             });
             $("#queryModal").modal('show');
         }
+
         function searchFromQuery(temp, guid) {
+
+            var countyStr = "";
+            if (temp.CountyName != null) {
+                countyStr = temp.CountyName;
+            }
+            if (countyStr.toUpperCase() == "ALL") {
+                $("#sel_search_CountyName").multiselect('selectAll', false);
+                $("#sel_search_CountyName").multiselect('updateButtonText');
+            }
+            else {
+                var countyArray = countyStr.split(",");
+                $("#sel_search_CountyName").val(countyArray);
+                $("#sel_search_CountyName").multiselect("refresh");
+            }
+            rebuildMuniciplitySelect();
+
             var municipalityStr = "";
             if (temp.CityName != null) {
                 municipalityStr = temp.CityName;
             }
-            var cityArray = municipalityStr.split(",");
-            $("#sel_search_CityName").val(cityArray);
-            $("#sel_search_CityName").multiselect("refresh");
-
+            if (municipalityStr.toUpperCase() == "ALL") {
+                $("#sel_search_CityName").multiselect('selectAll', false);
+                $("#sel_search_CityName").multiselect('updateButtonText');
+            }
+            else {
+                var cityArray = municipalityStr.split(",");
+                $("#sel_search_CityName").val(cityArray);
+                $("#sel_search_CityName").multiselect("refresh");
+            }
+            
 
             var kwyWordStr = "";
             if (temp.KeyWord != null) {
@@ -583,16 +671,17 @@
             $("#sel_search_DeployDate").multiselect("refresh");
 
 
-            var countyStr = "";
-            if (temp.CountyName != null) {
-                countyStr = temp.CountyName;
+          
+            //old data
+            if (temp.MeetingDate != null) {
+                $("#txt_search_StartMeetingDate").val(temp.MeetingDate)
             }
-            var countyArray = countyStr.split(",");
-            $("#sel_search_CountyName").val(countyArray);
-            $("#sel_search_CountyName").multiselect("refresh");
-
-
-            $("#txt_search_MeetingDate").val(temp.MeetingDate)
+            if (temp.StartMeetingDate != null) {
+                $("#txt_search_StartMeetingDate").val(temp.StartMeetingDate)
+            }
+            if (temp.EndMeetingDate != null) {
+                $("#txt_search_EndMeetingDate").val(temp.EndMeetingDate)
+            }
             $("#div_status_select").attr("data-important", "No");
             $("#div_status_select").attr("data-status", "All")
             $("#sp_view_status").html("All");
@@ -615,54 +704,89 @@
                 }
             });
         }
+        function successTips()
+        {
+            toastr.options = {
+                "positionClass": "toast-top-cente"
+            }
+            toastr.success('Success')
+           
+        }
+
+        function rebuildMuniciplitySelect()
+        {
+            var cityArr = new Array();
+            var dataList = JSON.parse(sessionStorage.getItem("municipalityList"));
+            
+            if ($("#sel_search_CountyName").val() == null) {
+                for (var j = 0; j < dataList.length; j++) {
+                    cityArr.push(dataList[j].MunicipalityName);
+                }
+            }
+            else {
+                var countyStr = $("#sel_search_CountyName").val().toString();
+                var countyArr = countyStr.split(",");
+                if (countyArr.length > 0) {
+                    for (var i = 0; i < countyArr.length; i++) {
+                        for (var j = 0; j < dataList.length; j++) {
+                            if (dataList[j].CountyName == countyArr[i]) {
+                                cityArr.push(dataList[j].MunicipalityName);
+                            }
+                        }
+                    }
+
+                }
+            }
+            cityArr.sort();
+            var htm = "";
+            for (var i = 0; i < cityArr.length; i++) {
+                htm += "<option value='" + cityArr[i] + "'>" + cityArr[i] + "</option>";
+            }
+            $("#sel_search_CityName").html(htm);
+            $("#sel_search_CityName").multiselect("rebuild");
+        }
     </script>
     <script>
-
         jQuery(document).ready(function ($) {
-            loadQueryGroup();
 
             $("#sel_search_CountyName").multiselect({
                 buttonWidth: '100%',
+                includeSelectAllOption: true,
+                selectAllText: 'All',
                 nonSelectedText: 'No County Selected',
                 onChange: function (element, checked) {
-                    //var cityArr = new Array();
-                    //var dataList = JSON.parse(sessionStorage.getItem("municipalityList"));
-                    //var countyStr = $("#sel_search_CountyName").val().toString();
-                    //var countyArr = countyStr.split(",");
-                    //if (countyArr.length > 0) {
-                    //    if (countyArr[0] != "All")
-                    //    {
-                    //        for (var i = 1; i < countyArr.length; i++) {
-                    //            for(var j=0;j<dataList.length;j++)
-                    //            {
-                    //                if( dataList[j].CountyName==countyArr[i])
-                    //                {
-                    //                    cityArr.push(dataList[j].MunicipalityName);
-                    //                }
-                    //            }
-                    //        }
-                    //        $("#sel_search_CityName").val(cityArr);
-                    //        $("#sel_search_CityName").multiselect("refresh");
-
-                    //    }
-                      
-                    //}
+                    rebuildMuniciplitySelect();
+                },
+                onSelectAll: function () {
+                    rebuildMuniciplitySelect();
+                },
+                onDeselectAll: function () {
+                    rebuildMuniciplitySelect();
                 }
             });
             $("#sel_search_CityName").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'No Municipality Selected'
+                nonSelectedText: 'No Municipality Selected',
+                includeSelectAllOption: true,
+                selectAllText: 'All'
             });
           
             $("#sel_search_KeyWord").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'No Key Word Selected'
+                nonSelectedText: 'No Key Word Selected',
+                includeSelectAllOption: true,
+                selectAllText: 'All'
             });
             $("#sel_search_DeployDate").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'No Deploy Date Selected'
+                nonSelectedText: 'No Deploy Date Selected',
+                includeSelectAllOption: true,
+                selectAllText: 'All'
             });
-            $('#txt_search_MeetingDate').datepicker({
+            $('#txt_search_StartMeetingDate').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+            $('#txt_search_EndMeetingDate').datepicker({
                 format: 'yyyy-mm-dd'
             });
             $("#btn_Search").click(function () {
@@ -675,7 +799,7 @@
                     dataType: 'json',
                     type: "POST",
                     success: function (result) {
-                        alert("success");
+                        successTips();
                     },
                     complete: function (XMLHttpRequest, textStatus) {
                         $('#' + $("#hid_QueryGuid").val()).html($("#txt_Comments").val());
@@ -698,14 +822,22 @@
                 $(this).hide();
             });
             $("#btn_SaveInnitialQuery").click(function () {
+                $("#queryInnitialModal").modal('show');
+            });
+            $("#btn_InnitialSaveQuery").click(function () {
+
+                var title = $("#query-Innitial-title").val();
                 var data = getQueryData();
                 $.ajax({
                     url: '@Url.Action("SaveSearchQuery", "Home")',
-                    data: { query: JSON.stringify(data) },
+                    data: { query: JSON.stringify(data), title: title },
                     dataType: 'json',
                     type: "POST",
                     success: function (result) {
+ 
+                        $("#queryInnitialModal").modal('hide');
                         loadQueryGroup();
+                      
                     },
                     complete: function (XMLHttpRequest, textStatus) {
 
@@ -757,9 +889,7 @@
             $("#pop-window-close").click(function () {
                 hideMapPopUp();
             });
-         
-           initialMap();
-           
+          
         });
     </script>
 
@@ -771,27 +901,32 @@
                 <span class="separator"></span>
             </div>
             <div class="cartodb-popup-content-wrapper">
-                <div class="cartodb-popup-content">
-                    <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
-                    <p>This municipality has <span id="pop-map-key-amount"></span> key words matched</p>
-                    <h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>
-                    <div id="pop-map-timeLine">
+                <div class="cartodb-popup-content" style="height:180px">
+                    <div id="div-map-data" style="display:none">
+                        <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
+                        <p>This municipality has <span id="pop-map-key-amount"></span> key words matched</p>
+                        <h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>
+                        <div id="pop-map-timeLine">
 
+                        </div>
                     </div>
-
+                    <div id="div-map-loading" >
+                        <img src="../../Image/Loading_icon.gif" style="width:230px;margin-left:40px;" />
+                    </div>
                 </div>
             </div>
             <div class="cartodb-popup-tip-container">
             </div>
         </div>
     </script>
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
     <script>
         //map
         var map;
         var layer;
-        var municipalityList = new Array();
+    
         function initialMap() {
+            $("#map").css("height", ($(window).height() - 100) + "px");
             cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json', {
                 tiles_loader: true,
                 search: false,
@@ -809,6 +944,8 @@
               var infowindow_model = newlayer.infowindow;
               newlayer.unbind('featureClick');
               newlayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+                  infowindow_model.set('visibility', false);
+
                   infowindow_model.set({
                       latlng: latlng,
                       content: {
@@ -820,9 +957,7 @@
                   infowindow_model.set('template', $('#infowindow_template').html());
                   showMapPopUp(data.label);
               });
-          
-              loadMapData();
-
+              createSelector();
           })
           .error(function (err) {
               console.log(err);
@@ -871,16 +1006,17 @@
             layer.setCartoCSS(cartocss);
             sql.getBounds(query).done(function (bounds) {
                 map.fitBounds(bounds);
-            });
+            });  
         }
         function showMapPopUp(str)
         {
+            $("#div-map-loading").show();
+            $("#div-map-data").hide();
             $.ajax({
                 url: '@Url.Action("GetMapPopUpInfo", "Home")',
                 dataType: 'json',
                 data: { municipality: str },
                 type: "GET",
-                async:false,
                 cache: false,
                 success: function (result) {
                     $("#pop-window").find('h2').text(str);
@@ -902,8 +1038,9 @@
                     }
                     else {
                         $("#pop-map-timeLine").html("No comment added");
-                    }
-                   // $("#pop-window").css({ 'display': 'block', 'position': 'fixed', 'left': ($(window).width() / 2 + pos.x-20), 'top': (pos.y - $("#pop-window").height()+60), 'cursor': 'pointer' });
+                    }   
+                    $("#div-map-loading").hide();
+                    $("#div-map-data").show();
                 },
                 complete: function (XMLHttpRequest, textStatus) {
                 },

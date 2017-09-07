@@ -129,3 +129,15 @@ div.cartodb-popup.v2
 .navbar-inverse .navbar-toggle:focus {
   background-color:#DCDCDC !important;
 }
+#tb_municipality
+{
+    font-size:12px;
+}
+#pop-window h2
+{
+    width:100%
+}
+#pop-window
+{
+    width:90px;
+}
