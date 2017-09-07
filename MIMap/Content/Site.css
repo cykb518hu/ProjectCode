@@ -141,3 +141,8 @@ div.cartodb-popup.v2
 {
     width:90px;
 }
+#pop-window-close
+{
+    right:0px;
+    top:0px;
+}

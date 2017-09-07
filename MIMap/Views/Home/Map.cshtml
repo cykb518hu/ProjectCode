@@ -924,7 +924,7 @@
         //map
         var map;
         var layer;
-    
+        var refreshLayers;
         function initialMap() {
             $("#map").css("height", ($(window).height() - 100) + "px");
             cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json', {
@@ -940,12 +940,13 @@
               layer.set({ interactivity: "label" });
               layer.setInteraction(true);
 
+              refreshLayers=layers;
               var newlayer = layers[1];
               var infowindow_model = newlayer.infowindow;
               newlayer.unbind('featureClick');
+              infowindow_model.set('visibility', false);
               newlayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
-                  infowindow_model.set('visibility', false);
-
+                 
                   infowindow_model.set({
                       latlng: latlng,
                       content: {
@@ -953,10 +954,11 @@
                       },
                       visibility: true
                   });
-                  infowindow_model.set('template_type', 'underscore');
-                  infowindow_model.set('template', $('#infowindow_template').html());
+                  
                   showMapPopUp(data.label);
               });
+              infowindow_model.set('template_type', 'underscore');
+              infowindow_model.set('template', $('#infowindow_template').html());
               createSelector();
           })
           .error(function (err) {
