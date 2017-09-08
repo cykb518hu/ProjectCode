@@ -28,6 +28,7 @@ namespace MIMap.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
+            Session["UserAccount"] = null ;
             return View();
         }
 

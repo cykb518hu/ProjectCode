@@ -137,3 +137,27 @@ SET ANSI_PADDING OFF
 GO
 
 INSERT INTO dbo.ACCOUNT (EMAIL,Password,Active,RoleType) values ('admin@admin.com','MTIzNDU2','Yes','Admin')
+
+
+/****** Object:  Table [dbo].[USER]    Script Date: 2017-08-04 14:06:53 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[SearchQuery](
+    [Guid] [nvarchar](50) NOT NULL,
+	[Title] nvarchar(200) not null,
+	[Content] text not null,
+	[FrequentlyUsed] int,
+	[Disabled] [nvarchar](10),
+	[USR_CRTN_ID] [varchar](50)  DEFAULT (user_name()) ,
+	[USR_CRTN_TS] [datetime] DEFAULT (getdate()),
+	[USR_MDFN_ID] [varchar](50) DEFAULT (user_name()),
+	[USR_MDFN_TS] [datetime] DEFAULT (getdate())
+) ON [PRIMARY]
+GO
+
+SET ANSI_PADDING OFF
+GO
