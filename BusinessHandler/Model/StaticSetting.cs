@@ -9,6 +9,9 @@ namespace BusinessHandler.Model
 {
     public static class StaticSetting
     {
+        static StaticSetting()
+        {
+        }
         public static bool GetDataFromDB()
         {
             if (ConfigurationManager.AppSettings["GetDataFromDB"] != null && ConfigurationManager.AppSettings["GetDataFromDB"].ToString() == "True")
@@ -20,11 +23,9 @@ namespace BusinessHandler.Model
 
         public static string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
-        public static string filePath = ConfigurationManager.AppSettings["FilePath"].ToString();
+        public static string filePath = string.IsNullOrEmpty(ConfigurationManager.AppSettings["FilePath"]) ? "" : ConfigurationManager.AppSettings["FilePath"].ToString();
 
-        public static string queryFile = ConfigurationManager.AppSettings["queryFile"].ToString();
-
-        public static string userFile = ConfigurationManager.AppSettings["userFile"].ToString();
+        public static string userFile = string.IsNullOrEmpty(ConfigurationManager.AppSettings["userFile"]) ? "" : ConfigurationManager.AppSettings["userFile"].ToString();
 
         public static List<string> MapColorList()
         {
