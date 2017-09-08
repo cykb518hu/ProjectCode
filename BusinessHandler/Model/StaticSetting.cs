@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BusinessHandler.Model
 {
-   public static class StaticSetting
+    public static class StaticSetting
     {
         public static bool GetDataFromDB()
         {
-            if(ConfigurationManager.AppSettings["GetDataFromDB"]!=null&& ConfigurationManager.AppSettings["GetDataFromDB"].ToString()=="True")
+            if (ConfigurationManager.AppSettings["GetDataFromDB"] != null && ConfigurationManager.AppSettings["GetDataFromDB"].ToString() == "True")
             {
                 return true;
             }
@@ -34,6 +34,17 @@ namespace BusinessHandler.Model
             list.Add("#00CD66"); //<500
             list.Add("#008B45"); //>500
             return list;
+        }
+
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+        public static string Base64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

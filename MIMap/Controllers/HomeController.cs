@@ -11,6 +11,12 @@ namespace MIMap.Controllers
 {
     public class HomeController : Controller
     {
+        ISearchQueryRepository searchQueryRepository;
+        public HomeController()
+        {
+            searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
+
+        }
         public ActionResult Index()
         {
             return View();
@@ -90,7 +96,6 @@ namespace MIMap.Controllers
         [HttpGet]
         public JsonResult GetSearchQuery()
         {
-            var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
             var data = searchQueryRepository.GetSearchQuery();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
@@ -98,7 +103,6 @@ namespace MIMap.Controllers
         [HttpPost]
         public JsonResult SaveSearchQuery(string query,string title)
         {
-            var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
             var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
             if (string.IsNullOrEmpty(title))
             {
@@ -151,7 +155,6 @@ namespace MIMap.Controllers
         {
             if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(guid))
             {
-                var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
                 searchQueryRepository.UpdateSearchQuery(guid, title, query);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
@@ -162,7 +165,6 @@ namespace MIMap.Controllers
         {
             if (!string.IsNullOrWhiteSpace(guid))
             {
-                var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
                 searchQueryRepository.DeleteSearchQuery(guid);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
@@ -173,7 +175,6 @@ namespace MIMap.Controllers
         {
             if (!string.IsNullOrWhiteSpace(guid))
             {
-                var searchQueryRepository = new SearchQueryRepository(StaticSetting.queryFile);
                 searchQueryRepository.AddSearchQueryAmount(guid);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);

@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Web;
+using System.Data.SqlClient;
 
 namespace BusinessHandler.MessageHandler
 {
@@ -126,4 +127,92 @@ namespace BusinessHandler.MessageHandler
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
+
+    public class SqlServerUserRepository:IUserRepository
+    {
+        public string Register(UserAccount message)
+        {
+            var result = "sccuess";
+            var userList = GetUserList();
+            if (userList.Count(x => x.Email.Equals(message.Email, StringComparison.OrdinalIgnoreCase)) > 0)
+            {
+                result = "This email has been registered";
+            }
+            else
+            {
+                message.Password =StaticSetting.Base64Encode(message.Password);
+                message.RoleType = GlobalKeyString.roleTypeGeneral;
+                string queryString = @"INSERT INTO dbo.ACCOUNT (EMAIL,Password,Active,RoleType) values (@Email,@Password,@Active,@RoleType)";
+                using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.AddWithValue("@Email", message.Email);
+                    command.Parameters.AddWithValue("@Password", message.Email);
+                    command.Parameters.AddWithValue("@Active", message.Active);
+                    command.Parameters.AddWithValue("@RoleType", message.RoleType);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+
+        public void ActiveUser(UserAccount message)
+        {
+           
+
+        }
+
+        public UserAccount Login(UserAccount message, out string result)
+        {
+            result = "sccuess";
+            var userList = GetUserList();
+            var user = userList.FirstOrDefault((x => x.Email.Equals(message.Email, StringComparison.OrdinalIgnoreCase) && x.Password.Equals(StaticSetting.Base64Encode(message.Password), StringComparison.OrdinalIgnoreCase)));
+
+            if (user != null)
+            {
+                if (user.Active == "No")
+                {
+                    result = "Your account it not activated, please reach out to admnistrator";
+                }
+                else
+                {
+                    result = "sccuess";
+                }
+            }
+            else
+            {
+                result = "Your login credentials has proplem, incorrect email or passwrod ";
+            }
+            return user;
+        }
+        public List<UserAccount> GetUserList()
+        {
+            List<UserAccount> userList = new List<UserAccount>();
+            string queryString = @"SELECT * FROM ACCOUNT";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new UserAccount();
+                    data.Email = DBNull.Value == reader["EMAIL"] ? "" : reader["EMAIL"].ToString();
+                    data.Password = DBNull.Value == reader["Password"] ? "" : reader["Password"].ToString();
+                    data.Cityes = DBNull.Value == reader["Cityes"] ? "" : reader["Cityes"].ToString();
+                    data.Active = DBNull.Value == reader["Active"] ? "" : reader["Active"].ToString();
+                    data.RoleType = DBNull.Value == reader["RoleType"] ? "" : reader["RoleType"].ToString();
+                    data.Operation = DBNull.Value == reader["Operation"] ? "" : reader["Operation"].ToString();
+                    userList.Add(data);
+                }
+            }
+            return userList;
+        }
+
+     
+    }
+
 }
+

@@ -30,7 +30,8 @@ namespace MIMap
         {
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            builder.RegisterType<UserRepository>().As<IUserRepository>();
+            builder.RegisterType<SqlServerUserRepository>().As<IUserRepository>();
+            builder.RegisterType<SqlServerSearchQueryRepository>().As<ISearchQueryRepository>();
             builder.RegisterFilterProvider();
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

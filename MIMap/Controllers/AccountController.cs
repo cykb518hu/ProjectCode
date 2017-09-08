@@ -74,6 +74,7 @@ namespace MIMap.Controllers
             user.Password = model.Password;
             user.Cityes = "";
             user.Active = "Yes";
+            user.RoleType = GlobalKeyString.roleTypeGeneral;
             string result = userRepository.Register(user);
             if (result != "sccuess")
             {

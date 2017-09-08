@@ -1,6 +1,7 @@
 ﻿using BusinessHandler.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -112,5 +113,83 @@ namespace BusinessHandler.MessageHandler
             }
         }
 
+    }
+
+    public class SqlServerSearchQueryRepository:ISearchQueryRepository
+    {
+        public void AddSearchQuery(string query, string title)
+        {
+            var queryModel = new SearchQueryModel();
+            string queryString = @"INSERT INTO dbo.SearchQuery (Guid,Title,Content,FrequentlyUsed,Disabled) values (@Guid,@Title,@Content,1,'false')";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@Guid", queryModel.Guid);
+                command.Parameters.AddWithValue("@Title", title);
+                command.Parameters.AddWithValue("@Content", query);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public List<SearchQueryModel> GetSearchQuery()
+        {
+            var list = new List<SearchQueryModel>();
+            string queryString = @"SELECT * FROM SearchQuery where disabled='false'";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new SearchQueryModel();
+                    data.Guid = DBNull.Value == reader["Guid"] ? "" : reader["Guid"].ToString();
+                    data.Title = DBNull.Value == reader["Title"] ? "" : reader["Title"].ToString();
+                    data.Content = DBNull.Value == reader["Content"] ? "" : reader["Content"].ToString();
+                    data.FrequentlyUsed = DBNull.Value == reader["FrequentlyUsed"] ? 1 : Convert.ToInt32(reader["FrequentlyUsed"]);
+                    data.ModifyDate = DBNull.Value == reader["USR_MDFN_TS"] ? DateTime.MinValue : Convert.ToDateTime(reader["USR_MDFN_TS"]);
+                    list.Add(data);
+                }
+            }
+            list = list.OrderByDescending(x => x.FrequentlyUsed).ThenByDescending(x => x.ModifyDate).ToList();
+            return list;
+        }
+
+        public void UpdateSearchQuery(string guid, string title, string query)
+        {
+            string queryString = @"UPDATE dbo.SearchQuery SET Title=@Title, Content=@Content WHERE GUID=@Guid ";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@Guid", guid);
+                command.Parameters.AddWithValue("@Title", title);
+                command.Parameters.AddWithValue("@Content", query);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+        public void DeleteSearchQuery(string guid)
+        {
+            string queryString = @"DELETE FROM dbo.SearchQuery WHERE GUID=@Guid ";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@Guid", guid);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+        public void AddSearchQueryAmount(string guid)
+        {
+           string queryString = @"UPDATE SearchQuery SET FrequentlyUsed = FrequentlyUsed + 1 WHERE GUID=@Guid ";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@Guid", guid);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }
