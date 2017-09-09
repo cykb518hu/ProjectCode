@@ -162,7 +162,11 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         var result = new DocQueryParentModel();
                         result.DocId = reader["DOC_GUID"].ToString();
                         result.DocUrl = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>Download File</a>";
-                        result.DocType = reader["DOC_TYPE"].ToString();
+                        var docType = reader["DOC_TYPE"].ToString();
+                        // result.DocType = @"<p title='" + docType + "'  data-toggle='tooltip' data-placement='top' >" + docType + "</p>";
+
+                        docType= docType.Replace("Commission Meeting", "").Replace("Appeals Meetings", "").Replace("Commission, City", "").Replace("Commissioners", "").Replace("Community Meetings", "").Replace("Force Meetings", "").Replace("of Appeals", "").Replace("Appeals", "").Replace("Commission", "");
+                        result.DocType = docType;
                         result.CityNameDispaly = "<span class='showDatePicker' onclick='showDatePicker(this); return false' style='cursor: pointer'>" + reader["CITY_NM"].ToString() + "</span>";
 
                         result.MeetingDateDisplay = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
@@ -174,7 +178,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                         var checkStr = important.Equals("Yes") ? "checked" : "";
                         result.ImportantDisplay = @"<input type='checkbox'  onclick='RemoveData(this);'   data-file='" + important + "' data-docid='" + result.DocId + "' " + checkStr + " />";
 
-                        result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString() + "</a>";
+                        result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString().Replace("MI", "") + "</a>";
                         result.COMMENT = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
                         result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note' data-toggle='tooltip' data-placement='top' data-docid='" + result.DocId + "' data-comment='" + result.COMMENT + "' onclick='OpenDocNoteDetail(this); return false'></button>";
                     
@@ -260,6 +264,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 int count = 0;
                 subList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
                 r.Number = count;
+                subList = subList.OrderBy(x => x.PageNumber).ToList();
                 r.DocQuerySubList = subList;
             }
         }

@@ -146,3 +146,9 @@ div.cartodb-popup.v2
     right:0px;
     top:3px;
 }
+#tb_municipality .btn{
+    padding-left:2px;
+    padding-right:2px;
+    padding-top:2px;
+    padding-bottom:2px
+}
