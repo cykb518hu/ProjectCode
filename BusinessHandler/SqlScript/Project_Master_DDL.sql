@@ -161,3 +161,23 @@ GO
 
 SET ANSI_PADDING OFF
 GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[MeetingNote](
+    [Guid] [nvarchar](50) NOT NULL,
+	[Doc_Guid] [nvarchar](50) NOT NULL,
+	[Notes] nvarchar(200) not null,
+	[USR_CRTN_ID] [varchar](50)  DEFAULT (user_name()) ,
+	[USR_CRTN_TS] [datetime] DEFAULT (getdate()),
+	[USR_MDFN_ID] [varchar](50) DEFAULT (user_name()),
+	[USR_MDFN_TS] [datetime] DEFAULT (getdate())
+) ON [PRIMARY]
+GO
+
+SET ANSI_PADDING OFF
+GO

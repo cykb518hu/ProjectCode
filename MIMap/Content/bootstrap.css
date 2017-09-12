@@ -5742,7 +5742,6 @@ body.modal-open,
   .modal-dialog {
     right: auto;
     left: 50%;
-    width: 350px;
     padding-top: 100px;
     padding-bottom: 30px;
   }
