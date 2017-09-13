@@ -169,4 +169,14 @@ namespace BusinessHandler.Model
     }
     #endregion
 
+    public class MeetingNote
+    {
+        public string Note { get; set; }
+        public string DocGuid { get; set; }
+        public string Guid { get; set; }
+        public string CreateDate { get; set; }
+        public string ModifyDate { get; set; }
+        public string Status { get; set; }
+    }
+
 }

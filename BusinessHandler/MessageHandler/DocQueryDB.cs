@@ -467,5 +467,63 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
         #endregion
 
 
+        public static List<MeetingNote> GetMeetingNotes(string docGuid)
+        {
+            var list = new List<MeetingNote>();
+            string queryString = @"select  * from [dbo].[MeetingNote] where doc_guid='" + docGuid + "' order by usr_mdfn_ts desc";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new MeetingNote();
+                    data.Note = DBNull.Value == reader["Notes"] ? "" : reader["Notes"].ToString();
+                    data.CreateDate = DBNull.Value == reader["USR_CRTN_TS"] ? "" : Convert.ToDateTime(reader["USR_CRTN_TS"]).ToString("yyyy-MM-dd");
+                    data.ModifyDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");
+                    data.Guid= DBNull.Value == reader["Guid"] ? "" : reader["Guid"].ToString();
+                    data.DocGuid = DBNull.Value == reader["Doc_Guid"] ? "" : reader["Doc_Guid"].ToString();
+                    list.Add(data);
+                }
+            }
+            return list;
+        }
+        public static bool  UpdateMeetingNotes(List<MeetingNote> notes)
+        {
+            if (notes.Any())
+            {
+                foreach (var r in notes)
+                {
+                    if (string.IsNullOrEmpty(r.Note))
+                    {
+                        continue;
+                    }
+                    string queryString = string.Empty;
+                    switch (r.Status)
+                    {
+                        case "Added":
+                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes) values(NEWID(),'" + r.DocGuid + "','" + r.Note + "')";
+                            break;
+                        case "Deleted":
+                            queryString = "DELETE FROM MeetingNote WHERE [GUID]='" + r.Guid + "'";
+                            break;
+                        case "Modified":
+                            queryString = "UPDATE MeetingNote SET Notes= '" + r.Note + "' , USR_MDFN_TS='" + DateTime.Now + "' WHERE [Guid]='" + r.Guid + "'";
+                            break;
+                    }
+                    using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                    {
+                        SqlCommand command = new SqlCommand(queryString, connection);
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            return true;
+        }
+
+
+
     }
 }

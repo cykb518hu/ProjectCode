@@ -3,35 +3,95 @@
     $("#btn-add-meetingNote").click(function () {
         var str = "";
         str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" ></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid"></span><span style="display:none" class="note-old-value"></span></td></tr>';
+        $("#meetingNote-table >tbody").append(str);
     });
+    $("#btn_Save_MeetingNote").click(function () {
+        var noteArr = new Array();
+        var docGuid = $("#hid_noteDocId").val();
+        $("#meetingNote-table > tbody  > tr").each(function () {
+            var status = $(this).find(".note-status").html();
+            if (status.length > 0)
+            {
+                var note = {
+                    Note: $(this).find(".note-text").val(),
+                    Guid: $(this).find(".note-guid").html(),
+                    Status: $(this).find(".note-status").html(),
+                    DocGuid:docGuid
+                };
+                noteArr.push(note);
+            }
+     
+        })
 
-    function deleteMeetingNote(obj) {
-        $(obj).parent().parent().hide();
-        var status = $(obj).parent().parent().find(".note-status").html();
-        if (status == "Added") {
-            $(obj).parent().parent().find(".note-status").html("none");
-        }
-        else {
-            $(obj).parent().parent().find(".note-status").html("Deleted");
-        }
-    }
-    function modifyMeetingNote(obj) {
-        var note = $(this).val();
-        var status = $(obj).parent().parent().find(".note-status").html();
-        if (status == "Added") {
-            return;
-        }
-        var oldNote = $(obj).parent().parent().find(".note-old-value").html();
+        $.ajax({
+            url: '/MeetingNote/SaveMeetingNotes',
+            data: { notes: JSON.stringify(noteArr) },
+            dataType: 'json',
+            type: "POST",
+            success: function (result) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                $("#myNotesModal").modal('hide');
+            },
+            error: function (xhr, textStatus, errorThrown) {
 
-        if (note != oldNote) {
-            $(obj).parent().parent().find(".note-status").html("Modified");
-        }
-        if (note == oldNote) {
-            $(obj).parent().parent().find(".note-status").html("");
-        }
-    }
+            }
+        });
+    });
+ 
 });
+function loadNoteData(docId)
+{
+    $("#meetingNote-table >tbody").html("");
+    $.ajax({
+        url: '/MeetingNote/GetMeetingNotes',
+        data: { docGuid: docId },
+        dataType: 'json',
+        type: "GET",
+        success: function (result) {
+            if (result.length > 0) {
+                for (var i = 0; i < result.length; i++) {
+                    var data = result[i];
+                    var str = "";
+                    str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" >' + data.Note + '</textarea></td><td>' + data.CreateDate + '</td><td>' + data.ModifyDate + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status"></span><span style="display:none" class="note-guid">' + data.Guid + '</span><span style="display:none" class="note-old-value">' + data.Note + '</span></td></tr>';
+                    $("#meetingNote-table >tbody").append(str);
+                }
+            }
+            $("#myNotesModal").modal('show');
 
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+        },
+        error: function (xhr, textStatus, errorThrown) {
+
+        }
+    });
+}
+function deleteMeetingNote(obj) {
+    $(obj).parent().parent().hide();
+    var status = $(obj).parent().parent().find(".note-status").html();
+    if (status == "Added") {
+        $(obj).parent().parent().find(".note-status").html("");
+    }
+    else {
+        $(obj).parent().parent().find(".note-status").html("Deleted");
+    }
+}
+function modifyMeetingNote(obj) {
+    var note = $(obj).val();
+    var status = $(obj).parent().parent().find(".note-status").html();
+    if (status == "Added") {
+        return;
+    }
+    var oldNote = $(obj).parent().parent().find(".note-old-value").html();
+
+    if (note != oldNote) {
+        $(obj).parent().parent().find(".note-status").html("Modified");
+    }
+    if (note == oldNote) {
+        $(obj).parent().parent().find(".note-status").html("");
+    }
+}
 Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
         "M+": this.getMonth() + 1, //月份

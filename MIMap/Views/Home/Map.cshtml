@@ -159,31 +159,7 @@
                 </div>
             </div>
     </div>
-    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Maintain Meeting Notes</h4>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="hid_DocId" />
-                   <table class="table" id="meetingNote-table">
-                       <thead><tr><th style="width:39%">Note</th><th style="width:20%">Add Date</th><th style="width:20%">Modify Date</th><th style="width:10%"></th><th style="width:1%"></th></tr></thead>
-                       <tbody>
-                           <tr><td><textarea class="form-control note-text" rows="2" ></textarea></td><td>2017-09-11</td><td>2017-09-12</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove"></button></td><td><span style="display:none" class="note-status"></span><span style="display:none" class="note-guid"></span></td></tr>
-                           <tr><td>111</td><td>2017-09-11</td><td>2017-09-12</td><td>Modity</td><td></td></tr>
-                           <tr><td>111</td><td>2017-09-11</td><td>2017-09-12</td><td>Modity</td><td></td></tr>
-                       </tbody>
-                   </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" id="btn-add-meetingNote">Add</button>
-                    <button type="button" class="btn btn-primary" id="btn_Save_Comment">Save changes</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    
     <div class="modal fade" id="queryModal" tabindex="-1" role="dialog" aria-labelledby="queryModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -237,7 +213,49 @@
         </div>
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Comments</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="hid_DocId" />
+                    <input type="hidden" id="hid_FilePath" />
+                    <input type="hidden" id="hid_QueryGuid" />
+                    <textarea class="form-control" rows="3" id="txt_Comments"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="cursor:pointer">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn_Save_Comment">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="myNotesModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Maintain Meeting Notes</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="hid_noteDocId" />
+                    <table class="table" id="meetingNote-table">
+                        <thead><tr><th style="width:39%">Note</th><th style="width:20%">Add Date</th><th style="width:20%">Modify Date</th><th style="width:10%"></th><th style="width:1%"></th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" id="btn-add-meetingNote">Add</button>
+                    <button type="button" class="btn btn-primary" id="btn_Save_MeetingNote">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <script>
         //load table data
@@ -441,12 +459,10 @@
             $("#myModal").modal('show');
         }
         function OpenDocNoteDetail(obj) {
-            var docId = $(obj).attr("data-docid");
-            var comment = $(obj).attr("data-comment");
-            $("#hid_DocId").val(docId);
-            $("#hid_QueryGuid").val("");
-            $("#txt_Comments").val(comment);
-            $("#myModal").modal('show');
+            var docGuid = $(obj).attr("data-docid");
+            $("#hid_noteDocId").val(docGuid);
+            loadNoteData(docGuid);
+
         }
         function ShowStatus(obj) {
             var selectedStatus = $(obj).children().attr("data-tag");
@@ -804,24 +820,7 @@
             $("#btn_Search").click(function () {
                 searchData();
             });
-            $("#btn_Save_Comment").click(function () {
-                $.ajax({
-                    url: '@Url.Action("SaveComment", "Home")',
-                    data: { DocId: $("#hid_DocId").val(), Comment: $("#txt_Comments").val(), QueryGuid: $("#hid_QueryGuid").val() },
-                    dataType: 'json',
-                    type: "POST",
-                    success: function (result) {
-                        successTips();
-                    },
-                    complete: function (XMLHttpRequest, textStatus) {
-                        $('#' + $("#hid_QueryGuid").val()).html($("#txt_Comments").val());
-                        $("#myModal").modal('hide');
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
 
-                    }
-                });
-            });
 
             $("#btn_showQueryDiv").click(function () {
                 $("#ul_queryGourp").show();
