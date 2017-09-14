@@ -61,15 +61,15 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
 
                 if (!string.IsNullOrWhiteSpace(message.CityName) && !message.CityName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@CityName", GetArrayQuery(message.CityName));
+                    command.Parameters.AddWithValue("@CityName",StaticSetting.GetArrayQuery(message.CityName));
                 }
                 if (!string.IsNullOrWhiteSpace(message.CountyName) && !message.CountyName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@CountyName", GetArrayQuery(message.CountyName));
+                    command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
                 }
                 if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@KeyWord", GetArrayQuery(message.KeyWord));
+                    command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
                 }
                 if (!string.IsNullOrWhiteSpace(message.MeetingDate))
                 {
@@ -85,7 +85,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 }
                 if (!string.IsNullOrWhiteSpace(message.DeployDate) && !message.DeployDate.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@DeployeDate", GetArrayQuery(message.DeployDate));
+                    command.Parameters.AddWithValue("@DeployeDate", StaticSetting.GetArrayQuery(message.DeployDate));
                 }
                 if (!string.IsNullOrWhiteSpace(message.IsViewed) && !message.IsViewed.Equals("All", StringComparison.OrdinalIgnoreCase))
                 {
@@ -268,24 +268,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 r.DocQuerySubList = subList;
             }
         }
-        public static string GetArrayQuery(string arrayStr)
-        {
-            var arr = arrayStr.Split(',');
-            var query = string.Empty;
-            foreach (var r in arr)
-            {
-                if (!string.IsNullOrWhiteSpace(r))
-                {
-                    if (r.Equals("All", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return null;
-                    }
-                    query += "'" + r + "',";
-                }
-            }
-            query = query.TrimEnd(',');
-            return query;
-        }
+
 
         public static void UpdateDocStatus(DocQueryResultModel message)
         {
@@ -465,63 +448,6 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
             return result;
         }
         #endregion
-
-
-        public static List<MeetingNote> GetMeetingNotes(string docGuid)
-        {
-            var list = new List<MeetingNote>();
-            string queryString = @"select  * from [dbo].[MeetingNote] where doc_guid='" + docGuid + "' order by usr_mdfn_ts desc";
-            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-                connection.Open();
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    var data = new MeetingNote();
-                    data.Note = DBNull.Value == reader["Notes"] ? "" : reader["Notes"].ToString();
-                    data.CreateDate = DBNull.Value == reader["USR_CRTN_TS"] ? "" : Convert.ToDateTime(reader["USR_CRTN_TS"]).ToString("yyyy-MM-dd");
-                    data.ModifyDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");
-                    data.Guid= DBNull.Value == reader["Guid"] ? "" : reader["Guid"].ToString();
-                    data.DocGuid = DBNull.Value == reader["Doc_Guid"] ? "" : reader["Doc_Guid"].ToString();
-                    list.Add(data);
-                }
-            }
-            return list;
-        }
-        public static bool  UpdateMeetingNotes(List<MeetingNote> notes)
-        {
-            if (notes.Any())
-            {
-                foreach (var r in notes)
-                {
-                    if (string.IsNullOrEmpty(r.Note))
-                    {
-                        continue;
-                    }
-                    string queryString = string.Empty;
-                    switch (r.Status)
-                    {
-                        case "Added":
-                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes) values(NEWID(),'" + r.DocGuid + "','" + r.Note + "')";
-                            break;
-                        case "Deleted":
-                            queryString = "DELETE FROM MeetingNote WHERE [GUID]='" + r.Guid + "'";
-                            break;
-                        case "Modified":
-                            queryString = "UPDATE MeetingNote SET Notes= '" + r.Note + "' , USR_MDFN_TS='" + DateTime.Now + "' WHERE [Guid]='" + r.Guid + "'";
-                            break;
-                    }
-                    using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
-                    {
-                        SqlCommand command = new SqlCommand(queryString, connection);
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                    }
-                }
-            }
-            return true;
-        }
 
 
 

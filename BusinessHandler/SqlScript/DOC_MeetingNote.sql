@@ -1,5 +1,5 @@
 
-IF EXISTS (SELECT * FROM SYS.OBJECTS WHERE OBJECT_ID = OBJECT_ID(N'[dbo].[GET_DOC_MeetingNote') AND TYPE IN (N'P', N'PC'))
+IF EXISTS (SELECT * FROM SYS.OBJECTS WHERE OBJECT_ID = OBJECT_ID(N'[dbo].[GET_DOC_MeetingNote]') AND TYPE IN (N'P', N'PC'))
 DROP PROCEDURE [dbo].[GET_DOC_MeetingNote]
 GO
 SET ANSI_NULLS ON
@@ -17,8 +17,6 @@ CREATE PROCEDURE [dbo].[GET_DOC_MeetingNote]
 @StartMeetingDate varchar(50)=null,
 @EndMeetingDate varchar(50)=null,
 @DeployeDate varchar(50)=null,
-@IsChecked varchar(5)=null,
-@IsImportant varchar(5)=null,
 @Notes varchar(200)=null,
 @offset int =0,
 @limit int=10,
@@ -33,7 +31,7 @@ SELECT DISTINCT D.DOC_GUID, D.CITY_NM , D.DOC_TYPE,
 Q.MEETING_DATE,Q.SEARCH_DATE, C.DEPLOYE_DATE
  FROM  DBO.DOCUMENT D INNER JOIN DBO.QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID 
  INNER JOIN DBO.MeetingNote M ON M.DOC_GUID=D.DOC_GUID 
- INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM where 1=1'
+ INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM where 1=1 and  D.IMPORTANT=''false'' '
 
 if @CityName is not null 
 	begin
@@ -59,13 +57,9 @@ if @DeployeDate is not null
 	begin
 		set @sqlstr=@sqlstr+' and C.DEPLOYE_DATE IN ('+ @DeployeDate+')'
 	end
-if @IsChecked is not null
+if @Notes is not null
    begin
-		set @sqlstr=@sqlstr+' and D.CHECKED = '''+ @IsChecked+''''
-	end
-if @IsImportant is not null
-   begin
-		set @sqlstr=@sqlstr+' and D.IMPORTANT = '''+ @IsImportant+''''
+		set @sqlstr=@sqlstr+' and M.NOTES LIKE % '''+ @Notes+'''%'
 	end
 
 if(@Total=0)

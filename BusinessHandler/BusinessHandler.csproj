@@ -62,6 +62,7 @@
     <Compile Include="MessageHandler\DocQueryRepository.cs" />
     <Compile Include="MessageHandler\GlobalKeyString.cs" />
     <Compile Include="MessageHandler\KeyWords.cs" />
+    <Compile Include="MessageHandler\MeetingNote.cs" />
     <Compile Include="MessageHandler\SearchQueryRepository.cs" />
     <Compile Include="MessageHandler\UserRepository.cs" />
     <Compile Include="MessageHandler\XmlHelper.cs" />

@@ -1,8 +1,25 @@
-﻿
+﻿@using BusinessHandler.Model;
+@using Newtonsoft.Json;
+@{
+    Layout = null;
+
+
+    var municipalityList = (List<MapMunicipality>)ViewData["municipalityList"];
+}
 <!DOCTYPE html>
 
 <html>
 <head>
+    <script>
+        var municipalityList = new Array();
+        @{
+        var json = new HtmlString(JsonConvert.SerializeObject(municipalityList));
+           <text>
+        sessionStorage.setItem("municipalityList", '@json');
+        </text>
+
+            }
+    </script>
     <meta name="viewport" content="width=device-width" />
     <title>GovMash</title>
     @Styles.Render("~/Content/css")
@@ -17,6 +34,9 @@
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-combobox.js"></script>
     <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-editable.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-editable.js"></script>
+    <script src="~/Scripts/bootstrap-table-editable.js"></script>
 </head>
 <body>
     @Html.Partial("_LoginPartial")
@@ -25,13 +45,39 @@
             <div class="search-container">
                 <div class="row property-search-form">
 
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Meeting Date" class="form-control" />
+                    <div class="col-xs-12 col-sm-3 form-group">
+                        <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
+                            @{
+                                foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
+                                {
+                                    if (!string.IsNullOrEmpty(r))
+                                    {
+                                        <option value="@r">@r</option>
+                                    }
+                                }
+                            }
+                        </select>
+
                     </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Meeting Date" class="form-control" />
+                    <div class="col-xs-12 col-sm-3 form-group">
+                        <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
+                            @{
+                                foreach (var r in municipalityList.OrderBy(x => x.MunicipalityName))
+                                {
+                                    if (!string.IsNullOrEmpty(r.MunicipalityName))
+                                    {
+                                        <option value="@r.MunicipalityName">@r.MunicipalityName</option>
+                                    }
+                                }
+                            }
+                        </select>
+
                     </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
+                    <div class="col-xs-12 col-sm-3 form-group">
+                        <input type="text"  id="txt_search_Note" placeholder="note..." class="form-control" />
+
+                    </div>
+                    <div class="col-xs-12 col-sm-3 form-group">
 
                         <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
                     </div>
@@ -42,6 +88,370 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Comments</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="hid_DocId" />
+                    <input type="hidden" id="hid_index" />
+                    <textarea class="form-control" rows="3" id="txt_Comments"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_Save_Comment">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
+    <script src="~/Scripts/MaintainMeetingNote.js"></script>
+    <script>
+        $(function () {
+            loadListData();
+        });
+
+        function loadListData() {
+            var oTable = new TableInit();
+            oTable.Init();
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+        }
+
+        var TableInit = function () {
+            var oTableInit = new Object();
+            oTableInit.Init = function () {
+                $('#tb_meetingNote').bootstrapTable({
+                    url: '/MeetingNote/GetAllNotes',
+                    method: 'get',
+                    cache: false,
+                    pagination: true,
+                    sortable: true,
+                    queryParams: oTableInit.queryParams,
+                    sidePagination: "server",
+                    pageList: [10, 25, 50, 100],
+                    showColumns: true,
+                    detailView: true,
+                    columns: [
+                         {
+                             field: 'CityName',
+                             title: 'Municipality',
+                             width: '25%'
+                         },
+                        {
+                            field: 'DocType',
+                            title: 'Type',
+                            width: '25%'
+                        },
+
+                          {
+                              field: 'MeetingDate',
+                              title: 'Meeting Date',
+                              order: "desc",
+                              width: '13%'
+                          },
+                          {
+                              field: 'ScrapeDate',
+                              title: 'Scrape Date',
+                              order: "desc",
+                              width: '13%'
+                          },
+                           {
+                               field: 'DeployDate',
+                               title: 'Deploy Date',
+                               order: "desc",
+                               width: '13%'
+                           },
+                            {
+                                field: 'Operation',
+                                title: '',
+                                align: 'center',
+                                width: '11%'
+                            }
+                    ],
+
+                    onExpandRow: function (index, row, $detail) {
+                        oTableInit.InitSubTable(index, row, $detail);
+                    },
+                    onLoadSuccess: function (data) {
+                        for (var i = 0; i < data.rows.length; i++) {
+                            var doc = data.rows[i];
+                            sessionStorage.setItem(doc.DocGuid, JSON.stringify(doc.NoteList));
+                        };
+                        $("#tb_meetingNote").bootstrapTable('expandAllRows');
+                    },
+                   
+
+                });
+            };
+
+
+            oTableInit.queryParams = function (params) {
+                var temp = getQueryData();// = getSearchData();
+                temp.limit = params.limit;
+                temp.offset = params.offset;
+                temp.sortName = this.sortName;
+                temp.sortOrder = this.sortOrder;
+                return temp;
+            };
+
+            oTableInit.InitSubTable = function (index, row, $detail) {
+                var parentid = row.DocGuid;
+                var filePath = row.DocFilePath;
+                var dataList = JSON.parse(sessionStorage.getItem(parentid));
+                var cur_table = $detail.html('<table></table>').find('table');
+                $(cur_table).bootstrapTable({
+                    data: dataList,
+                    columns: [
+                        {
+                            field: 'Note',
+                            title: 'Note',
+                            sortable: true,
+                            width: '50%'
+                            //editable: {
+                            //    type: 'textarea',
+                            //    title: 'Note',
+                            //    validate: function (v) {
+                            //        if (!v) return 'note cannot be empty';
+                            //    }
+                            //}
+                        },
+
+                        {
+                            field: 'CreateDate',
+                            title: 'Create Date',
+                            width: '14%'
+                        },
+
+                        {
+                            field: 'ModifyDate',
+                            title: 'Modify Date',
+                            width: '14%'
+                        },
+                         {
+                             field: 'Operation',
+                             title: '',
+                             align:'center',
+                             width: '10%'
+                         },
+                           {
+                               field: 'Guid',
+                               title: index,
+                               titleTooltip: index,
+                               width: '1%',
+                               'class': 'hideColumn'
+                           },
+                         {
+                             field: 'DocGuid',
+                             title: index,
+                             titleTooltip: index,
+                             width: '3%',
+                             'class': 'hideColumn'
+                         }
+
+                    ],
+                    onEditableSave: function (field, row, oldValue, $el, index) {
+                        var noteArr = new Array();
+                        var note = {
+                            Guid: row.Guid,
+                            Status: "Modified",
+                            DocGuid: row.DocGuid,
+                            Note: row.Note  };
+                        noteArr.push(note);
+                        updateMeetingNoteToDb(noteArr);
+                        updateNoteStorage(index, note);
+                       
+                    }
+
+                });
+            };
+
+            return oTableInit;
+        };
+        var ButtonInit = function () {
+            var oInit = new Object();
+            var postdata = {};
+            oInit.Init = function () {
+                //初始化页面上面的按钮事件
+            };
+            return oInit;
+        };
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+
+            $("#sel_search_CountyName").multiselect({
+                buttonWidth: '100%',
+                includeSelectAllOption: true,
+                selectAllText: 'All',
+                nonSelectedText: 'No County Selected',
+                onChange: function (element, checked) {
+                    rebuildMuniciplitySelect();
+                },
+                onSelectAll: function () {
+                    rebuildMuniciplitySelect();
+                },
+                onDeselectAll: function () {
+                    rebuildMuniciplitySelect();
+                }
+            });
+            $("#sel_search_CityName").multiselect({
+                buttonWidth: '100%',
+                nonSelectedText: 'No Municipality Selected',
+                includeSelectAllOption: true,
+                selectAllText: 'All'
+            });
+            $("#btn_Search").click(function () {
+                var temp = getQueryData();
+                var tempQueryParams = function () {
+                    return temp;
+                };
+                $("#tb_meetingNote").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+
+            });
+            $("#btn_Save_Comment").click(function () {
+                var noteArr = new Array();
+                var curGuid = guid();
+                var note = {
+                    Guid: curGuid,
+                    Status: "Added",
+                    DocGuid: $("#hid_DocId").val(),
+                    Note: $("#txt_Comments").val(),
+
+                    CreateDate: new Date().Format("yyyy-MM-dd"),
+                    ModifyDate: new Date().Format("yyyy-MM-dd"),
+                    Operation: "<button type='button' class='btn btn-default glyphicon glyphicon-remove' title='Remove Notes'   data-guid='" + curGuid + "' data-docId='" + $("#hid_DocId").val() + "'  onclick='removeMeetingNotes(this); return false'></button>"
+                };
+
+                noteArr.push(note);
+                updateMeetingNoteToDb(noteArr);
+                $("#myModal").modal('hide');
+                var index = $("#hid_index").val();
+                updateNoteStorage(index, note);
+
+            });
+        });
+
+
+        function rebuildMuniciplitySelect() {
+            var cityArr = new Array();
+            var dataList = JSON.parse(sessionStorage.getItem("municipalityList"));
+
+            if ($("#sel_search_CountyName").val() == null) {
+                for (var j = 0; j < dataList.length; j++) {
+                    cityArr.push(dataList[j].MunicipalityName);
+                }
+            }
+            else {
+                var countyStr = $("#sel_search_CountyName").val().toString();
+                var countyArr = countyStr.split(",");
+                if (countyArr.length > 0) {
+                    for (var i = 0; i < countyArr.length; i++) {
+                        for (var j = 0; j < dataList.length; j++) {
+                            if (dataList[j].CountyName == countyArr[i]) {
+                                cityArr.push(dataList[j].MunicipalityName);
+                            }
+                        }
+                    }
+
+                }
+            }
+            cityArr.sort();
+            var htm = "";
+            for (var i = 0; i < cityArr.length; i++) {
+                htm += "<option value='" + cityArr[i] + "'>" + cityArr[i] + "</option>";
+            }
+            $("#sel_search_CityName").html(htm);
+            $("#sel_search_CityName").multiselect("rebuild");
+        }
+
+        function getQueryData() {
+            var cityName = "";
+            var countyName = "";
+            if ($("#sel_search_CityName").val() != null) {
+                if ($("#sel_search_CityName").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    cityName = "All";
+                }
+                else {
+                    cityName = $("#sel_search_CityName").val().toString();
+                }
+            }
+            if ($("#sel_search_CountyName").val() != null) {
+                if ($("#sel_search_CountyName").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    countyName = "All";
+                }
+                else {
+                    countyName = $("#sel_search_CountyName").val().toString();
+                }
+            }
+            var result = {
+                CountyName: countyName,
+                CityName: cityName,
+                Note: $("#txt_search_Note").val()
+
+            };
+            return result;
+        }
+        function addMeetingNotes(obj)
+        {
+            var docId = $(obj).attr("data-docid");
+            $("#hid_DocId").val(docId);
+            var index = $(obj).parent().parent().attr("data-index");
+            $("#hid_index").val(index);
+            $("#myModal").modal('show');
+        }
+        function removeMeetingNotes(obj) {
+            var noteArr = new Array();
+            var guid = $(obj).attr("data-guid");
+            var docId = $(obj).attr("data-docId");
+            var note = {
+                Guid: guid,
+                Status: "Deleted",
+                DocGuid: docId
+            };
+            noteArr.push(note);
+           
+            updateMeetingNoteToDb(noteArr);
+            var index = $(obj).closest("table").find("tr:first").find("th:last").attr("title");
+            updateNoteStorage(index, note);
+         
+        }
+
+        function updateNoteStorage(index,note)
+        {
+            var docId = note.DocGuid;
+            var jarray = JSON.parse(sessionStorage.getItem(docId));
+            if (note.Status == "Deleted") {
+                for (var i = 0; i < jarray.length; i++) {
+                    var curObj = jarray[i];
+                    if (curObj.Guid === note.Guid) {
+                        jarray.splice(i, 1);
+                    }
+                }
+            }
+            if (note.Status == "Modified") {
+                for (var i = 0; i < jarray.length; i++) {
+                    var curObj = jarray[i];
+                    if (curObj.Guid === note.Guid) {
+                        curObj.Note = note.Note;
+                        curObj.ModifyDate = new Date().Format("yyyy-MM-dd");
+                    }
+                }
+            }
+            if (note.Status == "Added") {
+                jarray.push(note);
+            }
+            sessionStorage.setItem(docId, JSON.stringify(jarray));
+
+            $("#tb_meetingNote").bootstrapTable('collapseRow', index);
+            if (jarray.length > 0) {
+                $("#tb_meetingNote").bootstrapTable('expandRow', index);
+            }
+        }
+
+ 
+    </script>
 </body>
 </html>

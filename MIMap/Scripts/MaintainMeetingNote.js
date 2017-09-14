@@ -2,7 +2,7 @@
 
     $("#btn-add-meetingNote").click(function () {
         var str = "";
-        str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" ></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid"></span><span style="display:none" class="note-old-value"></span></td></tr>';
+        str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" ></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span><span style="display:none" class="note-old-value"></span></td></tr>';
         $("#meetingNote-table >tbody").append(str);
     });
     $("#btn_Save_MeetingNote").click(function () {
@@ -20,26 +20,29 @@
                 };
                 noteArr.push(note);
             }
-     
         })
-
-        $.ajax({
-            url: '/MeetingNote/SaveMeetingNotes',
-            data: { notes: JSON.stringify(noteArr) },
-            dataType: 'json',
-            type: "POST",
-            success: function (result) {
-            },
-            complete: function (XMLHttpRequest, textStatus) {
-                $("#myNotesModal").modal('hide');
-            },
-            error: function (xhr, textStatus, errorThrown) {
-
-            }
-        });
+        updateMeetingNoteToDb(noteArr);
     });
  
 });
+
+function updateMeetingNoteToDb(noteArr)
+{
+    $.ajax({
+        url: '/MeetingNote/SaveMeetingNotes',
+        data: { notes: JSON.stringify(noteArr) },
+        dataType: 'json',
+        type: "POST",
+        success: function (result) {
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+            $("#myNotesModal").modal('hide');
+        },
+        error: function (xhr, textStatus, errorThrown) {
+
+        }
+    });
+}
 function loadNoteData(docId)
 {
     $("#meetingNote-table >tbody").html("");
@@ -106,4 +109,11 @@ Date.prototype.Format = function (fmt) { //author: meizz
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+}
+
+function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }

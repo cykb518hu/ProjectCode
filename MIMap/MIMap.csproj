@@ -161,6 +161,7 @@
     <Content Include="Content\bootstrap-combobox.css" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-editable.css" />
     <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap.css" />
@@ -175,6 +176,7 @@
     <Content Include="Scripts\bootstrap-combobox.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-editable.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap-table-editable.js" />
     <Content Include="Scripts\bootstrap-table.js" />
@@ -221,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

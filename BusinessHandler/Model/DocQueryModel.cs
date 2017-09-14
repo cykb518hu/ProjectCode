@@ -22,6 +22,8 @@ namespace BusinessHandler.Model
 
         public string IsViewed { get; set; }
         public string Important { get; set; }
+
+        public string Note { get; set; }
     }
 
     public class DocQueryParentModel
@@ -177,6 +179,19 @@ namespace BusinessHandler.Model
         public string CreateDate { get; set; }
         public string ModifyDate { get; set; }
         public string Status { get; set; }
+        public string Operation { get; set; }
+
     }
 
+    public class MeetingNoteCity
+    {
+        public string DocGuid { get; set; }
+        public string CityName { get; set; }
+        public string MeetingDate { get; set; }
+        public string ScrapeDate { get; set; }
+        public string DocType { get; set; }
+        public string DeployDate { get; set; }
+        public List<MeetingNote> NoteList { get; set; }
+        public string Operation { get; set; }
+    }
 }
