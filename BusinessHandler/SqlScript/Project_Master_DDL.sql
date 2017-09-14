@@ -162,8 +162,6 @@ GO
 SET ANSI_PADDING OFF
 GO
 
-
-/****** Object:  Table [dbo].[USER]    Script Date: 2017-08-04 14:06:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -172,8 +170,8 @@ SET ANSI_PADDING ON
 GO
 CREATE TABLE [dbo].[MeetingNote](
     [Guid] [nvarchar](50) NOT NULL,
-	[Doc_guid] nvarchar(50) not null,
-	[Note] [nvarchar](10),
+	[Doc_Guid] [nvarchar](50) NOT NULL,
+	[Notes] nvarchar(200) not null,
 	[USR_CRTN_ID] [varchar](50)  DEFAULT (user_name()) ,
 	[USR_CRTN_TS] [datetime] DEFAULT (getdate()),
 	[USR_MDFN_ID] [varchar](50) DEFAULT (user_name()),
@@ -183,4 +181,3 @@ GO
 
 SET ANSI_PADDING OFF
 GO
-

@@ -61,15 +61,15 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
 
                 if (!string.IsNullOrWhiteSpace(message.CityName) && !message.CityName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@CityName", GetArrayQuery(message.CityName));
+                    command.Parameters.AddWithValue("@CityName",StaticSetting.GetArrayQuery(message.CityName));
                 }
                 if (!string.IsNullOrWhiteSpace(message.CountyName) && !message.CountyName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@CountyName", GetArrayQuery(message.CountyName));
+                    command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
                 }
                 if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@KeyWord", GetArrayQuery(message.KeyWord));
+                    command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
                 }
                 if (!string.IsNullOrWhiteSpace(message.MeetingDate))
                 {
@@ -85,7 +85,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 }
                 if (!string.IsNullOrWhiteSpace(message.DeployDate) && !message.DeployDate.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
-                    command.Parameters.AddWithValue("@DeployeDate", GetArrayQuery(message.DeployDate));
+                    command.Parameters.AddWithValue("@DeployeDate", StaticSetting.GetArrayQuery(message.DeployDate));
                 }
                 if (!string.IsNullOrWhiteSpace(message.IsViewed) && !message.IsViewed.Equals("All", StringComparison.OrdinalIgnoreCase))
                 {
@@ -180,7 +180,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
 
                         result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString().Replace("MI", "") + "</a>";
                         result.COMMENT = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
-                        result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note' data-toggle='tooltip' data-placement='top' data-docid='" + result.DocId + "' data-comment='" + result.COMMENT + "' onclick='OpenDocNoteDetail(this); return false'></button>";
+                        result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note' data-toggle='tooltip' data-placement='top' data-docid='" + result.DocId + "' onclick='OpenDocNoteDetail(this); return false'></button>";
                     
                         //importan means removed
                         if (important.Equals("Yes"))
@@ -268,24 +268,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 r.DocQuerySubList = subList;
             }
         }
-        public static string GetArrayQuery(string arrayStr)
-        {
-            var arr = arrayStr.Split(',');
-            var query = string.Empty;
-            foreach (var r in arr)
-            {
-                if (!string.IsNullOrWhiteSpace(r))
-                {
-                    if (r.Equals("All", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return null;
-                    }
-                    query += "'" + r + "',";
-                }
-            }
-            query = query.TrimEnd(',');
-            return query;
-        }
+
 
         public static void UpdateDocStatus(DocQueryResultModel message)
         {
@@ -465,6 +448,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
             return result;
         }
         #endregion
+
 
 
     }

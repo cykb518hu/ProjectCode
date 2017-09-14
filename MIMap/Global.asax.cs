@@ -32,6 +32,8 @@ namespace MIMap
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterType<SqlServerUserRepository>().As<IUserRepository>();
             builder.RegisterType<SqlServerSearchQueryRepository>().As<ISearchQueryRepository>();
+            builder.RegisterType<SqlServerMeetingNote>().As<IMeetingNote>();
+
             builder.RegisterFilterProvider();
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

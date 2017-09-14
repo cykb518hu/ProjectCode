@@ -47,5 +47,23 @@ namespace BusinessHandler.Model
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
+        public static string GetArrayQuery(string arrayStr)
+        {
+            var arr = arrayStr.Split(',');
+            var query = string.Empty;
+            foreach (var r in arr)
+            {
+                if (!string.IsNullOrWhiteSpace(r))
+                {
+                    if (r.Equals("All", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return null;
+                    }
+                    query += "'" + r + "',";
+                }
+            }
+            query = query.TrimEnd(',');
+            return query;
+        }
     }
 }

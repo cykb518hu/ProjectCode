@@ -38,11 +38,11 @@ namespace MIMap.Controllers
 
         public ActionResult Map()
         {
-            var user = (UserAccount)Session["UserAccount"];
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            //var user = (UserAccount)Session["UserAccount"];
+            //if (user == null)
+            //{
+            //    return RedirectToAction("Login", "Account");
+            //}
             var municipalityList = DocQueryDB.GetMapMunicipality();
             var keyWordList = DocQueryDB.GetKeyWordList();
             ViewData["municipalityList"] = municipalityList;
@@ -87,11 +87,7 @@ namespace MIMap.Controllers
             DocQueryDB.UpdateDocImportant(message);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-        public JsonResult SaveComment(DocQueryResultModel message)
-        {
-            DocQueryDB.UpdateQueryComment(message);
-            return Json("Success", JsonRequestBehavior.AllowGet);
-        }
+    
 
         [HttpGet]
         public JsonResult GetSearchQuery()
@@ -186,5 +182,7 @@ namespace MIMap.Controllers
             var data = DocQueryDB.GetMapPopUpInfo(municipality);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+    
     }
 }
