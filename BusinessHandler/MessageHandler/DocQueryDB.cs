@@ -180,17 +180,19 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
 
                         result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString().Replace("MI", "") + "</a>";
                         result.COMMENT = DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString();
-                        result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note' data-toggle='tooltip' data-placement='top' data-docid='" + result.DocId + "' onclick='OpenDocNoteDetail(this); return false'></button>";
-                    
+
+                        result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note'  data-docid='" + result.DocId + "' onclick='OpenDocNoteDetail(this); return false'></button>";
+
                         //importan means removed
                         if (important.Equals("Yes"))
                         {
-                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-plus'  data-removed='" + important + "' title='Add data back'  data-toggle='tooltip' data-placement='top'  data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
+                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-plus'  data-removed='" + important + "' title='Add data back'   data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
 
                         }
                         else
                         {
-                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove'  data-removed='" + important + "' title='Remove data'   data-toggle='tooltip' data-placement='top' data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
+                            //data-toggle='tooltip' data-placement='top'
+                            result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove'  data-removed='" + important + "' title='Remove data'    data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
 
                         }
                         result.MinicipalityOperation += "</div>";
@@ -209,16 +211,42 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
             var docIDList = string.Empty;
             foreach (var r in list)
             {
-
                 docIDList += "'" + r.DocId + "',";
-
             }
             docIDList = docIDList.TrimEnd(',');
             if (string.IsNullOrWhiteSpace(docIDList))
             {
                 return;
             }
-            string queryString = @"[dbo].[GET_DOC_QUERY_SUBLIST]";
+            string queryString = @"[dbo].[GET_DOC_NOTES_AMOUNT]";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@DocIdList", docIDList);
+                connection.Open();
+                Regex regex = new Regex("btn-default");
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var docId = reader["DOC_GUID"].ToString();
+                        var count = Convert.ToInt32(reader["count"]);
+                        if (count > 0)
+                        {
+                            var item = list.FirstOrDefault(x => x.DocId == docId);
+                            if (item != null)
+                            {
+
+                                item.MinicipalityOperation= regex.Replace(item.MinicipalityOperation, "btn-success", 1);
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            queryString = @"[dbo].[GET_DOC_QUERY_SUBLIST]";
             var resultList = new List<DocQueryResultModel>();
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {

@@ -150,11 +150,22 @@ div.cartodb-popup.v2
     padding-left:2px;
     padding-right:2px;
     padding-top:2px;
-    padding-bottom:2px
+    padding-bottom:4px
 }
 
 @media screen and (min-width: 768px) {
     #myModal .modal-dialog{
        width:700px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #myModal .small {
+        width: 500px !important;
+    }
+}
+@media screen and (min-width: 768px) {
+    #myNotesModal .modal-dialog {
+        width: 760px;
     }
 }

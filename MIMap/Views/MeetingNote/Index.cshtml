@@ -37,11 +37,13 @@
     <link href="~/Content/bootstrap-editable.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-editable.js"></script>
     <script src="~/Scripts/bootstrap-table-editable.js"></script>
+
 </head>
 <body>
     @Html.Partial("_LoginPartial")
     <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;">
-        <div class="col-md-12" id="div-data-area">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id="div-data-area">
             <div class="search-container">
                 <div class="row property-search-form">
 
@@ -87,9 +89,10 @@
                 <table id="tb_meetingNote"></table>
             </div>
         </div>
+        <div class="col-md-2"></div>
     </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog small" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -97,8 +100,9 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="hid_DocId" />
+                    <input type="hidden" id="hid_guid" />
                     <input type="hidden" id="hid_index" />
-                    <textarea class="form-control" rows="3" id="txt_Comments"></textarea>
+                    <textarea class="form-control" rows="4" id="txt_Comments"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="btn_Save_Comment">Save changes</button>
@@ -206,7 +210,7 @@
                     data: dataList,
                     columns: [
                         {
-                            field: 'Note',
+                            field: 'NoteEdit',
                             title: 'Note',
                             sortable: true,
                             width: '50%'
@@ -312,21 +316,33 @@
 
             });
             $("#btn_Save_Comment").click(function () {
+                if ($("#txt_Comments").val().length == 0) {
+                    alert("note can't be empty");
+                    return;
+                }
                 var noteArr = new Array();
-                var curGuid = guid();
+                var curGuid = "";
+                var status = "";
+                if ($("#hid_guid").val().length > 0) {
+                    curGuid = $("#hid_guid").val();
+                    status = "Modified";
+                } else {
+                    curGuid = guid();
+                    status = "Added";
+                }
                 var note = {
                     Guid: curGuid,
-                    Status: "Added",
+                    Status: status,
                     DocGuid: $("#hid_DocId").val(),
                     Note: $("#txt_Comments").val(),
-
                     CreateDate: new Date().Format("yyyy-MM-dd"),
                     ModifyDate: new Date().Format("yyyy-MM-dd"),
-                    Operation: "<button type='button' class='btn btn-default glyphicon glyphicon-remove' title='Remove Notes'   data-guid='" + curGuid + "' data-docId='" + $("#hid_DocId").val() + "'  onclick='removeMeetingNotes(this); return false'></button>"
+                    Operation: "<button type='button' class='btn btn-default glyphicon glyphicon-remove' title='Remove Notes' data-guid='" + curGuid + "' data-docId='" + $("#hid_DocId").val() + "' onclick='removeMeetingNotes(this); return false'></button>"
                 };
 
                 noteArr.push(note);
                 updateMeetingNoteToDb(noteArr);
+                note.NoteEdit = "<a href='#' data-guid='" + curGuid + "' data-docId='" + $("#hid_DocId").val() + "' onclick='editMeetingNotes(this); return false' style='white-space:pre'>" + $("#txt_Comments").val() + "</a>";
                 $("#myModal").modal('hide');
                 var index = $("#hid_index").val();
                 updateNoteStorage(index, note);
@@ -396,12 +412,26 @@
         }
         function addMeetingNotes(obj)
         {
+            $("#txt_Comments").val("");
+            $("#hid_guid").val("");
             var docId = $(obj).attr("data-docid");
             $("#hid_DocId").val(docId);
             var index = $(obj).parent().parent().attr("data-index");
             $("#hid_index").val(index);
             $("#myModal").modal('show');
         }
+        function editMeetingNotes(obj)
+        {
+            var guid = $(obj).attr("data-guid");
+            $("#hid_guid").val(guid);
+            var docId = $(obj).attr("data-docid");
+            $("#hid_DocId").val(docId);
+            var index = $(obj).closest("table").find("tr:first").find("th:last").attr("title");
+            $("#hid_index").val(index);
+            $("#txt_Comments").val($(obj).html());
+            $("#myModal").modal('show');
+        }
+
         function removeMeetingNotes(obj) {
             var noteArr = new Array();
             var guid = $(obj).attr("data-guid");
@@ -435,7 +465,7 @@
                 for (var i = 0; i < jarray.length; i++) {
                     var curObj = jarray[i];
                     if (curObj.Guid === note.Guid) {
-                        curObj.Note = note.Note;
+                        curObj.NoteEdit = note.NoteEdit;
                         curObj.ModifyDate = new Date().Format("yyyy-MM-dd");
                     }
                 }

@@ -47,8 +47,8 @@
     <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-tooltip.js"></script>
 
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @*<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>*@
 
     <style>
 
@@ -77,8 +77,8 @@
             </ul>
             </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"  data-toggle='tooltip'  data-placement='right' title='Hide Query Group' style="margin-left:6px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
-            <button type="button" class="btn btn-primary glyphicon glyphicon-forward"  data-toggle='tooltip' data-placement='right'  title='Show Query Group' style="margin-left:-46px;height:32px; " id="btn_showQueryDiv"></button>
+            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"   title='Hide Query Group' style="margin-left:6px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
+            <button type="button" class="btn btn-primary glyphicon glyphicon-forward"   title='Show Query Group' style="margin-left:-46px;height:32px; " id="btn_showQueryDiv"></button>
 
          </div>
 
@@ -245,13 +245,13 @@
                 <div class="modal-body">
                     <input type="hidden" id="hid_noteDocId" />
                     <table class="table" id="meetingNote-table">
-                        <thead><tr><th style="width:39%">Note</th><th style="width:20%">Add Date</th><th style="width:20%">Modify Date</th><th style="width:10%"></th><th style="width:1%"></th></tr></thead>
+                        <thead><tr><th style="width:55%">Note</th><th style="width:15%">Add Date</th><th style="width:15%">Modify Date</th><th style="width:4%"></th><th style="width:1%"></th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" id="btn-add-meetingNote">Add</button>
-                    <button type="button" class="btn btn-primary" id="btn_Save_MeetingNote">Save changes</button>
+                    <button type="submit" class="btn btn-primary" id="btn_Save_MeetingNote" >Save changes</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

@@ -33,3 +33,31 @@ end
 end
 GO
 
+IF EXISTS (SELECT * FROM SYS.OBJECTS WHERE OBJECT_ID = OBJECT_ID(N'[dbo].[GET_DOC_NOTES_AMOUNT]') AND TYPE IN (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GET_DOC_NOTES_AMOUNT]
+GO
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GET_DOC_NOTES_AMOUNT]
+(
+@DocIdList varchar(max) =null
+)
+as
+
+begin
+
+declare @sqlstr varchar(max)
+begin
+
+set @sqlstr='
+SELECT Doc_Guid, count(*) count FROM MeetingNote where Doc_Guid in ('+@DocIdList+') group by  Doc_Guid '
+ exec(@sqlstr)
+
+end
+end
+GO
+

@@ -40,11 +40,12 @@ namespace BusinessHandler.MessageHandler
                 while (reader.Read())
                 {
                     var data = new MeetingNote();
-                    data.Note = DBNull.Value == reader["Notes"] ? "" : reader["Notes"].ToString();
-                    data.CreateDate = DBNull.Value == reader["USR_CRTN_TS"] ? "" : Convert.ToDateTime(reader["USR_CRTN_TS"]).ToString("yyyy-MM-dd");
-                    data.ModifyDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");
                     data.Guid = DBNull.Value == reader["Guid"] ? "" : reader["Guid"].ToString();
                     data.DocGuid = DBNull.Value == reader["Doc_Guid"] ? "" : reader["Doc_Guid"].ToString();
+                    data.Note = reader["Notes"].ToString();
+                    data.NoteEdit = @"<a href='#' data-guid='" + data.Guid + "' data-docId='" + data.DocGuid + "' onclick='editMeetingNotes(this); return false' style='white-space:pre'>" + reader["Notes"].ToString() + "</a>";
+                    data.CreateDate = DBNull.Value == reader["USR_CRTN_TS"] ? "" : Convert.ToDateTime(reader["USR_CRTN_TS"]).ToString("yyyy-MM-dd");
+                    data.ModifyDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");           
                     data.Operation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove' title='Remove Notes'   data-guid='" + data.Guid + "' data-docId='" + data.DocGuid + "'  onclick='removeMeetingNotes(this); return false'></button>";
 
                     list.Add(data);

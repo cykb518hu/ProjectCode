@@ -1,8 +1,9 @@
 ﻿jQuery(document).ready(function ($) {
 
     $("#btn-add-meetingNote").click(function () {
+
         var str = "";
-        str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" ></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span><span style="display:none" class="note-old-value"></span></td></tr>';
+        str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" required="required"></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span><span style="display:none" class="note-old-value"></span></td></tr>';
         $("#meetingNote-table >tbody").append(str);
     });
     $("#btn_Save_MeetingNote").click(function () {
@@ -10,6 +11,11 @@
         var docGuid = $("#hid_noteDocId").val();
         $("#meetingNote-table > tbody  > tr").each(function () {
             var status = $(this).find(".note-status").html();
+            var noteStr = $(this).find(".note-text").val();
+            if (noteStr.length == 0) {
+                alert("note can't be empty");
+                return;
+            }
             if (status.length > 0)
             {
                 var note = {
