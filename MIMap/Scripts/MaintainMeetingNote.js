@@ -13,8 +13,10 @@
             var status = $(this).find(".note-status").html();
             var noteStr = $(this).find(".note-text").val();
             if (noteStr.length == 0) {
-                alert("note can't be empty");
-                return;
+                if (status == "Added" || status == "Modified") {
+                    alert("note can't be empty");
+                    return;
+                }
             }
             if (status.length > 0)
             {
@@ -80,7 +82,7 @@ function deleteMeetingNote(obj) {
     $(obj).parent().parent().hide();
     var status = $(obj).parent().parent().find(".note-status").html();
     if (status == "Added") {
-        $(obj).parent().parent().find(".note-status").html("");
+        $(obj).parent().parent().remove();
     }
     else {
         $(obj).parent().parent().find(".note-status").html("Deleted");

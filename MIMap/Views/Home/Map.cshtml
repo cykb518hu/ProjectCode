@@ -5,24 +5,24 @@
 
     var keyWords = (List<BusinessHandler.MessageHandler.KeyWordModel>)ViewData["KeyWordList"];
 
-    var municipalityList = (List<MapMunicipality>)ViewData["municipalityList"];
+    var municipalityList = (List<MapFilterModel>)ViewData["municipalityList"];
 }
 <!DOCTYPE html>
 <html>
 <head>
     <script>
-        var municipalityList = new Array();
+        var mapMasterData = new Array();
         @{
-        var json = new HtmlString(JsonConvert.SerializeObject(municipalityList));
+            var json = new HtmlString(JsonConvert.SerializeObject(municipalityList));
            <text>
         sessionStorage.setItem("municipalityList", '@json');
         </text>
 
-            var mapMasterData = (List<MapMunicipalityColor>)ViewData["mapInitialData"];
-            if (mapMasterData.Any())
+            var mapInitialData = (List<MapMunicipalityColor>)ViewData["mapInitialData"];
+            if (mapInitialData.Any())
             {
          <text>
-        municipalityList=@Html.Raw(JsonConvert.SerializeObject(mapMasterData));
+        mapMasterData=@Html.Raw(JsonConvert.SerializeObject(mapInitialData));
         </text>
                 }
 
@@ -264,7 +264,7 @@
         });
         function loadAllDataBySequence()
         {
-            //initialMap();
+            initialMap();
             loadListData();
             loadQueryGroup();
         }
@@ -374,12 +374,11 @@
 
             oTableInit.InitSubTable = function (index, row, $detail) {
                 var parentid = row.DocId;
-                var filePath = row.DocFilePath;
                 var isViewed = $(".sp_" + parentid).html();
                 if (isViewed != "Yes") {
                     $.ajax({
                         url: '@Url.Action("UpdateDocStatus", "Home")',
-                        data: { DocId: parentid, DocFilePath: filePath },
+                        data: { DocId: parentid},
                         dataType: 'json',
                         type: "POST",
                         success: function (result) {
@@ -900,6 +899,24 @@
             $("#pop-window-close").click(function () {
                 hideMapPopUp();
             });
+            $("#btn_Save_Comment").click(function () {
+                $.ajax({
+                    url: '@Url.Action("SaveComment", "Home")',
+                    data: { Comment: $("#txt_Comments").val(), QueryGuid: $("#hid_QueryGuid").val()},
+                    dataType: 'json',
+                    type: "POST",
+                    success: function (result) {
+                        successTips();
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                        $('#' + $("#hid_QueryGuid").val()).html($("#txt_Comments").val());
+                        $("#myModal").modal('hide');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+
+                    }
+                });
+            });
           
         });
     </script>
@@ -912,17 +929,17 @@
                 <span class="separator"></span>
             </div>
             <div class="cartodb-popup-content-wrapper">
-                <div class="cartodb-popup-content" style="height:180px">
+                <div class="cartodb-popup-content" style="height:280px">
                     <div id="div-map-data" style="display:none">
-                        <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
-                        <p>This municipality has <span id="pop-map-key-amount"></span> key words matched</p>
-                        <h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>
+                        <p>Scraped meetings  <span id="pop-map-doc-amount" class="badge">12</span> </p>
+                        @*<p>Matched key words  <span id="pop-map-key-amount" class="badge">2131</span></p>*@
+                        @*<h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>*@
                         <div id="pop-map-timeLine">
-
+             
                         </div>
                     </div>
                     <div id="div-map-loading" >
-                        <img src="../../Image/Loading_icon.gif" style="width:230px;margin-left:40px;" />
+                        <img src="../../Image/Loading_icon.gif" style="width:230px;margin-left:90px;" />
                     </div>
                 </div>
             </div>
@@ -937,7 +954,9 @@
         var layer;
         function initialMap() {
             $("#map").css("height", ($(window).height() - 100) + "px");
-            cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json', {
+            //https://achilles.carto.com/builder/9d779336-b8c9-4d7e-a701-46d83baceeaf/embed
+            //http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json
+            cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json', {
                 tiles_loader: true,
                 search: false,
                 scrollwheel: false,
@@ -947,7 +966,7 @@
               map = vis.getNativeMap();
               var subLayer = layers[1].getSubLayer(0);
               layer = subLayer;
-              layer.set({ interactivity: "label" });
+              layer.set({ interactivity: "objectid" });
               layer.setInteraction(true);
               var newlayer = layers[1];
               var infowindow_model = newlayer.infowindow;
@@ -961,7 +980,7 @@
                       },
                       visibility: true
                   });
-                  showMapPopUp(data.label);
+                  showMapPopUp(data.objectid);
               });
               infowindow_model.set('template_type', 'underscore');
               infowindow_model.set('template', $('#infowindow_template').html());
@@ -973,9 +992,9 @@
           });
         }
         function loadMapData() {
-            municipalityList = new Array();
+            mapMasterData = new Array();
             $.ajax({
-                url: '@Url.Action("GetMunicipalityList", "Home")',
+                url: '@Url.Action("GetMapMasterData", "Home")',
                 dataType: 'json',
                 data: getSearchData(),
                 type: "GET",
@@ -984,7 +1003,7 @@
                     if (result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
                             var data = result[i];
-                            municipalityList.push(data);
+                            mapMasterData.push(data);
                         }
                     }
                     createSelector();
@@ -997,53 +1016,57 @@
         }
         function createSelector() {
             hideMapPopUp();
-            var municipalities = "'nodata'";
-            var cartocss = "#mi_mun{polygon-fill: #00FF7F; line-color: white; }";
+            var ids = "'nodata'";
+            var cartocss = "#mi_munv5{polygon-fill: #00FF7F; line-color: white; }";
             
-            if (municipalityList.length > 0) {
-                municipalities = "";
-                cartocss = "";
-                for (var i = 0; i < municipalityList.length; i++) {
-                    municipalities += "'" + municipalityList[i].MunicipalityName + "',";
-                    cartocss += municipalityList[i].Color;
+            if (mapMasterData.length > 0) {
+                ids = "";
+               // cartocss = "";
+                for (var i = 0; i < mapMasterData.length; i++) {
+                    ids += "" + mapMasterData[i].Id + ",";
+                   // cartocss += municipalityList[i].Color;
                 }
-                municipalities = municipalities.substring(0, municipalities.length - 1);
+                ids = ids.substring(0, ids.length - 1);
             }
             var sql = new cartodb.SQL({ user: 'achilles' });
-            var query = "SELECT * FROM mi_mun where label in (" + municipalities + ")";
+            var query = "SELECT * FROM mi_munv5 where objectid in (" + ids + ")";
             layer.setSQL(query);
             layer.setCartoCSS(cartocss);
             sql.getBounds(query).done(function (bounds) {
                 map.fitBounds(bounds);
             });
         }
-        function showMapPopUp(str)
+        function showMapPopUp(objectid)
         {
             $("#div-map-loading").show();
             $("#div-map-data").hide();
             $.ajax({
-                url: '@Url.Action("GetMapPopUpInfo", "Home")',
+                url: '@Url.Action("GetMapPopUpInfo", "MeetingNote")',
                 dataType: 'json',
-                data: { municipality: str },
+                data: { objectid: objectid },
                 type: "GET",
                 cache: false,
                 success: function (result) {
-                    $("#pop-window").find('h2').text(str);
-                    $("#pop-map-doc-amount").text(result.DocAmount);
-                    $("#pop-map-key-amount").text(result.KeyWordAmount);
-                   
-                    if (result.CommentList.length > 0) {
-                        var comments = "";
-                        for (var i = 0; i < result.CommentList.length; i++) {
-                            var data = result.CommentList[i];
-                            comments += "<p>" + data.MeetingDate;
-                            if(data.Comment.length>0)
-                            {
-                                comments += " - " + data.Comment + " (" + data.AddDate + ")";
+                    if (result.length > 0) {
+                        $("#pop-window").find('h2').text(result[0].CityName);
+                        $("#pop-map-doc-amount").text(result.length);
+                        var htmlStr = "<ol>";
+                        for (var i = 0; i < result.length; i++) {
+                            var data = result[i];
+                            htmlStr += '<li><span class="bold">'+data.MeetingDate+'  ('+data.DocType+')</span>';
+                            if(data.NoteList.length>0){
+                                htmlStr+="<ul>";
+                                for(var j=0;j<data.NoteList.length;j++)
+                                {
+                                    var note=data.NoteList[j];
+                                    htmlStr += '<li><span class="italic">'+note.ModifyDate+'  </span><span style="white-space:pre-line">'+note.Note+'</span></li>';
+                                }
+                                htmlStr+="</ul>";
                             }
-                            comments += "</p>";
+                            htmlStr+="</li>";
                         }
-                        $("#pop-map-timeLine").html(comments);
+                        htmlStr += "</ol>";
+                        $("#pop-map-timeLine").html(htmlStr);
                     }
                     else {
                         $("#pop-map-timeLine").html("No comment added");

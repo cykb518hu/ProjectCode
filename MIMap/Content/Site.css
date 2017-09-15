@@ -84,7 +84,7 @@ left:-2px;
  }
 div.cartodb-popup.v2
  {
-     width:326px !important;
+     width:426px !important;
  }
 .navbar-nav > li > a {
     color: #787878 !important;
@@ -137,10 +137,7 @@ div.cartodb-popup.v2
 {
     width:100%
 }
-#pop-window
-{
-    width:90px;
-}
+
 #pop-window-close
 {
     right:0px;
@@ -169,3 +166,21 @@ div.cartodb-popup.v2
         width: 760px;
     }
 }
+#pop-map-timeLine ol
+{
+    padding-left:20px;
+}
+#pop-map-timeLine ul
+{
+    padding-left:15px;
+}
+#pop-map-timeLine .bold
+{
+    font-weight:bold;
+}
+
+#pop-map-timeLine .italic
+{
+    font-style:italic;
+    text-decoration:underline;
+} 

@@ -13,15 +13,17 @@ namespace MIMap.Controllers
     {
 
         IMeetingNote meetingNoteRepository;
+        IMapDataRepository mapRepository;
         public MeetingNoteController()
         {
             meetingNoteRepository = DependencyResolver.Current.GetService<IMeetingNote>();
+            mapRepository = DependencyResolver.Current.GetService<IMapDataRepository>();
 
         }
         // GET: MeetingNote
         public ActionResult Index()
         {
-            var municipalityList = DocQueryDB.GetMapMunicipality();
+            var municipalityList = mapRepository.GetFilterData();
             ViewData["municipalityList"] = municipalityList;
             return View();
         }
@@ -50,6 +52,14 @@ namespace MIMap.Controllers
             int total = 0;
             var result = meetingNoteRepository.GetAllDataList(message, out total);
             return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetMapPopUpInfo(string objectid)
+        {
+            var cityId = Convert.ToInt32(objectid);
+            var data = meetingNoteRepository.GetMapPopUpInfo(cityId);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }

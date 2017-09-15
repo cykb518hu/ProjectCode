@@ -61,7 +61,6 @@ if @Notes is not null
    begin
 		set @sqlstr=@sqlstr+' and M.NOTES LIKE % '''+ @Notes+'''%'
 	end
-
 if(@Total=0)
 begin
 set @sqlstr ='SELECT * FROM (SELECT *,Row_number() over(order by '+@OrderByField+') AS IDRank from ('+ @sqlstr+') lst)  as IDWithRowNumber where IDRank > '+ cast(@offset as varchar) +' and IDRank<='+ cast((@offset+@limit) as varchar) +''

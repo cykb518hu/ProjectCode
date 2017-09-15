@@ -24,7 +24,7 @@ declare @sqlstr varchar(max)
 begin
 
 set @sqlstr='
-SELECT C.LONG_NM, count(*) Number
+SELECT C.LONG_NM, objectid
  FROM  DBO.DOCUMENT D INNER JOIN DBO.QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID 
  INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM where 1=1'
 
@@ -62,7 +62,6 @@ if @IsImportant is not null
 	end
 
 begin
-set @sqlstr=@sqlstr+' group by C.LONG_NM'
 exec(@sqlstr)
 end
 

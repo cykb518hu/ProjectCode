@@ -12,9 +12,11 @@ namespace MIMap.Controllers
     public class HomeController : Controller
     {
         ISearchQueryRepository searchQueryRepository;
+        IMapDataRepository mapRepository;
         public HomeController()
         {
             searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
+            mapRepository = DependencyResolver.Current.GetService<IMapDataRepository>();
 
         }
         public ActionResult Index()
@@ -43,37 +45,27 @@ namespace MIMap.Controllers
             //{
             //    return RedirectToAction("Login", "Account");
             //}
-            var municipalityList = DocQueryDB.GetMapMunicipality();
             var keyWordList = DocQueryDB.GetKeyWordList();
-            ViewData["municipalityList"] = municipalityList;
+            ViewData["municipalityList"] = mapRepository.GetFilterData();
             ViewData["keyWordList"] = keyWordList;
             var message = new DocQueryMessage();
+            var mapInitialData = mapRepository.GetMapAreaData(message);
 
-            int total = 0;
-            var list = DocQueryDB.GetAllDataList(message, out total, true);
-            list = list.OrderByDescending(x => x.Number).ToList();
-
-            var result = DocQueryDB.GetMapMunicipalityColor(list);
-
-            ViewData["mapInitialData"] = result;
+            ViewData["mapInitialData"] = mapInitialData;
             return View();
         }
 
         public JsonResult GetParentDataList(DocQueryMessage message)
         {
-            var result = new List<DocQueryParentModel>();
+            var result = new List<MapMeeting>();
             int total = 0;
-            result = DocQueryDB.GetAllDataList(message, out total);
+            result = mapRepository.GetMainDataList(message, out total);
             return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult GetMunicipalityList(DocQueryMessage message)
+        public JsonResult GetMapMasterData(DocQueryMessage message)
         {
-            int total = 0;
-            var list = DocQueryDB.GetAllDataList(message, out total, true);
-            list = list.OrderByDescending(x => x.Number).ToList();
-
-            var result = DocQueryDB.GetMapMunicipalityColor(list);
+            var result = mapRepository.GetMapAreaData(message);
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
@@ -87,7 +79,11 @@ namespace MIMap.Controllers
             DocQueryDB.UpdateDocImportant(message);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-    
+        public JsonResult SaveComment(DocQueryResultModel message)
+        {
+            DocQueryDB.UpdateQueryComment(message);
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult GetSearchQuery()
@@ -176,13 +172,5 @@ namespace MIMap.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public JsonResult GetMapPopUpInfo(string municipality)
-        {
-            var data = DocQueryDB.GetMapPopUpInfo(municipality);
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
-
-    
     }
 }

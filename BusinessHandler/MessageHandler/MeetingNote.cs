@@ -13,7 +13,8 @@ namespace BusinessHandler.MessageHandler
     {
         List<MeetingNote> GetMeetingNotes(string docGuid, string note);
         bool UpdateMeetingNotes(List<MeetingNote> notes);
-        List<MeetingNoteCity> GetAllDataList(DocQueryMessage message, out int total);
+        List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total);
+        List<MapMeetingNote> GetMapPopUpInfo(int cityId);
     }
 
     public class SqlServerMeetingNote : IMeetingNote
@@ -55,9 +56,9 @@ namespace BusinessHandler.MessageHandler
         }
       
 
-        public List<MeetingNoteCity> GetAllDataList(DocQueryMessage message, out int total)
+        public List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total)
         {
-            var list = new List<MeetingNoteCity>();
+            var list = new List<MapMeetingNote>();
 
             string queryString = @"[dbo].[GET_DOC_MeetingNote]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
@@ -136,7 +137,7 @@ namespace BusinessHandler.MessageHandler
                 {
                     while (reader.Read())
                     {
-                        var result = new MeetingNoteCity();
+                        var result = new MapMeetingNote();
                         result.DocGuid = reader["DOC_GUID"].ToString();
                         result.DocType = reader["DOC_TYPE"].ToString();
                         result.CityName = reader["CITY_NM"].ToString();
@@ -155,7 +156,7 @@ namespace BusinessHandler.MessageHandler
             return list;
         }
 
-        public void GetSubList(List<MeetingNoteCity> list, string note)
+        public void GetSubList(List<MapMeetingNote> list, string note)
         {
             var guidStr = "";
             foreach (var r in list)
@@ -210,6 +211,46 @@ namespace BusinessHandler.MessageHandler
                 }
             }
             return true;
+        }
+
+
+        public List<MapMeetingNote> GetMapPopUpInfo(int cityId)
+        {
+            var list = new List<MapMeetingNote>();
+            var queryString = @"SELECT C.LONG_NM, Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
+INNER JOIN DBO.QUERY Q ON Q.DOC_GUID=D.DOC_GUID
+WHERE C.objectid = " + cityId;
+
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var result = new MapMeetingNote();
+                    result.CityName= reader["LONG_NM"].ToString();
+                    result.DocGuid = reader["DOC_GUID"].ToString();
+                    result.DocType = reader["DOC_TYPE"].ToString();
+                    result.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                    list.Add(result);
+                }
+            }
+
+            GetSubList(list, "");
+            foreach(var r in list)
+            {
+                if(r.NoteList.Any())
+                {
+                    foreach(var n in r.NoteList)
+                    {
+                        n.NoteEdit = "";
+                        n.Operation = "";
+                        n.CreateDate = "";
+                    }
+                }
+            }
+            return list;
         }
     }
 }

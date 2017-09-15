@@ -355,7 +355,7 @@ LEFT JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM";
                 while (reader.Read())
                 {
                     var data = new MapMunicipality();
-                    data .MunicipalityName= DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    data.MunicipalityName= DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
                     data.DeployDate = DBNull.Value == reader["DEPLOYE_DATE"] ? "" : Convert.ToDateTime(reader["DEPLOYE_DATE"]).ToString("yyyy-MM-dd");
                     data.CountyName= DBNull.Value == reader["COUNTY_NM"] ? "" : reader["COUNTY_NM"].ToString();
                     list.Add(data);

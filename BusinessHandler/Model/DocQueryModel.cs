@@ -158,11 +158,7 @@ namespace BusinessHandler.Model
         public int KeyWordAmount { get; set; }
         public List<MapMunicipalityComment> CommentList { get; set; }
     }
-    public class MapMunicipalityColor
-    {
-        public string MunicipalityName { get; set; }
-        public string Color { get; set; }
-    }
+
     public class MapMunicipalityComment
     {
         public string MeetingDate { get; set; }
@@ -171,28 +167,7 @@ namespace BusinessHandler.Model
     }
     #endregion
 
-    public class MeetingNote
-    {
-        public string Note { get; set; }
-        public string NoteEdit { get; set; }
-        public string DocGuid { get; set; }
-        public string Guid { get; set; }
-        public string CreateDate { get; set; }
-        public string ModifyDate { get; set; }
-        public string Status { get; set; }
-        public string Operation { get; set; }
+   
 
-    }
-
-    public class MeetingNoteCity
-    {
-        public string DocGuid { get; set; }
-        public string CityName { get; set; }
-        public string MeetingDate { get; set; }
-        public string ScrapeDate { get; set; }
-        public string DocType { get; set; }
-        public string DeployDate { get; set; }
-        public List<MeetingNote> NoteList { get; set; }
-        public string Operation { get; set; }
-    }
+   
 }

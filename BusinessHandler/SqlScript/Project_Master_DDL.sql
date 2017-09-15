@@ -181,3 +181,6 @@ GO
 
 SET ANSI_PADDING OFF
 GO
+
+
+alter table dbo.CITY add  objectid int
