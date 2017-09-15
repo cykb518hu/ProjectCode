@@ -171,6 +171,11 @@ namespace MIMap.Controllers
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public JsonResult UpdateMapColor(int cityId, string color)
+        {
+            mapRepository.UpdateMapColor(cityId, color);
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
     }
 }

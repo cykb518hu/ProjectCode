@@ -64,6 +64,7 @@ namespace BusinessHandler.Model
     {
         public string DocGuid { get; set; }
         public string CityName { get; set; }
+        public string Color { get; set; }
         public string MeetingDate { get; set; }
         public string ScrapeDate { get; set; }
         public string DocType { get; set; }

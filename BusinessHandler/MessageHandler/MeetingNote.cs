@@ -217,9 +217,9 @@ namespace BusinessHandler.MessageHandler
         public List<MapMeetingNote> GetMapPopUpInfo(int cityId)
         {
             var list = new List<MapMeetingNote>();
-            var queryString = @"SELECT C.LONG_NM, Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
+            var queryString = @"SELECT C.LONG_NM,c.color, Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
 INNER JOIN DBO.QUERY Q ON Q.DOC_GUID=D.DOC_GUID
-WHERE C.objectid = " + cityId;
+WHERE C.objectid = " + cityId + "  order by Q.MEETING_DATE desc";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -230,6 +230,7 @@ WHERE C.objectid = " + cityId;
                 {
                     var result = new MapMeetingNote();
                     result.CityName= reader["LONG_NM"].ToString();
+                    result.Color = DBNull.Value == reader["color"] ? "" : reader["color"].ToString();
                     result.DocGuid = reader["DOC_GUID"].ToString();
                     result.DocType = reader["DOC_TYPE"].ToString();
                     result.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");

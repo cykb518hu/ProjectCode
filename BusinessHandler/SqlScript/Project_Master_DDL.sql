@@ -184,3 +184,4 @@ GO
 
 
 alter table dbo.CITY add  objectid int
+alter table dbo.CITY add  color varchar(10)

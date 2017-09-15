@@ -15,6 +15,7 @@ namespace BusinessHandler.MessageHandler
         List<MapFilterModel> GetFilterData();
         List<MapMunicipalityColor> GetMapAreaData(DocQueryMessage message);
         List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total);
+        void UpdateMapColor(int cityId, string color);
     }
 
     public class SqlServerMapDataRepository:IMapDataRepository
@@ -59,6 +60,7 @@ namespace BusinessHandler.MessageHandler
                     while (reader.Read())
                     {
                         var data = new MapMunicipalityColor();
+                        data.Color = DBNull.Value == reader["color"] ? "" : reader["color"].ToString();
                         data.Id = DBNull.Value == reader["objectid"] ? 0 : Convert.ToInt32(reader["objectid"]);
                         list.Add(data);
                     }
@@ -290,6 +292,18 @@ namespace BusinessHandler.MessageHandler
                 command.Parameters.AddWithValue("@IsImportant", isImportant);
             }
 
+        }
+
+        public void UpdateMapColor(int cityId, string color)
+        {
+            var queryString = "UPDATE CITY SET COLOR= @COLOR WHERE OBJECTID=" + cityId;
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@COLOR", color);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
