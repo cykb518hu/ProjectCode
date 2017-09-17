@@ -14,7 +14,7 @@ namespace BusinessHandler.MessageHandler
         List<MeetingNote> GetMeetingNotes(string docGuid, string note);
         bool UpdateMeetingNotes(List<MeetingNote> notes);
         List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total);
-        List<MapMeetingNote> GetMapPopUpInfo(int cityId);
+        MapMeetingCity GetMapPopUpInfo(int cityId);
     }
 
     public class SqlServerMeetingNote : IMeetingNote
@@ -214,10 +214,11 @@ namespace BusinessHandler.MessageHandler
         }
 
 
-        public List<MapMeetingNote> GetMapPopUpInfo(int cityId)
+        public MapMeetingCity GetMapPopUpInfo(int cityId)
         {
+            var result = new MapMeetingCity();
             var list = new List<MapMeetingNote>();
-            var queryString = @"SELECT C.LONG_NM,c.color, Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
+            var queryString = @"SELECT C.LONG_NM,c.color,c.CITY_NM,  Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
 INNER JOIN DBO.QUERY Q ON Q.DOC_GUID=D.DOC_GUID
 WHERE C.objectid = " + cityId + "  order by Q.MEETING_DATE desc";
 
@@ -228,13 +229,14 @@ WHERE C.objectid = " + cityId + "  order by Q.MEETING_DATE desc";
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    var result = new MapMeetingNote();
-                    result.CityName= reader["LONG_NM"].ToString();
+                    var data = new MapMeetingNote();
+                    result.CityName= reader["CITY_NM"].ToString();
                     result.Color = DBNull.Value == reader["color"] ? "" : reader["color"].ToString();
-                    result.DocGuid = reader["DOC_GUID"].ToString();
-                    result.DocType = reader["DOC_TYPE"].ToString();
-                    result.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
-                    list.Add(result);
+                    result.CityLongName= reader["LONG_NM"].ToString();
+                    data.DocGuid = reader["DOC_GUID"].ToString();
+                    data.DocType = reader["DOC_TYPE"].ToString();
+                    data.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                    list.Add(data);
                 }
             }
 
@@ -251,7 +253,8 @@ WHERE C.objectid = " + cityId + "  order by Q.MEETING_DATE desc";
                     }
                 }
             }
-            return list;
+            result.MeetingList = list;
+            return result;
         }
     }
 }

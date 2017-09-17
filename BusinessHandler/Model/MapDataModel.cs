@@ -39,6 +39,7 @@ namespace BusinessHandler.Model
 
         public string IsViewed { get; set; }
         public List<MapMeetingKeyWord> DocQuerySubList { get; set; }
+        public int ObjectId { get; set; }
 
     }
 
@@ -60,11 +61,18 @@ namespace BusinessHandler.Model
 
     }
 
+    public class MapMeetingCity
+    {
+        public string CityName { get; set; }
+        public string CityLongName { get; set; }
+        public string Color { get; set; }
+        public List<MapMeetingNote> MeetingList { get; set; }
+    }
+
     public class MapMeetingNote
     {
         public string DocGuid { get; set; }
         public string CityName { get; set; }
-        public string Color { get; set; }
         public string MeetingDate { get; set; }
         public string ScrapeDate { get; set; }
         public string DocType { get; set; }

@@ -62,6 +62,7 @@ namespace BusinessHandler.MessageHandler
                         var data = new MapMunicipalityColor();
                         data.Color = DBNull.Value == reader["color"] ? "" : reader["color"].ToString();
                         data.Id = DBNull.Value == reader["objectid"] ? 0 : Convert.ToInt32(reader["objectid"]);
+                        data.MunicipalityName = DBNull.Value == reader["city_nm"] ? "" : reader["city_nm"].ToString();
                         list.Add(data);
                     }
                 }
@@ -107,7 +108,7 @@ namespace BusinessHandler.MessageHandler
                         orderBy = "DEPLOYE_DATE";
                         break;
                     default:
-                        orderBy = "DEPLOYE_DATE desc, CITY_NM ";
+                        orderBy = "MEETING_DATE desc, CITY_NM ";
                         break;
                 }
                 message.sortOrder = string.IsNullOrWhiteSpace(message.sortOrder) ? "asc" : message.sortOrder;
@@ -149,6 +150,7 @@ namespace BusinessHandler.MessageHandler
                             result.MinicipalityOperation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove'  data-removed='" + important + "' title='Remove data'    data-docid='" + result.DocId + "'  onclick='RemoveData(this); return false'></button>";
                         }
                         result.MinicipalityOperation += "</div>";
+                        result.ObjectId = Convert.ToInt32(reader["OBJECTID"]);
                         list.Add(result);
 
                     }

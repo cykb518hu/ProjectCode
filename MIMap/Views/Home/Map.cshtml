@@ -255,7 +255,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" id="btn-add-meetingNote">Add</button>
-                    <button type="submit" class="btn btn-primary" id="btn_Save_MeetingNote" >Save changes</button>
+                    <button type="button" class="btn btn-primary" id="btn_Save_MeetingNote" >Save changes</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -349,6 +349,7 @@
 
                     onExpandRow: function (index, row, $detail) {
                         oTableInit.InitSubTable(index, row, $detail);
+                        openMarker(row.ObjectId);
                     },
                     onLoadSuccess: function (data) {
                         for (var i = 0; i < data.rows.length; i++) {
@@ -737,14 +738,7 @@
                 }
             });
         }
-        function successTips()
-        {
-            toastr.options = {
-                "positionClass": "toast-top-cente"
-            }
-            toastr.success('Success')
-           
-        }
+     
 
         function rebuildMuniciplitySelect()
         {
@@ -932,6 +926,7 @@
             <div class="cartodb-popup-header">
                 <h2></h2>
                 <span class="separator"></span>
+                <a style="float: right;margin-right: 20px;margin-top: -20px; cursor: pointer;" id="btn-showMapInTable">view in table</a>
             </div>
             <div class="cartodb-popup-content-wrapper">
                 <div class="cartodb-popup-content" style="height:280px">
@@ -959,6 +954,7 @@
         var layer;
         var selectedColor;
         var objectId;
+        var popLayer;
         function initialMap() {
             $("#map").css("height", ($(window).height() - 100) + "px");
             //https://achilles.carto.com/builder/9d779336-b8c9-4d7e-a701-46d83baceeaf/embed
@@ -976,15 +972,16 @@
               layer.set({ interactivity: "objectid" });
               layer.setInteraction(true);
               var newlayer = layers[1];
+              popLayer = newlayer;
               var infowindow_model = newlayer.infowindow;
               //newlayer.unbind('featureClick');
               //infowindow_model.set('visibility', false);
               newlayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
                   infowindow_model.set({
                       latlng: latlng,
-                      content: {
-                          data: data.rows
-                      },
+                      //content: {
+                      //    data: data.rows
+                      //},
                       visibility: true
                   });
                   showMapPopUp(data.objectid);
@@ -1042,10 +1039,11 @@
             layer.setCartoCSS(cartocss);
             sql.getBounds(query).done(function (bounds) {
                 map.fitBounds(bounds);
+                //map.setZoom(7);
             });
         }
-        function showMapPopUp(objectid)
-        {
+
+        function showMapPopUp(objectid) {
             $("#div-map-loading").show();
             $("#div-map-data").hide();
             $.ajax({
@@ -1055,35 +1053,29 @@
                 type: "GET",
                 cache: false,
                 success: function (result) {
-                    if (result.length > 0) {
-                        $("#pop-window").find('h2').text(result[0].CityName);
-                        $("#pop-map-doc-amount").text(result.length);
+                    $("#pop-window").find('h2').text(result.CityLongName);
+                    $("#pop-map-doc-amount").text(result.MeetingList.length);
 
-                        if (result[0].Color.length > 0) {
-                            $("#map-bgcolor").css('color', result[0].Color);
-                            $("#map-bgcolor").attr('data-color', result[0].Color);
-                        }
-                        var htmlStr = "<ol>";
-                        for (var i = 0; i < result.length; i++) {
-                            var data = result[i];
-                            htmlStr += '<li><span class="bold">'+data.MeetingDate+'  ('+data.DocType+')</span>';
-                            if(data.NoteList.length>0){
-                                htmlStr+="<ul>";
-                                for(var j=0;j<data.NoteList.length;j++)
-                                {
-                                    var note=data.NoteList[j];
-                                    htmlStr += '<li><span class="italic">'+note.ModifyDate+'  </span><span style="white-space:pre-line">'+note.Note+'</span></li>';
-                                }
-                                htmlStr+="</ul>";
+                    if (result.Color.length > 0) {
+                        $("#map-bgcolor").css('color', result.Color);
+                        $("#map-bgcolor").attr('data-color', result.Color);
+                    }
+                    var htmlStr = "<ol>";
+                    for (var i = 0; i < result.MeetingList.length; i++) {
+                        var data = result.MeetingList[i];
+                        htmlStr += '<li><span class="bold">' + data.MeetingDate + '  (' + data.DocType + ')</span>';
+                        if (data.NoteList.length > 0) {
+                            htmlStr += "<ul>";
+                            for (var j = 0; j < data.NoteList.length; j++) {
+                                var note = data.NoteList[j];
+                                htmlStr += '<li><span class="italic">' + note.ModifyDate + '  </span><span style="white-space:pre-line">' + note.Note + '</span></li>';
                             }
-                            htmlStr+="</li>";
+                            htmlStr += "</ul>";
                         }
-                        htmlStr += "</ol>";
-                        $("#pop-map-timeLine").html(htmlStr);
+                        htmlStr += "</li>";
                     }
-                    else {
-                        $("#pop-map-timeLine").html("No comment added");
-                    }
+                    htmlStr += "</ol>";
+                    $("#pop-map-timeLine").html(htmlStr);
                     $("#div-map-loading").hide();
                     objectId = objectid;
                     $("#map-bgcolor").ColorPickerSliders({
@@ -1097,6 +1089,26 @@
                             selectedColor = color;
                         }
                     });
+                    $("#btn-showMapInTable").click(function () {
+                        var cityName = "";
+                        if (mapMasterData.length > 0) {
+                            for (var i = 0; i < mapMasterData.length; i++) {
+                                if (objectId == mapMasterData[i].Id) {
+                                    cityName = mapMasterData[i].MunicipalityName;
+                                }
+                            }
+                        }
+                        var temp = getSearchData();
+                        temp.CityName = cityName;
+                        var tempQueryParams = function () {
+                            return temp;
+                        };
+                        var cityArray = cityName.split(",");
+                        $("#sel_search_CityName").val(cityArray);
+                        $("#sel_search_CityName").multiselect("refresh");
+
+                        $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+                    });
                     $("#div-map-data").show();
                 },
                 complete: function (XMLHttpRequest, textStatus) {
@@ -1108,6 +1120,7 @@
         function hideMapPopUp() {
             $("#pop-window").css({ 'display': 'none' });
         }
+
         function saveMapColer() {
             var color = selectedColor.tiny.toHexString();
             var oldColor = $("#map-bgcolor").attr('data-color');
@@ -1141,9 +1154,28 @@
                 });
             }
             $("#map-bgcolor").trigger("colorpickersliders.hide");
-
+        }
+        var oldPopUpObjectId = 0;
+        function openMarker(popUpObjectId)
+        {
+            if (oldPopUpObjectId == popUpObjectId) {
+                if ($(".cartodb-infowindow").css("visibility") == "visible") {
+                    return;
+                }
+            }
+            oldPopUpObjectId = popUpObjectId;
+            var query = "SELECT ST_Y(ST_Centroid(the_geom)) lat, ST_X(ST_Centroid(the_geom)) lon FROM mi_munv5 where objectid =" + popUpObjectId;
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            sql.execute(query).done(function (data) {
+                if (data.rows != undefined && data.rows.length == 1) {
+                    var row = data.rows[0];
+                    var latlng = [row.lat, row.lon];
+                    popLayer.trigger('featureClick', null, latlng, null, { objectid: popUpObjectId }, 0);
+                }
+            });
         }
     </script>
+
     <script src="~/Scripts/MaintainMeetingNote.js"></script>
 
 </body>

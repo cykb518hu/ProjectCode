@@ -2,8 +2,23 @@
 @{ 
     var user = (UserAccount)Session["UserAccount"];
 }
-
-
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    function successTips() {
+        toastr.options = {
+            "positionClass": "toast-top-center"
+        }
+        toastr.success('Success')
+    }
+    function errorTips(str)
+    {
+        toastr.options = {
+            "positionClass": "toast-top-center"
+        }
+        toastr.error(str);
+    }
+</script>
 
 <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#F5F5F5; border-color:#F5F5F5">
 

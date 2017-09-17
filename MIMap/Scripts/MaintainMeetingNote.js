@@ -6,7 +6,8 @@
         str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" required="required"></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span><span style="display:none" class="note-old-value"></span></td></tr>';
         $("#meetingNote-table >tbody").append(str);
     });
-    $("#btn_Save_MeetingNote").click(function () {
+    $("#btn_Save_MeetingNote").click(function (e) {
+        e.preventDefault();
         var noteArr = new Array();
         var docGuid = $("#hid_noteDocId").val();
         $("#meetingNote-table > tbody  > tr").each(function () {
@@ -14,7 +15,7 @@
             var noteStr = $(this).find(".note-text").val();
             if (noteStr.length == 0) {
                 if (status == "Added" || status == "Modified") {
-                    alert("note can't be empty");
+                    errorTips("note can't be empty");
                     return;
                 }
             }
