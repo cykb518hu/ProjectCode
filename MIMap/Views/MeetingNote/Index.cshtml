@@ -231,12 +231,13 @@
                         {
                             field: 'CreateDate',
                             title: 'Create Date',
-                            width: '14%'
+                            width: '14%',
+                            'class': 'hideColumn'
                         },
 
                         {
                             field: 'ModifyDate',
-                            title: 'Modify Date',
+                            title: 'Date',
                             width: '14%'
                         },
                          {
@@ -329,7 +330,7 @@
             });
             $("#btn_Save_Comment").click(function () {
                 if ($("#txt_Comments").val().length == 0) {
-                    alert("note can't be empty");
+                    errorTips("note can't be empty");
                     return;
                 }
                 var noteArr = new Array();

@@ -352,6 +352,112 @@ namespace BusinessHandler.MessageHandler.Tests
                 result.Add(data);
             }
         }
+
+        [TestMethod()]
+        public void UpdateCityData()
+        {
+
+            var path = @"C:\TestCode\Document\Map\mi_munv5.xlsx";
+            List<MuniciplityCounty> list = new List<MuniciplityCounty>();
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Sheets sheets;
+            Microsoft.Office.Interop.Excel.Workbook workbook = null;
+            object oMissiong = System.Reflection.Missing.Value;
+            workbook = xlApp.Workbooks.Open(path, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong,
+           oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong);
+            sheets = workbook.Worksheets;
+
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = (Worksheet)sheets.get_Item(1);//读取第一张表  
+
+            int iRowCount = worksheet.UsedRange.Rows.Count;
+            int iColCount = worksheet.UsedRange.Columns.Count;
+            for (int iRow = 2; iRow <= iRowCount; iRow++)
+            {
+                var data = new MuniciplityCounty();
+                data.LongNm = ((Range)worksheet.Cells[iRow, 4]).Text.ToString();
+                data.County = ((Range)worksheet.Cells[iRow,5]).Text.ToString();
+                data.objectId = ((Range)worksheet.Cells[iRow, 1]).Text.ToString();
+                list.Add(data);
+            }
+            List<MuniciplityCounty> dblist = new List<MuniciplityCounty>();
+            string connectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
+
+            string queryString = @"select * from city";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Create the Command and Parameter objects.
+                SqlCommand command = new SqlCommand(queryString, connection);
+                // Open the connection in a try/catch block. 
+                // Create and execute the DataReader, writing the result
+                // set to the console window.
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new MuniciplityCounty();
+                    data.LongNm = reader["LONG_NM"].ToString();
+                    data.County = reader["COUNTY_NM"].ToString();
+                    dblist.Add(data);
+                }
+
+            }
+            List<MuniciplityCounty> duplicateList = new List<MuniciplityCounty>();
+            foreach(var r in dblist)
+            {
+                var subList = list.Where(x => x.LongNm == r.LongNm).ToList();
+                if (subList.Any() && subList.Count == 1)
+                {
+                    var updateStr = "update dbo.CITY  set objectid=" + subList[0].objectId + " where LONG_NM='" + r.LongNm + "' ";
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        // Create the Command and Parameter objects.
+                        SqlCommand command = new SqlCommand(updateStr, connection);
+                        // Open the connection in a try/catch block. 
+                        // Create and execute the DataReader, writing the result
+                        // set to the console window.
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                    }
+                    //foreach(var s in subList)
+                    //{
+                    //    s.ShortNm = r.County;
+                    //}
+                    //duplicateList.AddRange(subList);
+                }
+            }
+            //CreateNewExcel(duplicateList);
+
+        }
+
+        public void CreateNewExcel(List<MuniciplityCounty> duplicateList)
+        {
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            xlApp.Visible = true;
+            Workbook wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+            Worksheet ws = (Worksheet)wb.Worksheets[1];
+
+            ws.Cells[1, 2] = "Long Name";
+            ws.Cells[1, 3] = "County";
+            ws.Cells[1, 4] = "id";
+
+            ws.Cells[1, 5] = "Table County";
+            int row = 2;
+            foreach (var r in duplicateList)
+            {
+                ws.Cells[row, 2] = r.LongNm;
+                ws.Cells[row, 3] = r.County;
+                ws.Cells[row, 4] = r.objectId;
+
+                ws.Cells[row, 5] = r.ShortNm;
+                row++;
+            }
+            var file = @"C:\TestCode\Document\File\";
+            file += DateTime.Now.ToString("yyyy-MM-dd") + Guid.NewGuid().ToString() + ".xlsx";
+            wb.SaveAs(file, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+        false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+        }
     }
 
     public class PaymentResult
@@ -487,6 +593,6 @@ namespace BusinessHandler.MessageHandler.Tests
 
         public string Typ { get; set; }
         public string LongNm { get; set; }
-        public int GId { get; set; }
+        public string objectId { get; set; }
     }
 }
