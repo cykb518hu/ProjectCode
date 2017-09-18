@@ -4,7 +4,7 @@
     Layout = null;
 
 
-    var municipalityList = (List<MapMunicipality>)ViewData["municipalityList"];
+    var municipalityList = (List<MapFilterModel>)ViewData["municipalityList"];
 }
 <!DOCTYPE html>
 
@@ -47,7 +47,7 @@
             <div class="search-container">
                 <div class="row property-search-form">
 
-                    <div class="col-xs-12 col-sm-3 form-group">
+                    <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
                             @{
                                 foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
@@ -61,7 +61,7 @@
                         </select>
 
                     </div>
-                    <div class="col-xs-12 col-sm-3 form-group">
+                    <div class="col-xs-12 col-sm-6 form-group">
                         <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
                             @{
                                 foreach (var r in municipalityList.OrderBy(x => x.MunicipalityName))
@@ -75,11 +75,16 @@
                         </select>
 
                     </div>
-                    <div class="col-xs-12 col-sm-3 form-group">
-                        <input type="text"  id="txt_search_Note" placeholder="note..." class="form-control" />
-
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Note Date" class="form-control" />
                     </div>
-                    <div class="col-xs-12 col-sm-3 form-group">
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Note Date" class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="text"  id="txt_search_Note" placeholder="note..." class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
 
                         <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
                     </div>
@@ -307,6 +312,13 @@
                 includeSelectAllOption: true,
                 selectAllText: 'All'
             });
+            //this is note add date
+            $('#txt_search_StartMeetingDate').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+            $('#txt_search_EndMeetingDate').datepicker({
+                format: 'yyyy-mm-dd'
+            });
             $("#btn_Search").click(function () {
                 var temp = getQueryData();
                 var tempQueryParams = function () {
@@ -405,7 +417,9 @@
             var result = {
                 CountyName: countyName,
                 CityName: cityName,
-                Note: $("#txt_search_Note").val()
+                Note: $("#txt_search_Note").val(),
+                StartMeetingDate: $("#txt_search_StartMeetingDate").val(),
+                EndMeetingDate: $("#txt_search_EndMeetingDate").val()
 
             };
             return result;

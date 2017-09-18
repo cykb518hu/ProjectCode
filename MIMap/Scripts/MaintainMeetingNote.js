@@ -14,8 +14,8 @@
             var status = $(this).find(".note-status").html();
             var noteStr = $(this).find(".note-text").val();
             if (noteStr.length == 0) {
-                if (status == "Added" || status == "Modified") {
-                    errorTips("note can't be empty");
+                if (status == "Added") {
+                   // errorTips("note can't be empty");
                     return;
                 }
             }
@@ -37,20 +37,31 @@
 
 function updateMeetingNoteToDb(noteArr)
 {
-    $.ajax({
-        url: '/MeetingNote/SaveMeetingNotes',
-        data: { notes: JSON.stringify(noteArr) },
-        dataType: 'json',
-        type: "POST",
-        success: function (result) {
-        },
-        complete: function (XMLHttpRequest, textStatus) {
-            $("#myNotesModal").modal('hide');
-        },
-        error: function (xhr, textStatus, errorThrown) {
+    if(noteArr.length>0)
+    {
+        $.ajax({
+            url: '/MeetingNote/SaveMeetingNotes',
+            data: { notes: JSON.stringify(noteArr) },
+            dataType: 'json',
+            type: "POST",
+            success: function (result) {
+                $("button[data-docid='" + noteArr[0].DocGuid + "']").eq(0).removeClass("btn-default").removeClass("btn-success");
+                if (result > 0) {
+                    $("button[data-docid='" + noteArr[0].DocGuid + "']").eq(0).addClass("btn-success");
+                }
+                else {
+                    $("button[data-docid='" + noteArr[0].DocGuid + "']").eq(0).addClass("btn-default");
+                }
+                successTips();
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                $("#myNotesModal").modal('hide');
+            },
+            error: function (xhr, textStatus, errorThrown) {
 
-        }
-    });
+            }
+        });
+    }
 }
 function loadNoteData(docId)
 {

@@ -12,7 +12,7 @@ namespace BusinessHandler.MessageHandler
     public interface IMeetingNote
     {
         List<MeetingNote> GetMeetingNotes(string docGuid, string note);
-        bool UpdateMeetingNotes(List<MeetingNote> notes);
+        int UpdateMeetingNotes(List<MeetingNote> notes);
         List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total);
         MapMeetingCity GetMapPopUpInfo(int cityId);
     }
@@ -78,17 +78,13 @@ namespace BusinessHandler.MessageHandler
                 {
                     command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
                 }
-                if (!string.IsNullOrWhiteSpace(message.MeetingDate))
-                {
-                    command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);
-                }
                 if (!string.IsNullOrWhiteSpace(message.StartMeetingDate))
                 {
-                    command.Parameters.AddWithValue("@StartMeetingDate", message.StartMeetingDate);
+                    command.Parameters.AddWithValue("@StartNoteDate", message.StartMeetingDate);
                 }
                 if (!string.IsNullOrWhiteSpace(message.EndMeetingDate))
                 {
-                    command.Parameters.AddWithValue("@EndMeetingDate", message.EndMeetingDate);
+                    command.Parameters.AddWithValue("@EndNoteDate", message.EndMeetingDate);
                 }
                 if (!string.IsNullOrWhiteSpace(message.DeployDate) && !message.DeployDate.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
@@ -123,7 +119,7 @@ namespace BusinessHandler.MessageHandler
                         orderBy = "DEPLOYE_DATE";
                         break;
                     default:
-                        orderBy = "DEPLOYE_DATE desc, CITY_NM ";
+                        orderBy = "MEETING_DATE desc, CITY_NM ";
                         break;
                 }
                 message.sortOrder = string.IsNullOrWhiteSpace(message.sortOrder) ? "asc" : message.sortOrder;
@@ -178,13 +174,19 @@ namespace BusinessHandler.MessageHandler
 
         }
 
-        public bool UpdateMeetingNotes(List<MeetingNote> notes)
+        public int UpdateMeetingNotes(List<MeetingNote> notes)
         {
+            int count = 0;
+            var docGuid = "";
             if (notes.Any())
             {
                 foreach (var r in notes)
                 {
-
+                    docGuid = r.DocGuid;
+                    if (string.IsNullOrWhiteSpace(r.Note))
+                    {
+                        r.Status = "Deleted";
+                    }
                     string queryString = string.Empty;
                     switch (r.Status)
                     {
@@ -209,8 +211,16 @@ namespace BusinessHandler.MessageHandler
                         command.ExecuteNonQuery();
                     }
                 }
+                var query = "select count(*) number from MeetingNote WHERE [Doc_Guid]='" + docGuid + "'";
+                using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                {
+                    SqlCommand command = new SqlCommand(query, connection);
+                    connection.Open();
+                    count = Convert.ToInt32(command.ExecuteScalar());
+                }
+
             }
-            return true;
+            return count;
         }
 
 

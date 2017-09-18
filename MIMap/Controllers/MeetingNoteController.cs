@@ -38,12 +38,13 @@ namespace MIMap.Controllers
         [ValidateInput(false)]
         public JsonResult SaveMeetingNotes(string notes)
         {
+            var count = 0;
             if (!string.IsNullOrEmpty(notes))
             {
                 var noteList = JsonConvert.DeserializeObject<List<MeetingNote>>(notes);
-                meetingNoteRepository.UpdateMeetingNotes(noteList);
+                count=meetingNoteRepository.UpdateMeetingNotes(noteList);
             }
-            return Json("Success", JsonRequestBehavior.AllowGet);
+            return Json(count, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

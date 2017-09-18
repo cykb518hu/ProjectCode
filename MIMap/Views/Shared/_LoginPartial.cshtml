@@ -7,7 +7,9 @@
 <script>
     function successTips() {
         toastr.options = {
-            "positionClass": "toast-top-center"
+            "positionClass": "toast-top-center",
+            "hideDuration": "300",//消失的动画时间
+            "timeOut": "2000",//展现时间
         }
         toastr.success('Success')
     }
@@ -44,11 +46,10 @@
 
                         <ul class="nav navbar-nav navbar-right ">
                             <li><a href="#">Hello @user.Email</a></li>
-                            <li><a class="a-menu" href="/MeetingNote/Index">Maintain Note</a></li>
                             <li><a class="a-menu" href="/Home/Map">Michigan</a></li>
                             <li><a class="a-menu" href="#">Massachusetts</a></li>
                             <li><a class="a-menu" href="#">Florida</a></li>
-                            <li><a class="a-menu" href="#">Notes</a></li>
+                            <li><a class="a-menu" href="/MeetingNote/Index">Notes</a></li>
                             <li>@Html.ActionLink("Log off", "Login", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
                         </ul>
                     </div>

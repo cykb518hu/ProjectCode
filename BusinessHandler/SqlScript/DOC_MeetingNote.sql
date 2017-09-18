@@ -14,8 +14,8 @@ CREATE PROCEDURE [dbo].[GET_DOC_MeetingNote]
 @CityName varchar(max) =null,
 @CountyName varchar(max) =null,
 @KeyWord varchar(max) =null,
-@StartMeetingDate varchar(50)=null,
-@EndMeetingDate varchar(50)=null,
+@StartNoteDate varchar(50)=null,
+@EndNoteDate varchar(50)=null,
 @DeployeDate varchar(50)=null,
 @Notes varchar(200)=null,
 @offset int =0,
@@ -45,24 +45,26 @@ if @KeyWord is not null
 	begin
 		set @sqlstr=@sqlstr+' and QE.KEYWORD IN ('+ @KeyWord+')'
 	end
-if @StartMeetingDate is not null 
+if @StartNoteDate is not null 
 	begin
-		set @sqlstr=@sqlstr+' and Q.MEETING_DATE >= '''+ @StartMeetingDate+''''
+		set @sqlstr=@sqlstr+' and M.USR_MDFN_TS >= '''+ @StartNoteDate+''''
 	end
-if @EndMeetingDate is not null 
+if @EndNoteDate is not null 
 	begin
-		set @sqlstr=@sqlstr+' and Q.MEETING_DATE <= '''+ @EndMeetingDate+''''
+		set @sqlstr=@sqlstr+' and M.USR_MDFN_TS <= '''+ @EndNoteDate+''''
 	end
 if @DeployeDate is not null 
 	begin
 		set @sqlstr=@sqlstr+' and C.DEPLOYE_DATE IN ('+ @DeployeDate+')'
 	end
+
 if @Notes is not null
    begin
-		set @sqlstr=@sqlstr+' and M.NOTES LIKE % '''+ @Notes+'''%'
+		set @sqlstr=@sqlstr+' and M.NOTES LIKE ''%'+ @Notes+'%'''
 	end
 if(@Total=0)
 begin
+
 set @sqlstr ='SELECT * FROM (SELECT *,Row_number() over(order by '+@OrderByField+') AS IDRank from ('+ @sqlstr+') lst)  as IDWithRowNumber where IDRank > '+ cast(@offset as varchar) +' and IDRank<='+ cast((@offset+@limit) as varchar) +''
 exec(@sqlstr)
 end
