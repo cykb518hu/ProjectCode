@@ -23,6 +23,11 @@ namespace MIMap.Controllers
         // GET: MeetingNote
         public ActionResult Index()
         {
+            var user = (UserAccount)Session["UserAccount"];
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var municipalityList = mapRepository.GetFilterData();
             ViewData["municipalityList"] = municipalityList;
             return View();

@@ -119,7 +119,7 @@ namespace BusinessHandler.MessageHandler
                         orderBy = "DEPLOYE_DATE";
                         break;
                     default:
-                        orderBy = "MEETING_DATE desc, CITY_NM ";
+                        orderBy = "noteorder,MEETING_DATE desc, CITY_NM ";
                         break;
                 }
                 message.sortOrder = string.IsNullOrWhiteSpace(message.sortOrder) ? "asc" : message.sortOrder;
@@ -168,7 +168,14 @@ namespace BusinessHandler.MessageHandler
                 var noteList = GetMeetingNotes(guidStr, note);
                 foreach(var r in list)
                 {
-                    r.NoteList = noteList.Where(x => x.DocGuid == r.DocGuid).ToList();
+                    var subList= noteList.Where(x => x.DocGuid == r.DocGuid).ToList();
+                    if (subList.Any())
+                    {
+                        r.Operation = r.Operation.Replace("btn-default", "btn-success");
+  
+                    }
+                    r.NoteList = subList;
+
                 }
             }
 

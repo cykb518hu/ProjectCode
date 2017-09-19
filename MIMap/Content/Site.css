@@ -90,8 +90,12 @@ div.cartodb-popup.v2
     color: #787878 !important;
 }
 .navbar-nav > li > a:hover {
-    color:#999999 !important;
+    color:#000 !important;
 }
+
+    .navbar-nav > li > a:focus {
+        color: #000 !important;
+    }
 .navbar .container
 {
     width:100% !important;
@@ -100,10 +104,7 @@ div.cartodb-popup.v2
 .container > p {
     cursor:pointer;
 }
-.a-menu {
-    font-size: 15px !important;
-    color: #787878;
-}
+
 #small-menu .icon-bar {
     background-color: #787878 !important;
 }
@@ -183,4 +184,26 @@ div.cartodb-popup.v2
 {
     font-style:italic;
     text-decoration:underline;
-} 
+}
+
+#tb_meetingNote .detail-view tbody td {
+    border-left:none !important;
+}
+
+#tb_meetingNote .detail-view .fixed-table-container {
+    border-left: none !important;
+    border-right: none !important;
+}
+#tb_meetingNote .table tbody tr:hover td, .table tbody tr:hover th {
+    background-color: transparent;
+}
+#tb_meetingNote .detail-view .table {
+    border-bottom: none !important;
+}
+
+#tb_meetingNote .detail-view thead tr{
+    display:none !important;
+}
+#div-note-all .fixed-table-toolbar {
+    display: none;
+}

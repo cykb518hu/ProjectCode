@@ -41,7 +41,7 @@
 </head>
 <body>
     @Html.Partial("_LoginPartial")
-    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;">
+    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;"  id="div-note-all">
         <div class="col-md-2"></div>
         <div class="col-md-8" id="div-data-area">
             <div class="search-container">
@@ -143,6 +143,7 @@
                     pageList: [10, 25, 50, 100],
                     showColumns: true,
                     detailView: true,
+                    $toolbar: false,
                     columns: [
                          {
                              field: 'CityName',
@@ -177,12 +178,16 @@
                                 field: 'Operation',
                                 title: '',
                                 align: 'center',
-                                width: '11%'
+                                width: '7%'
                             }
                     ],
 
                     onExpandRow: function (index, row, $detail) {
-                        oTableInit.InitSubTable(index, row, $detail);
+                        var parentid = row.DocGuid;
+                        var dataList = JSON.parse(sessionStorage.getItem(parentid));
+                        if (dataList.length > 0) {
+                            oTableInit.InitSubTable(index, row, $detail);
+                        }
                     },
                     onLoadSuccess: function (data) {
                         for (var i = 0; i < data.rows.length; i++) {
@@ -208,7 +213,6 @@
 
             oTableInit.InitSubTable = function (index, row, $detail) {
                 var parentid = row.DocGuid;
-                var filePath = row.DocFilePath;
                 var dataList = JSON.parse(sessionStorage.getItem(parentid));
                 var cur_table = $detail.html('<table></table>').find('table');
                 $(cur_table).bootstrapTable({
@@ -217,15 +221,7 @@
                         {
                             field: 'NoteEdit',
                             title: 'Note',
-                            sortable: true,
                             width: '50%'
-                            //editable: {
-                            //    type: 'textarea',
-                            //    title: 'Note',
-                            //    validate: function (v) {
-                            //        if (!v) return 'note cannot be empty';
-                            //    }
-                            //}
                         },
 
                         {
@@ -260,21 +256,7 @@
                              width: '3%',
                              'class': 'hideColumn'
                          }
-
-                    ],
-                    onEditableSave: function (field, row, oldValue, $el, index) {
-                        var noteArr = new Array();
-                        var note = {
-                            Guid: row.Guid,
-                            Status: "Modified",
-                            DocGuid: row.DocGuid,
-                            Note: row.Note  };
-                        noteArr.push(note);
-                        updateMeetingNoteToDb(noteArr);
-                        updateNoteStorage(index, note);
-                       
-                    }
-
+                    ]
                 });
             };
 
