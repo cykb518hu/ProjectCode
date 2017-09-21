@@ -171,7 +171,7 @@ GO
 CREATE TABLE [dbo].[MeetingNote](
     [Guid] [nvarchar](50) NOT NULL,
 	[Doc_Guid] [nvarchar](50) NOT NULL,
-	[Notes] nvarchar(200) not null,
+	[Notes] nvarchar(2000) not null,
 	[USR_CRTN_ID] [varchar](50)  DEFAULT (user_name()) ,
 	[USR_CRTN_TS] [datetime] DEFAULT (getdate()),
 	[USR_MDFN_ID] [varchar](50) DEFAULT (user_name()),

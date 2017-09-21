@@ -147,7 +147,7 @@ namespace BusinessHandler.MessageHandler
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
                     command.Parameters.AddWithValue("@Email", message.Email);
-                    command.Parameters.AddWithValue("@Password", message.Email);
+                    command.Parameters.AddWithValue("@Password", message.Password);
                     command.Parameters.AddWithValue("@Active", message.Active);
                     command.Parameters.AddWithValue("@RoleType", message.RoleType);
                     connection.Open();
