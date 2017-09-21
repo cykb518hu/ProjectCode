@@ -22,21 +22,22 @@
     </script>
     <meta name="viewport" content="width=device-width" />
     <title>GovMash</title>
-    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/bootstrap-table.js"></script>
-    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-datepicker.js"></script>
-    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-multiselect.js"></script>
-    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-combobox.js"></script>
-    <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-editable.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-editable.js"></script>
-    <script src="~/Scripts/bootstrap-table-editable.js"></script>
+    <script src="~/Scripts/bootstrap-table.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-table.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-datepicker.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-combobox.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-combobox.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap-editable.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-editable.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/bootstrap-table-editable.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
 
 </head>
 <body>
@@ -116,7 +117,7 @@
         </div><!-- /.modal-dialog -->
     </div>
 
-    <script src="~/Scripts/MaintainMeetingNote.js"></script>
+    <script src="~/Scripts/MaintainMeetingNote.js?version=@StaticSetting.version"></script>
     <script>
         $(function () {
             loadListData();
@@ -183,11 +184,7 @@
                     ],
 
                     onExpandRow: function (index, row, $detail) {
-                        var parentid = row.DocGuid;
-                        var dataList = JSON.parse(sessionStorage.getItem(parentid));
-                        if (dataList.length > 0) {
-                            oTableInit.InitSubTable(index, row, $detail);
-                        }
+                        oTableInit.InitSubTable(index, row, $detail);
                     },
                     onLoadSuccess: function (data) {
                         for (var i = 0; i < data.rows.length; i++) {
@@ -214,6 +211,10 @@
             oTableInit.InitSubTable = function (index, row, $detail) {
                 var parentid = row.DocGuid;
                 var dataList = JSON.parse(sessionStorage.getItem(parentid));
+                if (dataList.length <= 0) {
+                    $("#tb_meetingNote").bootstrapTable('collapseRow', index);
+                }
+                var dataList = JSON.parse(sessionStorage.getItem(parentid));
                 var cur_table = $detail.html('<table></table>').find('table');
                 $(cur_table).bootstrapTable({
                     data: dataList,
@@ -225,15 +226,14 @@
                         },
 
                         {
-                            field: 'CreateDate',
-                            title: 'Create Date',
-                            width: '14%',
-                            'class': 'hideColumn'
+                            field: 'ModifyDate',
+                            title: 'Modify Date',
+                            width: '14%'
                         },
 
                         {
-                            field: 'ModifyDate',
-                            title: 'Date',
+                            field: 'ModifyUser',
+                            title: 'Modify User',
                             width: '14%'
                         },
                          {
@@ -332,6 +332,7 @@
                     Note: $("#txt_Comments").val(),
                     CreateDate: new Date().Format("yyyy-MM-dd"),
                     ModifyDate: new Date().Format("yyyy-MM-dd"),
+                    ModifyUser:currentUser,
                     Operation: "<button type='button' class='btn btn-default glyphicon glyphicon-remove' title='Remove Notes' data-guid='" + curGuid + "' data-docId='" + $("#hid_DocId").val() + "' onclick='removeMeetingNotes(this); return false'></button>"
                 };
 
@@ -464,6 +465,7 @@
                     if (curObj.Guid === note.Guid) {
                         curObj.NoteEdit = note.NoteEdit;
                         curObj.ModifyDate = new Date().Format("yyyy-MM-dd");
+                        curObj.ModifyUser = note.ModifyUser;
                     }
                 }
             }

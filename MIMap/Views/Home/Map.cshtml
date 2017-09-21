@@ -33,23 +33,24 @@
 
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
-    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/bootstrap-table.js"></script>
-    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-datepicker.js"></script>
-    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-multiselect.js"></script>
-    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-combobox.js"></script>
-    <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-tooltip.js"></script>
-    <link href="~/Content/bootstrap.colorpickersliders.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-table.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-table.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-datepicker.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-combobox.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-combobox.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-tooltip.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap.colorpickersliders.css?version=@StaticSetting.version" rel="stylesheet" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/tinycolor/0.11.1/tinycolor.min.js"></script>
-    <script src="~/Scripts/bootstrap.colorpickersliders.js"></script>
+    <script src="~/Scripts/bootstrap.colorpickersliders.js?version=@StaticSetting.version"></script>
 
+    <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
     @*<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>*@
 
@@ -249,7 +250,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="hid_noteDocId" />
                     <table class="table" id="meetingNote-table">
-                        <thead><tr><th style="width:55%">Note</th><th style="width:15%">Add Date</th><th style="width:15%">Modify Date</th><th style="width:4%"></th><th style="width:1%"></th></tr></thead>
+                        <thead><tr><th style="width:55%">Note</th><th style="width:15%">Modify Date</th><th style="width:15%">Modify User</th><th style="width:4%"></th><th style="width:1%"></th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -294,6 +295,7 @@
                     sortable: true,
                     queryParams: oTableInit.queryParams,
                     sidePagination: "server",
+                    pageSize:50,
                     pageList: [10, 25, 50, 100],
                     showColumns: true,
                     detailView: true,
@@ -594,7 +596,7 @@
             var tempQueryParams = function () {
                 return temp;
             };
-            $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+            $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 50 });
 
             loadMapData();
         }
@@ -1068,7 +1070,7 @@
                             htmlStr += "<ul>";
                             for (var j = 0; j < data.NoteList.length; j++) {
                                 var note = data.NoteList[j];
-                                htmlStr += '<li><span class="italic">' + note.ModifyDate + '  </span><span style="white-space:pre-line">' + note.Note + '</span></li>';
+                                htmlStr += '<li><span class="italic">' +note.ModifyDate+'--'+ note.ModifyUser + '  </span><span style="white-space:pre-line">' + note.Note + '</span></li>';
                             }
                             htmlStr += "</ul>";
                         }
@@ -1118,7 +1120,8 @@
             });
         }
         function hideMapPopUp() {
-            $("#pop-window").css({ 'display': 'none' });
+            $(".cartodb-infowindow").css("visibility","hidden");
+            //$("#pop-window").css({ 'display': 'none' });
         }
 
         function saveMapColer() {
@@ -1176,7 +1179,7 @@
         }
     </script>
 
-    <script src="~/Scripts/MaintainMeetingNote.js"></script>
+    <script src="~/Scripts/MaintainMeetingNote.js?version=@StaticSetting.version"></script>
 
 </body>
 </html>

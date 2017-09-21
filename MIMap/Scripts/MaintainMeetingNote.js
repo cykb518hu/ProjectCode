@@ -3,7 +3,7 @@
     $("#btn-add-meetingNote").click(function () {
 
         var str = "";
-        str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" required="required"></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span><span style="display:none" class="note-old-value"></span></td></tr>';
+        str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" required="required"></textarea></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + currentUser + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span><span style="display:none" class="note-old-value"></span></td></tr>';
         $("#meetingNote-table >tbody").append(str);
     });
     $("#btn_Save_MeetingNote").click(function (e) {
@@ -76,7 +76,7 @@ function loadNoteData(docId)
                 for (var i = 0; i < result.length; i++) {
                     var data = result[i];
                     var str = "";
-                    str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" >' + data.Note + '</textarea></td><td>' + data.CreateDate + '</td><td>' + data.ModifyDate + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status"></span><span style="display:none" class="note-guid">' + data.Guid + '</span><span style="display:none" class="note-old-value">' + data.Note + '</span></td></tr>';
+                    str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" >' + data.Note + '</textarea></td><td>' + data.ModifyDate + '</td><td>' + data.ModifyUser + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status"></span><span style="display:none" class="note-guid">' + data.Guid + '</span><span style="display:none" class="note-old-value">' + data.Note + '</span></td></tr>';
                     $("#meetingNote-table >tbody").append(str);
                 }
             }

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My Application</title>
-    @Styles.Render("~/Content/css")
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
@@ -20,7 +20,8 @@
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-combobox.js"></script>
     <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
  <style>
      form input{
          max-width:280px;

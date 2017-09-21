@@ -92,6 +92,8 @@ namespace BusinessHandler.Model
         public string Status { get; set; }
         public string Operation { get; set; }
 
+        public string ModifyUser { get; set; }
+
     }
 
 }

@@ -47,7 +47,16 @@ namespace MIMap.Controllers
             if (!string.IsNullOrEmpty(notes))
             {
                 var noteList = JsonConvert.DeserializeObject<List<MeetingNote>>(notes);
-                count=meetingNoteRepository.UpdateMeetingNotes(noteList);
+                var user = (UserAccount)Session["UserAccount"];
+                if (user != null)
+                {
+                    foreach(var r in noteList)
+                    {
+                        r.ModifyUser = user.Email;
+                    }
+                }
+                count =meetingNoteRepository.UpdateMeetingNotes(noteList);
+
             }
             return Json(count, JsonRequestBehavior.AllowGet);
         }

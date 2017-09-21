@@ -5,6 +5,15 @@
 <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
+    @{
+        if(user!=null)
+        {
+               <text>
+       var currentUser= "@user.Email";
+
+        </text>
+        }
+    }
     function successTips() {
         toastr.options = {
             "positionClass": "toast-top-center",
@@ -13,8 +22,7 @@
         }
         toastr.success('Success')
     }
-    function errorTips(str)
-    {
+    function errorTips(str) {
         toastr.options = {
             "positionClass": "toast-top-center",
             "hideDuration": "300",//消失的动画时间
@@ -32,7 +40,7 @@
         <div class="row" style="height:70px">
             <div class="col-md-2 hidden-xs hidden-sm">
                 <div style="margin-top:20px; margin-left:30px">
-                    <img src="~/Image/MiMapLogo1.png" />
+                    <a href="/Home/Map"> <img src="~/Image/MiMapLogo1.png" /></a>
                 </div>
             </div>
             <div class="col-md-10">
@@ -48,10 +56,10 @@
 
                         <ul class="nav navbar-nav navbar-right ">
                             <li><a href="#">Hello @user.Email</a></li>
-                            <li><a class="a-menu" href="/Home/Map">Michigan</a></li>
-                            <li><a class="a-menu" href="#">Massachusetts</a></li>
-                            <li><a class="a-menu" href="#">Florida</a></li>
-                            <li><a class="a-menu" href="/MeetingNote/Index">Notes</a></li>
+                            <li><a href="/Home/Map">Michigan</a></li>
+                            <li><a href="#">Massachusetts</a></li>
+                            <li><a href="#">Florida</a></li>
+                            <li><a href="/MeetingNote/Index">Notes</a></li>
                             <li>@Html.ActionLink("Log off", "Login", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
                         </ul>
                     </div>

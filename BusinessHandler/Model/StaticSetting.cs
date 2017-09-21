@@ -27,6 +27,9 @@ namespace BusinessHandler.Model
 
         public static string userFile = string.IsNullOrEmpty(ConfigurationManager.AppSettings["userFile"]) ? "" : ConfigurationManager.AppSettings["userFile"].ToString();
 
+
+        public static string version = string.IsNullOrEmpty(ConfigurationManager.AppSettings["version"]) ? "" : ConfigurationManager.AppSettings["version"].ToString();
+
         public static List<string> MapColorList()
         {
             List<string> list = new List<string>();

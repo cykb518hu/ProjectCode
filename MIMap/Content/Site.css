@@ -191,12 +191,17 @@ div.cartodb-popup.v2
 }
 
 #tb_meetingNote .detail-view .fixed-table-container {
-    border-left: none !important;
-    border-right: none !important;
+    /*border-left: none !important;*/
+    /*border-right: none !important;*/
+    border:none !important;
 }
-#tb_meetingNote .table tbody tr:hover td, .table tbody tr:hover th {
+#div-data-area .table tbody tr:hover td{
     background-color: transparent;
 }
+#div-data-area .table tbody tr:hover th{
+    background-color: transparent;
+}
+
 #tb_meetingNote .detail-view .table {
     border-bottom: none !important;
 }

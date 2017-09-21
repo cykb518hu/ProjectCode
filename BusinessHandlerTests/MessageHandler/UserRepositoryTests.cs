@@ -380,7 +380,7 @@ namespace BusinessHandler.MessageHandler.Tests
                 list.Add(data);
             }
             List<MuniciplityCounty> dblist = new List<MuniciplityCounty>();
-            string connectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
+            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
             string queryString = @"select * from city";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -457,6 +457,55 @@ namespace BusinessHandler.MessageHandler.Tests
             wb.SaveAs(file, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
         false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
         Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+        }
+
+        [TestMethod()]
+        public void MigrateData()
+        {
+            List<MuniciplityCounty> dblist = new List<MuniciplityCounty>();
+            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
+
+            string queryString = @"select * from city";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Create the Command and Parameter objects.
+                SqlCommand command = new SqlCommand(queryString, connection);
+                // Open the connection in a try/catch block. 
+                // Create and execute the DataReader, writing the result
+                // set to the console window.
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new MuniciplityCounty();
+                    data.LongNm = reader["LONG_NM"].ToString();
+                    data.County = reader["COUNTY_NM"].ToString();
+                    data.ShortNm = reader["SHORT_NM"].ToString();
+                    data.Typ = reader["TYP"].ToString();
+                    data.Municiplity = reader["CITY_NM"].ToString();
+                    data.objectId = reader["OBJECTID"].ToString();
+                    dblist.Add(data);
+                }
+            }
+
+            string targetConnectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
+            int i = 0;
+            foreach(var r in dblist)
+            {
+                string updateStr = @"update dbo.CITY set SHORT_NM='" + r.ShortNm + "' , COUNTY_NM='" + r.County + "', TYP='" + r.Typ + "', long_nm='" + r.LongNm + "',states='MI', objectid=" + r.objectId + " where city_nm='" + r.Municiplity + "'";
+                using (SqlConnection connection = new SqlConnection(targetConnectionString))
+                {
+                    // Create the Command and Parameter objects.
+                    SqlCommand command = new SqlCommand(updateStr, connection);
+                    // Open the connection in a try/catch block. 
+                    // Create and execute the DataReader, writing the result
+                    // set to the console window.
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                 
+                }
+            }
+
         }
     }
 
