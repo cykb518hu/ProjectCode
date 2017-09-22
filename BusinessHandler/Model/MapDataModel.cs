@@ -12,6 +12,7 @@ namespace BusinessHandler.Model
         public string CountyName { get; set; }
         public string MunicipalityName { get; set; }
         public string DeployDate { get; set; }
+        public string CityGuid { get; set; }
     }
 
     public class MapMunicipalityColor

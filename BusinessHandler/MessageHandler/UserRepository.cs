@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Web;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace BusinessHandler.MessageHandler
 {
@@ -21,6 +22,8 @@ namespace BusinessHandler.MessageHandler
         UserAccount Login(UserAccount message, out string result);
 
         List<UserAccount> GetUserList();
+
+        void SaveUser(UserAccount message);
 
 
     }
@@ -126,6 +129,10 @@ namespace BusinessHandler.MessageHandler
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
+        public void SaveUser(UserAccount message)
+        {
+
+        }
     }
 
     public class SqlServerUserRepository:IUserRepository
@@ -205,13 +212,82 @@ namespace BusinessHandler.MessageHandler
                     data.Active = DBNull.Value == reader["Active"] ? "" : reader["Active"].ToString();
                     data.RoleType = DBNull.Value == reader["RoleType"] ? "" : reader["RoleType"].ToString();
                     data.Operation = DBNull.Value == reader["Operation"] ? "" : reader["Operation"].ToString();
+                    data.AddDate = Convert.ToDateTime(reader["USR_CRTN_TS"]).ToString("yyyy-MM-dd");
                     userList.Add(data);
                 }
             }
+            foreach(var r in userList)
+            {
+                SubList(r);
+            }
+           
             return userList;
         }
 
-     
+        public  void SubList(UserAccount user)
+        {
+            var userStr = string.Empty;
+            user.CityList = new List<string>();
+
+            var queryString = @"SELECT * FROM DBO.ACCOUNT_CITY WHERE EMAIL = @EMAIL";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@EMAIL", user.Email);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var cityGuid = DBNull.Value == reader["City_Guid"] ? "" : reader["City_Guid"].ToString().ToUpper();
+                        if(!string.IsNullOrWhiteSpace(cityGuid))
+                        {
+                            user.CityList.Add(cityGuid);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public void SaveUser(UserAccount message)
+        {
+            string queryString = @"UPDATE ACCOUNT SET ACTIVE=@Active where email='" + message.Email + "'";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@Active", message.Active);
+                connection.Open();
+                command.ExecuteNonQuery();
+
+            }
+
+            queryString= @"DELETE FROM ACCOUNT_CITY WHERE email='" + message.Email + "'";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            if(message.CityList.Any())
+            {
+                var dt = new DataTable();
+                dt.Columns.Add("City_Guid");
+                dt.Columns.Add("Email");
+                foreach(var r in message.CityList)
+                {
+                    dt.Rows.Add(r,message.Email);
+                }
+                using (var sqlBulk = new SqlBulkCopy(StaticSetting.connectionString))
+                {
+                    sqlBulk.DestinationTableName = "DBO.ACCOUNT_CITY";
+                    sqlBulk.WriteToServer(dt);
+                }
+
+            }
+        }
+
+
     }
 
 }

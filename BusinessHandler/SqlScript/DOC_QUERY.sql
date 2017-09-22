@@ -21,7 +21,8 @@ CREATE PROCEDURE [dbo].[GET_DOC_QUERY]
 @IsImportant varchar(5)=null,
 @offset int =0,
 @limit int=10,
-@Total int =1
+@Total int =1,
+@UserEmail varchar(100)=null
 )
 as
 declare @sqlstr varchar(max)
@@ -31,7 +32,7 @@ set @sqlstr='
 SELECT DISTINCT D.DOC_GUID, D.CITY_NM , D.DOC_TYPE,D.DOC_SOURCE, D.DOC_PATH,D.CHECKED,D.IMPORTANT,D.READABLE,
 Q.MEETING_DATE,Q.SEARCH_DATE, C.DEPLOYE_DATE,D.COMMENT,C.LONG_NM,C.OBJECTID
  FROM  DBO.DOCUMENT D INNER JOIN DBO.QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID 
- INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM where 1=1'
+ INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID  where 1=1'
 
 if @CityName is not null 
 	begin
@@ -65,6 +66,11 @@ if @IsImportant is not null
    begin
 		set @sqlstr=@sqlstr+' and D.IMPORTANT = '''+ @IsImportant+''''
 	end
+if @UserEmail is not null
+   begin
+		set @sqlstr=@sqlstr+' and AC.EMAIL = '''+ @UserEmail+''''
+	end
+
 
 if(@Total=0)
 begin

@@ -1,0 +1,123 @@
+﻿@using BusinessHandler.Model;
+@{
+    Layout = null;
+    var municipalityList = (List<MapFilterModel>)ViewData["municipalityList"];
+    var userList = (List<UserAccount>)ViewData["userList"];
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MaintainUser</title>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
+    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
+
+</head>
+<body>
+    @Html.Partial("_LoginPartial")
+    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;" >
+        <div class="col-md-2"></div>
+        <div class="col-md-8" >
+          <div>
+              <table class="table" id="user-account">
+                  <thead><tr><th width="20%">Email</th><th width="35%">Cities</th><th width="10%">Role Type</th><th width="10%">Active</th><th width="15%">Add Time</th><th width="10%"></th></tr></thead>
+                  <tbody>
+                      @{
+                          foreach (var u in userList)
+                          {
+                              var checkedStr = u.Active == "Yes" ? "Checked" : "";
+                            <tr>
+                                <td>@u.Email</td>
+                                <td>
+                                    <select class="form-control sel_search_CityName" multiple="multiple">
+                                        @{
+                                            foreach (var r in municipalityList.OrderBy(x => x.MunicipalityName))
+                                            {
+                                                var selectedStr = "";
+                                                if (u.CityList.Any())
+                                                {
+                                                    selectedStr = u.CityList.Contains(r.CityGuid.ToUpper()) ? "selected" : "";
+                                                }
+                                                if (!string.IsNullOrEmpty(r.MunicipalityName))
+                                                {
+                                                    <option value="@r.CityGuid" @selectedStr   >@r.MunicipalityName</option>
+                                                    }
+                                                }
+                                            }
+                                    </select>
+                                </td>
+                                <td>@u.RoleType</td>
+                                <td>
+                                    <label>
+                                        <input class="user-active" type="checkbox" @checkedStr > Yes
+                                    </label>
+                                </td>
+                                <td>@u.AddDate</td>
+                                <td>
+                                    <button type="button" class="btn btn-default glyphicon glyphicon-ok-circle" onclick="saveUserAccount(this); return false"></button>
+                                </td>
+                            </tr>
+                                            }
+                    }
+                     
+                  </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".sel_search_CityName").multiselect({
+                buttonWidth: '100%',
+                nonSelectedText: 'No Municipality Selected',
+                includeSelectAllOption: true,
+                selectAllText: 'All'
+                
+            });
+        });
+
+        function saveUserAccount(obj)
+        {
+
+            var data = {};
+            data.Email = $(obj).parent().parent().children().eq(0).html();
+            if ($(obj).parent().parent().find(".user-active").is(":checked"))
+            {
+                data.Active = "Yes";
+            }
+            else {
+                data.Active = "No";
+            }
+            data.CityList = $(obj).parent().parent().find(".sel_search_CityName").val();
+            console.log(data);
+
+            $.ajax({
+                url: '@Url.Action("SaveUser", "Account")',
+                data: { Message: data },
+                dataType: 'json',
+                type: "POST",
+                success: function (result) {
+                    successTips();
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -12,6 +12,7 @@ namespace BusinessHandler.MessageHandler
 {
     public interface IMapDataRepository
     {
+        List<MapFilterModel> GetAllCities();
         List<MapFilterModel> GetFilterData();
         List<MapMunicipalityColor> GetMapAreaData(DocQueryMessage message);
         List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total);
@@ -20,13 +21,34 @@ namespace BusinessHandler.MessageHandler
 
     public class SqlServerMapDataRepository:IMapDataRepository
     {
-        public List<MapFilterModel> GetFilterData()
+        public List<MapFilterModel> GetAllCities()
         {
             var list = new List<MapFilterModel>();
             string queryString = @"select  * from [dbo].[CITY] order by DEPLOYE_DATE desc";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new MapFilterModel();
+                    data.MunicipalityName = DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    data.CityGuid = DBNull.Value == reader["GUID"] ? "" : reader["GUID"].ToString();
+                    list.Add(data);
+                }
+            }
+            return list;
+        }
+        public List<MapFilterModel> GetFilterData()
+        {
+            var list = new List<MapFilterModel>();
+            var email = StaticSetting.GetUserEmail();
+            string queryString = @"select  * from [dbo].[CITY] C INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID WHERE AC.EMAIL=@EMAIL order by DEPLOYE_DATE desc";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@EMAIL", email);
                 connection.Open();
                 var reader = command.ExecuteReader();
                 while (reader.Read())
@@ -294,6 +316,11 @@ namespace BusinessHandler.MessageHandler
                 command.Parameters.AddWithValue("@IsImportant", isImportant);
             }
 
+            var email = StaticSetting.GetUserEmail();
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                command.Parameters.AddWithValue("@UserEmail", email);
+            }
         }
 
         public void UpdateMapColor(int cityId, string color)

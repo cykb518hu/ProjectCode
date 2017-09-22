@@ -27,5 +27,11 @@ namespace BusinessHandler.Model
 
         public string Operation { get; set; }
 
+        public List<string> CityList { get; set; }
+
+        public string AddDate { get; set; }
+
+        public string CityGuid { get; set; }
+
     }
 }

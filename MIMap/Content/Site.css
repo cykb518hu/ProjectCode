@@ -212,3 +212,7 @@ div.cartodb-popup.v2
 #div-note-all .fixed-table-toolbar {
     display: none;
 }
+
+#user-account td{
+    vertical-align:middle;
+}

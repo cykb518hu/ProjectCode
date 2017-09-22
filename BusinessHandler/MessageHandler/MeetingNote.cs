@@ -95,6 +95,11 @@ namespace BusinessHandler.MessageHandler
                 {
                     command.Parameters.AddWithValue("@Notes", message.Note);
                 }
+                var email = StaticSetting.GetUserEmail();
+                if (!string.IsNullOrWhiteSpace(email))
+                {
+                    command.Parameters.AddWithValue("@UserEmail", email);
+                }
                 connection.Open();
                 total = Convert.ToInt32(command.ExecuteScalar());
 

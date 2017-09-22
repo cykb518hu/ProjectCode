@@ -463,7 +463,7 @@ namespace BusinessHandler.MessageHandler.Tests
         public void MigrateData()
         {
             List<MuniciplityCounty> dblist = new List<MuniciplityCounty>();
-            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
+            string connectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
 
             string queryString = @"select * from city";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -490,9 +490,9 @@ namespace BusinessHandler.MessageHandler.Tests
 
             string targetConnectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
             int i = 0;
-            foreach(var r in dblist)
+            foreach (var r in dblist)
             {
-                string updateStr = @"update dbo.CITY set SHORT_NM='" + r.ShortNm + "' , COUNTY_NM='" + r.County + "', TYP='" + r.Typ + "', long_nm='" + r.LongNm + "',states='MI', objectid=" + r.objectId + " where city_nm='" + r.Municiplity + "'";
+                string updateStr = @"update dbo.CITY set guid='" + Guid.NewGuid().ToString() + "' where city_nm='" + r.Municiplity + "'";
                 using (SqlConnection connection = new SqlConnection(targetConnectionString))
                 {
                     // Create the Command and Parameter objects.
@@ -502,9 +502,27 @@ namespace BusinessHandler.MessageHandler.Tests
                     // set to the console window.
                     connection.Open();
                     command.ExecuteNonQuery();
-                 
+
                 }
             }
+
+            //string targetConnectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
+            //int i = 0;
+            //foreach(var r in dblist)
+            //{
+            //    string updateStr = @"update dbo.CITY set SHORT_NM='" + r.ShortNm + "' , COUNTY_NM='" + r.County + "', TYP='" + r.Typ + "', long_nm='" + r.LongNm + "',states='MI', objectid=" + r.objectId + " where city_nm='" + r.Municiplity + "'";
+            //    using (SqlConnection connection = new SqlConnection(targetConnectionString))
+            //    {
+            //        // Create the Command and Parameter objects.
+            //        SqlCommand command = new SqlCommand(updateStr, connection);
+            //        // Open the connection in a try/catch block. 
+            //        // Create and execute the DataReader, writing the result
+            //        // set to the console window.
+            //        connection.Open();
+            //        command.ExecuteNonQuery();
+                 
+            //    }
+            //}
 
         }
     }

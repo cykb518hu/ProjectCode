@@ -20,7 +20,8 @@ CREATE PROCEDURE [dbo].[GET_DOC_MeetingNote]
 @Notes varchar(200)=null,
 @offset int =0,
 @limit int=10,
-@Total int =1
+@Total int =1,
+@UserEmail varchar(100)=null
 )
 as
 declare @sqlstr varchar(max)
@@ -32,7 +33,7 @@ Q.MEETING_DATE,Q.SEARCH_DATE, C.DEPLOYE_DATE, case when( m.Notes is not null) th
 else 1 end as noteorder
  FROM  DBO.DOCUMENT D INNER JOIN DBO.QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID 
  inner JOIN DBO.MeetingNote M ON M.DOC_GUID=D.DOC_GUID 
- INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM where 1=1 and  D.IMPORTANT=''false'' '
+ INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM  INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID  where 1=1 and  D.IMPORTANT=''false'' '
 
 if @CityName is not null 
 	begin
@@ -63,6 +64,11 @@ if @Notes is not null
    begin
 		set @sqlstr=@sqlstr+' and M.NOTES LIKE ''%'+ @Notes+'%'''
 	end
+if @UserEmail is not null
+   begin
+		set @sqlstr=@sqlstr+' and AC.EMAIL = '''+ @UserEmail+''''
+	end
+
 if(@Total=0)
 begin
 

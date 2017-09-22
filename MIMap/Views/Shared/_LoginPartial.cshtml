@@ -1,4 +1,5 @@
 ﻿@using BusinessHandler.Model;
+@using BusinessHandler.MessageHandler;
 @{ 
     var user = (UserAccount)Session["UserAccount"];
 }
@@ -60,6 +61,12 @@
                             <li><a href="#">Massachusetts</a></li>
                             <li><a href="#">Florida</a></li>
                             <li><a href="/MeetingNote/Index">Notes</a></li>
+                            @{
+                                if (user.RoleType == GlobalKeyString.roleTypeAdmin)
+                                {
+                                    <li><a href="/Account/MaintainUser">Manage Account</a></li>
+                                }
+                            }
                             <li>@Html.ActionLink("Log off", "Login", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
                         </ul>
                     </div>

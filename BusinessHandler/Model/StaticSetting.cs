@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace BusinessHandler.Model
 {
@@ -67,6 +68,18 @@ namespace BusinessHandler.Model
             }
             query = query.TrimEnd(',');
             return query;
+        }
+
+
+        public static string GetUserEmail()
+        {
+
+            var user = (UserAccount)HttpContext.Current.Session["UserAccount"];
+            if(user!=null)
+            {
+                return user.Email;
+            }
+            return "";
         }
     }
 }
