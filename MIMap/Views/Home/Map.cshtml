@@ -27,6 +27,7 @@
     </script>
 
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+   <link href="~/Content/bootstrap.colorpickersliders.css?version=@StaticSetting.version" rel="stylesheet" />
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/tinycolor/0.11.1/tinycolor.min.js"></script>
@@ -917,6 +918,7 @@
         var selectedColor;
         var objectId;
         var popLayer;
+        var defaultColor = "#00FF7F";
         function initialMap() {
             $("#map").css("height", ($(window).height() - 100) + "px");
             //https://achilles.carto.com/builder/9d779336-b8c9-4d7e-a701-46d83baceeaf/embed
@@ -983,7 +985,7 @@
         function createSelector() {
             hideMapPopUp();
             var ids = "'nodata'";
-            var cartocss = "#mi_munv5{polygon-fill: #00FF7F; line-color: white; }";
+            var cartocss = "#mi_munv5{polygon-fill: " + defaultColor + "; line-color: white; }";
 
             if (mapMasterData.length > 0) {
                 ids = "";
@@ -1021,6 +1023,10 @@
                     if (result.Color.length > 0) {
                         $("#map-bgcolor").css('color', result.Color);
                         $("#map-bgcolor").attr('data-color', result.Color);
+                    }
+                    else {
+                        $("#map-bgcolor").css('color', defaultColor);
+                        $("#map-bgcolor").attr('data-color', defaultColor);
                     }
                     var htmlStr = "<ol>";
                     for (var i = 0; i < result.MeetingList.length; i++) {
@@ -1088,7 +1094,7 @@
             var color = selectedColor.tiny.toHexString();
             var oldColor = $("#map-bgcolor").attr('data-color');
             if (color.toLowerCase() != oldColor.toLowerCase()) {
-                var cartocss = "#mi_munv5{polygon-fill: #00FF7F; line-color: white; }";
+                var cartocss = "#mi_munv5{polygon-fill: " + defaultColor + "; line-color: white; }";
                 if (mapMasterData.length > 0) {
                     for (var i = 0; i < mapMasterData.length; i++) {
                         if (objectId == mapMasterData[i].Id) {
@@ -1116,7 +1122,7 @@
                     }
                 });
             }
-            $("#map-bgcolor").trigger("colorpickersliders.hide");
+            //$("#map-bgcolor").trigger("colorpickersliders.hide");
         }
         var oldPopUpObjectId = 0;
         function openMarker(popUpObjectId)
