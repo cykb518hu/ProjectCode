@@ -3,8 +3,6 @@
 @{ 
     var user = (UserAccount)Session["UserAccount"];
 }
-<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
     @{
         if(user!=null)
@@ -14,22 +12,6 @@
 
         </text>
         }
-    }
-    function successTips() {
-        toastr.options = {
-            "positionClass": "toast-top-center",
-            "hideDuration": "300",//消失的动画时间
-            "timeOut": "2000",//展现时间
-        }
-        toastr.success('Success')
-    }
-    function errorTips(str) {
-        toastr.options = {
-            "positionClass": "toast-top-center",
-            "hideDuration": "300",//消失的动画时间
-            "timeOut": "2000",//展现时间
-        }
-        toastr.error(str);
     }
 </script>
 

@@ -1,15 +1,13 @@
 ﻿@using BusinessHandler.Model;
 @using Newtonsoft.Json;
 @{
-    Layout = null;
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Maintain Note";
 
     var municipalityList = (List<MapFilterModel>)ViewData["municipalityList"];
 }
-<!DOCTYPE html>
 
-<html>
-<head>
+
     <script>
         var municipalityList = new Array();
         @{
@@ -20,28 +18,7 @@
 
             }
     </script>
-    <meta name="viewport" content="width=device-width" />
-    <title>GovMash</title>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/bootstrap-table.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-table.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-datepicker.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-datepicker.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-combobox.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-combobox.css?version=@StaticSetting.version" rel="stylesheet" />
-    <link href="~/Content/bootstrap-editable.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-editable.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/bootstrap-table-editable.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
-    <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
 
-</head>
-<body>
-    @Html.Partial("_LoginPartial")
     <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;"  id="div-note-all">
         <div class="col-md-2"></div>
         <div class="col-md-8" id="div-data-area">
@@ -117,7 +94,6 @@
         </div><!-- /.modal-dialog -->
     </div>
 
-    <script src="~/Scripts/MaintainMeetingNote.js?version=@StaticSetting.version"></script>
     <script>
         $(function () {
             loadListData();
@@ -271,7 +247,7 @@
             return oInit;
         };
     </script>
-    <script>
+     <script>
         jQuery(document).ready(function ($) {
 
             $("#sel_search_CountyName").multiselect({
@@ -482,5 +458,3 @@
 
  
     </script>
-</body>
-</html>

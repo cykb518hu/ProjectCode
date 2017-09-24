@@ -1,15 +1,12 @@
 ﻿@using BusinessHandler.Model;
 @using Newtonsoft.Json;
 @{
-    Layout = null;
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var keyWords = (List<BusinessHandler.MessageHandler.KeyWordModel>)ViewData["KeyWordList"];
-
     var municipalityList = (List<MapFilterModel>)ViewData["municipalityList"];
+    ViewBag.Title = "Map";
 }
-<!DOCTYPE html>
-<html>
-<head>
+
     <script>
         var mapMasterData = new Array();
         @{
@@ -28,50 +25,13 @@
 
             }
     </script>
-    <meta name="viewport" content="width=device-width" />
-    <title>GovMash</title>
 
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/bootstrap-table.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-table.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-datepicker.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-datepicker.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-combobox.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-combobox.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-tooltip.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap.colorpickersliders.css?version=@StaticSetting.version" rel="stylesheet" />
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/tinycolor/0.11.1/tinycolor.min.js"></script>
     <script src="~/Scripts/bootstrap.colorpickersliders.js?version=@StaticSetting.version"></script>
 
-    <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
-    <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
-    @*<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>*@
-
-    <style>
-
-        #div-query a {
-            text-decoration: none;
-        }
-
-            #div-query a:hover {
-                text-decoration: none;
-            }
-
-        .highlight {
-            background-color: #f5f5f5;
-        }
-    </style>
-</head>
-<body>
-    @Html.Partial("_LoginPartial")
-  
     <div id="div-query">
         <div class="col-md-6">
             <ul class="list-group" id="ul_queryGourp" style="display:none" >
@@ -1178,8 +1138,3 @@
             });
         }
     </script>
-
-    <script src="~/Scripts/MaintainMeetingNote.js?version=@StaticSetting.version"></script>
-
-</body>
-</html>

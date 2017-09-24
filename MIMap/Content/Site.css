@@ -216,3 +216,18 @@ div.cartodb-popup.v2
 #user-account td{
     vertical-align:middle;
 }
+
+.login-form input {
+    max-width: 280px;
+}
+#div-query a {
+    text-decoration: none;
+}
+
+    #div-query a:hover {
+        text-decoration: none;
+    }
+
+.highlight {
+    background-color: #f5f5f5;
+}

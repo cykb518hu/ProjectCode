@@ -1,29 +1,13 @@
 ﻿@using BusinessHandler.Model;
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var municipalityList = (List<MapFilterModel>)ViewData["municipalityList"];
     var userList = (List<UserAccount>)ViewData["userList"];
+    ViewBag.Title = "Maintain Account";
+
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>MaintainUser</title>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/modernizr")
-
-    <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
-    <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
-    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
-
-</head>
-<body>
-    @Html.Partial("_LoginPartial")
     <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;" >
         <div class="col-md-2"></div>
         <div class="col-md-8" >
@@ -63,7 +47,7 @@
                                 </td>
                                 <td>@u.AddDate</td>
                                 <td>
-                                    <button type="button" class="btn btn-default glyphicon glyphicon-ok-circle" onclick="saveUserAccount(this); return false"></button>
+                                    <button type="button" class="btn btn-default glyphicon glyphicon-ok-circle" onclick="saveUserAccount(this); return false" title="Save Data"></button>
                                 </td>
                             </tr>
                                             }
@@ -119,5 +103,4 @@
             });
         }
     </script>
-</body>
-</html>
+

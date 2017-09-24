@@ -5,38 +5,39 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My Application</title>
+    <title>@ViewBag.Title - GovMash</title>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/bootstrap-table.js"></script>
-    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
 
-    <script src="~/Scripts/bootstrap-datepicker.js"></script>
-    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-multiselect.js"></script>
-    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap-combobox.js"></script>
-    <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
     <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
     <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
- <style>
-     form input{
-         max-width:280px;
-     }
- </style>
+    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-table.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap-combobox.css?version=@StaticSetting.version" rel="stylesheet" />
+    <link href="~/Content/bootstrap-editable.css?version=@StaticSetting.version" rel="stylesheet" />
+
+    <script src="~/Scripts/bootstrap-table.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/bootstrap-combobox.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/bootstrap-editable.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/bootstrap-table-editable.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/MaintainMeetingNote.js?version=@StaticSetting.version"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
+    <script src="~/Scripts/common.js?version=@StaticSetting.version"></script>
+
 </head>
 <body>
     @Html.Partial("_LoginPartial")
-    <div class="container body-content" style="padding-top:30px">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My Application</p>
-        </footer>
-    </div>
+
+    @RenderBody()
 
 </body>
 </html>
