@@ -1046,6 +1046,7 @@
                     $("#pop-map-timeLine").html(htmlStr);
                     $("#div-map-loading").hide();
                     objectId = objectid;
+                    $("#map-bgcolor").off();
                     $("#map-bgcolor").ColorPickerSliders({
                         color: $("#map-bgcolor").css('color'),
                         previewontriggerelement: false,
@@ -1057,7 +1058,10 @@
                             selectedColor = color;
                         }
                     });
+                    $("#btn-showMapInTable").off();
                     $("#btn-showMapInTable").click(function () {
+                        alert("1");
+                        return;
                         var cityName = "";
                         if (mapMasterData.length > 0) {
                             for (var i = 0; i < mapMasterData.length; i++) {
