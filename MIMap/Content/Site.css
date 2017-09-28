@@ -166,23 +166,27 @@ div.cartodb-popup.v2
         width: 760px;
     }
 }
-#pop-map-timeLine ol
+#sidebar_timeLine ol
 {
     padding-left:20px;
 }
-#pop-map-timeLine ul
+#sidebar_timeLine ul
 {
     padding-left:15px;
 }
-#pop-map-timeLine .bold
+#sidebar_timeLine .bold
 {
     font-weight:bold;
 }
 
-#pop-map-timeLine .italic
+#sidebar_timeLine .italic
 {
     font-style:italic;
     text-decoration:underline;
+}
+#sidebar_timeLine
+{
+    font-size:12px;
 }
 
 #tb_meetingNote .detail-view tbody td {
@@ -257,4 +261,14 @@ div.cartodb-popup.v2
 {
     border-bottom:none;
     cursor:pointer;
+}
+
+#collapse6 .form-group
+{
+    margin-bottom:0px;
+}
+
+.popover
+{
+    z-index:4000 !important;
 }

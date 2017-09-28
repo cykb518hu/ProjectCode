@@ -1,8 +1,13 @@
 ﻿@using MIMap.Models
 @model LoginViewModel
+@using BusinessHandler.Model;
 @{
     ViewBag.Title = "Log in";
 }
+<link href="~/Content/bootstrap.colorpickersliders.css?version=@StaticSetting.version" rel="stylesheet" />
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/tinycolor/0.11.1/tinycolor.min.js"></script>
+<script src="~/Scripts/bootstrap.colorpickersliders.js?version=@StaticSetting.version"></script>
 <div class="container body-content login-form" style="padding-top:30px">
     <h2 style="padding-left:15px;">@ViewBag.Title.</h2>
     <div class="row">
@@ -52,6 +57,8 @@
             </section>
             <input type="button" value="Test" class="btn btn-default" onclick="loadCityOrdinance('c9ac20dd-29c8-4dcd-b1a9-61ba091bd44d'); return false" />
             <input type="button" value="Save" class="btn btn-default" onclick="saveCityOrdinance('c9ac20dd-29c8-4dcd-b1a9-61ba091bd44d'); return false" />
+
+            <input type="button" value="Test Time" class="btn btn-default" onclick="showMapTimeLine('670'); return false" />
         </div>
     </div>
     <hr />

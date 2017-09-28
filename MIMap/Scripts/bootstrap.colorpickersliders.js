@@ -1,17 +1,3 @@
-/*
- *  Bootstrap Color Picker Sliders - v3.0.1
- *
- *  Bootstrap 3 optimized responsive color selector with HSV, HSL, RGB and CIE-Lch (which supports human perceived lightness) selectors and color swatches.
- *  http://www.virtuosoft.eu/code/bootstrap-colorpickersliders/
- *
- *  Made by István Ujj-Mészáros
- *  Under Apache License v2.0 License
- *
- *  Requirements:  *
- *      TinyColor: https://github.com/bgrins/TinyColor/
- *
- *  Using color math algorithms from EasyRGB Web site:/
- *      http://www.easyrgb.com/index.php?X=MATH */
 
 (function($) {
   'use strict';
@@ -292,10 +278,10 @@
       }
 
       function hidePopover() {
-        popover_container.remove();
-        popover_container = null;
+        //popover_container.remove();
+        //popover_container = null;
 
-        triggerelement.popover('destroy');
+        //triggerelement.popover('destroy');
       }
 
       function _getControllerHtml() {
@@ -326,12 +312,32 @@
 
         }
 
-      
+        if (settings.grouping) {
+          if (!!settings.hsvpanel + !!(settings.sliders && sliders.length > 0) + !!settings.swatches > 1) {
+            color_picker_html += '<ul class="cp-pills">';
+          }
+          else {
+            color_picker_html += '<ul class="cp-pills hidden">';
+          }
+
+          if (settings.hsvpanel) {
+            color_picker_html += '<li><a href="#" class="cp-pill-hsvpanel">HSV panel</a></li>';
+          }
+          if (settings.sliders && sliders.length > 0) {
+            color_picker_html += '<li><a href="#" class="cp-pill-sliders">Sliders</a></li>';
+          }
+          if (settings.swatches) {
+            color_picker_html += '<li><a href="#" class="cp-pill-swatches">Swatches</a></li>';
+          }
+
+          color_picker_html += '</ul>';
+        }
+
         if (settings.hsvpanel) {
           color_picker_html += '<div class="cp-hsvpanel">' +
               '<div class="cp-hsvpanel-sv"><span></span><div class="cp-marker-point"></div></div>' +
               '<div class="cp-hsvpanel-h"><span></span><div class="cp-hsvmarker-vertical"></div></div>' +
-             // '<div class="cp-hsvpanel-a cp-transparency"><span></span><div class="cp-hsvmarker-vertical"></div></div>' +
+              '<div class="cp-hsvpanel-a cp-transparency"><span></span><div class="cp-hsvmarker-vertical"></div></div>' +
               '</div>';
         }
 
@@ -353,30 +359,6 @@
         if (settings.swatches) {
           color_picker_html += '<div class="cp-swatches clearfix"><button type="button" class="add btn btn-default" title="' + settings.titleswatchesadd + '"><span class="glyphicon glyphicon-floppy-save"></span></button><button type="button" class="remove btn btn-default" title="' + settings.titleswatchesremove + '"><span class="glyphicon glyphicon-trash"></span></button><button type="button" class="reset btn btn-default" title="' + settings.titleswatchesreset + '"><span class="glyphicon glyphicon-repeat"></span></button><ul></ul></div>';
         }
-
-        if (settings.grouping) {
-            color_picker_html += '<ul class="cp-pills">';
-            color_picker_html += '<li><a href="#" class="cp-pill-hsvpanel" onclick="saveMapColer(); return false">Save</a></li>';
-            //if (!!settings.hsvpanel + !!(settings.sliders && sliders.length > 0) + !!settings.swatches > 1) {
-            //  color_picker_html += '<ul class="cp-pills">';
-            //}
-            //else {
-            //  color_picker_html += '<ul class="cp-pills hidden">';
-            //}
-
-            //if (settings.hsvpanel) {
-            //  color_picker_html += '<li><a href="#" class="cp-pill-hsvpanel">HSV panel</a></li>';
-            //}
-            //if (settings.sliders && sliders.length > 0) {
-            //  color_picker_html += '<li><a href="#" class="cp-pill-sliders">Sliders</a></li>';
-            //}
-            //if (settings.swatches) {
-            //  color_picker_html += '<li><a href="#" class="cp-pill-swatches">Swatches</a></li>';
-            //}
-
-            color_picker_html += '</ul>';
-        }
-
 
         return color_picker_html;
       }
