@@ -67,6 +67,7 @@
     <Compile Include="MessageHandler\SearchQueryRepository.cs" />
     <Compile Include="MessageHandler\UserRepository.cs" />
     <Compile Include="MessageHandler\XmlHelper.cs" />
+    <Compile Include="Model\CityOrdinance.cs" />
     <Compile Include="Model\DocQueryModel.cs" />
     <Compile Include="Model\MapCounty.cs" />
     <Compile Include="Model\MapDataModel.cs" />

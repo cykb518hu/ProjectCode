@@ -48,76 +48,78 @@
          </div>
 
         </div>
-    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;">
-        <div class="col-md-6" id="div-data-area">
-            <div class="search-container">
-                <div class="row property-search-form">
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
-                            @{
-                                foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
-                                {
-                                    if (!string.IsNullOrEmpty(r))
-                                    {
-                                    <option value="@r">@r</option>
-                                        }
-                                    }
-                                }
-                        </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
-                            @{
-                                foreach (var r in municipalityList.OrderBy(x=>x.MunicipalityName))
-                                {
-                                    if (!string.IsNullOrEmpty(r.MunicipalityName))
-                                    {
-                                    <option value="@r.MunicipalityName">@r.MunicipalityName</option>
-                                        }
-                                    }
-                                }
-                        </select>
-                    </div>
-                  
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <select name="sel_search_KeyWord" id="sel_search_KeyWord" class="form-control" multiple="multiple">
-                            @{
-                                foreach (var r in keyWords)
-                                {
-                                    <option value="@r.KeyWord">@r.KeyWord</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <select name="sel_search_DeployDate" id="sel_search_DeployDate" class="form-control" multiple="multiple">
-                            @{
-                                foreach (var r in municipalityList.Select(x => x.DeployDate).Distinct())
-                                {
-                                    <option value="@r">@r</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Meeting Date" class="form-control" />
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Meeting Date" class="form-control" />
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-     
-                        <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="submit" value="Save Search Query" id="btn_SaveInnitialQuery" class="btn btn-info btn-block form-control" />
-                    </div>
+    <div class="row" style="margin-top:50px;">
 
+        <div class="search-container">
+            <div class="row property-search-form">
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
+                            {
+                                if (!string.IsNullOrEmpty(r))
+                                {
+                                    <option value="@r">@r</option>
+                                }
+                            }
+                        }
+                    </select>
                 </div>
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var r in municipalityList.OrderBy(x => x.MunicipalityName))
+                            {
+                                if (!string.IsNullOrEmpty(r.MunicipalityName))
+                                {
+                                    <option value="@r.MunicipalityName">@r.MunicipalityName</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <select name="sel_search_KeyWord" id="sel_search_KeyWord" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var r in keyWords)
+                            {
+                                <option value="@r.KeyWord">@r.KeyWord</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <select name="sel_search_DeployDate" id="sel_search_DeployDate" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var r in municipalityList.Select(x => x.DeployDate).Distinct())
+                            {
+                                <option value="@r">@r</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
+                    <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Meeting Date" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
+                    <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Meeting Date" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
+
+                    <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
+                    <input type="submit" value="Save Query" id="btn_SaveInnitialQuery" class="btn btn-info btn-block form-control" />
+                </div>
+
             </div>
-            <div style="margin-top:20px;">
-                <table id="tb_municipality"></table>
-            </div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-top:70px;">
+        <div class="col-md-6" id="div-data-area">
+           <table id="tb_municipality"></table>
         </div>
         <div class="col-md-6 " >
             <div class="h-scroll">
@@ -223,7 +225,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
- 
+ @Html.Partial("CitySideBar")
 
     <script>
         //load table data
@@ -232,7 +234,7 @@
         });
         function loadAllDataBySequence()
         {
-            initialMap();
+            //initialMap();
             loadListData();
             loadQueryGroup();
         }
@@ -256,7 +258,7 @@
                     sortable: true,
                     queryParams: oTableInit.queryParams,
                     sidePagination: "server",
-                    pageSize:50,
+                    pageSize:10,
                     pageList: [10, 25, 50, 100],
                     showColumns: true,
                     detailView: true,

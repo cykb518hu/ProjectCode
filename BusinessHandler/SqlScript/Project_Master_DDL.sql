@@ -208,3 +208,73 @@ alter table dbo.CITY add  color varchar(10)
 ALTER TABLE CITY ADD STATES VARCHAR(20)
 
 ALTER TABLE CITY ADD [GUID] VARCHAR(50)
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[CITY_Ordinance](
+    [City_Guid] [varchar](50) NOT NULL,
+	[OptStatus] [varchar](10) ,
+	[DraftDate] [varchar](20) ,
+	[FinalDate] [varchar](20) ,
+	[Measurement] [varchar](20) ,
+
+	[BufferSchoolFeet] [varchar](10) ,
+	[BufferSchoolNote] [nvarchar](1000) ,
+	[BufferDaycareFeet] [varchar](10) ,
+	[BufferDaycareNote] [nvarchar](1000) ,
+	[BufferParkFeet] [varchar](10) ,
+	[BufferParkNote] [nvarchar](1000) ,
+	[BufferSDMFeet] [varchar](10) ,
+	[BufferSDMNote] [nvarchar](1000) ,
+	[BufferReligiousFeet] [varchar](10) ,
+	[BufferReligiousNote] [nvarchar](1000) ,
+	[BufferOtherFeet] [varchar](10) ,
+	[BufferOtherNote] [nvarchar](1000) ,
+	[BufferResidentialFeet] [varchar](10) ,
+	[BufferResidentialNote] [nvarchar](1000) ,
+	[BufferRoadFeet] [varchar](10) ,
+	[BufferRoadNote] [nvarchar](1000) ,
+
+	[FacililtyGrPermit] [varchar](5) ,
+	[FacililtyGrZoningInd] [varchar](10) ,
+	[FacililtyGrZoningCom] [varchar](10) ,
+	[FacililtyGrLimit] [varchar](10) ,
+	[FacililtyGrNote] [nvarchar](1000) ,
+
+	[FacililtyProvPermit] [varchar](5) ,
+	[FacililtyProvZoningInd] [varchar](10) ,
+	[FacililtyProvZoningCom] [varchar](10) ,
+	[FacililtyProvLimit] [varchar](10) ,
+	[FacililtyProvNote] [nvarchar](1000) ,
+
+	[FacililtyProcPermit] [varchar](5) ,
+	[FacililtyProcZoningInd] [varchar](10) ,
+	[FacililtyProcZoningCom] [varchar](10) ,
+	[FacililtyProcLimit] [varchar](10) ,
+	[FacililtyProcNote] [nvarchar](1000) ,
+
+	[FacililtySCPermit] [varchar](5) ,
+	[FacililtySCZoningInd] [varchar](10) ,
+	[FacililtySCZoningCom] [varchar](10) ,
+	[FacililtySCLimit] [varchar](10) ,
+	[FacililtySCNote] [nvarchar](1000) ,
+
+	[FacililtySTPermit] [varchar](5) ,
+	[FacililtySTZoningInd] [varchar](10) ,
+	[FacililtySTZoningCom] [varchar](10) ,
+	[FacililtySTLimit] [varchar](10) ,
+	[FacililtySTNote] [nvarchar](1000) ,
+	[USR_CRTN_ID] [varchar](50)  DEFAULT (user_name()) ,
+	[USR_CRTN_TS] [datetime] DEFAULT (getdate()),
+	[USR_MDFN_ID] [varchar](50) DEFAULT (user_name()),
+	[USR_MDFN_TS] [datetime] DEFAULT (getdate())
+) ON [PRIMARY]
+GO
+
+SET ANSI_PADDING OFF
+GO

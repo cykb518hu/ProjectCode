@@ -93,7 +93,7 @@ namespace MIMap.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveSearchQuery(string query,string title)
+        public JsonResult SaveSearchQuery(string query, string title)
         {
             var data = JsonConvert.DeserializeObject<DocQueryMessage>(query);
             if (string.IsNullOrEmpty(title))
@@ -177,5 +177,37 @@ namespace MIMap.Controllers
             mapRepository.UpdateMapColor(cityId, color);
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetCityOrdinance(string guid)
+        {
+            var list = mapRepository.GetCityOrdinanceList(null, guid);
+            var data = new CityOrdinance();
+            if (list.Any())
+            {
+                data = list.FirstOrDefault();
+            }
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult SaveCityOrdinance(string str)
+        {
+            if (!string.IsNullOrEmpty(str))
+            {
+                var data = JsonConvert.DeserializeObject<CityOrdinance>(str);
+                var user = (UserAccount)Session["UserAccount"];
+                if (user != null)
+                {
+                    data.ModifyUser = user.Email;
+                }
+                if (mapRepository.UpdateCityOrdinance(data))
+                {
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            return Json("Error in server", JsonRequestBehavior.AllowGet);
+        } 
     }
 }

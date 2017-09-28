@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,6 +18,10 @@ namespace BusinessHandler.MessageHandler
         List<MapMunicipalityColor> GetMapAreaData(DocQueryMessage message);
         List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total);
         void UpdateMapColor(int cityId, string color);
+
+        List<CityOrdinance> GetCityOrdinanceList(DocQueryMessage message, string cityGuid = "");
+
+        bool UpdateCityOrdinance(CityOrdinance data);
     }
 
     public class SqlServerMapDataRepository:IMapDataRepository
@@ -333,6 +338,173 @@ namespace BusinessHandler.MessageHandler
                 connection.Open();
                 command.ExecuteNonQuery();
             }
+        }
+
+        public List<CityOrdinance> GetCityOrdinanceList(DocQueryMessage message, string cityGuid = "")
+        {
+
+            var list = new List<CityOrdinance>();
+
+            var queryString = @"SELECT * FROM DBO.CITY_Ordinance WHERE CITY_GUID='" + cityGuid + "'";
+
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var data = new CityOrdinance();
+                        data.Municipality = "TEST";
+                        data.CityGuid = reader["CITY_GUID"].ToString();
+                        data.OptStatus = DBNull.Value == reader["OptStatus"] ? "" : reader["OptStatus"].ToString();
+                        data.DraftDate = DBNull.Value == reader["DraftDate"] ? "" : Convert.ToDateTime(reader["DraftDate"]).ToString("yyyy-MM-dd");
+                        data.FinalDate = DBNull.Value == reader["FinalDate"] ? "" : Convert.ToDateTime(reader["FinalDate"]).ToString("yyyy-MM-dd");
+                        data.Measurement = DBNull.Value == reader["Measurement"] ? "" : reader["Measurement"].ToString();
+
+                        data.BufferSchoolFeet = DBNull.Value == reader["BufferSchoolFeet"] ? "" : reader["BufferSchoolFeet"].ToString();
+                        data.BufferSchoolNote = DBNull.Value == reader["BufferSchoolNote"] ? "" : reader["BufferSchoolNote"].ToString();
+
+                        data.BufferDaycareFeet = DBNull.Value == reader["BufferDaycareFeet"] ? "" : reader["BufferDaycareFeet"].ToString();
+                        data.BufferDaycareNote = DBNull.Value == reader["BufferDaycareNote"] ? "" : reader["BufferDaycareNote"].ToString();
+
+                        data.BufferParkFeet = DBNull.Value == reader["BufferParkFeet"] ? "" : reader["BufferParkFeet"].ToString();
+                        data.BufferParkNote = DBNull.Value == reader["BufferParkNote"] ? "" : reader["BufferParkNote"].ToString();
+
+                        data.BufferSDMFeet = DBNull.Value == reader["BufferSDMFeet"] ? "" : reader["BufferSDMFeet"].ToString();
+                        data.BufferSDMNote = DBNull.Value == reader["BufferSDMNote"] ? "" : reader["BufferSDMNote"].ToString();
+
+                        data.BufferReligiousFeet = DBNull.Value == reader["BufferReligiousFeet"] ? "" : reader["BufferReligiousFeet"].ToString();
+                        data.BufferReligiousNote = DBNull.Value == reader["BufferReligiousNote"] ? "" : reader["BufferReligiousNote"].ToString();
+
+                        data.BufferOtherFeet = DBNull.Value == reader["BufferOtherFeet"] ? "" : reader["BufferOtherFeet"].ToString();
+                        data.BufferOtherNote = DBNull.Value == reader["BufferOtherNote"] ? "" : reader["BufferOtherNote"].ToString();
+
+                        data.BufferResidentialFeet = DBNull.Value == reader["BufferResidentialFeet"] ? "" : reader["BufferResidentialFeet"].ToString();
+                        data.BufferResidentialNote = DBNull.Value == reader["BufferResidentialNote"] ? "" : reader["BufferResidentialNote"].ToString();
+
+                        data.BufferRoadFeet = DBNull.Value == reader["BufferRoadFeet"] ? "" : reader["BufferRoadFeet"].ToString();
+                        data.BufferRoadNote = DBNull.Value == reader["BufferRoadNote"] ? "" : reader["BufferRoadNote"].ToString();
+
+                        data.FacililtyGrPermit = DBNull.Value == reader["FacililtyGrPermit"] ? "" : reader["FacililtyGrPermit"].ToString();  
+                        data.FacililtyGrZoningInd = DBNull.Value == reader["FacililtyGrZoningInd"] ? "--" : reader["FacililtyGrZoningInd"].ToString();
+                        data.FacililtyGrZoningCom = DBNull.Value == reader["FacililtyGrZoningCom"] ? "--" : reader["FacililtyGrZoningCom"].ToString();
+                        data.FacililtyGrLimit = DBNull.Value == reader["FacililtyGrLimit"] ? "No Limit" : reader["FacililtyGrLimit"].ToString();
+                        data.FacililtyGrNote = DBNull.Value == reader["FacililtyGrNote"] ? "" : reader["FacililtyGrNote"].ToString();
+
+                        data.FacililtyProvPermit = DBNull.Value == reader["FacililtyProvPermit"] ? "" : reader["FacililtyProvPermit"].ToString();
+                        data.FacililtyProvZoningInd = DBNull.Value == reader["FacililtyProvZoningInd"] ? "--" : reader["FacililtyProvZoningInd"].ToString();
+                        data.FacililtyProvZoningCom = DBNull.Value == reader["FacililtyProvZoningCom"] ? "--" : reader["FacililtyProvZoningCom"].ToString();
+                        data.FacililtyProvLimit = DBNull.Value == reader["FacililtyProvLimit"] ? "No Limit" : reader["FacililtyProvLimit"].ToString();
+                        data.FacililtyProvNote = DBNull.Value == reader["FacililtyProvNote"] ? "" : reader["FacililtyProvNote"].ToString();
+
+                        data.FacililtyProcPermit = DBNull.Value == reader["FacililtyProcPermit"] ? "" : reader["FacililtyProcPermit"].ToString();
+                        data.FacililtyProcZoningInd = DBNull.Value == reader["FacililtyProcZoningInd"] ? "--" : reader["FacililtyProcZoningInd"].ToString();
+                        data.FacililtyProcZoningCom = DBNull.Value == reader["FacililtyProcZoningCom"] ? "--" : reader["FacililtyProcZoningCom"].ToString();
+                        data.FacililtyProcLimit = DBNull.Value == reader["FacililtyProcLimit"] ? "No Limit" : reader["FacililtyProcLimit"].ToString();
+                        data.FacililtyProcNote = DBNull.Value == reader["FacililtyProcNote"] ? "" : reader["FacililtyProcNote"].ToString();
+
+                        data.FacililtySCPermit = DBNull.Value == reader["FacililtySCPermit"] ? "" : reader["FacililtySCPermit"].ToString();
+                        data.FacililtySCZoningInd = DBNull.Value == reader["FacililtySCZoningInd"] ? "--" : reader["FacililtySCZoningInd"].ToString();
+                        data.FacililtySCZoningCom = DBNull.Value == reader["FacililtySCZoningCom"] ? "--" : reader["FacililtySCZoningCom"].ToString();
+                        data.FacililtySCLimit = DBNull.Value == reader["FacililtySCLimit"] ? "No Limit" : reader["FacililtySCLimit"].ToString();
+                        data.FacililtySCNote = DBNull.Value == reader["FacililtySCNote"] ? "" : reader["FacililtySCNote"].ToString();
+
+                        data.FacililtySTPermit = DBNull.Value == reader["FacililtySTPermit"] ? "" : reader["FacililtySTPermit"].ToString();
+                        data.FacililtySTZoningInd = DBNull.Value == reader["FacililtySTZoningInd"] ? "--" : reader["FacililtySTZoningInd"].ToString();
+                        data.FacililtySTZoningCom = DBNull.Value == reader["FacililtySTZoningCom"] ? "--" : reader["FacililtySTZoningCom"].ToString();
+                        data.FacililtySTLimit = DBNull.Value == reader["FacililtySTLimit"] ? "No Limit" : reader["FacililtySTLimit"].ToString();
+                        data.FacililtySTNote = DBNull.Value == reader["FacililtySTNote"] ? "" : reader["FacililtySTNote"].ToString();
+
+                        list.Add(data);
+                    }
+                }
+               
+            }
+            return list;
+
+
+        }
+
+        public bool UpdateCityOrdinance(CityOrdinance data)
+        {
+            var result = true;
+            try
+            {
+                var exist = false;
+                var existStr= "select * from CITY_Ordinance where CITY_GUID='" + data.CityGuid + "'";
+
+                using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                {
+                    SqlCommand command = new SqlCommand(existStr, connection);
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    if(reader.Read())
+                    {
+                        exist = true;
+                    }
+                }
+                if(!exist)
+                {
+                    var insertStr = "insert into dbo.[CITY_Ordinance] (USR_CRTN_ID,USR_MDFN_ID,City_Guid) VALUES(@EMAIL,@EMAIL,@GUID)";
+
+                    using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                    {
+                        SqlCommand command = new SqlCommand(insertStr, connection);
+                        command.Parameters.AddWithValue("@EMAIL", data.ModifyUser);
+                        command.Parameters.AddWithValue("@GUID", data.CityGuid);
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                }
+                Type t = typeof(CityOrdinance);
+                System.Reflection.PropertyInfo[] properties = t.GetProperties();
+                var str = "UPDATE CITY_Ordinance SET ";
+                foreach (System.Reflection.PropertyInfo info in properties)
+                {
+                    if (info.Name == "Municipality" || info.Name == "CityGuid")
+                    {
+                        continue;
+                    }
+                    if(info.Name=="ModifyUser")
+                    {
+                        str += string.Format(" USR_MDFN_TS='{0}', ", data.ModifyUser);
+                        continue;
+                    }
+                    str += string.Format("{0} = '{1}', ", info.Name, GetObjectPropertyValue<CityOrdinance>(data, info.Name));
+                }
+                //there is one space and comma
+                str = str.Substring(0, str.Length - 2);
+                str += " where CITY_GUID='" + data.CityGuid + "'";
+                using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+                {
+                    SqlCommand command = new SqlCommand(str, connection);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch(Exception ex)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        public  string GetObjectPropertyValue<T>(T t, string propertyname)
+        {
+            Type type = typeof(T);
+
+            PropertyInfo property = type.GetProperty(propertyname);
+
+            if (property == null) return string.Empty;
+
+            object o = property.GetValue(t, null);
+
+            if (o == null) return string.Empty;
+
+            return o.ToString();
         }
     }
 }

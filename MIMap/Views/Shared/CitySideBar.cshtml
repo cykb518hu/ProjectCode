@@ -1,0 +1,372 @@
+﻿
+<div  id="city_Sidebar">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading1">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse"  href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                    Opt Status
+                </a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+            <div class="panel-body">
+                <label class="radio-inline">
+                    <input type="radio" name="OptOptions"  value="OptIn"> Opt-in
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="OptOptions" value="OptOut"> Opt-out
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading2">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                    Ordinance Time
+                </a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <input  type="text" placeholder="Draft Date"  id="OrdinanceDraftTime" class="form-control"/>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Final Date"  id="OrdinanceFinalTime" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading3">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                    Measurement
+                </a>
+            </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
+            <div class="panel-body">
+                <label class="radio-inline">
+                    <input type="radio" name="MeasurementOptions"  value="Straightline">Straightline
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="MeasurementOptions"  value="Centerline">Centerline
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading4">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                    Buffer
+                </a>
+            </h4>
+        </div>
+      
+        <div id="collapse4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading4">
+
+                <table class="table" id="buffer_table">
+                    <thead>
+                        <tr><th style="width:30%">Buffer</th><th style="width:20%">Feet</th><th>Note</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>School</td><td></td><td></td></tr>
+                        <tr><td>Daycare</td><td></td><td></td></tr>
+                        <tr><td>Park</td><td></td><td></td></tr>
+                        <tr><td>SDM/SDD</td><td></td><td></td></tr>
+                        <tr><td>Religious</td><td></td><td></td></tr>
+                        <tr><td>Residential</td><td></td><td></td></tr>
+                        <tr><td>Road</td><td></td><td></td></tr>
+                        <tr><td>Other MM</td><td></td><td></td></tr>
+                    </tbody>
+                </table>
+   
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading5">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" href="#collapse5" aria-expanded="true" aria-controls="collapse5">
+                    Facilities Permitted
+                </a>
+            </h4>
+        </div>
+
+        <div id="collapse5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading5">
+            <table class="table" id="facility_table">
+                <thead>
+                    <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="22%">Limit</th><th>Note</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Gr</td><td><input  type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                    <tr><td>Prov</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                    <tr><td>Proc</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                    <tr><td>SC</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                    <tr><td>ST</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading6">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
+                    Time Line
+                </a>
+            </h4>
+        </div>
+        <div id="collapse6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading6">
+            <div class="panel-body">
+                <label class="radio-inline">
+                    <input type="radio" name="OptOptions22" value="OptIn"> Opt-in
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="OptOptions222" value="OptOut"> Opt-out
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    jQuery(document).ready(function ($) {
+        $('#OrdinanceDraftTime').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#OrdinanceFinalTime').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    });
+
+    function loadCityOrdinance(guid)
+    {
+        $.ajax({
+            url: '@Url.Action("GetCityOrdinance", "Home")',
+            dataType: 'json',
+            data: { guid:guid},
+            type: "GET",
+            cache: false,
+            success: function (result) {
+                $("input[name='OptOptions']").prop("checked", false);
+                $("input[name='OptOptions'][value='" + result.OptStatus + "']").prop("checked", true);
+                $("#OrdinanceDraftTime").val("").val(result.DraftDate);
+                $("#OrdinanceFinalTime").val("").val(result.FinalDate);
+
+                $(":radio[name='MeasurementOptions']").prop("checked", false);
+                $(":radio[name='MeasurementOptions'][value='" + result.Measurement + "']").prop("checked", true);
+
+                $("#buffer_table").find("tr").eq(1).find("td").eq(1).html("").html(result.BufferSchoolFeet);
+                $("#buffer_table").find("tr").eq(1).find("td").eq(2).html("").html(result.BufferSchoolNote);
+
+                $("#buffer_table").find("tr").eq(2).find("td").eq(1).html("").html(result.BufferDaycareFeet);
+                $("#buffer_table").find("tr").eq(2).find("td").eq(2).html("").html(result.BufferDaycareNote);
+
+                $("#buffer_table").find("tr").eq(3).find("td").eq(1).html("").html(result.BufferParkFeet);
+                $("#buffer_table").find("tr").eq(3).find("td").eq(2).html("").html(result.BufferParkNote);
+
+                $("#buffer_table").find("tr").eq(4).find("td").eq(1).html("").html(result.BufferSDMFeet);
+                $("#buffer_table").find("tr").eq(4).find("td").eq(2).html("").html(result.BufferSDMNote);
+
+                $("#buffer_table").find("tr").eq(5).find("td").eq(1).html("").html(result.BufferReligiousFeet);
+                $("#buffer_table").find("tr").eq(5).find("td").eq(2).html("").html(result.BufferReligiousNote);
+
+                $("#buffer_table").find("tr").eq(6).find("td").eq(1).html("").html(result.BufferResidentialFeet);
+                $("#buffer_table").find("tr").eq(6).find("td").eq(2).html("").html(result.BufferResidentialNote);
+
+                $("#buffer_table").find("tr").eq(7).find("td").eq(1).html("").html(result.BufferRoadFeet);
+                $("#buffer_table").find("tr").eq(7).find("td").eq(2).html("").html(result.BufferRoadNote);
+
+                $("#buffer_table").find("tr").eq(8).find("td").eq(1).html("").html(result.BufferOtherFeet);
+                $("#buffer_table").find("tr").eq(8).find("td").eq(2).html("").html(result.BufferOtherNote);
+
+                //facility_table
+                $("#facility_table").find("tr").eq(1).find("td").eq(1).children().prop("checked", false);
+                if (result.FacililtyGrPermit == "Yes") {
+                    $("#facility_table").find("tr").eq(1).find("td").eq(1).children().prop("checked", true);
+                }
+                $("#facility_table").find("tr").eq(1).find("a").eq(0).html("").html(result.FacililtyGrZoningInd);
+                $("#facility_table").find("tr").eq(1).find("a").eq(1).html("").html(result.FacililtyGrZoningCom);
+                $("#facility_table").find("tr").eq(1).find("td").eq(3).html("").html(result.FacililtyGrLimit);
+                $("#facility_table").find("tr").eq(1).find("td").eq(4).html("").html(result.FacililtyGrNote);
+
+                $("#facility_table").find("tr").eq(2).find("td").eq(1).children().prop("checked", false);
+                if (result.FacililtyProvPermit == "Yes") {
+                    $("#facility_table").find("tr").eq(2).find("td").eq(1).children().prop("checked", true);
+                }
+                $("#facility_table").find("tr").eq(2).find("a").eq(0).html("").html(result.FacililtyProvZoningInd);
+                $("#facility_table").find("tr").eq(2).find("a").eq(1).html("").html(result.FacililtyProvZoningCom);
+                $("#facility_table").find("tr").eq(2).find("td").eq(3).html("").html(result.FacililtyProvLimit);
+                $("#facility_table").find("tr").eq(2).find("td").eq(4).html("").html(result.FacililtyProvNote);
+
+                $("#facility_table").find("tr").eq(3).find("td").eq(1).children().prop("checked", false);
+                if (result.FacililtyProcPermit == "Yes") {
+                    $("#facility_table").find("tr").eq(3).find("td").eq(1).children().prop("checked", true);
+                }
+                $("#facility_table").find("tr").eq(3).find("a").eq(0).html("").html(result.FacililtyProcZoningInd);
+                $("#facility_table").find("tr").eq(3).find("a").eq(1).html("").html(result.FacililtyProcZoningCom);
+                $("#facility_table").find("tr").eq(3).find("td").eq(3).html("").html(result.FacililtyProcLimit);
+                $("#facility_table").find("tr").eq(3).find("td").eq(4).html("").html(result.FacililtyProcNote);
+
+                $("#facility_table").find("tr").eq(4).find("td").eq(1).children().prop("checked", false);
+                if (result.FacililtySCPermit == "Yes") {
+                    $("#facility_table").find("tr").eq(4).find("td").eq(1).children().prop("checked", true);
+                }
+                $("#facility_table").find("tr").eq(4).find("a").eq(0).html("").html(result.FacililtySCZoningInd);
+                $("#facility_table").find("tr").eq(4).find("a").eq(1).html("").html(result.FacililtySCZoningCom);
+                $("#facility_table").find("tr").eq(4).find("td").eq(3).html("").html(result.FacililtySCLimit);
+                $("#facility_table").find("tr").eq(4).find("td").eq(4).html("").html(result.FacililtySCNote);
+
+                $("#facility_table").find("tr").eq(5).find("td").eq(1).children().prop("checked", false);
+                if (result.FacililtySTPermit == "Yes") {
+                    $("#facility_table").find("tr").eq(5).find("td").eq(1).children().prop("checked", true);
+                }
+                $("#facility_table").find("tr").eq(5).find("a").eq(0).html("").html(result.FacililtySTZoningInd);
+                $("#facility_table").find("tr").eq(5).find("a").eq(1).html("").html(result.FacililtySTZoningCom);
+                $("#facility_table").find("tr").eq(5).find("td").eq(3).html("").html(result.FacililtySTLimit);
+                $("#facility_table").find("tr").eq(5).find("td").eq(4).html("").html(result.FacililtySTNote);
+
+
+                $("#buffer_table").off();
+                $("#facility_table").off();
+                $(".facility_zoning").off();
+                $("#buffer_table").Tabledit({
+                    editButton: false,
+                    deleteButton: false,
+                    columns: {
+                        identifier: [0, 'Buffer'],
+                        editable: [[1, 'Feet'], [2, 'Note']]
+                    }
+                });
+                $("#facility_table").Tabledit({
+                    editButton: false,
+                    deleteButton: false,
+                    columns: {
+                        identifier: [0, 'Facililty'],
+                        editable: [[3, 'Limited', '{"No Limit": "No Limit", "0": "0","1": "1","2": "2","3": "3","4": "4","5": "5","6": "6","7": "7","8": "8","9": "9","10": "10","11": "11","12": "12","13": "13","14": "14","15": "15","16": "16","17": "17","18": "18","19": "19","20": "20","21": "21","22": "22","23": "23","24": "24","25": "25","26": "26","27": "27","28": "28","29": "29","30": "30","31": "31","32": "32","33": "33","34": "34","35": "35","36": "36","37": "37","38": "38","39": "39","40": "40","41": "41","42": "42","43": "43","44": "44","45": "45","46": "46","47": "47","48": "48","49": "49","50": "50"}'], [4, 'Note']]
+                    }
+                });
+                $(".facility-zoning").editable({
+                    emptytext: "--"
+                });
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+            },
+            error: function (xhr, textStatus, errorThrown) {
+            }
+        });
+    }
+
+    function saveCityOrdinance(guid) {
+        var data = {};
+        data.OptStatus = $("input[name='OptOptions']:checked").val();
+        data.DraftDate = $("#OrdinanceDraftTime").val();
+        data.FinalDate = $("#OrdinanceFinalTime").val();
+        data.Measurement = $("input[name='MeasurementOptions']:checked").val();
+
+        data.BufferSchoolFeet = $("#buffer_table").find("tr").eq(1).find("td").eq(1).find("span").html();
+        data.BufferSchoolNote = $("#buffer_table").find("tr").eq(1).find("td").eq(2).find("span").html();
+
+        data.BufferDaycareFeet = $("#buffer_table").find("tr").eq(2).find("td").eq(1).find("span").html();
+        data.BufferDaycareNote = $("#buffer_table").find("tr").eq(2).find("td").eq(2).find("span").html();
+
+        data.BufferParkFeet = $("#buffer_table").find("tr").eq(3).find("td").eq(1).find("span").html();
+        data.BufferParkNote = $("#buffer_table").find("tr").eq(3).find("td").eq(2).find("span").html();
+
+        data.BufferSDMFeet = $("#buffer_table").find("tr").eq(4).find("td").eq(1).find("span").html();
+        data.BufferSDMNote = $("#buffer_table").find("tr").eq(4).find("td").eq(2).find("span").html();
+
+        data.BufferReligiousFeet = $("#buffer_table").find("tr").eq(5).find("td").eq(1).find("span").html();
+        data.BufferReligiousNote = $("#buffer_table").find("tr").eq(5).find("td").eq(2).find("span").html();
+
+        data.BufferResidentialFeet = $("#buffer_table").find("tr").eq(6).find("td").eq(1).find("span").html();
+        data.BufferResidentialNote = $("#buffer_table").find("tr").eq(6).find("td").eq(2).find("span").html();
+
+        data.BufferRoadFeet = $("#buffer_table").find("tr").eq(7).find("td").eq(1).find("span").html();
+        data.BufferRoadNote = $("#buffer_table").find("tr").eq(7).find("td").eq(2).find("span").html();
+
+        data.BufferOtherFeet = $("#buffer_table").find("tr").eq(8).find("td").eq(1).find("span").html();
+        data.BufferOtherNote = $("#buffer_table").find("tr").eq(8).find("td").eq(2).find("span").html();
+
+        data.FacililtyGrPermit = "No";
+        if ($("#facility_table").find("tr").eq(1).find("td").eq(1).children().prop("checked")) {
+            data.FacililtyGrPermit = "Yes";
+        }
+        data.FacililtyGrZoningInd = $("#facility_table").find("tr").eq(1).find("a").eq(0).html();
+        data.FacililtyGrZoningCom = $("#facility_table").find("tr").eq(1).find("a").eq(1).html();
+        data.FacililtyGrLimit = $("#facility_table").find("tr").eq(1).find("td").eq(3).find("span").html();
+        data.FacililtyGrNote = $("#facility_table").find("tr").eq(1).find("td").eq(4).find("span").html();
+
+        data.FacililtyProvPermit = "No";
+        if ($("#facility_table").find("tr").eq(2).find("td").eq(1).children().prop("checked")) {
+            data.FacililtyProvPermit = "Yes";
+        }
+        data.FacililtyProvZoningInd = $("#facility_table").find("tr").eq(2).find("a").eq(0).html();
+        data.FacililtyProvZoningCom = $("#facility_table").find("tr").eq(2).find("a").eq(1).html();
+        data.FacililtyProvLimit = $("#facility_table").find("tr").eq(2).find("td").eq(3).find("span").html();
+        data.FacililtyProvNote = $("#facility_table").find("tr").eq(2).find("td").eq(4).find("span").html();
+
+        data.FacililtyProcPermit = "No";
+        if ($("#facility_table").find("tr").eq(3).find("td").eq(1).children().prop("checked")) {
+            data.FacililtyProcPermit = "Yes";
+        }
+        data.FacililtyProcZoningInd = $("#facility_table").find("tr").eq(3).find("a").eq(0).html();
+        data.FacililtyProcZoningCom = $("#facility_table").find("tr").eq(3).find("a").eq(1).html();
+        data.FacililtyProcLimit = $("#facility_table").find("tr").eq(3).find("td").eq(3).find("span").html();
+        data.FacililtyProcNote = $("#facility_table").find("tr").eq(3).find("td").eq(4).find("span").html();
+
+    
+
+        data.FacililtySCPermit = "No";
+        if ($("#facility_table").find("tr").eq(4).find("td").eq(1).children().prop("checked")) {
+            data.FacililtySCPermit = "Yes";
+        }
+        data.FacililtySCZoningInd = $("#facility_table").find("tr").eq(4).find("a").eq(0).html();
+        data.FacililtySCZoningCom = $("#facility_table").find("tr").eq(4).find("a").eq(1).html();
+        data.FacililtySCLimit = $("#facility_table").find("tr").eq(4).find("td").eq(3).find("span").html();
+        data.FacililtySCNote = $("#facility_table").find("tr").eq(4).find("td").eq(4).find("span").html();
+
+        data.FacililtySTPermit = "No";
+        if ($("#facility_table").find("tr").eq(5).find("td").eq(1).children().prop("checked")) {
+            data.FacililtySTPermit = "Yes";
+        }
+        data.FacililtySTZoningInd = $("#facility_table").find("tr").eq(5).find("a").eq(0).html();
+        data.FacililtySTZoningCom = $("#facility_table").find("tr").eq(5).find("a").eq(1).html();
+        data.FacililtySTLimit = $("#facility_table").find("tr").eq(5).find("td").eq(3).find("span").html();
+        data.FacililtySTNote = $("#facility_table").find("tr").eq(5).find("td").eq(4).find("span").html();
+        data.CityGuid = guid;
+        $.ajax({
+            url: '/Home/SaveCityOrdinance',
+            data: { str: JSON.stringify(data) },
+            dataType: 'json',
+            type: "POST",
+            success: function (result) {
+                if (result == "Success") {
+                    successTips();
+                }
+                else {
+                    errorTips(result);
+                }
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                $("#myNotesModal").modal('hide');
+            },
+            error: function (xhr, textStatus, errorThrown) {
+
+            }
+        });
+    }
+</script>
