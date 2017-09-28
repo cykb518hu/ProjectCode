@@ -20,6 +20,7 @@ namespace BusinessHandler.Model
         public string MunicipalityName { get; set; }
         public int Id { get; set; }
         public string Color { get; set; }
+        public string Guid { get; set; }
     }
 
 

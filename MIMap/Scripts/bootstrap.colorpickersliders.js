@@ -278,10 +278,10 @@
       }
 
       function hidePopover() {
-        //popover_container.remove();
-        //popover_container = null;
+        popover_container.remove();
+        popover_container = null;
 
-        //triggerelement.popover('destroy');
+        triggerelement.popover('destroy');
       }
 
       function _getControllerHtml() {

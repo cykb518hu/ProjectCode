@@ -175,6 +175,8 @@
     <Content Include="Image\Loading_icon.gif" />
     <Content Include="Image\MiMapLogo.png" />
     <Content Include="Image\MiMapLogo1.png" />
+    <Content Include="Image\pleasewait.gif" />
+    <Content Include="map-backup.html" />
     <Content Include="Scripts\bootstrap-combobox.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />

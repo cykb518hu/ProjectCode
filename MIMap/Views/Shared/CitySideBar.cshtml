@@ -1,84 +1,85 @@
 ﻿
-<div  id="city_Sidebar">
+<div  id="city_Sidebar" style="display:none">
+    <div id="sidebar_content" style="display:none">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingHeader" style="text-align:center; font-size:16px; border-bottom:none">
+                <span></span> <div style="float:right"><a href="#" onclick="hideSideBar(); return false">close</a></div>
+            </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingHeader" style="text-align:center; font-size:16px; border-bottom:none">
-     
         </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading1">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading1">
 
-                <a role="button" data-toggle="collapse"  href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                <a role="button" data-toggle="collapse" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
                     Opt Status
                 </a>
 
-        </div>
-        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
-            <div class="panel-body">
-                <label class="radio-inline">
-                    <input type="radio" name="OptOptions"  value="OptIn"> Opt-in
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="OptOptions" value="OptOut"> Opt-out
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="OptOptions" value="none"> None
-                </label>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+                <div class="panel-body">
+                    <label class="radio-inline">
+                        <input type="radio" name="OptOptions" value="OptIn"> Opt-in
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="OptOptions" value="OptOut"> Opt-out
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="OptOptions" value="none"> None
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading2">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading2">
                 <a role="button" data-toggle="collapse" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
                     Ordinance Time
                 </a>
-        </div>
-        <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <input  type="text" placeholder="Draft Date"  id="OrdinanceDraftTime" class="form-control"/>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" placeholder="Final Date"  id="OrdinanceFinalTime" class="form-control"/>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Draft Date" id="OrdinanceDraftTime" class="form-control" />
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Final Date" id="OrdinanceFinalTime" class="form-control" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading3">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading3">
                 <a role="button" data-toggle="collapse" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
                     Measurement
                 </a>
-        </div>
-        <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
-            <div class="panel-body">
-                <label class="radio-inline">
-                    <input type="radio" name="MeasurementOptions"  value="Straightline">Straightline
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="MeasurementOptions"  value="Centerline">Centerline
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="MeasurementOptions" value="None">None
-                </label>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
+                <div class="panel-body">
+                    <label class="radio-inline">
+                        <input type="radio" name="MeasurementOptions" value="Straightline">Straightline
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="MeasurementOptions" value="Centerline">Centerline
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="MeasurementOptions" value="None">None
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading4">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading4">
                 <a role="button" data-toggle="collapse" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
                     Buffer
                 </a>
-        </div>
-      
-        <div id="collapse4" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading4">
+            </div>
+
+            <div id="collapse4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading4">
 
                 <table class="table" id="buffer_table">
                     <thead>
@@ -95,67 +96,72 @@
                         <tr><td>Other MM</td><td></td><td></td></tr>
                     </tbody>
                 </table>
-   
+
+            </div>
         </div>
-    </div>
 
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading5">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading5">
                 <a role="button" data-toggle="collapse" href="#collapse5" aria-expanded="true" aria-controls="collapse5">
                     Facilities Permitted
                 </a>
+            </div>
+
+            <div id="collapse5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading5">
+                <table class="table" id="facility_table">
+                    <thead>
+                        <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="22%">Limit</th><th>Note</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Gr</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                        <tr><td>Prov</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                        <tr><td>Proc</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                        <tr><td>SC</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                        <tr><td>ST</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div id="collapse5" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading5">
-            <table class="table" id="facility_table">
-                <thead>
-                    <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="22%">Limit</th><th>Note</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Gr</td><td><input  type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                    <tr><td>Prov</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                    <tr><td>Proc</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                    <tr><td>SC</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                    <tr><td>ST</td><td><input type="checkbox" value="Yes"/></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading6">
-            Action
-        </div>
-        <div id="collapse6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading6">
-            <div class="panel-body">
-            <div class="row">
-                <div class="col-xs-12 col-sm-4 form-group">
-                    <input type="button" value="View in table" id="btn_ViewInTable" class="btn btn-default  form-control" />
-                </div>
-                <div class="col-xs-12 col-sm-4 form-group">
-                    <input type="button" value="Change Color" id="btn_ChangeColor"  style="color:#00FF7F" data-color="#00FF7F" class="btn btn-default  form-control" />
-                </div>
-                <div class="col-xs-12 col-sm-4 form-group">
-                    <input type="button" value="Save All" id="btn_SaveSideBar" class="btn btn-primary  form-control" />
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading6">
+                Action
+            </div>
+            <div id="collapse6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading6">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <input type="button" value="View in table" id="btn_ViewInTable" class="btn btn-default  form-control" />
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <input type="button" value="Change Color" id="btn_ChangeColor" title="Change Color" class="btn btn-default form-control" />
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <input type="button" value="Save All" id="btn_SaveSideBar" class="btn btn-primary  form-control" />
+                        </div>
+                    </div>
                 </div>
             </div>
-                </div>
         </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading7">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading7">
                 <a role="button" data-toggle="collapse" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
                     Time Line
                 </a>
-        </div>
-        <div id="collapse7" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading7">
-            <div class="panel-body" id="sidebar_timeLine">
-                <p>Scraped meetings  <span id="sidebar_Meetings" class="badge"></span></p>
+            </div>
+            <div id="collapse7" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading7">
+                <div class="panel-body" id="sidebar_timeLine">
+                    <p>Scraped meetings  <span id="sidebar_Meetings" class="badge"></span></p>
+                </div>
             </div>
         </div>
+    </div>
+    <div id="sideBar_loading" style="position:fixed;top:40%">
+    <img src="~/Image/pleasewait.gif" />
+
     </div>
 </div>
 
@@ -173,7 +179,7 @@
             var cityName = "";
             if (mapMasterData.length > 0) {
                 for (var i = 0; i < mapMasterData.length; i++) {
-                    if (objectId == mapMasterData[i].Id) {
+                    if (oldPopUpObjectId == mapMasterData[i].Id) {
                         cityName = mapMasterData[i].MunicipalityName;
                     }
                 }
@@ -189,16 +195,29 @@
 
             $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
         });
-
-        $("#btn_ChangeColor").ColorPickerSliders({
-            placement: 'bottom',
-            color: 'red',
-            swatches: ['red', 'green', 'blue'],
-            customswatches: false,
-            order: {},
-            onchange: function (container, color) {
-                selectedColor = color;
+        $("#btn_SaveSideBar").click(function () {
+            var color = "blue";
+            var numberColor = $("#btn_ChangeColor").val();
+            if (numberColor == "rgb(255, 0, 0)") {
+                color = "red";
             }
+            if (numberColor == "rgb(0, 125, 0)") {
+                color = "green";
+            }
+            if (numberColor == "rgb(0, 0, 255)") {
+                color = "blue";
+            }
+            if (numberColor == "rgb(255, 165, 0)") {
+                color = "orange";
+            }
+            if (numberColor == "rgb(255, 255, 0)") {
+                color = "yellow";
+            }
+            if (color != currentColor)
+            {
+                saveMapColer(color);
+            }
+            saveCityOrdinance(popUpCityGuid);
         });
     });
 
@@ -313,6 +332,65 @@
                 });
             },
             complete: function (XMLHttpRequest, textStatus) {
+                loadCityFlag = true;
+                showSideBarContent();
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+            }
+        });
+    }
+
+
+    var currentColor;
+    function showMapTimeLine(guid) {
+        $.ajax({
+            url: '@Url.Action("GetMapPopUpInfo", "MeetingNote")',
+            dataType: 'json',
+            data: { guid: guid },
+            type: "GET",
+            cache: false,
+            success: function (result) {
+                $("#sidebar_Meetings").text(result.MeetingList.length);
+                $("#headingHeader").find("span").text(result.CityLongName);
+                if (result.Color.length > 0) {
+                    currentColor = result.Color;
+                }
+                else {
+                    currentColor = defaultColor;
+                }
+
+                $("#btn_ChangeColor").off();
+                $("#btn_ChangeColor").css('color', currentColor);
+                $("#btn_ChangeColor").ColorPickerSliders({
+                    placement: 'bottom',
+                    color: currentColor,
+                    swatches: ['red', 'green', 'blue', 'orange', 'yellow'],
+                    customswatches: false,
+                    size: 'sm',
+                    order: {}
+                });
+
+                var htmlStr = "<ol>";
+                for (var i = 0; i < result.MeetingList.length; i++) {
+                    var data = result.MeetingList[i];
+                    htmlStr += '<li><span class="bold">' + data.MeetingDate + '  (' + data.DocType + ')</span>';
+                    if (data.NoteList.length > 0) {
+                        htmlStr += "<ul>";
+                        for (var j = 0; j < data.NoteList.length; j++) {
+                            var note = data.NoteList[j];
+                            htmlStr += '<li><span class="italic">' + note.ModifyDate + '--' + note.ModifyUser + '  </span><span style="white-space:pre-line">' + note.Note + '</span></li>';
+                        }
+                        htmlStr += "</ul>";
+                    }
+                    htmlStr += "</li>";
+                }
+                htmlStr += "</ol>";
+                $("#sidebar_timeLine").html(htmlStr);
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                showTimeLineFlag = true;
+                showSideBarContent();
             },
             error: function (xhr, textStatus, errorThrown) {
             }
@@ -377,7 +455,7 @@
         data.FacililtyProcLimit = $("#facility_table").find("tr").eq(3).find("td").eq(3).find("span").html();
         data.FacililtyProcNote = $("#facility_table").find("tr").eq(3).find("td").eq(4).find("span").html();
 
-    
+
 
         data.FacililtySCPermit = "No";
         if ($("#facility_table").find("tr").eq(4).find("td").eq(1).children().prop("checked")) {
@@ -419,43 +497,25 @@
         });
     }
 
-    function showMapTimeLine(objectid) {
-        $.ajax({
-            url: '@Url.Action("GetMapPopUpInfo", "MeetingNote")',
-            dataType: 'json',
-            data: { objectid: objectid },
-            type: "GET",
-            cache: false,
-            success: function (result) {
-                $("#sidebar_Meetings").text(result.MeetingList.length);
-                $("#headingHeader").text(result.CityLongName);
-                if (result.Color.length > 0) {
-                    defaultColor = result.Color;
-                }
-                $("btn_ChangeColor").css('color', defaultColor);
-                $("btn_ChangeColor").attr('data-color', defaultColor);
+    var loadCityFlag = false;
+    var showTimeLineFlag = false;
 
-                var htmlStr = "<ol>";
-                for (var i = 0; i < result.MeetingList.length; i++) {
-                    var data = result.MeetingList[i];
-                    htmlStr += '<li><span class="bold">' + data.MeetingDate + '  (' + data.DocType + ')</span>';
-                    if (data.NoteList.length > 0) {
-                        htmlStr += "<ul>";
-                        for (var j = 0; j < data.NoteList.length; j++) {
-                            var note = data.NoteList[j];
-                            htmlStr += '<li><span class="italic">' + note.ModifyDate + '--' + note.ModifyUser + '  </span><span style="white-space:pre-line">' + note.Note + '</span></li>';
-                        }
-                        htmlStr += "</ul>";
-                    }
-                    htmlStr += "</li>";
-                }
-                htmlStr += "</ol>";
-                $("#sidebar_timeLine").html(htmlStr);
-            },
-            complete: function (XMLHttpRequest, textStatus) {
-            },
-            error: function (xhr, textStatus, errorThrown) {
-            }
-        });
+    function showSideBar(guid) {
+        loadCityFlag = false;
+        showTimeLineFlag = false;
+        $("#city_Sidebar").slideDown();
+        loadCityOrdinance(guid);
+        showMapTimeLine(guid);
     }
+    function showSideBarContent(){
+        if (loadCityFlag && showTimeLineFlag) {
+            $("#sideBar_loading").hide();
+            $("#sidebar_content").show();
+        }
+    }
+    function hideSideBar() {
+        $("#city_Sidebar").slideUp();
+    }
+
+   
 </script>

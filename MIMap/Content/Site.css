@@ -243,6 +243,8 @@ div.cartodb-popup.v2
     width: 500px;
     right: 0px;
     z-index: 3000;
+    background-color: #ffffff;
+    border-left: 1px solid #dddddd;
 }
 #city_Sidebar .panel
 {

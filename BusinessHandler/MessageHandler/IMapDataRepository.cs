@@ -17,7 +17,7 @@ namespace BusinessHandler.MessageHandler
         List<MapFilterModel> GetFilterData();
         List<MapMunicipalityColor> GetMapAreaData(DocQueryMessage message);
         List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total);
-        void UpdateMapColor(int cityId, string color);
+        void UpdateMapColor(string cityGuid, string color);
 
         List<CityOrdinance> GetCityOrdinanceList(DocQueryMessage message, string cityGuid = "");
 
@@ -90,6 +90,7 @@ namespace BusinessHandler.MessageHandler
                         data.Color = DBNull.Value == reader["color"] ? "" : reader["color"].ToString();
                         data.Id = DBNull.Value == reader["objectid"] ? 0 : Convert.ToInt32(reader["objectid"]);
                         data.MunicipalityName = DBNull.Value == reader["city_nm"] ? "" : reader["city_nm"].ToString();
+                        data.Guid = DBNull.Value == reader["Guid"] ? "" : reader["Guid"].ToString();
                         list.Add(data);
                     }
                 }
@@ -328,9 +329,13 @@ namespace BusinessHandler.MessageHandler
             }
         }
 
-        public void UpdateMapColor(int cityId, string color)
+        public void UpdateMapColor(string cityGuid, string color)
         {
-            var queryString = "UPDATE CITY SET COLOR= @COLOR WHERE OBJECTID=" + cityId;
+            if (color == "blue")
+            {
+                color = "";
+            }
+            var queryString = string.Format("UPDATE CITY SET COLOR= @COLOR WHERE GUID='{0}'", cityGuid);
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -470,7 +475,9 @@ namespace BusinessHandler.MessageHandler
                     }
                     if(info.Name=="ModifyUser")
                     {
-                        str += string.Format(" USR_MDFN_TS='{0}', ", data.ModifyUser);
+                        str += string.Format(" USR_MDFN_ID='{0}', ", data.ModifyUser);
+
+                        str += string.Format(" USR_MDFN_TS='{0}', ", DateTime.Now);
                         continue;
                     }
                     str += string.Format("{0} = '{1}', ", info.Name, GetObjectPropertyValue<CityOrdinance>(data, info.Name));

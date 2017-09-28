@@ -70,10 +70,9 @@ namespace MIMap.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetMapPopUpInfo(string objectid)
+        public JsonResult GetMapPopUpInfo(string guid)
         {
-            var cityId = Convert.ToInt32(objectid);
-            var data = meetingNoteRepository.GetMapPopUpInfo(cityId);
+            var data = meetingNoteRepository.GetMapPopUpInfo(guid);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
     }

@@ -14,7 +14,7 @@ namespace BusinessHandler.MessageHandler
         List<MeetingNote> GetMeetingNotes(string docGuid, string note);
         int UpdateMeetingNotes(List<MeetingNote> notes);
         List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total);
-        MapMeetingCity GetMapPopUpInfo(int cityId);
+        MapMeetingCity GetMapPopUpInfo(string cityGuid);
     }
 
     public class SqlServerMeetingNote : IMeetingNote
@@ -238,13 +238,13 @@ namespace BusinessHandler.MessageHandler
         }
 
 
-        public MapMeetingCity GetMapPopUpInfo(int cityId)
+        public MapMeetingCity GetMapPopUpInfo(string cityGuid)
         {
             var result = new MapMeetingCity();
             var list = new List<MapMeetingNote>();
             var queryString = @"SELECT C.LONG_NM,c.color,c.CITY_NM,  Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
 INNER JOIN DBO.QUERY Q ON Q.DOC_GUID=D.DOC_GUID
-WHERE C.objectid = " + cityId + "  order by Q.MEETING_DATE desc";
+WHERE C.guid = '" + cityGuid + "'  order by Q.MEETING_DATE desc";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
