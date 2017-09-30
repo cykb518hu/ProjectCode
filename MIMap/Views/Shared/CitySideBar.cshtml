@@ -1,6 +1,7 @@
-﻿
+﻿<script src="~/Scripts/jquery.ajaxfileupload.js"></script>
+
 <div  id="city_Sidebar" style="display:none">
-    <div id="sidebar_content" style="display:none">
+    <div id="sidebar_content" >
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingHeader" style="text-align:center; font-size:16px; border-bottom:none">
                 <span></span> <div style="float:right"><a href="#" onclick="hideSideBar(); return false">close</a></div>
@@ -125,17 +126,36 @@
             </div>
         </div>
 
+        <div class="panel panel-default" style="display:none;">
+            <div class="panel-heading" role="tab" id="headingFile">
+                <a role="button" data-toggle="collapse" href="#collapseFile" aria-expanded="true" aria-controls="collapseFile">
+                    File Upload
+                </a>
+            </div>
+
+            <div id="collapseFile" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFile">
+                <div class="panel-body">
+                    @using (Html.BeginForm("UploadCityFile", "Home", FormMethod.Post, new { id = "formid" }))
+                    {
+                        <input type="file" name="sideBarUploadFile" id="sideBarUploadFile">
+                        <input type="submit" value="Upload" class="save" id="btnid" />
+                    }
+                  </div>
+            </div>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading6">
                 Action
             </div>
             <div id="collapse6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading6">
                 <div class="panel-body">
+
                     <div class="row">
-                        <div class="col-sm-4 form-group">
+                        <div class="col-sm-4 form-group mapSidebarOnly">
                             <input type="button" value="View in table" id="btn_ViewInTable" class="btn btn-default  form-control" />
                         </div>
-                        <div class="col-sm-4 form-group">
+                        <div class="col-sm-4 form-group mapSidebarOnly">
                             <input type="button" value="Change Color" id="btn_ChangeColor" title="Change Color" class="btn btn-default form-control" />
                         </div>
                         <div class="col-sm-4 form-group">
@@ -159,7 +179,7 @@
             </div>
         </div>
     </div>
-    <div id="sideBar_loading" style="position:fixed;top:40%">
+    <div id="sideBar_loading" style="position:fixed;top:40%; display:none">
     <img src="~/Image/pleasewait.gif" />
 
     </div>
@@ -167,7 +187,8 @@
 
 
 <script>
-    var selectedColor;
+    var editFromMap = true;
+    var sideBarCityGuid;
     jQuery(document).ready(function ($) {
         $('#OrdinanceDraftTime').datepicker({
             format: 'yyyy-mm-dd'
@@ -196,28 +217,30 @@
             $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
         });
         $("#btn_SaveSideBar").click(function () {
-            var color = "blue";
-            var numberColor = $("#btn_ChangeColor").val();
-            if (numberColor == "rgb(255, 0, 0)") {
-                color = "red";
+            saveCityOrdinance(sideBarCityGuid);
+            if (editFromMap) {
+                var color = "blue";
+                var numberColor = $("#btn_ChangeColor").val();
+                if (numberColor == "rgb(255, 0, 0)") {
+                    color = "red";
+                }
+                if (numberColor == "rgb(0, 125, 0)") {
+                    color = "green";
+                }
+                if (numberColor == "rgb(0, 0, 255)") {
+                    color = "blue";
+                }
+                if (numberColor == "rgb(255, 165, 0)") {
+                    color = "orange";
+                }
+                if (numberColor == "rgb(255, 255, 0)") {
+                    color = "yellow";
+                }
+                if (color != currentColor) {
+                    saveMapColer(color);
+                }
             }
-            if (numberColor == "rgb(0, 125, 0)") {
-                color = "green";
-            }
-            if (numberColor == "rgb(0, 0, 255)") {
-                color = "blue";
-            }
-            if (numberColor == "rgb(255, 165, 0)") {
-                color = "orange";
-            }
-            if (numberColor == "rgb(255, 255, 0)") {
-                color = "yellow";
-            }
-            if (color != currentColor)
-            {
-                saveMapColer(color);
-            }
-            saveCityOrdinance(popUpCityGuid);
+            
         });
     });
 
@@ -360,9 +383,12 @@
                     currentColor = defaultColor;
                 }
 
+ 
                 $("#btn_ChangeColor").off();
-                $("#btn_ChangeColor").css('color', currentColor);
+
+                $("#btn_ChangeColor").css('background', currentColor);
                 $("#btn_ChangeColor").ColorPickerSliders({
+                    alreadyinitialized:false,
                     placement: 'bottom',
                     color: currentColor,
                     swatches: ['red', 'green', 'blue', 'orange', 'yellow'],
@@ -370,7 +396,7 @@
                     size: 'sm',
                     order: {}
                 });
-
+                $("#sidebar_timeLine").html("");
                 var htmlStr = "<ol>";
                 for (var i = 0; i < result.MeetingList.length; i++) {
                     var data = result.MeetingList[i];
@@ -483,6 +509,9 @@
             success: function (result) {
                 if (result == "Success") {
                     successTips();
+                    if (!editFromMap) {
+                        $("#tb_cityAllNote").bootstrapTable('refresh');
+                    }
                 }
                 else {
                     errorTips(result);
@@ -500,7 +529,15 @@
     var loadCityFlag = false;
     var showTimeLineFlag = false;
 
-    function showSideBar(guid) {
+    function showSideBar(guid, map) {
+        if (!map) {
+            editFromMap = false;
+            $(".mapSidebarOnly").hide();
+        }
+        else {
+            $(".mapSidebarOnly").show();
+        }
+        sideBarCityGuid = guid;
         loadCityFlag = false;
         showTimeLineFlag = false;
         $("#city_Sidebar").slideDown();
@@ -508,14 +545,34 @@
         showMapTimeLine(guid);
     }
     function showSideBarContent(){
-        if (loadCityFlag && showTimeLineFlag) {
-            $("#sideBar_loading").hide();
-            $("#sidebar_content").show();
-        }
+        //if (loadCityFlag && showTimeLineFlag) {
+        //    $("#sideBar_loading").hide();
+        //    $("#sidebar_content").show();
+        //}
     }
     function hideSideBar() {
         $("#city_Sidebar").slideUp();
     }
 
+    function ajaxFileUpload() {
+        $.ajaxFileUpload
+        (
+            {
+                url: 'Home/UploadCityFile', //用于文件上传的服务器端请求地址
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: 'sideBarUploadFile', //文件上传域的ID
+                dataType: 'json', //返回值类型 一般设置为json
+                success: function (data, status)  //服务器成功响应处理函数
+                {
+
+                },
+                error: function (data, status, e)//服务器响应失败处理函数
+                {
+                    alert(e);
+                }
+            }
+        )
+        return false;
+    }
    
 </script>

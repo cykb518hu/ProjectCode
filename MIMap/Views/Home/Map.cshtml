@@ -32,23 +32,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/tinycolor/0.11.1/tinycolor.min.js"></script>
     <script src="~/Scripts/bootstrap.colorpickersliders.js?version=@StaticSetting.version"></script>
 
-    <div id="div-query">
-        <div class="col-md-6">
-            <ul class="list-group" id="ul_queryGourp" style="display:none" >
-                <li class="list-group-item active" >
-                    Query
-                </li>
-            </ul>
-            </div>
-        <div class="col-md-6">
-            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"   title='Hide Query Group' style="margin-left:6px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
-            <button type="button" class="btn btn-primary glyphicon glyphicon-forward"   title='Show Query Group' style="margin-left:-46px;height:32px; " id="btn_showQueryDiv"></button>
 
-         </div>
-
-        </div>
-    <div class="row" style="margin-top:50px;">
-
+<div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px;" id="div_tab_header">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active" data-controls="all_data"><a href="#all_data" aria-controls="all_data" role="tab" data-toggle="tab">All Data</a></li>
+        <li role="presentation" data-controls="notes_only"><a href="#notes_only" aria-controls="notes_only" role="tab" data-toggle="tab">Notes Only</a></li>
+    </ul>
+    <div class="row">
         <div class="search-container">
             <div class="row property-search-form">
                 <div class="col-xs-12 col-sm-2 form-group">
@@ -99,10 +89,10 @@
                     </select>
                 </div>
                 <div class="col-xs-12 col-sm-1 form-group">
-                    <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Meeting Date" class="form-control" />
+                    <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Date" class="form-control" />
                 </div>
                 <div class="col-xs-12 col-sm-1 form-group">
-                    <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Meeting Date" class="form-control" />
+                    <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Date" class="form-control" />
                 </div>
                 <div class="col-xs-12 col-sm-1 form-group">
 
@@ -116,16 +106,45 @@
         </div>
 
     </div>
-    <div class="row" style="margin-top:70px;">
-        <div class="col-md-6" id="div-data-area">
-           <table id="tb_municipality"></table>
+</div>
+
+    <div id="div-query" style="display:none">
+        <div class="col-md-6">
+            <ul class="list-group" id="ul_queryGourp" style="display:none" >
+                <li class="list-group-item active" >
+                    Query
+                </li>
+            </ul>
+            </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"   title='Hide Query Group' style="margin-left:6px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
+            <button type="button" class="btn btn-primary glyphicon glyphicon-forward"   title='Show Query Group' style="margin-left:-46px;height:32px; " id="btn_showQueryDiv"></button>
+
+         </div>
+
         </div>
-        <div class="col-md-6 " >
-            <div class="h-scroll">
-                <div id="map"></div>
+    
+<div class="tab-content" style="margin-top:125px;" >
+    <div role="tabpanel" class="tab-pane active" id="all_data" >
+
+        <div class="row">
+            <div class="col-md-6" id="div-data-area">
+                <table id="tb_municipality"></table>
+            </div>
+            <div class="col-md-6 ">
+                <div class="h-scroll">
+                    <div id="map"></div>
                 </div>
             </div>
+        </div>
+
     </div>
+    <div role="tabpanel" class="tab-pane" id="notes_only" style="padding-left:15px;padding-right:15px;">
+      @Html.Partial("CityAllNote")
+    </div>
+</div>
+
+
     
     <div class="modal fade" id="queryModal" tabindex="-1" role="dialog" aria-labelledby="queryModalLabel">
         <div class="modal-dialog" role="document">
@@ -224,7 +243,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
- @Html.Partial("CitySideBar")
+@Html.Partial("CitySideBar")
 
     <script>
         //load table data
@@ -330,6 +349,23 @@
                         })
                     },
 
+                });
+
+                $('#tb_cityAllNote').bootstrapTable({
+                    url: '/Home/GetCityOrdinanceList',
+                    method: 'get',
+                    cache: false,
+                    pagination: true,
+                    toolbar:'#toolbar',
+                    sortable: false,
+                    queryParams: oTableInit.queryParams,
+                    sidePagination: "server",
+                    pageList: [10, 25, 50, 100],
+                    showColumns: true,
+                    onLoadSuccess: function (data) {
+                        $('[data-toggle="popover"]').popover();
+                       
+                    },
                 });
             };
 
@@ -553,14 +589,23 @@
             return result;
         }
         function searchData() {
-
+            var allData=false;
+            $("li[role='presentation']").each(function(){
+                if($(this).hasClass("active")&&$(this).attr("data-controls")=="all_data"){
+                    allData=true;
+                }
+            });
             var temp = getSearchData();
             var tempQueryParams = function () {
                 return temp;
             };
-            $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 50 });
-
-            loadMapData();
+            if(allData){
+                $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 50 });
+                loadMapData();
+            }
+            else{
+                $("#tb_cityAllNote").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+            }
         }
         function loadQueryGroup() {
             $.ajax({
@@ -745,6 +790,7 @@
                 buttonWidth: '100%',
                 includeSelectAllOption: true,
                 selectAllText: 'All',
+                maxHeight:'300',
                 nonSelectedText: 'No County Selected',
                 onChange: function (element, checked) {
                     rebuildMuniciplitySelect();
@@ -760,6 +806,7 @@
                 buttonWidth: '100%',
                 nonSelectedText: 'No Municipality Selected',
                 includeSelectAllOption: true,
+                maxHeight:'300',
                 selectAllText: 'All'
             });
 
@@ -767,12 +814,14 @@
                 buttonWidth: '100%',
                 nonSelectedText: 'No Key Word Selected',
                 includeSelectAllOption: true,
+                maxHeight:'300',
                 selectAllText: 'All'
             });
             $("#sel_search_DeployDate").multiselect({
                 buttonWidth: '100%',
                 nonSelectedText: 'No Deploy Date Selected',
                 includeSelectAllOption: true,
+                maxHeight:'300',
                 selectAllText: 'All'
             });
             $('#txt_search_StartMeetingDate').datepicker({
@@ -891,7 +940,7 @@
         var objectId;
         var defaultColor = "blue";
         function initialMap() {
-            $("#map").css("height", ($(window).height() - 100) + "px");
+            $("#map").css("height", ($(window).height() - 140) + "px");
             //https://achilles.carto.com/builder/9d779336-b8c9-4d7e-a701-46d83baceeaf/embed
             //http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json
             cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json', {
@@ -981,7 +1030,7 @@
 
                 }
             }
-            showSideBar(popUpCityGuid);
+            showSideBar(popUpCityGuid,true);
         }
 
         function saveMapColer(color) {

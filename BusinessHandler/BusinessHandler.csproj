@@ -77,6 +77,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SqlScript\GET_CITY_ALLNOTE.sql" />
     <Content Include="SqlScript\DOC_MeetingNote.sql" />
     <Content Include="SqlScript\GET_Municipality.sql" />
     <Content Include="SqlScript\DOC_QUERY.sql" />

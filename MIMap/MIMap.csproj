@@ -172,6 +172,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Image\Loading_icon.gif" />
     <Content Include="Image\MiMapLogo.png" />
     <Content Include="Image\MiMapLogo1.png" />
@@ -181,6 +182,7 @@
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-editable.js" />
+    <Content Include="Scripts\bootstrap-filestyle.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap-table-editable.js" />
     <Content Include="Scripts\bootstrap-table.js" />
@@ -197,6 +199,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.ajaxfileupload.js" />
     <Content Include="Scripts\jquery.sidebar.js" />
     <Content Include="Scripts\jquery.tabledit.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -230,6 +233,7 @@
     <Content Include="Views\MeetingNote\Index.cshtml" />
     <Content Include="Views\Account\MaintainUser.cshtml" />
     <Content Include="Views\Shared\CitySideBar.cshtml" />
+    <Content Include="Views\Shared\CityAllNote.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

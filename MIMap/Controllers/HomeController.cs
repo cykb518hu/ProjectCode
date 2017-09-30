@@ -3,6 +3,7 @@ using BusinessHandler.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -180,8 +181,30 @@ namespace MIMap.Controllers
 
         public JsonResult GetCityOrdinance(string guid)
         {
-            var list = mapRepository.GetCityOrdinanceList(null, guid);
+            int total = 0;
+            var message = new DocQueryMessage();
+            message.limit = 10;
+            var list = mapRepository.GetCityOrdinanceList(message, out total, guid);
             var data = new CityOrdinance();
+            data.FacililtyGrZoningInd = "--";
+            data.FacililtyGrZoningCom = "--";
+            data.FacililtyGrLimit = "No Limit";
+
+            data.FacililtyProvZoningInd = "--";
+            data.FacililtyProvZoningCom = "--";
+            data.FacililtyProvLimit = "No Limit";
+
+            data.FacililtyProcZoningInd = "--";
+            data.FacililtyProcZoningCom = "--";
+            data.FacililtyProcLimit = "No Limit";
+
+            data.FacililtySTZoningInd = "--";
+            data.FacililtySTZoningCom = "--";
+            data.FacililtySTLimit = "No Limit";
+
+            data.FacililtySCZoningInd = "--";
+            data.FacililtySCZoningCom = "--";
+            data.FacililtySCLimit = "No Limit";
             if (list.Any())
             {
                 data = list.FirstOrDefault();
@@ -208,6 +231,132 @@ namespace MIMap.Controllers
 
             }
             return Json("Error in server", JsonRequestBehavior.AllowGet);
-        } 
+        }
+
+        public JsonResult GetCityOrdinanceList(DocQueryMessage message)
+        {
+            var result = new List<CityOrdinance>();
+            int total = 0;
+            result = mapRepository.GetCityOrdinanceList(message, out total);
+
+            foreach (var r in result)
+            {
+                if (!string.IsNullOrEmpty(r.DraftDate))
+                {
+                    r.OrdinanceTime = "Draft:" + r.DraftDate;
+                }
+                if (!string.IsNullOrEmpty(r.FinalDate))
+                {
+                    r.OrdinanceTime += "<br> Final:" + r.FinalDate;
+                }
+                r.FacililtyGrZoning += "Industrial " + r.FacililtyGrZoningInd;
+                r.FacililtyGrZoning += "<br>";
+                r.FacililtyGrZoning += "Commercial " + r.FacililtyGrZoningCom;
+
+                r.FacililtyProvZoning += "Industrial " + r.FacililtyProvZoningInd;
+                r.FacililtyProvZoning += "<br>";
+                r.FacililtyProvZoning += "Commercial " + r.FacililtyProvZoningCom;
+
+                r.FacililtyProcZoning += "Industrial " + r.FacililtyProcZoningInd;
+                r.FacililtyProcZoning += "<br>";
+                r.FacililtyProcZoning += "Commercial " + r.FacililtyProcZoningCom;
+
+                r.FacililtySTZoning += "Industrial " + r.FacililtySTZoningInd;
+                r.FacililtySTZoning += "<br>";
+                r.FacililtySTZoning += "Commercial " + r.FacililtySTZoningCom;
+
+                r.FacililtySCZoning += "Industrial " + r.FacililtySCZoningInd;
+                r.FacililtySCZoning += "<br>";
+                r.FacililtySCZoning += "Commercial " + r.FacililtySCZoningCom;
+                //r.BufferSchoolFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferSchoolNote.Replace("'", "") + "'>" + r.BufferSchoolFeet + "</a>";
+                //r.BufferDaycareFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferDaycareNote.Replace("'", "") + "'>" + r.BufferDaycareFeet + "</a>";
+                //r.BufferParkFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferParkNote.Replace("'", "") + "'>" + r.BufferParkFeet + "</a>";
+                //r.BufferSDMFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferSDMNote.Replace("'", "") + "'>" + r.BufferSDMFeet + "</a>";
+                //r.BufferReligiousFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferReligiousNote.Replace("'", "") + "'>" + r.BufferReligiousFeet + "</a>";
+                //r.BufferResidentialFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferResidentialNote.Replace("'", "") + "'>" + r.BufferResidentialFeet + "</a>";
+                //r.BufferRoadFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferRoadNote.Replace("'", "") + "'>" + r.BufferRoadFeet + "</a>";
+                //r.BufferOtherFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferOtherNote.Replace("'", "") + "'>" + r.BufferOtherFeet + "</a>";
+
+                //r.FacililtySCPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtySCNote.Replace("'", "") + "'>" + r.FacililtySCPermit + "</a>";
+                //r.FacililtyProvPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtyProvNote.Replace("'", "") + "'>" + r.FacililtyProvPermit + "</a>";
+                //r.FacililtyProcPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtyProcNote.Replace("'", "") + "'>" + r.FacililtyProcPermit + "</a>";
+                //r.FacililtyGrPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtyGrNote.Replace("'", "") + "'>" + r.FacililtyGrPermit + "</a>";
+                //r.FacililtySTPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtySTNote.Replace("'", "") + "'>" + r.FacililtySTPermit + "</a>" class='btn btn-sm btn-info' role='button' ;
+
+
+                if (!string.IsNullOrEmpty(r.BufferSchoolFeet) && !string.IsNullOrEmpty(r.BufferSchoolNote))
+                {
+                    r.BufferSchoolFeet = @"<a tabindex='0'  data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferSchoolNote.Replace("'", "") + "'>" + r.BufferSchoolFeet + "</a>";
+
+                }
+                if (!string.IsNullOrEmpty(r.BufferDaycareFeet) && !string.IsNullOrEmpty(r.BufferDaycareNote))
+                {
+                    r.BufferDaycareFeet = @"<a  tabindex='1' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferDaycareNote.Replace("'", "") + "'>" + r.BufferDaycareFeet + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.BufferParkFeet) && !string.IsNullOrEmpty(r.BufferParkNote))
+                {
+                    r.BufferParkFeet = @"<a  tabindex='2' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferParkNote.Replace("'", "") + "'>" + r.BufferParkFeet + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.BufferSDMFeet) && !string.IsNullOrEmpty(r.BufferSDMNote))
+                {
+                    r.BufferSDMFeet = @"<a tabindex='3' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferSDMNote.Replace("'", "") + "'>" + r.BufferSDMFeet + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.BufferReligiousFeet) && !string.IsNullOrEmpty(r.BufferReligiousNote))
+                {
+                    r.BufferReligiousFeet = @"<a tabindex='4' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferReligiousNote.Replace("'", "") + "'>" + r.BufferReligiousFeet + "</a>";
+                }
+
+                if (!string.IsNullOrEmpty(r.BufferResidentialFeet) && !string.IsNullOrEmpty(r.BufferResidentialNote))
+                {
+                    r.BufferResidentialFeet = @"<a tabindex='5' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferResidentialNote.Replace("'", "") + "'>" + r.BufferResidentialFeet + "</a>";
+
+                }
+                if (!string.IsNullOrEmpty(r.BufferRoadFeet) && !string.IsNullOrEmpty(r.BufferRoadNote))
+                {
+                    r.BufferRoadFeet = @"<a  tabindex='6'  data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferRoadNote.Replace("'", "") + "'>" + r.BufferRoadFeet + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.BufferOtherFeet) && !string.IsNullOrEmpty(r.BufferOtherNote))
+                {
+                    r.BufferOtherFeet = @"<a tabindex='7'  data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferOtherNote.Replace("'", "") + "'>" + r.BufferOtherFeet + "</a>";
+                }
+
+                if (!string.IsNullOrEmpty(r.FacililtySCPermit) && !string.IsNullOrEmpty(r.FacililtySCNote))
+                {
+                    r.FacililtySCPermit = @"<a tabindex='8'  data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtySCNote.Replace("'", "") + "'>" + r.FacililtySCPermit + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.FacililtyProvPermit) && !string.IsNullOrEmpty(r.FacililtyProvNote))
+                {
+                    r.FacililtyProvPermit = @"<a tabindex='9' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyProvNote.Replace("'", "") + "'>" + r.FacililtyProvPermit + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.FacililtyProcPermit) && !string.IsNullOrEmpty(r.FacililtyProcNote))
+                {
+                    r.FacililtyProcPermit = @"<a tabindex='10' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyProcNote.Replace("'", "") + "'>" + r.FacililtyProcPermit + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.FacililtyGrPermit) && !string.IsNullOrEmpty(r.FacililtyGrNote))
+                {
+                    r.FacililtyGrPermit = @"<a tabindex='11' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyGrNote.Replace("'", "") + "'>" + r.FacililtyGrPermit + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.FacililtySTPermit) && !string.IsNullOrEmpty(r.FacililtySTNote))
+                {
+                    r.FacililtySTPermit = @"<a tabindex='12' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='left' data-content='" + r.FacililtySTNote.Replace("'", "") + "'>" + r.FacililtySTPermit + "</a>";
+                }
+                r.Action = "<button type='button' class='btn btn-default'   data-cityGuid='" + r.CityGuid + "'  onclick='editCityNote(this); return false'>Edit</button>";
+            }
+            return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public ActionResult UploadCityFile(HttpPostedFileBase file)
+        {
+            //if (file.ContentLength > 0)
+            //{
+            //    var fileName = Path.GetFileName(file.FileName);
+            //    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+            //    file.SaveAs(path);
+            //}
+
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
     }
 }

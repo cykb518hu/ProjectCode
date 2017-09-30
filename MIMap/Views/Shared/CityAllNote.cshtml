@@ -1,0 +1,115 @@
+﻿
+<table id="tb_cityAllNote">
+    <thead>
+        <tr>
+            <th colspan="4" rowspan="2" data-valign="middle" data-align="center"></th>
+            <th colspan="8" rowspan="2"  data-valign="middle" data-align="center">Buffers(Feets)</th>
+            <th colspan="15" data-valign="middle" data-align="center">Facilities Permitted</th>
+            <th colspan="1" rowspan="2" data-valign="middle" data-align="center">Edit</th>
+        </tr>
+        <tr>
+            <th colspan="3" data-valign="middle" data-align="center">Gr</th>
+            <th colspan="3" data-valign="middle" data-align="center">Prov</th>
+            <th colspan="3" data-valign="middle" data-align="center">Proc</th>
+            <th colspan="3" data-valign="middle" data-align="center">SC</th>
+            <th colspan="3" data-valign="middle" data-align="center">ST</th>
+        </tr>
+        <tr>
+            <th data-field="Municipality" data-align="left">Municipality</th>
+            <th data-field="OptStatus" data-align="center">Opt Status</th>
+            <th data-field="OrdinanceTime" data-align="left">Ordinance Time</th>
+            <th data-field="Measurement" data-align="center">Meas</th>
+
+            <th data-field="BufferSchoolFeet" data-align="center">School</th>
+            <th data-field="BufferDaycareFeet" data-align="center">Daycare</th>
+            <th data-field="BufferParkFeet" data-align="center">Park</th>
+            <th data-field="BufferSDMFeet" data-align="center">SDM/SDD</th>
+            <th data-field="BufferReligiousFeet" data-align="center">Religious</th>
+            <th data-field="BufferResidentialFeet" data-align="center">Residential</th>
+            <th data-field="BufferRoadFeet" data-align="center">Road</th>
+            <th data-field="BufferOtherFeet" data-align="center">Other MM</th>
+
+            <th data-field="FacililtyGrPermit" data-align="center">Permit</th>
+            <th data-field="FacililtyGrZoning" data-align="left" >Zoning  Status</th>
+            <th data-field="FacililtyGrLimit" data-align="center">Limit</th>
+
+            <th data-field="FacililtyProvPermit" data-align="center">Permit</th>
+            <th data-field="FacililtyProvZoning" data-align="left" >Zoning  Status</th>
+            <th data-field="FacililtyProvLimit" data-align="center">Limit</th>
+
+            <th data-field="FacililtyProcPermit" data-align="center">Permit</th>
+            <th data-field="FacililtyProcZoning" data-align="left" >Zoning  Status</th>
+            <th data-field="FacililtyProcLimit" data-align="center">Limit</th>
+
+            <th data-field="FacililtySCPermit" data-align="center">Permit</th>
+            <th data-field="FacililtySCZoning" data-align="left" >Zoning  Status</th>
+            <th data-field="FacililtySCLimit" data-align="center">Limit</th>
+
+            <th data-field="FacililtySTPermit" data-align="center">Permit</th>
+            <th data-field="FacililtySTZoning" data-align="left" >Zoning  Status</th>
+            <th data-field="FacililtySTLimit" data-align="center">Limit</th>
+
+            <th data-field="Action" data-align="center"></th>
+
+        </tr>
+    </thead>
+</table>
+
+
+<script>
+        //$(function () {
+        //    loadListData();
+        //});
+
+        //function loadListData() {
+        //    var oTable = new TableInit();
+        //    oTable.Init();
+        //    var oButtonInit = new ButtonInit();
+        //    oButtonInit.Init();
+        //}
+
+        //var TableInit = function () {
+        //    var oTableInit = new Object();
+        //    oTableInit.Init = function () {
+        //        $('#tb_cityAllNote').bootstrapTable({
+        //            url: '/Home/GetCityOrdinanceList',
+        //            method: 'get',
+        //            cache: false,
+        //            pagination: true,
+        //            toolbar:'#toolbar',
+        //            sortable: false,
+        //            queryParams: oTableInit.queryParams,
+        //            sidePagination: "server",
+        //            pageList: [10, 25, 50, 100],
+        //            showColumns: true,
+        //            onLoadSuccess: function (data) {
+        //                $('[data-toggle="popover"]').popover();
+                       
+        //            },
+        //        });
+        //    };
+        //    oTableInit.queryParams = function (params) {
+        //        var temp = {};// getQueryData();// = getSearchData();
+        //        temp.limit = params.limit;
+        //        temp.offset = params.offset;
+        //        temp.sortName = this.sortName;
+        //        temp.sortOrder = this.sortOrder;
+        //        return temp;
+        //    };
+        //    return oTableInit;
+        //};
+        //var ButtonInit = function () {
+        //    var oInit = new Object();
+        //    var postdata = {};
+        //    oInit.Init = function () {
+        //        //初始化页面上面的按钮事件
+        //    };
+        //    return oInit;
+        //};
+
+        function editCityNote(obj)
+        {
+            var guid = $(obj).attr("data-cityGuid");
+            showSideBar(guid, false);
+        }
+</script>
