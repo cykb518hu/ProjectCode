@@ -108,17 +108,17 @@
     </div>
 </div>
 
-    <div id="div-query" style="display:none">
-        <div class="col-md-6">
+    <div id="div-query" >
+        <div class="col-md-6" style="padding-left:0px;">
             <ul class="list-group" id="ul_queryGourp" style="display:none" >
                 <li class="list-group-item active" >
                     Query
                 </li>
             </ul>
             </div>
-        <div class="col-md-6">
-            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"   title='Hide Query Group' style="margin-left:6px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
-            <button type="button" class="btn btn-primary glyphicon glyphicon-forward"   title='Show Query Group' style="margin-left:-46px;height:32px; " id="btn_showQueryDiv"></button>
+        <div class="col-md-6" style="padding-left:0px;">
+            <button type="button" class="btn btn-primary glyphicon glyphicon-backward"   title='Hide Query Group' style="margin-left:15px;height:42px; top:0px; display:none; z-index:20; border:none" id="btn_hideQueryDiv"></button>
+            <button type="button" class="btn btn-primary glyphicon glyphicon-forward"   title='Show Query Group' style="margin-left:-24px;height:42px; " id="btn_showQueryDiv"></button>
 
          </div>
 
@@ -128,10 +128,10 @@
     <div role="tabpanel" class="tab-pane active" id="all_data" >
 
         <div class="row">
-            <div class="col-md-6" id="div-data-area">
+            <div class="col-md-6"  id="div-data-area">
                 <table id="tb_municipality"></table>
             </div>
-            <div class="col-md-6 ">
+            <div class="col-md-6">
                 <div class="h-scroll">
                     <div id="map"></div>
                 </div>
@@ -332,7 +332,7 @@
 
                     onExpandRow: function (index, row, $detail) {
                         oTableInit.InitSubTable(index, row, $detail);
-                        showMapPopUp(row.ObjectId);
+                        openMarker(row.ObjectId);
                     },
                     onLoadSuccess: function (data) {
                         for (var i = 0; i < data.rows.length; i++) {
@@ -933,10 +933,20 @@
       
     </script>
 
+
+<script type="infowindow/html" id="infowindow_template">
+    <div id="pop-window">
+       
+        <a href="#close" class="close" style="opacity:1"><img style="width:50px;" src="@StaticSetting.uploadPath/Image/6cDGi.png" /></a>
+
+    </div>
+</script>
+
     <script>
         //map
         var map;
         var layer;
+        var popLayer;
         var objectId;
         var defaultColor = "blue";
         function initialMap() {
@@ -954,9 +964,18 @@
                     layer = layers[1].getSubLayer(0);
                     layer.set({ interactivity: "objectid" });
                     layer.setInteraction(true);
-                    layer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+ 
+                    popLayer = layers[1];
+                    var infowindow_model = popLayer.infowindow;
+                    popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+                        infowindow_model.set({
+                            latlng: latlng,
+                            visibility: true
+                        });
                         showMapPopUp(data.objectid);
                     });
+                    infowindow_model.set('template_type', 'underscore');
+                    infowindow_model.set('template', $('#infowindow_template').html());
                     createSelector();
                 })
                 .error(function (err) {
@@ -1011,6 +1030,18 @@
             });
         }
 
+        function openMarker(popUpObjectId) {
+
+            var query = "SELECT ST_Y(ST_Centroid(the_geom)) lat, ST_X(ST_Centroid(the_geom)) lon FROM mi_munv5 where objectid =" + popUpObjectId;
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            sql.execute(query).done(function (data) {
+                if (data.rows != undefined && data.rows.length == 1) {
+                    var row = data.rows[0];
+                    var latlng = [row.lat, row.lon];
+                    popLayer.trigger('featureClick', null, latlng, null, { objectid: popUpObjectId }, 0);
+                }
+            });
+        }
 
         var oldPopUpObjectId = 0;
         var popUpCityGuid = "";

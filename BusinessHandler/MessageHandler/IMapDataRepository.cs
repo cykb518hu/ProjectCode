@@ -414,31 +414,31 @@ namespace BusinessHandler.MessageHandler
                         data.FacililtyGrPermit = DBNull.Value == reader["FacililtyGrPermit"] ? "" : reader["FacililtyGrPermit"].ToString();  
                         data.FacililtyGrZoningInd = DBNull.Value == reader["FacililtyGrZoningInd"] ? "--" : reader["FacililtyGrZoningInd"].ToString();
                         data.FacililtyGrZoningCom = DBNull.Value == reader["FacililtyGrZoningCom"] ? "--" : reader["FacililtyGrZoningCom"].ToString();
-                        data.FacililtyGrLimit = DBNull.Value == reader["FacililtyGrLimit"] ? "No Limit" : String.IsNullOrEmpty(reader["FacililtyGrLimit"].ToString()) ? "No Limit" : reader["FacililtyGrLimit"].ToString();
+                        data.FacililtyGrLimit = DBNull.Value == reader["FacililtyGrLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtyGrLimit"].ToString()) ? "None" : reader["FacililtyGrLimit"].ToString();
                         data.FacililtyGrNote = DBNull.Value == reader["FacililtyGrNote"] ? "" : reader["FacililtyGrNote"].ToString();
 
                         data.FacililtyProvPermit = DBNull.Value == reader["FacililtyProvPermit"] ? "" : reader["FacililtyProvPermit"].ToString();
                         data.FacililtyProvZoningInd = DBNull.Value == reader["FacililtyProvZoningInd"] ? "--" : reader["FacililtyProvZoningInd"].ToString();
                         data.FacililtyProvZoningCom = DBNull.Value == reader["FacililtyProvZoningCom"] ? "--" : reader["FacililtyProvZoningCom"].ToString();
-                        data.FacililtyProvLimit = DBNull.Value == reader["FacililtyProvLimit"] ? "No Limit" : String.IsNullOrEmpty(reader["FacililtyProvLimit"].ToString()) ? "No Limit" : reader["FacililtyProvLimit"].ToString();
+                        data.FacililtyProvLimit = DBNull.Value == reader["FacililtyProvLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtyProvLimit"].ToString()) ? "None" : reader["FacililtyProvLimit"].ToString();
                         data.FacililtyProvNote = DBNull.Value == reader["FacililtyProvNote"] ? "" : reader["FacililtyProvNote"].ToString();
 
                         data.FacililtyProcPermit = DBNull.Value == reader["FacililtyProcPermit"] ? "" : reader["FacililtyProcPermit"].ToString();
                         data.FacililtyProcZoningInd = DBNull.Value == reader["FacililtyProcZoningInd"] ? "--" : reader["FacililtyProcZoningInd"].ToString();
                         data.FacililtyProcZoningCom = DBNull.Value == reader["FacililtyProcZoningCom"] ? "--" : reader["FacililtyProcZoningCom"].ToString();
-                        data.FacililtyProcLimit = DBNull.Value == reader["FacililtyProcLimit"] ? "No Limit" : String.IsNullOrEmpty(reader["FacililtyProcLimit"].ToString()) ? "No Limit" : reader["FacililtyProcLimit"].ToString();
+                        data.FacililtyProcLimit = DBNull.Value == reader["FacililtyProcLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtyProcLimit"].ToString()) ? "None" : reader["FacililtyProcLimit"].ToString();
                         data.FacililtyProcNote = DBNull.Value == reader["FacililtyProcNote"] ? "" : reader["FacililtyProcNote"].ToString();
 
                         data.FacililtySCPermit = DBNull.Value == reader["FacililtySCPermit"] ? "" : reader["FacililtySCPermit"].ToString();
                         data.FacililtySCZoningInd = DBNull.Value == reader["FacililtySCZoningInd"] ? "--" : reader["FacililtySCZoningInd"].ToString();
                         data.FacililtySCZoningCom = DBNull.Value == reader["FacililtySCZoningCom"] ? "--" : reader["FacililtySCZoningCom"].ToString();
-                        data.FacililtySCLimit = DBNull.Value == reader["FacililtySCLimit"] ? "No Limit" : String.IsNullOrEmpty(reader["FacililtySCLimit"].ToString()) ? "No Limit" : reader["FacililtySCLimit"].ToString();
+                        data.FacililtySCLimit = DBNull.Value == reader["FacililtySCLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtySCLimit"].ToString()) ? "None" : reader["FacililtySCLimit"].ToString();
                         data.FacililtySCNote = DBNull.Value == reader["FacililtySCNote"] ? "" : reader["FacililtySCNote"].ToString();
 
                         data.FacililtySTPermit = DBNull.Value == reader["FacililtySTPermit"] ? "" : reader["FacililtySTPermit"].ToString();
                         data.FacililtySTZoningInd = DBNull.Value == reader["FacililtySTZoningInd"] ? "--" : reader["FacililtySTZoningInd"].ToString();
                         data.FacililtySTZoningCom = DBNull.Value == reader["FacililtySTZoningCom"] ? "--" : reader["FacililtySTZoningCom"].ToString();
-                        data.FacililtySTLimit = DBNull.Value == reader["FacililtySTLimit"] ? "No Limit" : String.IsNullOrEmpty(reader["FacililtySTLimit"].ToString()) ? "No Limit" : reader["FacililtySTLimit"].ToString();
+                        data.FacililtySTLimit = DBNull.Value == reader["FacililtySTLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtySTLimit"].ToString()) ? "None" : reader["FacililtySTLimit"].ToString();
                         data.FacililtySTNote = DBNull.Value == reader["FacililtySTNote"] ? "" : reader["FacililtySTNote"].ToString();
 
                         data.CityFileName= DBNull.Value == reader["CityFileName"] ? "" : reader["CityFileName"].ToString();

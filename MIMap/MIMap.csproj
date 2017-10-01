@@ -173,6 +173,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="Image\6cDGi.png" />
     <Content Include="Image\Loading_icon.gif" />
     <Content Include="Image\MiMapLogo.png" />
     <Content Include="Image\MiMapLogo1.png" />
@@ -213,6 +214,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\simpler-sidebar.min.js" />
     <Content Include="Scripts\transition.js" />
+    <Content Include="uploads\6cDGi.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
