@@ -33,10 +33,10 @@
     <script src="~/Scripts/bootstrap.colorpickersliders.js?version=@StaticSetting.version"></script>
 
 
-<div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px;" id="div_tab_header">
+<div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px; width:100%" id="div_tab_header">
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active" data-controls="all_data"><a href="#all_data" aria-controls="all_data" role="tab" data-toggle="tab">All Data</a></li>
-        <li role="presentation" data-controls="notes_only"><a href="#notes_only" aria-controls="notes_only" role="tab" data-toggle="tab">Notes Only</a></li>
+        <li role="presentation" data-controls="notes_only"><a href="#notes_only" aria-controls="notes_only" role="tab" data-toggle="tab">Ordinances</a></li>
     </ul>
     <div class="row">
         <div class="search-container">
@@ -276,7 +276,7 @@
                     sortable: true,
                     queryParams: oTableInit.queryParams,
                     sidePagination: "server",
-                    pageSize:10,
+                    pageSize:25,
                     pageList: [10, 25, 50, 100],
                     showColumns: true,
                     detailView: true,
