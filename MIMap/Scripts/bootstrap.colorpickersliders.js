@@ -1323,7 +1323,6 @@
             triggerelement.css('background', color.tiny.toRgbString()).css('color', '#000');
           }
           else {
-              console.log(color.tiny.toRgbString());
             triggerelement.css('background', color.tiny.toRgbString()).css('color', '#fff');
           }
         }

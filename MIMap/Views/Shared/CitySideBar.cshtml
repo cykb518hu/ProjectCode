@@ -1,187 +1,190 @@
 ﻿
 
-<div  id="city_Sidebar" style="display:none">
+<div  id="city_Sidebar" style="display:none;">
     <div id="sidebar_content" >
-        <div class="panel panel-default">
+        <div class="panel panel-default" style="position:fixed;width:500px;z-index:1002">
             <div class="panel-heading" role="tab" id="headingHeader" style="text-align:center; font-size:16px; border-bottom:none">
-                <span></span> <div style="float:right"><a href="#" onclick="hideSideBar(); return false">close</a></div>
+                <span></span> <div style="float:right; margin-right:17px;"><a href="#" onclick="hideSideBar(); return false">close</a></div>
             </div>
 
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading1">
+        <div style="padding-top:44px"  id="sidebar_sub_content" >
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading1">
 
-                <a role="button" data-toggle="collapse" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                    Opt Status
-                </a>
+                    <a role="button" data-toggle="collapse" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                        Opt Status
+                    </a>
 
-            </div>
-            <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
-                <div class="panel-body">
-                    <label class="radio-inline">
-                        <input type="radio" name="OptOptions" value="OptIn"> Opt-in
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="OptOptions" value="OptOut"> Opt-out
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="OptOptions" value="none"> None
-                    </label>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+                    <div class="panel-body">
+                        <label class="radio-inline">
+                            <input type="radio" name="OptOptions" value="OptIn"> Opt-in
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="OptOptions" value="OptOut"> Opt-out
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="OptOptions" value="none"> None
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading2">
-                <a role="button" data-toggle="collapse" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
-                    Ordinance Time
-                </a>
-            </div>
-            <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="Draft Date" id="OrdinanceDraftTime" class="form-control" />
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="Final Date" id="OrdinanceFinalTime" class="form-control" />
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading2">
+                    <a role="button" data-toggle="collapse" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                        Ordinance Date
+                    </a>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" placeholder="Draft Date" id="OrdinanceDraftTime" class="form-control" />
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" placeholder="Final Date" id="OrdinanceFinalTime" class="form-control" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading3">
-                <a role="button" data-toggle="collapse" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
-                    Measurement
-                </a>
-            </div>
-            <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
-                <div class="panel-body">
-                    <label class="radio-inline">
-                        <input type="radio" name="MeasurementOptions" value="Straightline">Straightline
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="MeasurementOptions" value="Centerline">Centerline
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="MeasurementOptions" value="None">None
-                    </label>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading3">
+                    <a role="button" data-toggle="collapse" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                        Measurement
+                    </a>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
+                    <div class="panel-body">
+                        <label class="radio-inline">
+                            <input type="radio" name="MeasurementOptions" value="Straightline">Straightline
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="MeasurementOptions" value="Centerline">Centerline
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="MeasurementOptions" value="None">None
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading4">
-                <a role="button" data-toggle="collapse" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
-                    Buffer
-                </a>
-            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading4">
+                    <a role="button" data-toggle="collapse" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                        Buffer
+                    </a>
+                </div>
 
-            <div id="collapse4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading4">
+                <div id="collapse4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading4">
 
-                <table class="table" id="buffer_table">
-                    <thead>
-                        <tr><th style="width:30%">Buffer</th><th style="width:20%">Feet</th><th>Note</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>School</td><td></td><td></td></tr>
-                        <tr><td>Daycare</td><td></td><td></td></tr>
-                        <tr><td>Park</td><td></td><td></td></tr>
-                        <tr><td>SDM/SDD</td><td></td><td></td></tr>
-                        <tr><td>Religious</td><td></td><td></td></tr>
-                        <tr><td>Residential</td><td></td><td></td></tr>
-                        <tr><td>Road</td><td></td><td></td></tr>
-                        <tr><td>Other MM</td><td></td><td></td></tr>
-                    </tbody>
-                </table>
+                    <table class="table" id="buffer_table">
+                        <thead>
+                            <tr><th style="width:30%">Buffer</th><th style="width:20%">Feet</th><th>Note</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>School</td><td></td><td></td></tr>
+                            <tr><td>Daycare</td><td></td><td></td></tr>
+                            <tr><td>Park</td><td></td><td></td></tr>
+                            <tr><td>SDM/SDD</td><td></td><td></td></tr>
+                            <tr><td>Religious</td><td></td><td></td></tr>
+                            <tr><td>Residential</td><td></td><td></td></tr>
+                            <tr><td>Road</td><td></td><td></td></tr>
+                            <tr><td>Other MM</td><td></td><td></td></tr>
+                        </tbody>
+                    </table>
 
-            </div>
-        </div>
-
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading5">
-                <a role="button" data-toggle="collapse" href="#collapse5" aria-expanded="true" aria-controls="collapse5">
-                    Facilities Permitted
-                </a>
-            </div>
-
-            <div id="collapse5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading5">
-                <table class="table" id="facility_table">
-                    <thead>
-                        <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="22%">Limit</th><th>Note</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Gr</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                        <tr><td>Prov</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                        <tr><td>Proc</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                        <tr><td>SC</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                        <tr><td>ST</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFile">
-                <a role="button" data-toggle="collapse" href="#collapseFile" aria-expanded="true" aria-controls="collapseFile">
-                    File Upload
-                </a>
-            </div>
-
-            <div id="collapseFile" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFile">
-                <div class="panel-body">
-                    <div style="margin-bottom:10px; margin-left:2px;">Uploaded File:<span id="span_uploadedFile"></span></div>
-                    <form id="uploader">
-                        <input id="sideBarUploadFile" type="file" multiple>
-                        <input type="submit" value="Upload file" class="btn btn-default" style="margin-top:10px" />
-                    </form>
                 </div>
             </div>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading6">
-                Action
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading5">
+                    <a role="button" data-toggle="collapse" href="#collapse5" aria-expanded="true" aria-controls="collapse5">
+                        Facilities Permitted
+                    </a>
+                </div>
+
+                <div id="collapse5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading5">
+                    <table class="table" id="facility_table">
+                        <thead>
+                            <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="22%">Limit</th><th>Note</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Gr</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                            <tr><td>Prov</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                            <tr><td>Proc</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                            <tr><td>SC</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                            <tr><td>ST</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div id="collapse6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading6">
-                <div class="panel-body">
 
-                    <div class="row">
-                        <div class="col-sm-4 form-group mapSidebarOnly">
-                            <input type="button" value="View in table" id="btn_ViewInTable" class="btn btn-default  form-control" />
-                        </div>
-                        <div class="col-sm-4 form-group mapSidebarOnly">
-                            <input type="button" value="Change Color" id="btn_ChangeColor" title="Change Color" class="btn btn-default form-control" />
-                        </div>
-                        <div class="col-sm-4 form-group">
-                            <input type="button" value="Save All" id="btn_SaveSideBar" class="btn btn-primary  form-control" />
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFile">
+                    <a role="button" data-toggle="collapse" href="#collapseFile" aria-expanded="true" aria-controls="collapseFile">
+                        File Upload
+                    </a>
+                </div>
+
+                <div id="collapseFile" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFile">
+                    <div class="panel-body">
+                        <div style="margin-bottom:10px; margin-left:2px;">Uploaded File:<span id="span_uploadedFile"></span></div>
+                        <form id="uploader">
+                            <input id="sideBarUploadFile" type="file" multiple>
+                            <input type="submit" value="Upload file" class="btn btn-default" style="margin-top:10px" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading6">
+                    Action
+                </div>
+                <div id="collapse6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading6">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-sm-4 form-group mapSidebarOnly">
+                                <input type="button" value="View in table" id="btn_ViewInTable" class="btn btn-default  form-control" />
+                            </div>
+                            <div class="col-sm-4 form-group mapSidebarOnly">
+                                <input type="button" value="Change Color" id="btn_ChangeColor" title="Change Color" class="btn btn-default form-control" />
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <input type="button" value="Save All" id="btn_SaveSideBar" class="btn btn-primary  form-control" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading7">
-                <a role="button" data-toggle="collapse" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
-                    Time Line
-                </a>
-            </div>
-            <div id="collapse7" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading7">
-                <div class="panel-body" id="sidebar_timeLine">
-                    <p>Scraped meetings  <span id="sidebar_Meetings" class="badge"></span></p>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading7">
+                    <a role="button" data-toggle="collapse" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
+                        Time Line
+                    </a>
+                </div>
+                <div id="collapse7" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading7">
+                    <div class="panel-body" id="sidebar_timeLine">
+                        <p>Scraped meetings  <span id="sidebar_Meetings" class="badge"></span></p>
+                    </div>
                 </div>
             </div>
         </div>
+        <div id="sideBar_loading" style="position:fixed;top:40%; display:none">
+            <img src="~/Image/pleasewait.gif" />
+        </div>
     </div>
-    <div id="sideBar_loading" style="position:fixed;top:40%; display:none">
-    <img src="~/Image/pleasewait.gif"   />
-    </div>
+   
 </div>
 
 
@@ -362,8 +365,6 @@
                 });
             },
             complete: function (XMLHttpRequest, textStatus) {
-                loadCityFlag = true;
-                showSideBarContent();
 
             },
             error: function (xhr, textStatus, errorThrown) {
@@ -393,7 +394,7 @@
  
                 $("#btn_ChangeColor").off();
 
-                //$("#btn_ChangeColor").css('background', currentColor);
+                $("#btn_ChangeColor").val(currentColor);
                 $("#btn_ChangeColor").ColorPickerSliders({
                     alreadyinitialized:false,
                     placement: 'bottom',
@@ -422,8 +423,6 @@
                 $("#sidebar_timeLine").html(htmlStr);
             },
             complete: function (XMLHttpRequest, textStatus) {
-                showTimeLineFlag = true;
-                showSideBarContent();
             },
             error: function (xhr, textStatus, errorThrown) {
             }
@@ -553,10 +552,10 @@
         });
     }
 
-    var loadCityFlag = false;
-    var showTimeLineFlag = false;
-
     function showSideBar(guid, map) {
+
+        $("#sidebar_sub_content").hide();
+        $("#sideBar_loading").show();
         if (!map) {
             editFromMap = false;
             $(".mapSidebarOnly").hide();
@@ -564,19 +563,13 @@
         else {
             $(".mapSidebarOnly").show();
         }
+        $("#sideBarUploadFile").val("");
         sideBarCityGuid = guid;
-        loadCityFlag = false;
-        showTimeLineFlag = false;
         $("#city_Sidebar").slideDown();
         loadCityOrdinance(guid);
         showMapTimeLine(guid);
     }
-    function showSideBarContent(){
-        //if (loadCityFlag && showTimeLineFlag) {
-        //    $("#sideBar_loading").hide();
-        //    $("#sidebar_content").show();
-        //}
-    }
+
     $("#city_Sidebar").on('blur', function () {
         $(this).fadeOut(300);
     });

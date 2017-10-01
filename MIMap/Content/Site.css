@@ -241,13 +241,13 @@ div.cartodb-popup.v2
 #city_Sidebar {
     overflow-y: auto;
     position: fixed;
-    top: 0px;
+    top: 50px;
     bottom: 0px;
     width: 500px;
     right: 0px;
     z-index: 3000;
     background-color: #ffffff;
-    border-left: 1px solid #dddddd;
+
 }
 #city_Sidebar .panel
 {
@@ -288,4 +288,7 @@ div.cartodb-popup.v2
 #div_tab_header .nav > li > a
 {
     padding:5px 15px
+}
+#city_Sidebar a {
+    text-decoration: none;
 }
