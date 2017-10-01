@@ -53,18 +53,35 @@
             }
             </section>
 
-
+            @*<input type="submit" value="Log in" id="test" class="btn btn-default" />*@
         </div>
     </div>
     <hr />
+
+
+    @Html.Partial("CitySideBar")
 
     <footer>
         <p>&copy; @DateTime.Now.Year - My Application</p>
     </footer>
 </div>
+ <script>
+     //jQuery(document).ready(function ($) {
+     //    $("#test").click(function () {
+     //        $("#city_Sidebar").slideDown();
+     //    });
 
+     //});
+     //$(document).click(function (e) {
 
-
+     //    // check that your clicked
+     //    // element has no id=info
+     //    // and is not child of info
+     //    if (e.target.id != 'city_Sidebar' && !$('#city_Sidebar').find(e.target).length) {
+     //        $("#city_Sidebar").hide();
+     //    }
+     //});
+ </script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

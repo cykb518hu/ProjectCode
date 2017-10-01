@@ -1,4 +1,4 @@
-﻿<script src="~/Scripts/jquery.ajaxfileupload.js"></script>
+﻿
 
 <div  id="city_Sidebar" style="display:none">
     <div id="sidebar_content" >
@@ -126,7 +126,7 @@
             </div>
         </div>
 
-        <div class="panel panel-default" style="display:none;">
+        <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingFile">
                 <a role="button" data-toggle="collapse" href="#collapseFile" aria-expanded="true" aria-controls="collapseFile">
                     File Upload
@@ -135,12 +135,12 @@
 
             <div id="collapseFile" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFile">
                 <div class="panel-body">
-                    @using (Html.BeginForm("UploadCityFile", "Home", FormMethod.Post, new { id = "formid" }))
-                    {
-                        <input type="file" name="sideBarUploadFile" id="sideBarUploadFile">
-                        <input type="submit" value="Upload" class="save" id="btnid" />
-                    }
-                  </div>
+                    <div style="margin-bottom:10px; margin-left:2px;">Uploaded File:<span id="span_uploadedFile"></span></div>
+                    <form id="uploader">
+                        <input id="sideBarUploadFile" type="file" multiple>
+                        <input type="submit" value="Upload file" class="btn btn-default" style="margin-top:10px" />
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -180,8 +180,7 @@
         </div>
     </div>
     <div id="sideBar_loading" style="position:fixed;top:40%; display:none">
-    <img src="~/Image/pleasewait.gif" />
-
+    <img src="~/Image/pleasewait.gif"   />
     </div>
 </div>
 
@@ -216,6 +215,7 @@
 
             $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
         });
+       
         $("#btn_SaveSideBar").click(function () {
             saveCityOrdinance(sideBarCityGuid);
             if (editFromMap) {
@@ -252,6 +252,13 @@
             type: "GET",
             cache: false,
             success: function (result) {
+                if (result.CityFileName != null && result.CityFileName != undefined && result.CityFileName.length > 0) {
+                    $("#span_uploadedFile").parent().show();
+                    $("#span_uploadedFile").html(result.CityFileDisplayName);
+                }
+                else {
+                    $("#span_uploadedFile").parent().hide();
+                }
                 $("input[name='OptOptions']").prop("checked", false);
                 $("input[name='OptOptions'][value='" + result.OptStatus + "']").prop("checked", true);
                 $("#OrdinanceDraftTime").val("").val(result.DraftDate);
@@ -422,7 +429,24 @@
             }
         });
     }
-
+    var fileName;
+    document.getElementById('uploader').onsubmit = function () {
+        var formdata = new FormData();
+        var fileInput = document.getElementById('sideBarUploadFile');
+        for (i = 0; i < fileInput.files.length; i++) {
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Home/UploadCityFile');
+        xhr.send(formdata);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                fileName = xhr.responseText;
+                successFileTips("File upload successfully");
+            }
+        }
+        return false;
+    }
     function saveCityOrdinance(guid) {
         var data = {};
         data.OptStatus = $("input[name='OptOptions']:checked").val();
@@ -501,6 +525,9 @@
         data.FacililtySTLimit = $("#facility_table").find("tr").eq(5).find("td").eq(3).find("span").html();
         data.FacililtySTNote = $("#facility_table").find("tr").eq(5).find("td").eq(4).find("span").html();
         data.CityGuid = guid;
+        if (fileName.length > 0) {
+            data.CityFileName = fileName;
+        }
         $.ajax({
             url: '/Home/SaveCityOrdinance',
             data: { str: JSON.stringify(data) },
@@ -550,29 +577,11 @@
         //    $("#sidebar_content").show();
         //}
     }
+    $("#city_Sidebar").on('blur', function () {
+        $(this).fadeOut(300);
+    });
     function hideSideBar() {
-        $("#city_Sidebar").slideUp();
+        $("#city_Sidebar").hide();
     }
 
-    function ajaxFileUpload() {
-        $.ajaxFileUpload
-        (
-            {
-                url: 'Home/UploadCityFile', //用于文件上传的服务器端请求地址
-                secureuri: false, //是否需要安全协议，一般设置为false
-                fileElementId: 'sideBarUploadFile', //文件上传域的ID
-                dataType: 'json', //返回值类型 一般设置为json
-                success: function (data, status)  //服务器成功响应处理函数
-                {
-
-                },
-                error: function (data, status, e)//服务器响应失败处理函数
-                {
-                    alert(e);
-                }
-            }
-        )
-        return false;
-    }
-   
 </script>

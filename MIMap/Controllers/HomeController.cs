@@ -209,6 +209,14 @@ namespace MIMap.Controllers
             {
                 data = list.FirstOrDefault();
             }
+            if(!string.IsNullOrEmpty(data.CityFileName))
+            {
+              
+                data.CityFileDisplayName = data.CityFileName.Substring(data.CityFileName.LastIndexOf("--") + 2);
+                data.CityFileName = StaticSetting.uploadPath + "/uploads/" + data.CityFileName;
+                data.CityFileDisplayName = "<a href='" + data.CityFileName + "' target='_blank'>" + data.CityFileDisplayName + "</a>"
+;
+            }
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
@@ -223,6 +231,10 @@ namespace MIMap.Controllers
                 if (user != null)
                 {
                     data.ModifyUser = user.Email;
+                }
+                if(!string.IsNullOrEmpty(data.CityFileName))
+                {
+                    data.CityFileName = data.CityFileName.Replace("\"", "");
                 }
                 if (mapRepository.UpdateCityOrdinance(data))
                 {
@@ -341,22 +353,34 @@ namespace MIMap.Controllers
                     r.FacililtySTPermit = @"<a tabindex='12' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='left' data-content='" + r.FacililtySTNote.Replace("'", "") + "'>" + r.FacililtySTPermit + "</a>";
                 }
                 r.Action = "<button type='button' class='btn btn-default'   data-cityGuid='" + r.CityGuid + "'  onclick='editCityNote(this); return false'>Edit</button>";
+                if (!string.IsNullOrEmpty(r.CityFileName))
+                {
+                    r.CityFileName = StaticSetting.uploadPath + "/uploads/" + r.CityFileName;
+                    r.Municipality = "<a href='" + r.CityFileName + "' target='_blank'>" + r.Municipality + "</a>";
+                }
             }
             return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
 
         }
 
         [HttpPost]
-        public ActionResult UploadCityFile(HttpPostedFileBase file)
+        public ActionResult UploadCityFile()
         {
-            //if (file.ContentLength > 0)
-            //{
-            //    var fileName = Path.GetFileName(file.FileName);
-            //    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
-            //    file.SaveAs(path);
-            //}
+            var fileName = "";
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i]; //Uploaded file
+                                                            //Use the following properties to get file's name, size and MIMEType
+                int fileSize = file.ContentLength;
+                fileName = file.FileName;
+                string mimeType = file.ContentType;
+                fileName = Guid.NewGuid().ToString() + "--" + fileName;
+                
+                var path = Path.Combine(Server.MapPath("~/uploads"), fileName);
+                file.SaveAs(path);
+            }
+            return Json(fileName);
 
-            return Json("Success", JsonRequestBehavior.AllowGet);
         }
     }
 }

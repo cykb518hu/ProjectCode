@@ -77,6 +77,8 @@ namespace BusinessHandler.Model
         public string ModifyUser { get; set; }
 
         public string Action { get; set; }
+        public string CityFileName { get; set; }
+        public string CityFileDisplayName { get; set; }
 
     }
 }

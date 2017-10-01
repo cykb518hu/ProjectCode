@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace BusinessHandler.MessageHandler
 {
@@ -439,6 +441,7 @@ namespace BusinessHandler.MessageHandler
                         data.FacililtySTLimit = DBNull.Value == reader["FacililtySTLimit"] ? "No Limit" : String.IsNullOrEmpty(reader["FacililtySTLimit"].ToString()) ? "No Limit" : reader["FacililtySTLimit"].ToString();
                         data.FacililtySTNote = DBNull.Value == reader["FacililtySTNote"] ? "" : reader["FacililtySTNote"].ToString();
 
+                        data.CityFileName= DBNull.Value == reader["CityFileName"] ? "" : reader["CityFileName"].ToString();
                         list.Add(data);
                     }
                 }
@@ -485,7 +488,7 @@ namespace BusinessHandler.MessageHandler
                 var str = "UPDATE CITY_Ordinance SET ";
                 foreach (System.Reflection.PropertyInfo info in properties)
                 {
-                    if (info.Name == "Municipality" || info.Name == "CityGuid" || info.Name == "Action" || info.Name == "FacililtySTZoning" || info.Name == "FacililtySCZoning" || info.Name == "FacililtyProcZoning" || info.Name == "FacililtyProvZoning" || info.Name == "FacililtyGrZoning" || info.Name == "OrdinanceTime")
+                    if (info.Name == "Municipality" || info.Name == "CityGuid" || info.Name == "Action" || info.Name == "FacililtySTZoning" || info.Name == "FacililtySCZoning" || info.Name == "FacililtyProcZoning" || info.Name == "FacililtyProvZoning" || info.Name == "FacililtyGrZoning" || info.Name == "OrdinanceTime" || info.Name == "CityFileDisplayName")
                     {
                         continue;
                     }

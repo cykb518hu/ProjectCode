@@ -278,3 +278,5 @@ GO
 
 SET ANSI_PADDING OFF
 GO
+
+ALTER table [dbo].[CITY_Ordinance] add  CityFileName varchar(200)

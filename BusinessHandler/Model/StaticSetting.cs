@@ -31,6 +31,8 @@ namespace BusinessHandler.Model
 
         public static string version = string.IsNullOrEmpty(ConfigurationManager.AppSettings["version"]) ? "" : ConfigurationManager.AppSettings["version"].ToString();
 
+        public static string uploadPath= string.IsNullOrEmpty(ConfigurationManager.AppSettings["uploadPath"]) ? "" : ConfigurationManager.AppSettings["uploadPath"].ToString();
+
         public static List<string> MapColorList()
         {
             List<string> list = new List<string>();
