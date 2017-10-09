@@ -280,3 +280,24 @@ SET ANSI_PADDING OFF
 GO
 
 ALTER table [dbo].[CITY_Ordinance] add  CityFileName varchar(200)
+
+
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtyGrZoningInd varchar(100)
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtyGrZoningCom varchar(100)
+
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtyProvZoningInd varchar(100)
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtyProvZoningCom varchar(100)
+
+
+
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtyProcZoningInd varchar(100)
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtyProcZoningCom varchar(100)
+
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtySCZoningInd varchar(100)
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtySCZoningCom varchar(100)
+
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtySTZoningInd varchar(100)
+ALTER table [dbo].[CITY_Ordinance] alter column  FacililtySTZoningCom varchar(100)
+
+
+ALTER TABLE [dbo].[MeetingNote] ALTER COLUMN NOTES NVARCHAR(2000)

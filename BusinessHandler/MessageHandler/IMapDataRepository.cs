@@ -166,7 +166,7 @@ namespace BusinessHandler.MessageHandler
 
                         result.IsViewed = "<span class='sp_" + result.DocId + "'>" + (reader["CHECKED"].ToString().Equals("True") ? "Yes" : "No") + "</span>";
                         var important = reader["IMPORTANT"].ToString().Equals("True") ? "Yes" : "No";
-                        result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString().Replace("MI", "") + "</a>";
+                        result.MunicipalityDispaly = @"<a href='" + reader["DOC_SOURCE"].ToString() + "' target='_blank'>" + reader["CITY_NM"].ToString().Replace("MI", "").Replace("Charter", "") + "</a>";
                         result.MinicipalityOperation = @"<div class='btn-group' role='group'><button type='button' class='btn btn-default glyphicon glyphicon-edit' title='Add note'  data-docid='" + result.DocId + "' onclick='OpenDocNoteDetail(this); return false'></button>";
 
                         //importan means removed
@@ -380,7 +380,7 @@ namespace BusinessHandler.MessageHandler
                     while (reader.Read())
                     {
                         var data = new CityOrdinance();
-                        data.Municipality = reader["CITY_NM"].ToString();
+                        data.Municipality = reader["CITY_NM"].ToString().Replace("MI", "").Replace("Charter", "");
                         data.CityGuid = reader["CITY_GUID"].ToString();
                         data.OptStatus = DBNull.Value == reader["OptStatus"] ? "" : reader["OptStatus"].ToString();
                         data.DraftDate = DBNull.Value == reader["DraftDate"] ? "" : String.IsNullOrEmpty(reader["DraftDate"].ToString()) ? "" : Convert.ToDateTime(reader["DraftDate"]).ToString("yyyy-MM-dd");
@@ -498,6 +498,14 @@ namespace BusinessHandler.MessageHandler
 
                         str += string.Format(" USR_MDFN_TS='{0}', ", DateTime.Now);
                         continue;
+                    }
+                    if(info.Name == "CityFileName")
+                    {
+                        var fileName = GetObjectPropertyValue<CityOrdinance>(data, info.Name);
+                        if(string.IsNullOrEmpty(fileName))
+                        {
+                            continue;
+                        }
                     }
                     str += string.Format("{0} = '{1}', ", info.Name, GetObjectPropertyValue<CityOrdinance>(data, info.Name));
                 }

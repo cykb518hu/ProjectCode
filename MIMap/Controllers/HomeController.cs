@@ -188,23 +188,23 @@ namespace MIMap.Controllers
             var data = new CityOrdinance();
             data.FacililtyGrZoningInd = "--";
             data.FacililtyGrZoningCom = "--";
-            data.FacililtyGrLimit = "No Limit";
+            data.FacililtyGrLimit = "None";
 
             data.FacililtyProvZoningInd = "--";
             data.FacililtyProvZoningCom = "--";
-            data.FacililtyProvLimit = "No Limit";
+            data.FacililtyProvLimit = "None";
 
             data.FacililtyProcZoningInd = "--";
             data.FacililtyProcZoningCom = "--";
-            data.FacililtyProcLimit = "No Limit";
+            data.FacililtyProcLimit = "None";
 
             data.FacililtySTZoningInd = "--";
             data.FacililtySTZoningCom = "--";
-            data.FacililtySTLimit = "No Limit";
+            data.FacililtySTLimit = "None";
 
             data.FacililtySCZoningInd = "--";
             data.FacililtySCZoningCom = "--";
-            data.FacililtySCLimit = "No Limit";
+            data.FacililtySCLimit = "None";
             if (list.Any())
             {
                 data = list.FirstOrDefault();
