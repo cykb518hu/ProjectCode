@@ -128,10 +128,10 @@
     <div role="tabpanel" class="tab-pane active" id="all_data" >
 
         <div class="row">
-            <div class="col-md-6"  id="div-data-area" style="max-width:992px">
+            <div id="div-data-area">
                 <table id="tb_municipality"></table>
             </div>
-            <div class="col-md-6" style="padding-left:10px;">
+            <div id="div-data-map" >
                 <div class="h-scroll">
                     <div id="map"></div>
                 </div>
@@ -950,7 +950,7 @@
         var objectId;
         var defaultColor = "blue";
         function initialMap() {
-            $("#map").css("height", ($(window).height() - 140) + "px");
+            //$("#map").css("height", ($(window).height() - 140) + "px");
             //https://achilles.carto.com/builder/9d779336-b8c9-4d7e-a701-46d83baceeaf/embed
             //http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json
             cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json', {

@@ -89,19 +89,7 @@
 #small-menu {
     border-color: #787878 !important;
 }
-.h-scroll {
-    width: 100%;
-    height: 100%;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-}
-@media (min-width: 992px) {
-    .h-scroll {
-        position: fixed;
-        width:49%
-    }
-}
+
 /*@media (min-width: 1200px) {
     .h-scroll {
         position: fixed;
@@ -190,9 +178,49 @@
     /*border-right: none !important;*/
     border:none !important;
 }
-#div-data-area
-{
-    padding-right:0px;
+
+ @media (min-width: 768px) {
+    #div-data-area,#div-data-map
+    {
+        float:left;
+    }
+}
+
+#div-data-area {
+    max-width: 678px;
+    position: relative;
+    padding-right: 0px;
+    min-height: 1px;
+    padding-left: 15px;
+}
+#div-data-map {
+    padding-left: 10px;
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    height: calc(100% - 140px);
+}
+
+.h-scroll {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+@media (min-width: 768px) {
+    .h-scroll {
+        position: fixed;
+         width:calc(100% - 678px);
+    }
+}
+#map {
+    height: calc(100% - 145px);
+}
+@media (max-width: 768px) {
+    #map {
+        height: 500px;
+    }
 }
 #div-data-area .table tbody tr:hover td{
     background-color: transparent;
