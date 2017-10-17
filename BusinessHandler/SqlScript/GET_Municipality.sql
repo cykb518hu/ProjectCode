@@ -18,7 +18,8 @@ CREATE PROCEDURE [dbo].[GET_Municipality]
 @DeployeDate varchar(50)=null,
 @IsChecked varchar(5)=null,
 @IsImportant varchar(5)=null,
-@UserEmail varchar(100)=null
+@UserEmail varchar(100)=null,
+@State varchar(50)=null
 )
 as
 declare @sqlstr varchar(max)
@@ -65,6 +66,10 @@ if @IsImportant is not null
 if @UserEmail is not null
    begin
 		set @sqlstr=@sqlstr+' and AC.EMAIL = '''+ @UserEmail+''''
+	end
+if @State is not null
+   begin
+		set @sqlstr=@sqlstr+' and C.STATES = '''+ @State+''''
 	end
 begin
 exec(@sqlstr)

@@ -301,3 +301,16 @@ ALTER table [dbo].[CITY_Ordinance] alter column  FacililtySTZoningCom varchar(10
 
 
 ALTER TABLE [dbo].[MeetingNote] ALTER COLUMN NOTES NVARCHAR(2000)
+
+
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferSchoolFeet int
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferDaycareFeet int
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferParkFeet int
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferSDMFeet int
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferReligiousFeet int
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferResidentialFeet int
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferRoadFeet int
+ALTER table [dbo].[CITY_Ordinance] alter column  BufferOtherFeet int
+
+
+ALTER table [dbo].[MeetingNote] add Tags varchar(100)

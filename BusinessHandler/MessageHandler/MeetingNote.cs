@@ -26,11 +26,11 @@ namespace BusinessHandler.MessageHandler
             string queryString = "";
             if (string.IsNullOrEmpty(note))
             {
-                queryString = @"select  * from [dbo].[MeetingNote] where doc_guid in('" + docGuid + "') order by usr_mdfn_ts desc";
+                queryString = @"select  * from [dbo].[MeetingNote] where doc_guid in('" + docGuid + "') order by usr_crtn_ts asc";
             }
             else
             {
-                queryString = @"select  * from [dbo].[MeetingNote] where doc_guid in('" + docGuid + "') and notes like '%" + note + "%' order by usr_mdfn_ts desc";
+                queryString = @"select  * from [dbo].[MeetingNote] where doc_guid in('" + docGuid + "') and notes like '%" + note + "%' order by usr_crtn_ts desc";
 
             }
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
@@ -49,7 +49,7 @@ namespace BusinessHandler.MessageHandler
                     data.ModifyDate = DBNull.Value == reader["USR_MDFN_TS"] ? "" : Convert.ToDateTime(reader["USR_MDFN_TS"]).ToString("yyyy-MM-dd");
                     data.ModifyUser= DBNull.Value == reader["USR_MDFN_ID"] ? "" : reader["USR_MDFN_ID"].ToString();
                     data.Operation += @"<button type='button' class='btn btn-default glyphicon glyphicon-remove' title='Remove Notes'   data-guid='" + data.Guid + "' data-docId='" + data.DocGuid + "'  onclick='removeMeetingNotes(this); return false'></button>";
-
+                    data.Tags = DBNull.Value == reader["Tags"] ? "" : reader["Tags"].ToString();
                     list.Add(data);
                 }
             }
@@ -204,13 +204,13 @@ namespace BusinessHandler.MessageHandler
                     switch (r.Status)
                     {
                         case "Added":
-                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes, USR_CRTN_ID,USR_MDFN_ID) values('" + r.Guid + "','" + r.DocGuid + "',@note,@modifyUser,@modifyUser)";
+                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes,Tags, USR_CRTN_ID,USR_MDFN_ID) values('" + r.Guid + "','" + r.DocGuid + "',@note,@Tags, @modifyUser,@modifyUser)";
                             break;
                         case "Deleted":
                             queryString = "DELETE FROM MeetingNote WHERE [GUID]='" + r.Guid + "'";
                             break;
                         case "Modified":
-                            queryString = "UPDATE MeetingNote SET Notes= @note , USR_MDFN_TS= '" + DateTime.Now + "' , USR_MDFN_ID=@modifyUser WHERE [Guid]='" + r.Guid + "'";
+                            queryString = "UPDATE MeetingNote SET Notes= @note , USR_MDFN_TS= '" + DateTime.Now + "' ,Tags=@Tags, USR_MDFN_ID=@modifyUser WHERE [Guid]='" + r.Guid + "'";
                             break;
                     }
                     using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
@@ -219,7 +219,8 @@ namespace BusinessHandler.MessageHandler
                         if (r.Status == "Added"|| r.Status == "Modified")
                         {
                             command.Parameters.AddWithValue("@note", r.Note);
-                            command.Parameters.AddWithValue("modifyUser", r.ModifyUser);
+                            command.Parameters.AddWithValue("@modifyUser", r.ModifyUser);
+                            command.Parameters.AddWithValue("@Tags", string.IsNullOrWhiteSpace(r.Tags) ? "" : r.Tags);
                         }
                         connection.Open();
                         command.ExecuteNonQuery();

@@ -16,7 +16,7 @@ namespace BusinessHandler.MessageHandler
     public interface IMapDataRepository
     {
         List<MapFilterModel> GetAllCities();
-        List<MapFilterModel> GetFilterData();
+        List<MapFilterModel> GetFilterData(string state);
         List<MapMunicipalityColor> GetMapAreaData(DocQueryMessage message);
         List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total);
         void UpdateMapColor(string cityGuid, string color);
@@ -47,15 +47,16 @@ namespace BusinessHandler.MessageHandler
             }
             return list;
         }
-        public List<MapFilterModel> GetFilterData()
+        public List<MapFilterModel> GetFilterData(string state)
         {
             var list = new List<MapFilterModel>();
             var email = StaticSetting.GetUserEmail();
-            string queryString = @"select  * from [dbo].[CITY] C INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID WHERE AC.EMAIL=@EMAIL order by DEPLOYE_DATE desc";
+            string queryString = @"select  * from [dbo].[CITY] C INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID WHERE AC.EMAIL=@EMAIL and c.states=@state order by DEPLOYE_DATE desc";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@EMAIL", email);
+                command.Parameters.AddWithValue("@state", state);
                 connection.Open();
                 var reader = command.ExecuteReader();
                 while (reader.Read())
@@ -329,6 +330,10 @@ namespace BusinessHandler.MessageHandler
             {
                 command.Parameters.AddWithValue("@UserEmail", email);
             }
+            if (!string.IsNullOrWhiteSpace(message.State))
+            {
+                command.Parameters.AddWithValue("@State", message.State);
+            }
         }
 
         public void UpdateMapColor(string cityGuid, string color)
@@ -370,6 +375,19 @@ namespace BusinessHandler.MessageHandler
                     command.Parameters.AddWithValue("@CityGuid", cityGuid);
                 }
                 var orderBy = " CITY_NM desc";
+                if (!string.IsNullOrEmpty(message.sortName))
+                {
+                    if(message.sortName== "Municipality")
+                    {
+                        orderBy = " CITY_NM";
+                    }
+                    else
+                    {
+                        orderBy = " " + message.sortName;
+                    }
+                    orderBy += " " + message.sortOrder;
+                }
+               
 
                 command.Parameters.AddWithValue("@offset", message.offset);
                 command.Parameters.AddWithValue("@limit", message.limit);
@@ -442,6 +460,40 @@ namespace BusinessHandler.MessageHandler
                         data.FacililtySTNote = DBNull.Value == reader["FacililtySTNote"] ? "" : reader["FacililtySTNote"].ToString();
 
                         data.CityFileName= DBNull.Value == reader["CityFileName"] ? "" : reader["CityFileName"].ToString();
+
+                        if (data.BufferSchoolFeet == "0")
+                        {
+                            data.BufferSchoolFeet = "";
+                        }
+                        if (data.BufferDaycareFeet == "0")
+                        {
+                            data.BufferDaycareFeet = "";
+                        }
+                        if (data.BufferParkFeet == "0")
+                        {
+                            data.BufferParkFeet = "";
+                        }
+                        if (data.BufferSDMFeet == "0")
+                        {
+                            data.BufferSDMFeet = "";
+                        }
+                        if (data.BufferReligiousFeet == "0")
+                        {
+                            data.BufferReligiousFeet = "";
+                        }
+                        if (data.BufferResidentialFeet == "0")
+                        {
+                            data.BufferResidentialFeet = "";
+                        }
+
+                        if (data.BufferRoadFeet == "0")
+                        {
+                            data.BufferRoadFeet = "";
+                        }
+                        if (data.BufferOtherFeet == "0")
+                        {
+                            data.BufferOtherFeet = "";
+                        }
                         list.Add(data);
                     }
                 }

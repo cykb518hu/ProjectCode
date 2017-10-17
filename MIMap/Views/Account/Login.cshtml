@@ -58,14 +58,13 @@
     </div>
     <hr />
 
-
-    @Html.Partial("CitySideBar")
-
     <footer>
         <p>&copy; @DateTime.Now.Year - My Application</p>
     </footer>
 </div>
  <script>
+     sessionStorage.setItem("currentState", "MI");
+     sessionStorage.setItem("currentMenu", "MI");
      //jQuery(document).ready(function ($) {
      //    $("#test").click(function () {
      //        $("#city_Sidebar").slideDown();

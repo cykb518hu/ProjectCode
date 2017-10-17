@@ -1,5 +1,6 @@
 ﻿using BusinessHandler.MessageHandler;
 using BusinessHandler.Model;
+using MIMap.Tools;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace MIMap.Controllers
 {
+    [SessionCheck]
     public class MeetingNoteController : Controller
     {
 
@@ -23,12 +25,7 @@ namespace MIMap.Controllers
         // GET: MeetingNote
         public ActionResult Index()
         {
-            var user = (UserAccount)Session["UserAccount"];
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            var municipalityList = mapRepository.GetFilterData();
+            var municipalityList = mapRepository.GetFilterData("");
             ViewData["municipalityList"] = municipalityList;
             return View();
         }
@@ -37,6 +34,20 @@ namespace MIMap.Controllers
         public JsonResult GetMeetingNotes(string docGuid)
         {
             var data = meetingNoteRepository.GetMeetingNotes(docGuid, "");
+            foreach (var r in data)
+            {
+                r.AllTags = new List<NoteTags>();
+                var tags = StaticSetting.DefaultTags + r.Tags;
+                var arr = tags.Split(',');
+                foreach (var a in arr)
+                {
+                    if (r.AllTags.Any(x => x.tag == a))
+                    {
+                        continue;
+                    }
+                    r.AllTags.Add(new NoteTags { tag = a });
+                }
+            }
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

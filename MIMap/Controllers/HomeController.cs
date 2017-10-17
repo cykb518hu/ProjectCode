@@ -1,5 +1,6 @@
 ﻿using BusinessHandler.MessageHandler;
 using BusinessHandler.Model;
+using MIMap.Tools;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Web.Mvc;
 
 namespace MIMap.Controllers
 {
+    [SessionCheck]
     public class HomeController : Controller
     {
         ISearchQueryRepository searchQueryRepository;
@@ -41,15 +43,16 @@ namespace MIMap.Controllers
 
         public ActionResult Map()
         {
-            var user = (UserAccount)Session["UserAccount"];
-            if (user == null)
+            var state = "MI";
+            if (Request.QueryString["state"] != null)
             {
-                return RedirectToAction("Login", "Account");
+                state = Request.QueryString["state"];
             }
             var keyWordList = DocQueryDB.GetKeyWordList();
-            ViewData["municipalityList"] = mapRepository.GetFilterData();
+            ViewData["municipalityList"] = mapRepository.GetFilterData(state);
             ViewData["keyWordList"] = keyWordList;
             var message = new DocQueryMessage();
+            message.State = state;
             var mapInitialData = mapRepository.GetMapAreaData(message);
 
             ViewData["mapInitialData"] = mapInitialData;
@@ -259,7 +262,11 @@ namespace MIMap.Controllers
                 }
                 if (!string.IsNullOrEmpty(r.FinalDate))
                 {
-                    r.OrdinanceTime += "<br> Final:" + r.FinalDate;
+                    if(!string.IsNullOrEmpty(r.OrdinanceTime))
+                    {
+                        r.OrdinanceTime += "<br>";
+                    }
+                    r.OrdinanceTime += "Final:" + r.FinalDate;
                 }
                 r.FacililtyGrZoning += "Industrial " + r.FacililtyGrZoningInd;
                 r.FacililtyGrZoning += "<br>";
@@ -294,38 +301,81 @@ namespace MIMap.Controllers
                 //r.FacililtyProcPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtyProcNote.Replace("'", "") + "'>" + r.FacililtyProcPermit + "</a>";
                 //r.FacililtyGrPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtyGrNote.Replace("'", "") + "'>" + r.FacililtyGrPermit + "</a>";
                 //r.FacililtySTPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtySTNote.Replace("'", "") + "'>" + r.FacililtySTPermit + "</a>" class='btn btn-sm btn-info' role='button' ;
-
-
+            
+                if (string.IsNullOrEmpty(r.BufferSchoolFeet) && !string.IsNullOrEmpty(r.BufferSchoolNote))
+                {
+                    r.BufferSchoolFeet = "Note.";
+                }
                 if (!string.IsNullOrEmpty(r.BufferSchoolFeet) && !string.IsNullOrEmpty(r.BufferSchoolNote))
                 {
                     r.BufferSchoolFeet = @"<a tabindex='0'  data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferSchoolNote.Replace("'", "") + "'>" + r.BufferSchoolFeet + "</a>";
 
                 }
+
+             
+                if (string.IsNullOrEmpty(r.BufferDaycareFeet) && !string.IsNullOrEmpty(r.BufferDaycareNote))
+                {
+                    r.BufferDaycareFeet = "Note.";
+                }
                 if (!string.IsNullOrEmpty(r.BufferDaycareFeet) && !string.IsNullOrEmpty(r.BufferDaycareNote))
                 {
                     r.BufferDaycareFeet = @"<a  tabindex='1' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferDaycareNote.Replace("'", "") + "'>" + r.BufferDaycareFeet + "</a>";
+                }
+
+              
+                if (string.IsNullOrEmpty(r.BufferParkFeet) && !string.IsNullOrEmpty(r.BufferParkNote))
+                {
+                    r.BufferParkFeet = "Note.";
                 }
                 if (!string.IsNullOrEmpty(r.BufferParkFeet) && !string.IsNullOrEmpty(r.BufferParkNote))
                 {
                     r.BufferParkFeet = @"<a  tabindex='2' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferParkNote.Replace("'", "") + "'>" + r.BufferParkFeet + "</a>";
                 }
+
+             
+                if (string.IsNullOrEmpty(r.BufferSDMFeet) && !string.IsNullOrEmpty(r.BufferSDMNote))
+                {
+                    r.BufferSDMFeet = "Note.";
+                }
                 if (!string.IsNullOrEmpty(r.BufferSDMFeet) && !string.IsNullOrEmpty(r.BufferSDMNote))
                 {
                     r.BufferSDMFeet = @"<a tabindex='3' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferSDMNote.Replace("'", "") + "'>" + r.BufferSDMFeet + "</a>";
+                }
+
+              
+                if (string.IsNullOrEmpty(r.BufferReligiousFeet) && !string.IsNullOrEmpty(r.BufferReligiousNote))
+                {
+                    r.BufferReligiousFeet = "Note.";
                 }
                 if (!string.IsNullOrEmpty(r.BufferReligiousFeet) && !string.IsNullOrEmpty(r.BufferReligiousNote))
                 {
                     r.BufferReligiousFeet = @"<a tabindex='4' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferReligiousNote.Replace("'", "") + "'>" + r.BufferReligiousFeet + "</a>";
                 }
 
+               
+                if (string.IsNullOrEmpty(r.BufferResidentialFeet) && !string.IsNullOrEmpty(r.BufferResidentialNote))
+                {
+                    r.BufferResidentialFeet = "Note.";
+                }
                 if (!string.IsNullOrEmpty(r.BufferResidentialFeet) && !string.IsNullOrEmpty(r.BufferResidentialNote))
                 {
                     r.BufferResidentialFeet = @"<a tabindex='5' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferResidentialNote.Replace("'", "") + "'>" + r.BufferResidentialFeet + "</a>";
 
                 }
+
+                if (string.IsNullOrEmpty(r.BufferRoadFeet) && !string.IsNullOrEmpty(r.BufferRoadNote))
+                {
+                    r.BufferRoadFeet = "Note.";
+                }
                 if (!string.IsNullOrEmpty(r.BufferRoadFeet) && !string.IsNullOrEmpty(r.BufferRoadNote))
                 {
                     r.BufferRoadFeet = @"<a  tabindex='6'  data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.BufferRoadNote.Replace("'", "") + "'>" + r.BufferRoadFeet + "</a>";
+                }
+
+             
+                if (string.IsNullOrEmpty(r.BufferOtherFeet) && !string.IsNullOrEmpty(r.BufferOtherNote))
+                {
+                    r.BufferOtherFeet = "Note.";
                 }
                 if (!string.IsNullOrEmpty(r.BufferOtherFeet) && !string.IsNullOrEmpty(r.BufferOtherNote))
                 {

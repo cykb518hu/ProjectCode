@@ -10,9 +10,36 @@
                <text>
        var currentUser= "@user.Email";
 
-        </text>
+    </text>
         }
     }
+  
+    jQuery(document).ready(function ($) {
+        var currentMenu = sessionStorage.getItem("currentMenu");
+        $("ul.navbar-nav").find("a").each(function () {
+            $(this).removeClass("menuActive");
+            if ($(this).attr("data-menu") == currentMenu) {
+                $(this).addClass("menuActive");
+            }
+        });
+        $("a.redirectMap").click(function () {
+            sessionStorage.setItem("currentMenu", $(this).attr("data-menu"));
+            if ($(this).attr("data-menu") == "MI" || $(this).attr("data-menu") == "MA") {
+                sessionStorage.setItem("currentState", $(this).attr("data-state"));
+                var url = '@Url.Action("Map", "Home")';
+                window.location.href = url + "?state=" + $(this).attr("data-state");
+            }
+            if ($(this).attr("data-menu") == "NO") {
+                var url = '@Url.Action("Index", "MeetingNote")';
+                window.location.href = url;
+            }
+            if ($(this).attr("data-menu") == "MC") {
+                var url = '@Url.Action("MaintainUser", "Account")';
+                window.location.href = url;
+            }
+
+        });
+    });
 </script>
 
 <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#F5F5F5; border-color:#F5F5F5; margin-bottom:0px;">
@@ -38,16 +65,16 @@
                     <div class="navbar-collapse collapse">
 
                         <ul class="nav navbar-nav navbar-right ">
-                            <li><a href="#">Hello @user.Email</a></li>
-                            <li><a href="/Home/Map">Michigan</a></li>
-                            <li><a href="#">Massachusetts</a></li>
-                            <li><a href="#">Florida</a></li>
-                            <li><a href="/MeetingNote/Index">Notes</a></li>
+                            <li><a href="javascript:void(0)">Hello @user.Email</a></li>
+                            <li><a  class="redirectMap" href="javascript:void(0)" data-state="MI" data-menu="MI">Michigan</a></li>
+                            <li><a  class="redirectMap" href="javascript:void(0)" data-state="MA" data-menu="MA">Massachusetts</a></li>
+                            <li><a class="" href="javascript:void(0)" data-menu="FL">Florida</a></li>
+                            <li><a  class="redirectMap" href="javascript:void(0)" data-menu="NO">Notes</a></li>
                             @{
                                 if (user.RoleType == GlobalKeyString.roleTypeAdmin)
                                 {
-                                    <li><a href="/Account/MaintainUser">Manage Account</a></li>
-                                }
+                                    <li><a class="redirectMap"  href="javascript:void(0)" data-menu="MC">Manage Account</a></li>
+                                } 
                             }
                             <li>@Html.ActionLink("Log off", "Login", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
                         </ul>

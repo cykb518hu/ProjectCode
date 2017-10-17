@@ -96,6 +96,14 @@ namespace BusinessHandler.Model
 
         public string ModifyUser { get; set; }
 
+        public string Tags { get; set; }
+
+        public List<NoteTags> AllTags { get; set; }
+
+    }
+    public class NoteTags
+    {
+        public string tag { get; set; }
     }
 
 

@@ -33,6 +33,8 @@ namespace BusinessHandler.Model
 
         public static string uploadPath= string.IsNullOrEmpty(ConfigurationManager.AppSettings["uploadPath"]) ? "" : ConfigurationManager.AppSettings["uploadPath"].ToString();
 
+        public static string DefaultTags= string.IsNullOrEmpty(ConfigurationManager.AppSettings["DefaultTags"]) ? "" : ConfigurationManager.AppSettings["DefaultTags"].ToString();
+
         public static List<string> MapColorList()
         {
             List<string> list = new List<string>();

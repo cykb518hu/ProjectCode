@@ -62,9 +62,7 @@
         }
 
 
-.navbar-nav > li > a {
-    color: #787878 !important;
-}
+
 .navbar-nav > li > a:hover {
     color:#000 !important;
 }
@@ -143,7 +141,7 @@
 
 @media screen and (min-width: 768px) {
     #myNotesModal .modal-dialog {
-        width: 760px;
+        width: 1060px;
     }
 }
 #sidebar_timeLine ol
@@ -328,3 +326,25 @@
         -webkit-transform: rotate(360deg);
     }
 }
+
+.menuActive{
+    color: black !important;
+    font-size: 16px;
+}
+
+.options div {
+    background: #5bc0de;
+    color: white;
+    height: 25px;
+    margin: 10px 10px 0 0;
+    float: left;
+    position: relative;
+    line-height: 25px;
+    font-size: 10px;
+    width: auto;
+    text-indent: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.o_close{cursor: pointer;color: #ccc;margin: 0 8px auto}
+.o_close:hover {color: white;}

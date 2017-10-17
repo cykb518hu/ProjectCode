@@ -28,7 +28,8 @@ create PROCEDURE [dbo].[GET_CITY_ALLNOTE]
 @limit int=10,
 @Total int =1,
 @UserEmail varchar(100)=null,
-@CityGuid varchar(50)=null
+@CityGuid varchar(50)=null,
+@State varchar(50)=null
 )
 as
 declare @sqlstr varchar(max)
@@ -72,6 +73,11 @@ if @CityGuid is not null
    begin
 		set @sqlstr=@sqlstr+' and C.GUID = '''+ @CityGuid+''''
 	end
+if @State is not null
+   begin
+		set @sqlstr=@sqlstr+' and C.STATES = '''+ @State+''''
+	end
+
 if(@Total=0)
 begin
 

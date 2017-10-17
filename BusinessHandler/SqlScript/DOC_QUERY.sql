@@ -22,7 +22,8 @@ CREATE PROCEDURE [dbo].[GET_DOC_QUERY]
 @offset int =0,
 @limit int=10,
 @Total int =1,
-@UserEmail varchar(100)=null
+@UserEmail varchar(100)=null,
+@State varchar(50)=null
 )
 as
 declare @sqlstr varchar(max)
@@ -70,7 +71,10 @@ if @UserEmail is not null
    begin
 		set @sqlstr=@sqlstr+' and AC.EMAIL = '''+ @UserEmail+''''
 	end
-
+if @State is not null
+   begin
+		set @sqlstr=@sqlstr+' and C.STATES = '''+ @State+''''
+	end
 
 if(@Total=0)
 begin

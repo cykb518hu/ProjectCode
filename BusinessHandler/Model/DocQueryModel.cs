@@ -24,6 +24,7 @@ namespace BusinessHandler.Model
         public string Important { get; set; }
 
         public string Note { get; set; }
+        public string State { get; set; }
     }
 
     public class DocQueryParentModel
