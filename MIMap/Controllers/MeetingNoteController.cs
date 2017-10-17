@@ -66,9 +66,10 @@ namespace MIMap.Controllers
                         r.ModifyUser = user.Email;
                     }
                 }
-                count =meetingNoteRepository.UpdateMeetingNotes(noteList);
-
+                meetingNoteRepository.UpdateMeetingNotes(noteList);
+                count = meetingNoteRepository.GetMeetingRelatedNotesAmount(noteList[0].DocGuid);
             }
+        
             return Json(count, JsonRequestBehavior.AllowGet);
         }
 

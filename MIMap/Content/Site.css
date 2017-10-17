@@ -333,18 +333,20 @@
 }
 
 .options div {
-    background: #5bc0de;
-    color: white;
-    height: 25px;
-    margin: 10px 10px 0 0;
+    background: #DCDCDC;
+    color: #ffffff;
+    padding: 0px 10px;
     float: left;
     position: relative;
     line-height: 25px;
-    font-size: 10px;
+    font-size: 12px;
     width: auto;
-    text-indent: 10px;
     border: 1px solid transparent;
     border-radius: 4px;
+    cursor: pointer;
+    margin: 0 8px auto;
 }
-.o_close{cursor: pointer;color: #ccc;margin: 0 8px auto}
-.o_close:hover {color: white;}
+
+.noteSelected {
+    background: #1da7ee !important;
+}

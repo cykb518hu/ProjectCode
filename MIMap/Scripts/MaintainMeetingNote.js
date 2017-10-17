@@ -1,5 +1,55 @@
 ﻿jQuery(document).ready(function ($) {
 
+    $("#myNotesModal").on("click", ".tagDisplay", function () {
+
+        if ($(this).hasClass("noteSelected")) {
+            $(this).removeClass("noteSelected");
+        }
+        else {
+            $(this).addClass("noteSelected");
+        }
+        var allDisplayTags = "";
+        $(".tagDisplay").each(function () {
+            if ($(this).hasClass("noteSelected")) {
+                var str = $(this).attr("data-tag");
+                if (str.length > 0) {
+                    allDisplayTags += str;
+                    allDisplayTags += ","
+                }
+            }
+        });
+        if (allDisplayTags.length > 0) {
+            allDisplayTags = allDisplayTags.substring(0, allDisplayTags.length - 1);
+        }
+        var tagArr = allDisplayTags.split(",");
+        tagArr = $.unique(tagArr);
+        $("#meetingNote-table > tbody  > tr").each(function () {
+            var matched = false;
+            var currentTags = $(this).find(".input-tags").val();
+            if (currentTags.length > 0) {
+                if (allDisplayTags.length > 0) {
+                    for (var i = 0; i < tagArr.length; i++) {
+                        if (currentTags.indexOf(tagArr[i]) >= 0) {
+                            matched = true;
+                        }
+                    }
+                }
+                else {
+                    matched = false;
+                }
+                if (matched) {
+                    $(this).show();
+                }
+                else {
+                    $(this).hide();
+                }
+            }
+           
+        });
+
+
+    });
+
     $("#btn-add-meetingNote").click(function () {
 
         var str = "";
@@ -59,13 +109,7 @@ function updateMeetingNoteToDb(noteArr)
             dataType: 'json',
             type: "POST",
             success: function (result) {
-                $("button[data-docid='" + noteArr[0].DocGuid + "']").eq(0).removeClass("btn-default").removeClass("btn-success");
-                if (result > 0) {
-                    $("button[data-docid='" + noteArr[0].DocGuid + "']").eq(0).addClass("btn-success");
-                }
-                else {
-                    $("button[data-docid='" + noteArr[0].DocGuid + "']").eq(0).addClass("btn-default");
-                }
+                updateDocLevelNoteButton(result, noteArr[0].DocGuid);
                 successTips();
             },
             complete: function (XMLHttpRequest, textStatus) {
@@ -77,8 +121,19 @@ function updateMeetingNoteToDb(noteArr)
         });
     }
 }
+function updateDocLevelNoteButton(amount, docGuid) {
+    $("button[data-docid='" + docGuid + "']").eq(0).removeClass("btn-default").removeClass("btn-success");
+    if (amount > 0) {
+        $("button[data-docid='" + docGuid + "']").eq(0).addClass("btn-success");
+    }
+    else {
+        $("button[data-docid='" + docGuid + "']").eq(0).addClass("btn-default");
+    }
+}
 function loadNoteData(docId)
 {
+    $("#myNotesModal").find(".options").html("");
+    var allDisplayTags = "";
     $("#meetingNote-table >tbody").html("");
     $.ajax({
         url: '/MeetingNote/GetMeetingNotes',
@@ -103,6 +158,19 @@ function loadNoteData(docId)
                         options: data.AllTags,
                         create: true
                     });
+                    if (data.Tags.length > 0) {
+                        allDisplayTags += data.Tags;
+                        allDisplayTags += ","
+                    }
+                }
+            }
+            if (allDisplayTags.length > 0) {
+                allDisplayTags = allDisplayTags.substring(0, allDisplayTags.length - 1);
+                var tagArr = allDisplayTags.split(",");
+                tagArr = $.unique(tagArr);
+                for (var i = 0; i < tagArr.length; i++) {
+                    var tagStr = '<div class="noteSelected tagDisplay" data-tag="' + tagArr[i] + '">' + tagArr[i] + '</div>';
+                    $("#myNotesModal").find(".options").append(tagStr);
                 }
             }
             $("#myNotesModal").modal('show');

@@ -16,8 +16,10 @@ namespace MIMap.Controllers
     {
         ISearchQueryRepository searchQueryRepository;
         IMapDataRepository mapRepository;
+        IMeetingNote meetingNoteRepository;
         public HomeController()
         {
+            meetingNoteRepository = DependencyResolver.Current.GetService<IMeetingNote>();
             searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
             mapRepository = DependencyResolver.Current.GetService<IMapDataRepository>();
 
@@ -86,7 +88,8 @@ namespace MIMap.Controllers
         public JsonResult SaveComment(DocQueryResultModel message)
         {
             DocQueryDB.UpdateQueryComment(message);
-            return Json("Success", JsonRequestBehavior.AllowGet);
+            var amount = meetingNoteRepository.GetMeetingRelatedNotesAmount(message.DocId);
+            return Json(amount, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

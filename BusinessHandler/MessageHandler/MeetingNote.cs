@@ -12,9 +12,11 @@ namespace BusinessHandler.MessageHandler
     public interface IMeetingNote
     {
         List<MeetingNote> GetMeetingNotes(string docGuid, string note);
-        int UpdateMeetingNotes(List<MeetingNote> notes);
+        void UpdateMeetingNotes(List<MeetingNote> notes);
         List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total);
         MapMeetingCity GetMapPopUpInfo(string cityGuid);
+
+        int GetMeetingRelatedNotesAmount(string guid);
     }
 
     public class SqlServerMeetingNote : IMeetingNote
@@ -187,15 +189,12 @@ namespace BusinessHandler.MessageHandler
 
         }
 
-        public int UpdateMeetingNotes(List<MeetingNote> notes)
+        public void UpdateMeetingNotes(List<MeetingNote> notes)
         {
-            int count = 0;
-            var docGuid = "";
             if (notes.Any())
             {
                 foreach (var r in notes)
                 {
-                    docGuid = r.DocGuid;
                     if (string.IsNullOrWhiteSpace(r.Note))
                     {
                         r.Status = "Deleted";
@@ -204,19 +203,20 @@ namespace BusinessHandler.MessageHandler
                     switch (r.Status)
                     {
                         case "Added":
-                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes,Tags, USR_CRTN_ID,USR_MDFN_ID) values('" + r.Guid + "','" + r.DocGuid + "',@note,@Tags, @modifyUser,@modifyUser)";
+                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes,Tags, USR_CRTN_ID,USR_MDFN_ID) values(@GUID,'" + r.DocGuid + "',@note,@Tags, @modifyUser,@modifyUser)";
                             break;
                         case "Deleted":
-                            queryString = "DELETE FROM MeetingNote WHERE [GUID]='" + r.Guid + "'";
+                            queryString = "DELETE FROM MeetingNote WHERE [GUID]=@GUID";
                             break;
                         case "Modified":
-                            queryString = "UPDATE MeetingNote SET Notes= @note , USR_MDFN_TS= '" + DateTime.Now + "' ,Tags=@Tags, USR_MDFN_ID=@modifyUser WHERE [Guid]='" + r.Guid + "'";
+                            queryString = "UPDATE MeetingNote SET Notes= @note , USR_MDFN_TS= '" + DateTime.Now + "' ,Tags=@Tags, USR_MDFN_ID=@modifyUser WHERE [Guid]=@GUID";
                             break;
                     }
                     using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
                     {
                         SqlCommand command = new SqlCommand(queryString, connection);
-                        if (r.Status == "Added"|| r.Status == "Modified")
+                        command.Parameters.AddWithValue("@GUID", r.Guid);
+                        if (r.Status == "Added" || r.Status == "Modified")
                         {
                             command.Parameters.AddWithValue("@note", r.Note);
                             command.Parameters.AddWithValue("@modifyUser", r.ModifyUser);
@@ -226,16 +226,7 @@ namespace BusinessHandler.MessageHandler
                         command.ExecuteNonQuery();
                     }
                 }
-                var query = "select count(*) number from MeetingNote WHERE [Doc_Guid]='" + docGuid + "'";
-                using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
-                {
-                    SqlCommand command = new SqlCommand(query, connection);
-                    connection.Open();
-                    count = Convert.ToInt32(command.ExecuteScalar());
-                }
-
             }
-            return count;
         }
 
 
@@ -280,6 +271,32 @@ WHERE C.guid = '" + cityGuid + "'  order by Q.MEETING_DATE desc";
             }
             result.MeetingList = list;
             return result;
+        }
+
+
+        public int GetMeetingRelatedNotesAmount(string guid)
+        {
+            var amount = 0;
+            var queryString = @"SELECT COUNT(*) AMOUNT FROM MeetingNote WHERE DOC_GUID=@GUid
+UNION
+SELECT COUNT(*) AMOUNT FROM DOCUMENT D INNER JOIN 
+QUERY Q ON D.DOC_GUID=Q.DOC_GUID
+INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID
+WHERE D.DOC_GUID=@GUid
+AND QE.COMMENT IS NOT NULL AND QE.COMMENT<>''";
+
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@GUid", guid);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    amount += Convert.ToInt32(reader["AMOUNT"]);
+                }
+            }
+            return amount;
         }
     }
 }

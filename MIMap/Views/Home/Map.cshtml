@@ -41,7 +41,7 @@
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/tinycolor/0.11.1/tinycolor.min.js"></script>
     <script src="~/Scripts/bootstrap.colorpickersliders.js?version=@StaticSetting.version"></script>
-<link href="~/Content/selectize.legacy.css?version=@StaticSetting.version" rel="stylesheet" />
+<link href="~/Content/selectize.default.css" rel="stylesheet" />
 <script src="~/Scripts/selectize.min.js"></script>
 
 <div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px; width:100%" id="div_tab_header">
@@ -240,7 +240,7 @@
                     <h4 class="modal-title">Maintain Meeting Notes</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="options"><div class="o_close">111</div><div class="o_close">222</div></div>
+                    <div class="options"></div>
                     <input type="hidden" id="hid_noteDocId" />
                     <table class="table" id="meetingNote-table">
                         <thead><tr><th style="width:40%">Note</th><th style="width:35%">Tags</th><th style="width:10%">Date</th><th style="width:10%">User</th><th style="width:4%"></th><th style="width:1%"></th></tr></thead>
@@ -292,6 +292,8 @@
                     pageList: [10, 25, 50, 100],
                     showColumns: true,
                     detailView: true,
+                    sortName:'MeetingDateDisplay',
+                    sortOrder: 'desc',
                     achillesToolbar: true,
                     columns: [
                          {
@@ -471,7 +473,7 @@
         function OpenDataDetail(obj) {
             var queryGuid = $(obj).attr("data-queryguid");
             var comment = $(obj).parent().prev().children().html();
-            $("#hid_DocId").val("");
+            $("#hid_DocId").val($(obj).attr("data-querydocId"));
             $("#hid_QueryGuid").val(queryGuid);
             $("#txt_Comments").val(comment);
             $("#myModal").modal('show');
@@ -931,14 +933,21 @@
             $("#btn_Save_Comment").click(function () {
                 $.ajax({
                     url: '@Url.Action("SaveComment", "Home")',
-                    data: { Comment: $("#txt_Comments").val(), QueryGuid: $("#hid_QueryGuid").val() },
+                    data: { Comment: $("#txt_Comments").val(), QueryGuid: $("#hid_QueryGuid").val() ,DocId: $("#hid_DocId").val()},
                     dataType: 'json',
                     type: "POST",
                     success: function (result) {
                         successTips();
+                        $('#' + $("#hid_QueryGuid").val()).html($("#txt_Comments").val());
+                        if($("#txt_Comments").val().length>0){
+                            $('#' + $("#hid_QueryGuid").val()).parent().next().children().removeClass("btn-success").removeClass("btn-default").addClass("btn-success");
+                        }
+                        else{
+                            $('#' + $("#hid_QueryGuid").val()).parent().next().children().removeClass("btn-success").removeClass("btn-default").addClass("btn-default");
+                        }
+                        updateDocLevelNoteButton(result, $("#hid_DocId").val());
                     },
                     complete: function (XMLHttpRequest, textStatus) {
-                        $('#' + $("#hid_QueryGuid").val()).html($("#txt_Comments").val());
                         $("#myModal").modal('hide');
                     },
                     error: function (xhr, textStatus, errorThrown) {
