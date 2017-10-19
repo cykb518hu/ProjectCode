@@ -226,7 +226,10 @@ namespace BusinessHandler.MessageHandler
                             {
                                 var startIndex = r.Note.IndexOf('(');
                                 var endIndex = r.Note.IndexOf(')');
-                                futureDate = r.Note.Substring(startIndex + 1, endIndex - startIndex - 1);
+                                if(endIndex>startIndex&&startIndex>0)
+                                {
+                                    futureDate = r.Note.Substring(startIndex + 1, endIndex - startIndex - 1);
+                                }
                             }
                             command.Parameters.AddWithValue("@note", r.Note);
                             command.Parameters.AddWithValue("@modifyUser", r.ModifyUser);

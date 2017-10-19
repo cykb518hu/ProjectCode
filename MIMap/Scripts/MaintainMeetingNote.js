@@ -52,8 +52,6 @@
 
     $("#btn-add-meetingNote").click(function () {
 
-        var str = "";
-        str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" required="required"></textarea></td><td><input type="text" class="input-tags demo-default" value="" ></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + currentUser + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span></td></tr>';
 
         $tr = $('<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" required="required"></textarea></td><td class="td-tag"></td><td>' + new Date().Format("yyyy-MM-dd") + '</td><td>' + currentUser + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Added</span><span style="display:none" class="note-guid">' + guid() + '</span><span style="display:none" class="note-old-value"></span></td></tr>');
         $input = $('<input type="text" class="input-tags" value="" >');
@@ -84,14 +82,18 @@
             }
             if (status.length > 0)
             {
-                var note = {
-                    Note: $(this).find(".note-text").val(),
-                    Guid: $(this).find(".note-guid").html(),
-                    Tags: $(this).find(".input-tags").val(),
-                    Status: $(this).find(".note-status").html(),
-                    DocGuid:docGuid
-                };
-                noteArr.push(note);
+                var oldNote = $(this).find(".note-old-value").html();
+                if (noteStr != oldNote) {
+                    var note = {
+                        Note: $(this).find(".note-text").val(),
+                        Guid: $(this).find(".note-guid").html(),
+                        Tags: $(this).find(".input-tags").val(),
+                        Status: $(this).find(".note-status").html(),
+                        DocGuid: docGuid
+                    };
+                    noteArr.push(note);
+                }
+              
             }
         })
         updateMeetingNoteToDb(noteArr);
@@ -120,6 +122,9 @@ function updateMeetingNoteToDb(noteArr)
             }
         });
     }
+    else {
+        $("#myNotesModal").modal('hide');
+    }
 }
 function updateDocLevelNoteButton(amount, docGuid) {
     $("button[data-docid='" + docGuid + "']").eq(0).removeClass("btn-default").removeClass("btn-success");
@@ -144,7 +149,7 @@ function loadNoteData(docId)
             if (result.length > 0) {
                 for (var i = 0; i < result.length; i++) {
                     var data = result[i];
-                    $tr = $('<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" >' + data.Note + '</textarea></td><td class="td-tag"></td><td>' + data.CreateDate + '</td><td>' + data.ModifyUser + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Modified</span><span style="display:none" class="note-guid">' + data.Guid + '</span></td></tr>');
+                    $tr = $('<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" >' + data.Note + '</textarea></td><td class="td-tag"></td><td>' + data.CreateDate + '</td><td>' + data.ModifyUser + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status">Modified</span><span style="display:none" class="note-guid">' + data.Guid + '</span><span style="display:none" class="note-old-value">' + data.Note + '</span></td></tr>');
                     $input = $('<input type="text" class="input-tags" value="' + data.Tags + '" >');
                     $tr.find("td.td-tag").append($input);
                    // str = '<tr><td><textarea class="form-control note-text" rows="2" onchange="modifyMeetingNote(this); return false" >' + data.Note + '</textarea></td><td><input type="text" class="input-tags demo-default" value="" ></td><td>' + data.CreateDate + '</td><td>' + data.ModifyUser + '</td><td><button type="button" class="btn btn-default glyphicon glyphicon-remove" onclick="deleteMeetingNote(this); return false"></button></td><td><span style="display:none" class="note-status"></span><span style="display:none" class="note-guid">' + data.Guid + '</span><span style="display:none" class="note-old-value">' + data.Note + '</span></td></tr>';
