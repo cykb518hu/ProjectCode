@@ -15,8 +15,11 @@ namespace BusinessHandler.MessageHandler
         void UpdateMeetingNotes(List<MeetingNote> notes);
         List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total);
         MapMeetingCity GetMapPopUpInfo(string cityGuid);
-
         int GetMeetingRelatedNotesAmount(string guid);
+        List<MeetingCalendar> GetMeetingCalendar(DocQueryMessage message);
+
+        
+     
     }
 
     public class SqlServerMeetingNote : IMeetingNote
@@ -203,13 +206,13 @@ namespace BusinessHandler.MessageHandler
                     switch (r.Status)
                     {
                         case "Added":
-                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes,Tags, USR_CRTN_ID,USR_MDFN_ID) values(@GUID,'" + r.DocGuid + "',@note,@Tags, @modifyUser,@modifyUser)";
+                            queryString = "INSERT INTO MeetingNote([GUID],[Doc_Guid],Notes,Tags, USR_CRTN_ID,USR_MDFN_ID,FutureDate) values(@GUID,'" + r.DocGuid + "',@note,@Tags, @modifyUser,@modifyUser,@FutureDate)";
                             break;
                         case "Deleted":
                             queryString = "DELETE FROM MeetingNote WHERE [GUID]=@GUID";
                             break;
                         case "Modified":
-                            queryString = "UPDATE MeetingNote SET Notes= @note , USR_MDFN_TS= '" + DateTime.Now + "' ,Tags=@Tags, USR_MDFN_ID=@modifyUser WHERE [Guid]=@GUID";
+                            queryString = "UPDATE MeetingNote SET Notes= @note , USR_MDFN_TS= '" + DateTime.Now + "' ,Tags=@Tags, USR_MDFN_ID=@modifyUser, FutureDate=@FutureDate WHERE [Guid]=@GUID";
                             break;
                     }
                     using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
@@ -218,9 +221,17 @@ namespace BusinessHandler.MessageHandler
                         command.Parameters.AddWithValue("@GUID", r.Guid);
                         if (r.Status == "Added" || r.Status == "Modified")
                         {
+                            var futureDate = "";
+                            if (!string.IsNullOrWhiteSpace(r.Note))
+                            {
+                                var startIndex = r.Note.IndexOf('(');
+                                var endIndex = r.Note.IndexOf(')');
+                                futureDate = r.Note.Substring(startIndex + 1, endIndex - startIndex - 1);
+                            }
                             command.Parameters.AddWithValue("@note", r.Note);
                             command.Parameters.AddWithValue("@modifyUser", r.ModifyUser);
                             command.Parameters.AddWithValue("@Tags", string.IsNullOrWhiteSpace(r.Tags) ? "" : r.Tags);
+                            command.Parameters.AddWithValue("@FutureDate", futureDate);
                         }
                         connection.Open();
                         command.ExecuteNonQuery();
@@ -297,6 +308,38 @@ AND QE.COMMENT IS NOT NULL AND QE.COMMENT<>''";
                 }
             }
             return amount;
+        }
+
+        public List<MeetingCalendar> GetMeetingCalendar(DocQueryMessage message)
+        {
+            var list = new List<MeetingCalendar>();
+
+            string queryString = @"[dbo].[GET_MeetingCalendar]";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                StaticSetting.BuildParameters(command, message);
+                connection.Open();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var result = new MeetingCalendar();
+                        result.DocGuid = reader["DOC_GUID"].ToString();
+                        result.DocType = reader["DOC_TYPE"].ToString();
+                        result.CityName = reader["CITY_NM"].ToString();
+                        result.FutureDate = DBNull.Value == reader["FutureDate"] ? "" : reader["FutureDate"].ToString();
+                        result.Note = DBNull.Value == reader["Notes"] ? "" : reader["Notes"].ToString();
+                        result.Note = result.CityName + "-" + result.DocType + "-" + result.Note;
+                        list.Add(result);
+
+                    }
+                }
+            }
+            return list;
         }
     }
 }

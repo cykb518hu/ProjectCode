@@ -525,6 +525,16 @@ namespace BusinessHandler.MessageHandler.Tests
             //}
 
         }
+
+        [TestMethod()]
+        public void TestDateTime()
+        {
+            var str = "sdlfjldjf future date(2017-01-03)";
+            var startIndex = str.IndexOf('(');
+            var endIndex= str.IndexOf(')');
+
+            var strDate = str.Substring(startIndex + 1, endIndex - startIndex - 1);
+        }
     }
 
     public class PaymentResult

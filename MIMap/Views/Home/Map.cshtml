@@ -48,6 +48,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active" data-controls="all_data"><a href="#all_data" aria-controls="all_data" role="tab" data-toggle="tab">All Data</a></li>
         <li role="presentation" data-controls="notes_only"><a href="#notes_only" aria-controls="notes_only" role="tab" data-toggle="tab">Ordinances</a></li>
+        <li role="presentation" data-controls="meeting_calendar"><a href="#meeting_calendar" aria-controls="meeting_calendar" role="tab" data-toggle="tab">Calendar</a></li>
     </ul>
     <div class="row">
         <div class="search-container">
@@ -152,6 +153,9 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="notes_only" style="padding-left:15px;padding-right:15px;">
       @Html.Partial("CityAllNote")
+    </div>
+    <div role="tabpanel" class="tab-pane" id="meeting_calendar" style="padding-left:15px;padding-right:15px;">
+        @Html.Partial("MeetingCalendar")
     </div>
 </div>
 

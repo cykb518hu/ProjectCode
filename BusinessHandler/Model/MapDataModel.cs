@@ -100,12 +100,24 @@ namespace BusinessHandler.Model
 
         public List<NoteTags> AllTags { get; set; }
 
+
     }
     public class NoteTags
     {
         public string tag { get; set; }
     }
 
+
+    public class MeetingCalendar
+    {
+        public string CityName { get; set; }
+        public string DocType { get; set; }
+        public string Note { get; set; }
+        public string DocGuid { get; set; }
+        public string FutureDate { get; set; }
+
+
+    }
 
 
 

@@ -169,6 +169,7 @@
     <Content Include="Content\bootstrap.colorpickersliders.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\calendar.css" />
     <Content Include="Content\selectize.bootstrap3.css" />
     <Content Include="Content\selectize.default.css" />
     <Content Include="Content\selectize.legacy.css" />
@@ -182,6 +183,9 @@
     <Content Include="Image\MiMapLogo.png" />
     <Content Include="Image\MiMapLogo1.png" />
     <Content Include="Image\pleasewait.gif" />
+    <Content Include="img\dark_wood.png" />
+    <Content Include="img\slide-bg.png" />
+    <Content Include="img\tick.png" />
     <Content Include="map-backup.html" />
     <Content Include="Scripts\bootstrap-combobox.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -200,6 +204,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\eee.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\calendar.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -219,6 +224,12 @@
     <Content Include="Scripts\selectize.min.js" />
     <Content Include="Scripts\simpler-sidebar.min.js" />
     <Content Include="Scripts\transition.js" />
+    <Content Include="Scripts\underscore-min.js" />
+    <Content Include="tmpls\events-list.html" />
+    <Content Include="tmpls\month-day.html" />
+    <Content Include="tmpls\month.html" />
+    <Content Include="tmpls\year-month.html" />
+    <Content Include="tmpls\year.html" />
     <Content Include="uploads\6cDGi.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -244,10 +255,10 @@
     <Content Include="Views\Account\MaintainUser.cshtml" />
     <Content Include="Views\Shared\CitySideBar.cshtml" />
     <Content Include="Views\Shared\CityAllNote.cshtml" />
+    <Content Include="Views\Shared\MeetingCalendar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

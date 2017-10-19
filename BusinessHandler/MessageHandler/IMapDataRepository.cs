@@ -82,7 +82,7 @@ namespace BusinessHandler.MessageHandler
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                BuildParameters(command, message);
+                StaticSetting.BuildParameters(command, message);
                 connection.Open();
 
                 using (var reader = command.ExecuteReader())
@@ -113,7 +113,7 @@ namespace BusinessHandler.MessageHandler
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                BuildParameters(command, message);
+                StaticSetting.BuildParameters(command, message);
 
                 connection.Open();
 
@@ -293,59 +293,6 @@ namespace BusinessHandler.MessageHandler
         }
 
 
-        public void BuildParameters(SqlCommand command,DocQueryMessage message)
-        {
-            if (!string.IsNullOrWhiteSpace(message.CityName) && !message.CityName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-            {
-                 command.Parameters.AddWithValue("@CityName", StaticSetting.GetArrayQuery(message.CityName));
-            }
-            if (!string.IsNullOrWhiteSpace(message.CountyName) && !message.CountyName.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-            {
-                command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
-            }
-            if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-            {
-                command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
-            }
-            if (!string.IsNullOrWhiteSpace(message.MeetingDate))
-            {
-                command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);
-            }
-            if (!string.IsNullOrWhiteSpace(message.StartMeetingDate))
-            {
-                command.Parameters.AddWithValue("@StartMeetingDate", message.StartMeetingDate);
-            }
-            if (!string.IsNullOrWhiteSpace(message.EndMeetingDate))
-            {
-                command.Parameters.AddWithValue("@EndMeetingDate", message.EndMeetingDate);
-            }
-            if (!string.IsNullOrWhiteSpace(message.DeployDate) && !message.DeployDate.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-            {
-                command.Parameters.AddWithValue("@DeployeDate", StaticSetting.GetArrayQuery(message.DeployDate));
-            }
-            if (!string.IsNullOrWhiteSpace(message.IsViewed) && !message.IsViewed.Equals("All", StringComparison.OrdinalIgnoreCase))
-            {
-                var isChecked = message.IsViewed == "Yes" ? "True" : "False";
-                command.Parameters.AddWithValue("@IsChecked", isChecked);
-            }
-            //important means removed
-            if (!string.IsNullOrWhiteSpace(message.Important) && !message.Important.Equals("All", StringComparison.OrdinalIgnoreCase))
-            {
-                var isImportant = message.Important == "Yes" ? "True" : "False";
-                command.Parameters.AddWithValue("@IsImportant", isImportant);
-            }
-
-            var email = StaticSetting.GetUserEmail();
-            if (!string.IsNullOrWhiteSpace(email))
-            {
-                command.Parameters.AddWithValue("@UserEmail", email);
-            }
-            if (!string.IsNullOrWhiteSpace(message.State))
-            {
-                command.Parameters.AddWithValue("@State", message.State);
-            }
-        }
-
         public void UpdateMapColor(string cityGuid, string color)
         {
             if (color == "blue")
@@ -373,7 +320,7 @@ namespace BusinessHandler.MessageHandler
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType= CommandType.StoredProcedure;
-                BuildParameters(command, message);
+                StaticSetting.BuildParameters(command, message);
                 connection.Open();
                 if (string.IsNullOrEmpty(cityGuid))
                 {
@@ -602,5 +549,6 @@ namespace BusinessHandler.MessageHandler
 
             return o.ToString();
         }
+
     }
 }

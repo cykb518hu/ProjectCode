@@ -87,5 +87,13 @@ namespace MIMap.Controllers
             var data = meetingNoteRepository.GetMapPopUpInfo(guid);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult GetMeetingCalendar(DocQueryMessage message)
+        {
+            var result = meetingNoteRepository.GetMeetingCalendar(message);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
