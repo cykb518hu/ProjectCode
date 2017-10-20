@@ -51,12 +51,16 @@ namespace BusinessHandler.MessageHandler
         {
             var list = new List<MapFilterModel>();
             var email = StaticSetting.GetUserEmail();
-            string queryString = @"select  * from [dbo].[CITY] C INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID WHERE AC.EMAIL=@EMAIL and c.states=@state order by DEPLOYE_DATE desc";
+            string queryString = @"select  * from [dbo].[CITY] C INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID WHERE AC.EMAIL=@EMAIL order by DEPLOYE_DATE desc";
+            if (!string.IsNullOrWhiteSpace(state))
+            {
+                queryString = @"select  * from [dbo].[CITY] C INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID WHERE AC.EMAIL=@EMAIL and c.states='" + state + "' order by DEPLOYE_DATE desc";
+            }
+           
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.AddWithValue("@EMAIL", email);
-                command.Parameters.AddWithValue("@state", state);
                 connection.Open();
                 var reader = command.ExecuteReader();
                 while (reader.Read())

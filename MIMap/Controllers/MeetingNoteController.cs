@@ -91,7 +91,10 @@ namespace MIMap.Controllers
         [HttpGet]
         public JsonResult GetMeetingCalendar(DocQueryMessage message)
         {
+            message.Important = "";
+            message.IsViewed = "";
             var result = meetingNoteRepository.GetMeetingCalendar(message);
+           
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

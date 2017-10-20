@@ -26,6 +26,13 @@
 
 <script>
     jQuery(document).ready(function ($) {
+
+        $("a[aria-controls='meeting_calendar']").click(function () {
+          
+            initialCalendar();
+        });
+    });
+    function initialCalendar() {
         var options = {
             events_source: loadCalendarData(),
             view: 'month',
@@ -41,24 +48,34 @@
                 months: {
                     general: 'label'
                 }
+            },
+            views: {
+                day: {
+                    enable: 0
+                }
             }
         };
 
         var calendar = $('#calendar').calendar(options);
+
         $('.btn-group button[data-calendar-nav]').each(function () {
             var $this = $(this);
+            $this.off();
             $this.click(function () {
                 calendar.navigate($this.data('calendar-nav'));
             });
         });
 
         $('.btn-group button[data-calendar-view]').each(function () {
+
             var $this = $(this);
+            $this.off();
             $this.click(function () {
                 calendar.view($this.data('calendar-view'));
             });
         });
-    });
+
+    }
     function loadCalendarData() {
         var source = new Array();
         $.ajax({

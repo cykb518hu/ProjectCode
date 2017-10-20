@@ -57,56 +57,6 @@
 
 
 <script>
-        //$(function () {
-        //    loadListData();
-        //});
-
-        //function loadListData() {
-        //    var oTable = new TableInit();
-        //    oTable.Init();
-        //    var oButtonInit = new ButtonInit();
-        //    oButtonInit.Init();
-        //}
-
-        //var TableInit = function () {
-        //    var oTableInit = new Object();
-        //    oTableInit.Init = function () {
-        //        $('#tb_cityAllNote').bootstrapTable({
-        //            url: '/Home/GetCityOrdinanceList',
-        //            method: 'get',
-        //            cache: false,
-        //            pagination: true,
-        //            toolbar:'#toolbar',
-        //            sortable: false,
-        //            queryParams: oTableInit.queryParams,
-        //            sidePagination: "server",
-        //            pageList: [10, 25, 50, 100],
-        //            showColumns: true,
-        //            onLoadSuccess: function (data) {
-        //                $('[data-toggle="popover"]').popover();
-                       
-        //            },
-        //        });
-        //    };
-        //    oTableInit.queryParams = function (params) {
-        //        var temp = {};// getQueryData();// = getSearchData();
-        //        temp.limit = params.limit;
-        //        temp.offset = params.offset;
-        //        temp.sortName = this.sortName;
-        //        temp.sortOrder = this.sortOrder;
-        //        return temp;
-        //    };
-        //    return oTableInit;
-        //};
-        //var ButtonInit = function () {
-        //    var oInit = new Object();
-        //    var postdata = {};
-        //    oInit.Init = function () {
-        //        //初始化页面上面的按钮事件
-        //    };
-        //    return oInit;
-        //};
-
         function editCityNote(obj)
         {
             var guid = $(obj).attr("data-cityGuid");

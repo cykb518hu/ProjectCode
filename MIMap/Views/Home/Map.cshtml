@@ -268,7 +268,7 @@
         });
         function loadAllDataBySequence()
         {
-            //initialMap();
+            initialMap();
             loadListData();
             loadQueryGroup();
         }
@@ -613,22 +613,25 @@
             return result;
         }
         function searchData() {
-            var allData=false;
+            var pageTag="";
             $("li[role='presentation']").each(function(){
-                if($(this).hasClass("active")&&$(this).attr("data-controls")=="all_data"){
-                    allData=true;
+                if($(this).hasClass("active")){
+                    pageTag=$(this).attr("data-controls");
                 }
             });
             var temp = getSearchData();
             var tempQueryParams = function () {
                 return temp;
             };
-            if(allData){
-                $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 50 });
+            if(pageTag=="all_data"){
+                $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 25 });
                 loadMapData();
             }
-            else{
+            else if(pageTag=="notes_only"){
                 $("#tb_cityAllNote").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
+            }
+            else{
+                initialCalendar();
             }
         }
         function loadQueryGroup() {

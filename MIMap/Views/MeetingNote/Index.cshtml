@@ -19,61 +19,68 @@
             }
     </script>
 
-    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;"  id="div-note-all">
-        <div class="col-md-2"></div>
-        <div class="col-md-8" id="div-data-area">
-            <div class="search-container">
-                <div class="row property-search-form">
-
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
-                            @{
-                                foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
+<div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px; padding-right:10px; width:100%" id="div_tab_header">
+    <div class="row">
+        <div class="search-container">
+            <div class="row property-search-form">
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <select name="sel_search_CountyName" id="sel_search_CountyName" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var r in municipalityList.OrderBy(x => x.CountyName).Select(x => x.CountyName).Distinct())
+                            {
+                                if (!string.IsNullOrEmpty(r))
                                 {
-                                    if (!string.IsNullOrEmpty(r))
-                                    {
-                                        <option value="@r">@r</option>
-                                    }
+                                    <option value="@r">@r</option>
                                 }
                             }
-                        </select>
+                        }
+                    </select>
 
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
-                            @{
-                                foreach (var r in municipalityList.OrderBy(x => x.MunicipalityName))
+                </div>
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var r in municipalityList.OrderBy(x => x.MunicipalityName))
+                            {
+                                if (!string.IsNullOrEmpty(r.MunicipalityName))
                                 {
-                                    if (!string.IsNullOrEmpty(r.MunicipalityName))
-                                    {
-                                        <option value="@r.MunicipalityName">@r.MunicipalityName</option>
-                                    }
+                                    <option value="@r.MunicipalityName">@r.MunicipalityName</option>
                                 }
                             }
-                        </select>
+                        }
+                    </select>
 
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Note Date" class="form-control" />
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Note Date" class="form-control" />
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
-                        <input type="text"  id="txt_search_Note" placeholder="note..." class="form-control" />
-                    </div>
-                    <div class="col-xs-12 col-sm-6 form-group">
+                </div>
 
-                        <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
-                    </div>
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Note Date" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Note Date" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <input type="text" id="txt_search_Note" placeholder="note..." class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-2 form-group">
+                    <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
                 </div>
             </div>
-            <div style="margin-top:20px;">
-                <table id="tb_meetingNote"></table>
-            </div>
         </div>
-        <div class="col-md-2"></div>
+
     </div>
+</div>
+    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px; padding-left:15px; padding-right:15px;" id="div-note-all">
+        <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10">
+
+                <div style="margin-top:20px;" id="div_meetingNote">
+                    <table id="tb_meetingNote"></table>
+                </div>
+            </div>
+        <div class="col-sm-1">
+        </div>
+        </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
         <div class="modal-dialog small" role="document">
             <div class="modal-content">
@@ -169,7 +176,7 @@
                         };
                         $("#tb_meetingNote").bootstrapTable('expandAllRows');
                     },
-                   
+
 
                 });
             };
@@ -215,7 +222,7 @@
                          {
                              field: 'Operation',
                              title: '',
-                             align:'center',
+                             align: 'center',
                              width: '10%'
                          },
                            {
@@ -247,13 +254,14 @@
             return oInit;
         };
     </script>
-     <script>
+    <script>
         jQuery(document).ready(function ($) {
 
             $("#sel_search_CountyName").multiselect({
                 buttonWidth: '100%',
                 includeSelectAllOption: true,
                 selectAllText: 'All',
+                maxHeight: '300',
                 nonSelectedText: 'No County Selected',
                 onChange: function (element, checked) {
                     rebuildMuniciplitySelect();
@@ -269,6 +277,7 @@
                 buttonWidth: '100%',
                 nonSelectedText: 'No Municipality Selected',
                 includeSelectAllOption: true,
+                 maxHeight: '300',
                 selectAllText: 'All'
             });
             //this is note add date
@@ -308,7 +317,7 @@
                     Note: $("#txt_Comments").val(),
                     CreateDate: new Date().Format("yyyy-MM-dd"),
                     ModifyDate: new Date().Format("yyyy-MM-dd"),
-                    ModifyUser:currentUser,
+                    ModifyUser: currentUser,
                     Operation: "<button type='button' class='btn btn-default glyphicon glyphicon-remove' title='Remove Notes' data-guid='" + curGuid + "' data-docId='" + $("#hid_DocId").val() + "' onclick='removeMeetingNotes(this); return false'></button>"
                 };
 
@@ -384,8 +393,7 @@
             };
             return result;
         }
-        function addMeetingNotes(obj)
-        {
+        function addMeetingNotes(obj) {
             $("#txt_Comments").val("");
             $("#hid_guid").val("");
             var docId = $(obj).attr("data-docid");
@@ -394,8 +402,7 @@
             $("#hid_index").val(index);
             $("#myModal").modal('show');
         }
-        function editMeetingNotes(obj)
-        {
+        function editMeetingNotes(obj) {
             var guid = $(obj).attr("data-guid");
             $("#hid_guid").val(guid);
             var docId = $(obj).attr("data-docid");
@@ -416,15 +423,14 @@
                 DocGuid: docId
             };
             noteArr.push(note);
-           
+
             updateMeetingNoteToDb(noteArr);
             var index = $(obj).closest("table").find("tr:first").find("th:last").attr("title");
             updateNoteStorage(index, note);
-         
+
         }
 
-        function updateNoteStorage(index,note)
-        {
+        function updateNoteStorage(index, note) {
             var docId = note.DocGuid;
             var jarray = JSON.parse(sessionStorage.getItem(docId));
             if (note.Status == "Deleted") {
@@ -456,5 +462,5 @@
             }
         }
 
- 
+
     </script>
