@@ -314,3 +314,7 @@ ALTER table [dbo].[CITY_Ordinance] alter column  BufferOtherFeet int
 
 
 ALTER table [dbo].[MeetingNote] add Tags varchar(100)
+
+ALTER table [dbo].[MeetingNote] add FutureDate varchar(20)
+
+--2017-10-23

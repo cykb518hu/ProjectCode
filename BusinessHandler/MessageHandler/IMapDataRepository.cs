@@ -250,7 +250,7 @@ namespace BusinessHandler.MessageHandler
                         var result = new MapMeetingKeyWord();
                         result.DocId = reader["DOC_GUID"].ToString();
                         result.QueryGuid = reader["ENTRY_GUID"].ToString();
-                        result.PageNumber = reader["PAGE_NUMBER"].ToString();
+                        result.PageNumber = DBNull.Value == reader["PAGE_NUMBER"] ? 0 : Convert.ToInt32(reader["PAGE_NUMBER"]);
                         result.KeyWord = reader["KEYWORD"].ToString();
                         result.Comment = "<span id=" + result.QueryGuid + ">" + (DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString()) + "</span>";
                         result.Content = DBNull.Value == reader["CONTENT"] ? "" : reader["CONTENT"].ToString();

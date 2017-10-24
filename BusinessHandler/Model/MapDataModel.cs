@@ -52,7 +52,7 @@ namespace BusinessHandler.Model
         public string QueryGuid { get; set; }
         public string DocId { get; set; }
 
-        public string PageNumber { get; set; }
+        public int PageNumber { get; set; }
         public string KeyWord { get; set; }
         public string Content { get; set; }
       
