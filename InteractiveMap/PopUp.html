@@ -1,124 +1,87 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>
-        customhoverwindows | CartoDB
-    </title>
-
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
-    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
-
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" type="text/css" />
-    <link rel="stylesheet" href="http://academy.cartodb.com/css/cdbui.css" type="text/css" />
-
-    <style type="text/css">
-        html, body, #map {
-            height: 100%;
-            padding: 0;
-            margin: 0;
-        }
-
-        #hover {
-            background: #333;
-            width: 150px;
-            position: absolute;
-            padding: 5px;
-            color: #aaa;
-        }
-
-        .arrow-down {
-            height: 0;
-            width: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid #333;
-            position: relative;
-            bottom: -15px;
-            right: -60px;
-        }
+    <link rel="stylesheet" href="http://libs.cartodb.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <style>
+           html, body, #map {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
     </style>
 
-    <style type="cartocss/html" id="simple">
-        /** simple visualization */
-
-        #all_day_cdb_gu_l3 {
-            marker-fill-opacity: 0.9;
-            marker-line-color: #FFF;
-            marker-line-width: 1.5;
-            marker-line-opacity: 1;
-            marker-placement: point;
-            marker-type: ellipse;
-            marker-width: 10;
-            marker-fill: #FF6600;
-            marker-allow-overlap: true;
-        }
-    </style>
 </head>
+
 <body>
     <div id="map"></div>
-    <div id="hover">
-        <p>testing testing 123</p>
-        <div class="arrow-down"></div>
-    </div>
 
 
-    <!-- include cartodb.js library -->
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js" type="text/javascript"></script>
-    <!-- Place your code in the script tags below -->
-    <script type="text/javascript">
-        window.onload = function() {
+    <script type="infowindow/html" id="infowindow_template">
+        <div id="pop-window" class="cartodb-popup header blue v2" >
+            <a id="pop-window-close" href="#close" class="cartodb-popup-close-button close">x</a>
+            <div class="cartodb-popup-header">
+                <h2></h2>
+                <span class="separator"></span>
+            </div>
+            <div class="cartodb-popup-content-wrapper">
+                <div class="cartodb-popup-content">
+                    <p>This municipality has <span id="pop-map-doc-amount"></span> meetings scraped</p>
+                    <p>This municipality has <span id="pop-map-key-amount"></span> key words matched</p>
+                    <h3 style="margin-top:5px; margin-bottom:7px;">Time line</h3>
+                    <div id="pop-map-timeLine">
 
-            // var tableName = "all_day_cdb_gu_l3";
-            var tableName = "earthquakes_cdbjs_lesson3";
+                    </div>
 
-            var layerSource = {
-                    user_name: 'documentation',
-                    type: 'cartodb',
-                    sublayers: [{
-                        sql: "SELECT * FROM " + tableName, // Earthquake data
-                        cartocss: $("#simple").html() // Simple visualization
-                    }]
-            }
-
-            // Instantiate new map object, place it in 'map' element
-            var map_object = new L.Map('map', {
-                center: [37.7741154,-122.4437914], // San Francisco
-                zoom: 2,
-                scrollWheelZoom: false
-            });
-
-            // Pull tiles from CartoDB's basemaps
-            L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map_object);
-
-            // for storing sublayer outside of createlayer
-            var sublayers;
-
-            // Add data layer to your map
-            cartodb.createLayer(map_object,layerSource)
-                .addTo(map_object)
-                .done(function(layer) {
-                    sublayer = layer.getSubLayer(0);
-                    sublayer.setInteraction(true);
-                    sublayer.setInteractivity('mag,place');
-                    console.log("num layers", layer.getSubLayerCount());
-
-                    sublayer.on('featureClick', function(e, latlng, pos, data, layerNumber) {
-                        cartodb.log.log(e, latlng, pos, data, layerNumber);
-                        $("#hover").css({'display':'block','left':pos.x-75,'bottom':($(window).height()-pos.y+20), 'cursor': 'pointer'});
-                        $("#hover").find('p').text(data.place);
-                    });
-                    sublayer.on('featureOut', function(e,latlng, pos, data, layerNumber) {
-                        $("#hover").css({'display':'none'});
-                    });
-                })
-                .error(function(err) {
-                    console.log("error: " + err);
-                });
-            }
+                </div>
+            </div>
+            <div class="cartodb-popup-tip-container">
+            </div>
+        </div>
     </script>
+
+    <script src="http://libs.cartodb.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+    <script>
+        //map
+        var map;
+        var layer;
+        var layers;
+        var municipalityList = new Array();
+        function initialMap() {
+            cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/cac5a2ed-bd44-4522-ab7d-890251635167/viz.json', {
+                tiles_loader: true,
+                search: false,
+                scrollwheel: false,
+                infowindow:true
+            })
+          .done(function (vis, layers) {
+              map = vis.getNativeMap();
+              var subLayer = layers[1].getSubLayer(0);
+              layer = subLayer;
+              layer.set({ interactivity: "label" });
+              layer.setInteraction(true);
+              createSelector();
+
+          })
+          .error(function (err) {
+              console.log(err);
+          });
+        }
+        function createSelector() {
+            var municipalities = "'City of Ypsilanti','Meridian Township','Oscoda Township','City of Grand Rapids','City of East Lansing','City of Troy','City of Owosso','City of Portage','Pittsfield Township','City of Inkster','West Bloomfield Township','City of Sterling Heights','Waterford Township','City of Warren','Grand Blanc Township','City of Rochester','City of Southfield','City of Novi','City of Kalamazoo','Oshtemo Township','City of Battle Creek','City of Monroe','City of Flint','City of Wyandotte','City of Adrian','City of Garden City','City of Bay City','City of Burton','City of Allen Park','Scio Township','City of Detroit','City of Oak Park','Shelby Township','City of Farmington Hills','Brighton Township','City of Marshall','City of Ann Arbor','City of Wayne','Clinton Township','City of East Grand Rapids','City of Roseville','City of Eastpointe','Canton Township','Bloomfield Township','Independence Township','Commerce Township','City of Davison','City of Zeeland','City of Royal Oak','Gaines Township','City of St Clair Shores','Harrison Township','City of Pontiac','City of Bloomfield Hills','City of Ionia','City of Cadillac','City of Madison Heights','City of Manistee','Davison Township','City of Rochester Hills','City of Midland','City of Dearborn Heights','Flint Township','City of Algonac','Washington Township','Oregon Township','City of Fraser','City of Romulus','Lansing Township','Redford Township','Bangor Township','Plymouth Township','City of Fremont','Genesee Township','City of Kentwood','City of Richmond','City of Ludington','Georgetown Township','Saginaw Township','City of Jackson','Macomb Township','Buena Vista Township','Bedford Township','City of Hamtramck','Brandon Township','City of Taylor','City of Vassar','City of Wyoming','City of Iron Mountain','City of East Tawas','Dundee Township','City of Marlette','St Clair Township','Cottrellville Township','Grosse Ile Township','Brown Township','Northville Township'";
+            var cartocss = "#mi_mun[label='City of Ypsilanti']{polygon-fill: #008B45; line-color: white; } #mi_mun[label='Meridian Township']{polygon-fill: #00EE76; line-color: white; } #mi_mun[label='Oscoda Township']{polygon-fill: #00EE76; line-color: white; } #mi_mun[label='City of Grand Rapids']{polygon-fill: #00EE76; line-color: white; } #mi_mun[label='City of East Lansing']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Troy']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Owosso']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Portage']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Pittsfield Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Inkster']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='West Bloomfield Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Sterling Heights']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Waterford Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Warren']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Grand Blanc Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Rochester']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Southfield']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Novi']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Kalamazoo']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Oshtemo Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Battle Creek']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Monroe']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Flint']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Wyandotte']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Adrian']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Garden City']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Bay City']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Burton']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Allen Park']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Scio Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Detroit']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Oak Park']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Shelby Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Farmington Hills']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Brighton Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Marshall']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Ann Arbor']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Wayne']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Clinton Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of East Grand Rapids']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Roseville']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Eastpointe']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Canton Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Bloomfield Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Independence Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Commerce Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Davison']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Zeeland']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Royal Oak']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Gaines Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of St Clair Shores']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Harrison Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Pontiac']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Bloomfield Hills↵']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Ionia']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Cadillac']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Madison Heights']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Manistee']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Davison Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Rochester Hills']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Midland']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Dearborn Heights']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Flint Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Algonac']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Washington Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Oregon Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Fraser']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Romulus']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Lansing Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Redford Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Bangor Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Plymouth Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Fremont']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Genesee Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Kentwood']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Richmond']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Ludington']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Georgetown Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Saginaw Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Jackson']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Macomb Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Buena Vista Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Bedford Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Hamtramck']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Brandon Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Taylor']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Vassar']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Wyoming']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Iron Mountain']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of East Tawas']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Dundee Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='City of Marlette']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='St Clair Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Cottrellville Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Grosse Ile Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Brown Township']{polygon-fill: #00FF7F; line-color: white; } #mi_mun[label='Northville Township']{polygon-fill: #00FF7F; line-color: white; }";
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            var query = "SELECT * FROM mi_mun where label in (" + municipalities + ")";
+            layer.setSQL(query);
+            layer.setCartoCSS(cartocss);
+            sql.getBounds(query).done(function (bounds) {
+                map.fitBounds(bounds);
+            });
+        }
+        window.onload = initialMap;
+    </script>
+
 </body>
 </html>

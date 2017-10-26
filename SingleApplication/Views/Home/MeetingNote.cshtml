@@ -1,0 +1,47 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GovMash</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/bootstrap-table.js"></script>
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-multiselect.js"></script>
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-combobox.js"></script>
+    <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
+</head>
+<body>
+    @Html.Partial("_LoginPartial")
+    <div class="row" style="margin-left:0px; margin-right:0px; margin-top:80px;">
+        <div class="col-md-12" id="div-data-area">
+            <div class="search-container">
+                <div class="row property-search-form">
+
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="text" name="txt_search_StartMeetingDate" id="txt_search_StartMeetingDate" placeholder="Start Meeting Date" class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
+                        <input type="text" name="txt_search_EndMeetingDate" id="txt_search_EndMeetingDate" placeholder="End Meeting Date" class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 form-group">
+
+                        <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:20px;">
+                <table id="tb_meetingNote"></table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

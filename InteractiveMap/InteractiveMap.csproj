@@ -159,6 +159,7 @@
     <Content Include="Content\jquery.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\screen.css" />
+    <Content Include="Content\selectize.legacy.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\theme-main.css" />
     <Content Include="favicon.ico" />
@@ -200,6 +201,7 @@
     <Content Include="Scripts\pym.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\selectize.js" />
     <Content Include="Scripts\topojson.js" />
     <Content Include="Scripts\underscore-min.js" />
     <Content Include="simple.html" />

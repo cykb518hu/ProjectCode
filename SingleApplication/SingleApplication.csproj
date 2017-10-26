@@ -166,7 +166,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="File\Midland_Docs.xml" />
-    <Content Include="File\SearchQuery.xml" />
+    <Content Include="File\SearchQuery.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="File\Midland_Queries.xml" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -223,6 +225,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Home\MeetingNote.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

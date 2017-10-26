@@ -2,71 +2,100 @@
 <SearyQueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SearchQuery>
     <Guid>ea02ef2e-6a7c-4d83-8b1e-16656f72f7d3</Guid>
-    <Content>MidlandMICity</Content>
+    <Content>Don't delete</Content>
     <CreateDate>2016-08-20T00:00:00</CreateDate>
     <ModifyDate>2016-08-20T00:00:00</ModifyDate>
     <FrequentlyUsed>1</FrequentlyUsed>
     <Disabled>true</Disabled>
   </SearchQuery>
   <SearchQuery>
-    <Guid>830bd90f-b9b8-4ddc-ab18-951fb798675b</Guid>
-    <Content>{"CityName":"","MeetingDate":"","KeyWord":"marijuana","IsViewed":"All","Important":"All"}</Content>
-    <CreateDate>2017-07-14T13:52:05.7074914+08:00</CreateDate>
-    <ModifyDate>2017-07-14T13:52:05.7074914+08:00</ModifyDate>
+    <Guid>d22f705e-36a5-4d1f-8d27-cb00e13d7a9b</Guid>
+    <Title>FlintMM</Title>
+    <Content>{"CityName":"all","KeyWord":"marijuana,marihuana,cannabis,Dispensary,Dispensaries,provisioning,Cultivat*,Ordinance,moratorium","DeployDate":"","MeetingDate":""}</Content>
+    <CreateDate>2017-07-29T07:07:56.8732809+08:00</CreateDate>
+    <ModifyDate>2017-09-06T15:32:12.3046326+08:00</ModifyDate>
+    <FrequentlyUsed>6</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>5ddf8457-fedc-4b85-853f-7c1f2181642c</Guid>
+    <Title>WarrenMM</Title>
+    <Content>{"CityName":"WarrenMICity","KeyWord":"marijuana,marihuana,cannabis,Dispensary,Dispensaries,provisioning,Cultivat*,Ordinance,moratorium","DeployDate":"","MeetingDate":""}</Content>
+    <CreateDate>2017-07-29T08:47:07.0099968+08:00</CreateDate>
+    <ModifyDate>2017-07-29T08:47:14.8647521+08:00</ModifyDate>
     <FrequentlyUsed>1</FrequentlyUsed>
     <Disabled>false</Disabled>
   </SearchQuery>
   <SearchQuery>
-    <Guid>a64e881d-6317-4187-92be-5c4bd6235ab5</Guid>
-    <Content>{"CityName":"","MeetingDate":"","KeyWord":"marijuana","IsViewed":"All","Important":"All"}</Content>
-    <CreateDate>2017-07-14T14:15:05.3620382+08:00</CreateDate>
-    <ModifyDate>2017-07-14T14:15:05.3620382+08:00</ModifyDate>
+    <Guid>0cf8e0c3-3a22-473f-978f-9608bfef5927</Guid>
+    <Title>DetroitMM</Title>
+    <Content>{"CityName":"DetroitMICity","KeyWord":"marijuana,marihuana,cannabis,Dispensary,Dispensaries,provisioning,Cultivat*,Ordinance,moratorium","DeployDate":"","MeetingDate":""}</Content>
+    <CreateDate>2017-07-29T09:09:29.1596214+08:00</CreateDate>
+    <ModifyDate>2017-07-29T09:09:37.306833+08:00</ModifyDate>
     <FrequentlyUsed>1</FrequentlyUsed>
     <Disabled>false</Disabled>
   </SearchQuery>
   <SearchQuery>
-    <Guid>3a9a7306-44f3-418f-8148-773252a45af9</Guid>
-    <Title>MidlandMICity</Title>
-    <Content>{"CityName":"MidlandMICity","MeetingDate":"","KeyWord":"","IsViewed":"All"}</Content>
-    <CreateDate>2017-07-18T18:33:39.6372523+08:00</CreateDate>
-    <ModifyDate>2017-07-18T18:34:30.1343015+08:00</ModifyDate>
+    <Guid>3ba1317c-db10-422c-ab8e-f31f3275dba5</Guid>
+    <Title>All_Billboard</Title>
+    <Content>{"CityName":"AdrianMICity,AlgonacMICity,AllenParkMICity,AnnArborMICity,BattleCreekMICity,BaycityMICity,BedfordTownshipMI,BloomfieldCharterTownshipMI,BurtonMICity,CantonTownshipMI,ClintonCharterTownshipMI,CommerceCharterTownshipMI,DavisonTownshipMI,DearbornMICity,DetroitMICity,EastLansingMICity,EastpointeMICity,FarmingtonHillsMICity,FlintCharterTownshipMI,FlintMICity,GainesCharterTownshipMI,GardenCityMICity,GeneseeCharterTownshipMI,GeorgetownCharterTownshipMI,GlandBlancCharterTownshipMI,GrandRapidsMICity,HamtramckMICity,HarrisonCharterTownshipMI,IndependenceCharterTownshipMI,InksterMICity,JacksonMICity,KalamazooMICity,KentwoodMICity,LansingCharterTownshipMI,LansingMICity,LincolnparkMICity,MacombTownshipMI,MadisonHeightsMICity,MarshallMICity,MeridianCharterTownshipMI,MidlandMICity,MonroeMICity,NorthvilleTownshipMI,NoviMICity,OakparkMICity,OshtemoCharterTownshipMI,OwossoMICity,PittsfieldCharterTownshipMI,PlymouthCharterTownshipMI,PontiacMICity,PortageMICity,RedfordTownshipMI,RochesterHillsMICity,RomulusMICity,RosevilleMICity,SaginawTownshipMI,SaintClairShoresMICity,ScioTownshipMI,ShelbyCharterTownshipMI,SouthfieldMICity,SouthgateMICity,SterlingHeightsMICity,TaylorMICity,TroyMICity,VanBurenCharterTownshipMI,WarrenMICity,WaterfordCharterTownshipMI,WayneMICity,WestBloomfieldCharterTownshipMI,WyandotteMICity,WyomingMICity,YpsilantiMICity","KeyWord":"Billboard","DeployDate":"","MeetingDate":""}</Content>
+    <CreateDate>2017-07-29T10:37:17.6282166+08:00</CreateDate>
+    <ModifyDate>2017-07-31T04:20:09.8277698+08:00</ModifyDate>
+    <FrequentlyUsed>1</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>db5b89ab-d16c-44b8-ad1f-6c887b73a5fe</Guid>
+    <Title>All_MM</Title>
+    <Content>{"CityName":"AdrianMICity,AlgonacMICity,AllenParkMICity,AnnArborMICity,BattleCreekMICity,BaycityMICity,BedfordTownshipMI,BloomfieldCharterTownshipMI,BrowntownCharterTownshipMI,BurtonMICity,CantonTownshipMI,ClintonCharterTownshipMI,CommerceCharterTownshipMI,DavisonTownshipMI,DearbornMICity,DetroitMICity,EastLansingMICity,EastpointeMICity,FarmingtonHillsMICity,FlintCharterTownshipMI,FlintMICity,GainesCharterTownshipMI,GardenCityMICity,GeneseeCharterTownshipMI,GeorgetownCharterTownshipMI,GlandBlancCharterTownshipMI,GrandRapidsMICity,HamtramckMICity,HarrisonCharterTownshipMI,IndependenceCharterTownshipMI,InksterMICity,JacksonMICity,KalamazooMICity,KentwoodMICity,LansingCharterTownshipMI,LansingMICity,LincolnparkMICity,MacombTownshipMI,MadisonHeightsMICity,MarshallMICity,MeridianCharterTownshipMI,MidlandMICity,MonroeMICity,NorthvilleTownshipMI,NoviMICity,OakparkMICity,OshtemoCharterTownshipMI,OwossoMICity,PittsfieldCharterTownshipMI,PlymouthCharterTownshipMI,PontiacMICity,PortageMICity,RedfordTownshipMI,RochesterHillsMICity,RomulusMICity,RosevilleMICity,SaginawTownshipMI,SaintClairShoresMICity,ScioTownshipMI,ShelbyCharterTownshipMI,SouthfieldMICity,SouthgateMICity,SterlingHeightsMICity,TaylorMICity,TroyMICity,VanBurenCharterTownshipMI,WarrenMICity,WaterfordCharterTownshipMI,WayneMICity,WestBloomfieldCharterTownshipMI,WyandotteMICity,WyomingMICity,YpsilantiMICity","KeyWord":"marijuana,marihuana,cannabis,Dispensary,Dispensaries,provisioning,Cultivat*,Ordinance,moratorium,opt-in,opt-out,sign ordinance","DeployDate":"","MeetingDate":""}</Content>
+    <CreateDate>2017-07-31T04:19:29.5670958+08:00</CreateDate>
+    <ModifyDate>2017-07-31T04:20:00.8663744+08:00</ModifyDate>
+    <FrequentlyUsed>1</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>cadb0a27-c1cf-47a7-9fcd-fd2b2e48f290</Guid>
+    <Title>AnnArborMICity&amp;marijuana&amp;2017-08-01&amp;2017-06-08</Title>
+    <Content>{"CityName":"AnnArborMICity","KeyWord":"marijuana","DeployDate":"2017-08-01","MeetingDate":"2017-06-08"}</Content>
+    <CreateDate>2017-08-06T22:13:14.457563+08:00</CreateDate>
+    <ModifyDate>2017-09-04T11:22:09.4294542+08:00</ModifyDate>
+    <FrequentlyUsed>4</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>6349fd71-0992-4d82-9c27-014381b50d22</Guid>
+    <Title>Calhoun</Title>
+    <Content>{"CityName":"","KeyWord":"","DeployDate":"","CountyName":"all","MeetingDate":""}</Content>
+    <CreateDate>2017-09-06T15:59:04.5078876+08:00</CreateDate>
+    <ModifyDate>2017-09-06T16:01:39.6878668+08:00</ModifyDate>
+    <FrequentlyUsed>4</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>f7b61f4d-1f57-46a5-a2a3-e010c482aed8</Guid>
+    <Title>All&amp;All&amp;All&amp;All</Title>
+    <Content>{"CityName":"All","KeyWord":"All","DeployDate":"All","CountyName":"All","MeetingDate":""}</Content>
+    <CreateDate>2017-09-06T16:04:54.6698668+08:00</CreateDate>
+    <ModifyDate>2017-09-06T16:04:54.6698668+08:00</ModifyDate>
+    <FrequentlyUsed>1</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>fa529a2f-d289-49bc-ac44-470746cc78aa</Guid>
+    <Title>all county</Title>
+    <Content>{"CityName":"","KeyWord":"","DeployDate":"","CountyName":"All","StartMeetingDate":"","EndMeetingDate":""}</Content>
+    <CreateDate>2017-09-06T16:40:04.9535879+08:00</CreateDate>
+    <ModifyDate>2017-09-06T16:40:04.9535879+08:00</ModifyDate>
+    <FrequentlyUsed>1</FrequentlyUsed>
+    <Disabled>false</Disabled>
+  </SearchQuery>
+  <SearchQuery>
+    <Guid>c5acafe5-8979-45d2-b96c-26c67ca05282</Guid>
+    <Title>test</Title>
+    <Content>{"CountyName":"Bay","CityName":"","KeyWord":"","DeployDate":"","StartMeetingDate":"","EndMeetingDate":""}</Content>
+    <CreateDate>2017-09-06T17:36:56.6265851+08:00</CreateDate>
+    <ModifyDate>2017-09-06T17:37:19.1671168+08:00</ModifyDate>
     <FrequentlyUsed>2</FrequentlyUsed>
-    <Disabled>false</Disabled>
-  </SearchQuery>
-  <SearchQuery>
-    <Guid>4ff70f40-b05f-4aed-b50e-4b2d3ce206fb</Guid>
-    <Title>MidlandMICity&amp;marijuana</Title>
-    <Content>{"CityName":"MidlandMICity","MeetingDate":"","KeyWord":"marijuana","IsViewed":"All"}</Content>
-    <CreateDate>2017-07-18T18:33:42.4025288+08:00</CreateDate>
-    <ModifyDate>2017-07-18T18:33:42.4025288+08:00</ModifyDate>
-    <FrequentlyUsed>1</FrequentlyUsed>
-    <Disabled>false</Disabled>
-  </SearchQuery>
-  <SearchQuery>
-    <Guid>fd3787f3-54c3-4f2d-9cca-c494fc61b180</Guid>
-    <Title>MidlandMICity&amp;marijuana&amp;2017-07-06</Title>
-    <Content>{"CityName":"MidlandMICity","MeetingDate":"2017-07-06","KeyWord":"marijuana","IsViewed":"All"}</Content>
-    <CreateDate>2017-07-18T18:33:45.9458831+08:00</CreateDate>
-    <ModifyDate>2017-07-18T18:33:45.9458831+08:00</ModifyDate>
-    <FrequentlyUsed>1</FrequentlyUsed>
-    <Disabled>false</Disabled>
-  </SearchQuery>
-  <SearchQuery>
-    <Guid>4fdee9e6-0979-4526-aa15-87cd2a632e9e</Guid>
-    <Title>marijuana&amp;2017-07-06</Title>
-    <Content>{"CityName":"","MeetingDate":"2017-07-06","KeyWord":"marijuana","IsViewed":"All"}</Content>
-    <CreateDate>2017-07-18T18:34:10.7023585+08:00</CreateDate>
-    <ModifyDate>2017-07-18T18:34:10.7023585+08:00</ModifyDate>
-    <FrequentlyUsed>1</FrequentlyUsed>
-    <Disabled>false</Disabled>
-  </SearchQuery>
-  <SearchQuery>
-    <Guid>f96e08e4-4084-4f6d-82af-b914bfb2a01d</Guid>
-    <Title>2017-07-06</Title>
-    <Content>{"CityName":"","MeetingDate":"2017-07-06","KeyWord":"","IsViewed":"All"}</Content>
-    <CreateDate>2017-07-18T18:34:17.0339916+08:00</CreateDate>
-    <ModifyDate>2017-07-18T18:34:17.0339916+08:00</ModifyDate>
-    <FrequentlyUsed>1</FrequentlyUsed>
     <Disabled>false</Disabled>
   </SearchQuery>
 </SearyQueries>
