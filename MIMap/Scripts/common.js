@@ -24,4 +24,5 @@
             "timeOut": "2000",//展现时间
         }
         toastr.error(str);
+
     }
