@@ -226,7 +226,7 @@ namespace BusinessHandler.MessageHandler
                             {
                                 var startIndex = r.Note.IndexOf('(');
                                 var endIndex = r.Note.IndexOf(')');
-                                if(endIndex>startIndex&&startIndex>0)
+                                if (endIndex > startIndex && startIndex > -1)
                                 {
                                     futureDate = r.Note.Substring(startIndex + 1, endIndex - startIndex - 1);
                                 }
