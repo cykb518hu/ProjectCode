@@ -256,6 +256,15 @@
     <Content Include="Views\Shared\CitySideBar.cshtml" />
     <Content Include="Views\Shared\CityAllNote.cshtml" />
     <Content Include="Views\Shared\MeetingCalendar.cshtml" />
+    <Content Include="Web_src.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web_src.Debug.config">
+      <DependentUpon>Web_src.config</DependentUpon>
+    </Content>
+    <Content Include="Web_src.Release.config">
+      <DependentUpon>Web_src.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
