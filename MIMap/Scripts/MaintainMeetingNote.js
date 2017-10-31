@@ -82,8 +82,8 @@
             }
             if (status.length > 0)
             {
-                var oldNote = $(this).find(".note-old-value").html();
-                if (noteStr != oldNote || status == "Deleted") {
+               // var oldNote = $(this).find(".note-old-value").html();
+               // if (noteStr != oldNote || status == "Deleted") {
                     var note = {
                         Note: $(this).find(".note-text").val(),
                         Guid: $(this).find(".note-guid").html(),
@@ -92,7 +92,7 @@
                         DocGuid: docGuid
                     };
                     noteArr.push(note);
-                }
+              //  }
               
             }
         })

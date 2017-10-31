@@ -248,7 +248,7 @@ namespace BusinessHandler.MessageHandler
         {
             var result = new MapMeetingCity();
             var list = new List<MapMeetingNote>();
-            var queryString = @"SELECT C.LONG_NM,c.color,c.CITY_NM,  Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
+            var queryString = @"SELECT C.LONG_NM,c.color,c.CITY_NM,  Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID,D.IMPORTANT FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
 INNER JOIN DBO.QUERY Q ON Q.DOC_GUID=D.DOC_GUID
 WHERE C.guid = '" + cityGuid + "'  order by Q.MEETING_DATE desc";
 
@@ -266,6 +266,9 @@ WHERE C.guid = '" + cityGuid + "'  order by Q.MEETING_DATE desc";
                     data.DocGuid = reader["DOC_GUID"].ToString();
                     data.DocType = reader["DOC_TYPE"].ToString();
                     data.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                    data.Removed = DBNull.Value == reader["IMPORTANT"] ? "" : reader["IMPORTANT"].ToString();
+                    //important column now is means removed , so true is removed, false is not removed
+                    data.Removed = data.Removed == "False" ? "" : "[Removed]";
                     list.Add(data);
                 }
             }

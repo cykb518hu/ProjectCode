@@ -411,7 +411,7 @@
                 var htmlStr = "<ol>";
                 for (var i = 0; i < result.MeetingList.length; i++) {
                     var data = result.MeetingList[i];
-                    htmlStr += '<li><span class="bold">' + data.MeetingDate + '  (' + data.DocType + ')</span>';
+                    htmlStr += '<li><span class="bold">' + data.MeetingDate + '  (' + data.DocType + ') ' + data.Removed + '</span>';
                     if (data.NoteList.length > 0) {
                         htmlStr += "<ul>";
                         for (var j = 0; j < data.NoteList.length; j++) {

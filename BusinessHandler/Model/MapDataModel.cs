@@ -81,6 +81,7 @@ namespace BusinessHandler.Model
         public string DeployDate { get; set; }
         public List<MeetingNote> NoteList { get; set; }
         public string Operation { get; set; }
+        public string Removed { get; set; }
     }
 
     public class MeetingNote
