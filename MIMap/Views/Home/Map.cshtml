@@ -44,6 +44,9 @@
 <link href="~/Content/selectize.default.css" rel="stylesheet" />
 <script src="~/Scripts/selectize.min.js"></script>
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 <div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px; width:100%" id="div_tab_header">
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active" data-controls="all_data"><a href="#all_data" aria-controls="all_data" role="tab" data-toggle="tab">All Data</a></li>
@@ -995,7 +998,7 @@
         function initialMap() {
             cartodb.createVis('map', mapJson, {
                 tiles_loader: true,
-                search: false,
+                //search: false,
                 scrollwheel: false,
                 infowindow: true
             })
@@ -1017,6 +1020,7 @@
                     infowindow_model.set('template_type', 'underscore');
                     infowindow_model.set('template', $('#infowindow_template').html());
                     createSelector();
+                    initAutocomplete();
                 })
                 .error(function (err) {
                     console.log(err);
@@ -1133,4 +1137,29 @@
                 }
             });
         }
+
+        function initAutocomplete() {
+
+            var sql = cartodb.SQL({ user: 'achilles' });
+            $( ".cartodb-searchbox .text" ).autocomplete({
+                source: function( request, response ) {
+                    var s
+                    sql.execute("select name, objectid,county from "+mapTable+" where name ilike '" + request.term + "%'").done(function(data) {
+                        response(data.rows.map(function(r) {
+                            return {
+                                label: r.name+', '+r.county,
+                                value: r.objectid
+                            }
+                        })
+                       )
+                    })
+                },
+                minLength: 2,
+                select: function( event, ui ) {
+                    log( ui.item ?
+                      "Selected: " + ui.item.value :
+                      "Nothing selected, input was " + this.value );
+                }
+            });
+        };
     </script>
