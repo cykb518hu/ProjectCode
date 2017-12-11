@@ -98,5 +98,13 @@ namespace MIMap.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult GetMeetingType(string guid)
+        {
+            var result = meetingNoteRepository.GetMeetingType(guid);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

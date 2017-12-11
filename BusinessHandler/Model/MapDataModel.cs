@@ -120,6 +120,13 @@ namespace BusinessHandler.Model
 
     }
 
+    public class MeetingTypeTime
+    {
+        public string MeetingType { get; set; }
+        public string LastMeeting { get; set; }
+        public string LastScrape { get; set; }
+    }
+
 
 
 }

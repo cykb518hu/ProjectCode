@@ -1,40 +1,45 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html>
 <head>
+    <title></title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <style>
+        #netframe {
+            float: right;
+            height: 100%;
+            width: 80%;
+        }
 
-    <title>setCartoCSS with CARTO.js</title>
-    <script src="Scripts/jquery-1.10.2.js"></script>
-    <script src="Scripts/bootstrap.js"></script>
-    <script src="Scripts/bootstrap-multiselect.js"></script>
-
-    <link href="Content/bootstrap.css" rel="stylesheet" />
-    <link href="Content/bootstrap-multiselect.css" rel="stylesheet" />
-
-    <script type="text/javascript">
+        #sidebar {
+            float: left;
+            height: 100%;
+            width: 20%;
+        }
+    </style>
+    <script>
         $(function () {
-            $('#minrooms').multiselect({
-                includeSelectAllOption: true
-            });
+            $("#load").click(function () {
+                var new_url = $("#url").val();
 
+                // Checks that the user typed "http://" or not
+                if (new_url.substr(0, 7) != "http://")
+                    new_url = "http://" + new_url;
+
+                $("#main_frame").attr("src", new_url);
+            });
         });
     </script>
 </head>
 <body>
-
-    <select name="minrooms" id="minrooms" class="form-control" multiple="multiple">
-        <option value="">Min. rooms</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-    </select>
-
-
+    <div id="container">
+        <div id="sidebar">
+            Enter A URL:
+            <input type="text" name="url" id="url">
+            <input type="button" value="load" id="load">
+            <br><br>
+        </div>
+        <div id="netframe">
+            <iframe height="100%" width="100%" class="netframe" id="main_frame" src="https://www.tumblr.com? output=embed"></iframe>
+        </div>
+    </div>
 </body>
 </html>

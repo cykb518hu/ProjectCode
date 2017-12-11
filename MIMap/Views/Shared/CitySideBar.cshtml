@@ -167,7 +167,24 @@
                 </div>
             </div>
 
-            
+             <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="meetingTypeTimeHead">
+                    <a role="button" data-toggle="collapse" href="#meetingTypeTimeCollapse" aria-expanded="true" aria-controls="meetingTypeTimeCollapse">
+                        Last dates
+                    </a>
+                </div>
+                <div id="meetingTypeTimeCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="meetingTypeTimeHead">
+                    <table class="table" >
+                        <thead>
+                            <tr><th style="width:40%">Meeting</th><th style="width:30%">Last Meeting</th><th>Last Scrape</th></tr>
+                        </thead>
+                        <tbody id="meetingTypeTime_tr">
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
 
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="heading7">
@@ -220,7 +237,7 @@
 
             $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
         });
-       
+
         $("#btn_SaveSideBar").click(function () {
             $("#btn_SaveSideBar").html('<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Saving...');
             saveCityOrdinance(sideBarCityGuid);
@@ -394,7 +411,7 @@
                     currentColor = defaultColor;
                 }
 
- 
+
                 $("#btn_ChangeColor").off();
 
                 $("#btn_ChangeColor").val(currentColor);
@@ -424,6 +441,28 @@
                 }
                 htmlStr += "</ol>";
                 $("#sidebar_timeLine").html(htmlStr);
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+            },
+            error: function (xhr, textStatus, errorThrown) {
+            }
+        });
+    }
+    function showMeetingTypeTime(guid) {
+         $.ajax({
+            url: '@Url.Action("GetMeetingType", "MeetingNote")',
+            dataType: 'json',
+            data: { guid: guid },
+            type: "GET",
+            cache: false,
+            success: function (result) {
+                var htmlStr = "";
+                $("#meetingTypeTime_tr").html("");
+                for (var i = 0; i < result.length; i++) {
+                    var data = result[i];
+                    htmlStr += "<tr><td>" + data.MeetingType + "</td><td>" + data.LastMeeting + "</td><td>" + data.LastScrape + "</td></tr>";
+                }
+                $("#meetingTypeTime_tr").html(htmlStr);
             },
             complete: function (XMLHttpRequest, textStatus) {
             },
@@ -581,6 +620,7 @@
         $("#city_Sidebar").slideDown();
         loadCityOrdinance(guid);
         showMapTimeLine(guid);
+        showMeetingTypeTime(guid);
     }
 
     $("#city_Sidebar").on('blur', function () {

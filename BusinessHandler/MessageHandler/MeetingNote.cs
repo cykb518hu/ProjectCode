@@ -17,9 +17,7 @@ namespace BusinessHandler.MessageHandler
         MapMeetingCity GetMapPopUpInfo(string cityGuid);
         int GetMeetingRelatedNotesAmount(string guid);
         List<MeetingCalendar> GetMeetingCalendar(DocQueryMessage message);
-
-        
-     
+        List<MeetingTypeTime> GetMeetingType(string guid);
     }
 
     public class SqlServerMeetingNote : IMeetingNote
@@ -346,6 +344,32 @@ AND QE.COMMENT IS NOT NULL AND QE.COMMENT<>''";
                 }
             }
             return list;
+        }
+
+        public List<MeetingTypeTime> GetMeetingType(string guid)
+        {
+            var list = new List<MeetingTypeTime>();
+            var queryString = @"select D.DOC_TYPE , max(Q.MEETING_DATE) MEETING_DATE , max(Q.USR_CRTN_TS) USR_CRTN_TS from DOCUMENT D
+INNER JOIN QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM WHERE C.GUID=@GUID group by D.DOC_TYPE";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.AddWithValue("@GUID", guid);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var data = new MeetingTypeTime();
+                        data.MeetingType = DBNull.Value == reader["DOC_TYPE"] ? "" : reader["DOC_TYPE"].ToString();
+                        data.LastMeeting = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                        data.LastScrape = DBNull.Value == reader["USR_CRTN_TS"] ? "" : Convert.ToDateTime(reader["USR_CRTN_TS"]).ToString("yyyy-MM-dd");
+                        list.Add(data);
+                    }
+                }
+                return list;
+            }
         }
     }
 }

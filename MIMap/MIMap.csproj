@@ -170,6 +170,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\calendar.css" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\selectize.bootstrap3.css" />
     <Content Include="Content\selectize.default.css" />
     <Content Include="Content\selectize.legacy.css" />
@@ -209,6 +210,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.ajaxfileupload.js" />
     <Content Include="Scripts\jquery.sidebar.js" />
     <Content Include="Scripts\jquery.tabledit.js" />

@@ -44,8 +44,8 @@
 <link href="~/Content/selectize.default.css" rel="stylesheet" />
 <script src="~/Scripts/selectize.min.js"></script>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css?version=@StaticSetting.version">
+<script src="~/Scripts/jquery-ui.js?version=@StaticSetting.version"></script>
 
 <div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px; width:100%" id="div_tab_header">
     <ul class="nav nav-tabs" role="tablist">
@@ -987,11 +987,11 @@
         var objectId;
         var defaultColor = "blue";
         var currentState=sessionStorage.getItem("currentState");
-     
+
         var mapTable="mi_munv5";
         var mapJson="http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json";
         if(currentState=="MA")
-        { 
+        {
             mapJson="http://achilles.cartodb.com/u/achilles/api/v2/viz/e2708ddb-5c54-479d-a0cb-66806763ed19/viz.json";
             mapTable="mass_geojson";
         }
@@ -1000,14 +1000,15 @@
                 tiles_loader: true,
                 //search: false,
                 scrollwheel: false,
-                infowindow: true
+                infowindow: true,
+                shareable: false
             })
                 .done(function (vis, layers) {
                     map = vis.getNativeMap();
                     layer = layers[1].getSubLayer(0);
                     layer.set({ interactivity: "objectid" });
                     layer.setInteraction(true);
- 
+
                     popLayer = layers[1];
                     var infowindow_model = popLayer.infowindow;
                     popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
@@ -1105,7 +1106,9 @@
 
                 }
             }
-            showSideBar(popUpCityGuid,true);
+            if (popUpCityGuid.length > 0) {
+                showSideBar(popUpCityGuid, true);
+            }
         }
 
         function saveMapColer(color) {
@@ -1137,29 +1140,125 @@
                 }
             });
         }
-
+        var searchCityObjectIds = "";
+        var searchMapDataColor = new Array();
         function initAutocomplete() {
 
             var sql = cartodb.SQL({ user: 'achilles' });
             $( ".cartodb-searchbox .text" ).autocomplete({
                 source: function( request, response ) {
                     var s
-                    sql.execute("select name, objectid,county from "+mapTable+" where name ilike '" + request.term + "%'").done(function(data) {
-                        response(data.rows.map(function(r) {
+                    sql.execute("select  name, objectid,county from "+mapTable+" where name ilike '" + request.term + "%' limit 10").done(function(data) {
+                        response(data.rows.map(function (r) {
+                            var name = r.name;
+                            if (r.county != "null" && r.county != null)
+                            {
+                                if (r.county.indexOf("County") > -1)
+                                {
+                                    r.county = r.county.replace("County", "");
+                                    r.county = r.county.replace(/\s/g, '');
+                                    name = name + ', ' + r.county;
+                                }
+                            }
+                            searchCityObjectIds += r.objectid + ",";
                             return {
-                                label: r.name+', '+r.county,
+                                label: name,
                                 value: r.objectid
+
                             }
                         })
                        )
                     })
                 },
                 minLength: 2,
-                select: function( event, ui ) {
-                    log( ui.item ?
-                      "Selected: " + ui.item.value :
-                      "Nothing selected, input was " + this.value );
+                select: function (event, ui) {
+                    event.preventDefault();
+                    $(".cartodb-searchbox .text").val(ui.item.label);
+                    $(".cartodb-searchbox .text").attr("data-search", ui.item.value)
+                   // log( ui.item ?
+                   //   "Selected: " + ui.item.value :
+                    //  "Nothing selected, input was " + this.value );
+                },
+                open: function () {
+                    var p = $("#ui-id-1");
+                    var offset = p.offset();
+                    p.css({
+                        left: (offset.left - 30) + "px",
+                        top: (offset.top + 5 - $(document).scrollTop()) + "px",
+                        position: "fixed"
+                    });
+                    //alert($(document).scrollTop());
+                    //alert("left: " + offset.left + ", top: " + offset.top);
+                    if (searchCityObjectIds.length > 0) {
+                        searchMapDataColor = new Array();
+                        $.ajax({
+                            url: '@Url.Action("GetCartoSearchResult", "Home")',
+                            dataType: 'json',
+                            data: { objectIds: searchCityObjectIds, state: currentState},
+                            type: "GET",
+                            cache: false,
+                            success: function (result) {
+                                if (result.length > 0) {
+                                    for (var i = 0; i < result.length; i++) {
+                                        var data = result[i];
+                                        searchMapDataColor.push(data);
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             });
+
+            $('.cartodb-searchbox .text').on('keydown', function (e) {
+                if (e.which == 13) {
+                    searchBoxResult();
+                    e.preventDefault();
+                }
+            });
+            $('.cartodb-searchbox .text').on('input', function (e) {
+                $(".cartodb-searchbox .text").attr("data-search", "")
+            });
+            $('.cartodb-searchbox .submit').on('click', function (e) {
+
+                searchBoxResult();
+                e.preventDefault();
+
+            });
         };
+        function searchBoxResult()
+        {
+            var ids = "'nodata'";
+            var cartocss = "";
+            var id = $(".cartodb-searchbox .text").attr("data-search");
+            if (id == "" || id == null) {
+                ids = "";
+                for (var i = 0; i < searchMapDataColor.length; i++) {
+                    ids += "" + searchMapDataColor[i].Id + ",";
+                    cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill: " + searchMapDataColor[i].Color + "}";
+                }
+                ids = ids.substring(0, ids.length - 1);
+
+            }
+            else {
+                ids = "";
+                for (var i = 0; i < searchMapDataColor.length; i++) {
+                    if (id == searchMapDataColor[i].Id) {
+                        ids += "" + searchMapDataColor[i].Id + ",";
+                        cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill: " + searchMapDataColor[i].Color + "}";
+                    }
+                }
+                ids = ids.substring(0, ids.length - 1);
+            }
+
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            var query = "SELECT * FROM " + mapTable + " where objectid in (" + ids + ")";
+            layer.setSQL(query);
+            layer.setCartoCSS(cartocss);
+            sql.getBounds(query).done(function (bounds) {
+                map.fitBounds(bounds);
+                //map.setZoom(7);
+            });
+        }
+        //moveend
     </script>

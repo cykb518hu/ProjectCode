@@ -435,5 +435,18 @@ namespace MIMap.Controllers
             return Json(fileName);
 
         }
+
+
+        public JsonResult GetCartoSearchResult(string objectIds, string state)
+        {
+            if(string.IsNullOrWhiteSpace(objectIds))
+            {
+                return null;
+            }
+            objectIds = objectIds.Substring(0, objectIds.Length - 1);
+            var result = mapRepository.GetCartoSearchResult(objectIds,state);
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
     }
 }

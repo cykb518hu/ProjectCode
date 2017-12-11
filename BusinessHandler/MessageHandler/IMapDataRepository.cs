@@ -24,6 +24,7 @@ namespace BusinessHandler.MessageHandler
         List<CityOrdinance> GetCityOrdinanceList(DocQueryMessage message,  out int total, string cityGuid = "");
 
         bool UpdateCityOrdinance(CityOrdinance data);
+        List<MapMunicipalityColor> GetCartoSearchResult(string objectIds, string state);
     }
 
     public class SqlServerMapDataRepository:IMapDataRepository
@@ -552,6 +553,43 @@ namespace BusinessHandler.MessageHandler
             if (o == null) return string.Empty;
 
             return o.ToString();
+        }
+
+
+        public List<MapMunicipalityColor> GetCartoSearchResult(string objectIds, string state)
+        {
+
+            var queryString = @"SELECT distinct objectid, color 
+ FROM  DBO.CITY where objectId in (" + objectIds + ") and STATES ='" + state + "'";
+
+            var list = new List<MapMunicipalityColor>();
+
+
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.CommandType = CommandType.Text;
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var data = new MapMunicipalityColor();
+                        data.Color = DBNull.Value == reader["color"] ? "blue" : reader["color"].ToString();
+                        data.Id = DBNull.Value == reader["objectid"] ? 0 : Convert.ToInt32(reader["objectid"]);
+                        list.Add(data);
+                    }
+                }
+                var idArr = objectIds.Split(',');
+                foreach(var r in idArr)
+                {
+                    if(!list.Any(x=>x.Id==Convert.ToInt32(r)))
+                    {
+                        list.Add(new MapMunicipalityColor { Id = Convert.ToInt32(r), Color = "black" });
+                    }
+                }
+                return list;
+            }
         }
 
     }
