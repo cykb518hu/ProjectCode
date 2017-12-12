@@ -585,7 +585,7 @@ namespace BusinessHandler.MessageHandler
                 {
                     if(!list.Any(x=>x.Id==Convert.ToInt32(r)))
                     {
-                        list.Add(new MapMunicipalityColor { Id = Convert.ToInt32(r), Color = "white" });
+                        list.Add(new MapMunicipalityColor { Id = Convert.ToInt32(r), Color = "gray" });
                     }
                 }
                 return list;

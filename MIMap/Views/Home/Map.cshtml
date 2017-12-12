@@ -1051,6 +1051,7 @@
             });
         }
         function createSelector() {
+            popLayer.infowindow.set('visibility', false);
             hideSideBar();
             var ids = "'nodata'";
             var cartocss = "#"+mapTable+"{polygon-fill: " + defaultColor + "; line-color: white; }";
@@ -1243,14 +1244,15 @@
                 $('.cartodb-searchbox .text').attr("placeholder","please input at least 2 characters.")
                 return;
             }
+            popLayer.infowindow.set('visibility', false);
             var ids = "'nodata'";
-            var cartocss = "Map{ background-color: #39f; }";
+            var cartocss = "";
             var id = $(".cartodb-searchbox .text").attr("data-search");
             if (id == "" || id == null) {
                 ids = " ";
                 for (var i = 0; i < searchMapDataColor.length; i++) {
                     ids += "" + searchMapDataColor[i].Id + ",";
-                    cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill: " + searchMapDataColor[i].Color + "}";
+                    cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill: " + searchMapDataColor[i].Color + ";line-color: white;}";
                 }
                 ids = ids.substring(0, ids.length - 1);
 
@@ -1260,15 +1262,15 @@
                 for (var i = 0; i < searchMapDataColor.length; i++) {
                     if (id == searchMapDataColor[i].Id) {
                         ids += "" + searchMapDataColor[i].Id + ",";
-                        cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill:" + searchMapDataColor[i].Color + "}";
+                        cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill:" + searchMapDataColor[i].Color + ";line-color: white;}";
                     }
                 }
                 ids = ids.substring(0, ids.length - 1);
             }
 
             var sql = new cartodb.SQL({ user: 'achilles' });
-            ids="668";
-            cartocss="#mi_munv5 [objectid=668]{polygon-fill:red}";
+           // ids="668";
+           // cartocss="#mi_munv5 [objectid=668]{polygon-fill:red}";
             var query = "SELECT * FROM " + mapTable + " where objectid in (" + ids + ")";
             layer.setSQL(query);
             layer.setCartoCSS(cartocss);
