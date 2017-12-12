@@ -378,7 +378,13 @@
 #div_meetingNote .table tbody tr:hover td{
      background-color: transparent; 
 }
+
+
 div.cartodb-searchbox
 {
-    margin-right:50px !important;
+    width:242px !important;
+}
+div.cartodb-searchbox input.text
+{
+   width:203px !important;
 }

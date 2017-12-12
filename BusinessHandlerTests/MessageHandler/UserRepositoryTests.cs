@@ -15,6 +15,8 @@ using System.Xml.Linq;
 using RestSharp;
 using System.Net;
 using Microsoft.Office.Interop.Excel;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace BusinessHandler.MessageHandler.Tests
 {
@@ -535,6 +537,41 @@ namespace BusinessHandler.MessageHandler.Tests
 
             var strDate = str.Substring(startIndex + 1, endIndex - startIndex - 1);
         }
+
+        [TestMethod()]
+        public void TestGoogleData()
+        {
+            List<HomeCity> cityList = new List<HomeCity>();
+
+            cityList.Add(new HomeCity {
+                CityName = "London",
+                CityDescirption = "London test",
+                ImageUrl = "http://media.mhb.com/mhb-media/9/6/C/96CB9C49-0EF4-418E-9A7D-E7F71D9FAA08/tpl-half-scratchpad-without.jpg?w=1000&hash=D08B00E543594E4F82B624ACC4A0F7F8",
+                BookingUrl= "https://www.millenniumhotels.com/en/bookings/?city=london",
+                CityUrl= "https://www.millenniumhotels.com/en/london/"
+
+            });
+            cityList.Add(new HomeCity
+            {
+                CityName = "Beijing",
+                CityDescirption = "Beijing test",
+                ImageUrl = "http://media.mhb.com/mhb-media/9/6/C/96CB9C49-0EF4-418E-9A7D-E7F71D9FAA08/tpl-half-scratchpad-without.jpg?w=1000&hash=D08B00E543594E4F82B624ACC4A0F7F8",
+                BookingUrl = "https://www.millenniumhotels.com/en/bookings/?city=london",
+                CityUrl = "https://www.millenniumhotels.com/en/london/"
+
+            });
+            cityList.Add(new HomeCity
+            {
+                CityName = "Chengdu",
+                CityDescirption = "Chengdu test",
+                ImageUrl = "http://media.mhb.com/mhb-media/9/6/C/96CB9C49-0EF4-418E-9A7D-E7F71D9FAA08/tpl-half-scratchpad-without.jpg?w=1000&hash=D08B00E543594E4F82B624ACC4A0F7F8",
+                BookingUrl = "https://www.millenniumhotels.com/en/bookings/?city=london",
+                CityUrl = "https://www.millenniumhotels.com/en/london/"
+
+            });
+
+            var str = JsonConvert.SerializeObject(cityList);
+        }
     }
 
     public class PaymentResult
@@ -671,5 +708,23 @@ namespace BusinessHandler.MessageHandler.Tests
         public string Typ { get; set; }
         public string LongNm { get; set; }
         public string objectId { get; set; }
+    }
+
+    public class HomeCity
+    {
+        [JsonProperty("cityName")]
+        public string CityName { get; set; }
+
+        [JsonProperty("cityDescirption")]
+        public string CityDescirption { get; set; }
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("bookingUrl")]
+        public string BookingUrl { get; set; }
+
+        [JsonProperty("cityUrl")]
+        public string CityUrl { get; set; }
     }
 }

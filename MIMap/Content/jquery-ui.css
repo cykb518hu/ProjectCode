@@ -884,7 +884,7 @@ body .ui-tooltip {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-	font-family: none;
+	/*font-family: none;*/
 	font-size: 12px;
 }
 .ui-widget .ui-widget {
