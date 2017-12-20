@@ -1,45 +1,146 @@
 ﻿<html>
 <head>
-    <title></title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <style>
-        #netframe {
-            float: right;
+        html, body {
+            width: 100%;
             height: 100%;
-            width: 80%;
+            padding: 0;
+            margin: 0;
         }
 
-        #sidebar {
-            float: left;
+        #map {
+            width: 100%;
             height: 100%;
-            width: 20%;
+            background: black;
         }
+
+        #menu {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            width: 115px;
+            height: 60px;
+            background: transparent;
+            z-index: 10;
+        }
+
+            #menu a {
+                margin: 10px 5px 0 0;
+                float: right;
+                vertical-align: bottom;
+                width: 100%;
+                padding: 5px;
+                text-align: center;
+                font: bold 12px "Helvetica",Arial;
+                line-height: normal;
+                color: #555;
+                border-radius: 4px;
+                border: 1px solid #777777;
+                background: #ffffff;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+                #menu a.selected,
+                #menu a:hover {
+                    color: #F84F40;
+                }
     </style>
-    <script>
-        $(function () {
-            $("#load").click(function () {
-                var new_url = $("#url").val();
-
-                // Checks that the user typed "http://" or not
-                if (new_url.substr(0, 7) != "http://")
-                    new_url = "http://" + new_url;
-
-                $("#main_frame").attr("src", new_url);
-            });
-        });
-    </script>
 </head>
 <body>
-    <div id="container">
-        <div id="sidebar">
-            Enter A URL:
-            <input type="text" name="url" id="url">
-            <input type="button" value="load" id="load">
-            <br><br>
-        </div>
-        <div id="netframe">
-            <iframe height="100%" width="100%" class="netframe" id="main_frame" src="https://www.tumblr.com? output=embed"></iframe>
-        </div>
-    </div>
+    <!-- our page only has a map and a menu -->
+    <div id='map'></div>
+    <div id='menu'></div>
+
+    <!-- load the library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script>
+    // main function
+    function init(){
+
+      // SQL API client
+      var sql = cartodb.SQL({ user: 'jsanz' });
+
+      // initiate leaflet map
+      var map = new L.Map('map', {
+        center: [40.4097,-3.685],
+        zoom: 13
+      })
+
+
+      //Logs current map center and zoom level for use in map init options
+      map.on('dragend',getInit).on('zoomend',getInit);
+      function getInit() {
+        var c = map.getCenter();
+        console.log('center: [' + c.lat + ',' + c.lng + '],\nzoom: ' + map.getZoom());
+      }
+
+      // Set up the base map
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+      }).addTo(map);
+
+      // Get the CartoDB Layer and add it to the map storing a reference to the sublayer
+      var layerUrl = 'https://team.cartodb.com/u/jsanz/api/v2/viz/8965950c-23ce-11e5-aa9b-0e5e07bb5d8a/viz.json';
+      var sublayer, firstSQL, currentId;
+
+      cartodb.createLayer(map, layerUrl)
+        .addTo(map)
+        .on('done', function(layer) {
+          sublayer = layer.getSubLayer(1);
+          // Store also the original SQL
+          firstSQL = sublayer.getSQL();
+        })
+        .on('error', function() {});
+
+      // SQL Template for the query of bicimad stations inside a district by its id
+      var SQLTemplate = 'SELECT b.* FROM jsanz.gbicimad b JOIN jsanz.distritos d ON ST_Intersects(d.the_geom, b.the_geom ) AND d.cartodb_id = {{id}}';
+
+      // Get the districts with bicimad stations
+      sql.execute('SELECT a.cartodb_id, a.nombre FROM jsanz.distritos a, (SELECT d.cartodb_id as counts_id FROM jsanz.gbicimad b JOIN jsanz.distritos d ON ST_Intersects(b.the_geom, d.the_geom) = TRUE GROUP BY d.cartodb_id ) c WHERE a.cartodb_id = c.counts_id ORDER BY a.nombre', {})
+        .done(function(data) {
+          // add the rows as menus
+          data.rows.forEach(function(d){
+            $('#menu').append('<a href="#centro" id="carto_' + d.cartodb_id + '" class="button">' + d.nombre + '</a> ')
+          })
+
+          // add interactivity to the buttons
+          $('.button').click(function() {
+            $('.button').removeClass('selected');
+
+            // Get the district ID
+            var district_id = $(this).attr('id').split('_')[1];
+
+            if (district_id == currentId){
+              // If it's the same Id, use the original SQL
+              sublayer.setSQL(firstSQL);
+              sql.getBounds(firstSQL).done(function(bounds){
+                map.fitBounds(bounds);
+              })
+            } else {
+              // Move to that id
+              currentId = district_id;
+              // Change button styles
+              $(this).addClass('selected');
+              // Change the sublayer SQL
+              sublayer.setSQL(SQLTemplate.replace('{{id}}',district_id));
+              // Zoom to the bounds
+              sql.getBounds(SQLTemplate,{id:district_id}).done(function(bounds) {
+                map.fitBounds(bounds);
+              });
+            }
+          });
+        })
+        .error(function(errors) {
+          // errors contains a list of errors
+          console.log("errors:" + errors);
+        });
+    }
+
+    $(document).ready(function() {
+      init();
+    });
+    </script>
 </body>
 </html>

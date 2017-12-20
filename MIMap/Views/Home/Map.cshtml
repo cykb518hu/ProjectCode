@@ -564,7 +564,10 @@
             var result = getQueryData();
             result.IsViewed = isViewed;
             result.Important = isImportant;
-            result.State=currentState;
+            result.State = currentState;
+            if (searchFromMap && leftCityList.length > 0) {
+                result.ObjectIds = leftCityList.toString();
+            }
             return result;
         }
         function getQueryData() {
@@ -628,7 +631,12 @@
             };
             if(pageTag=="all_data"){
                 $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 25 });
-                loadMapData();
+                if (searchFromMap) {
+                    //this means the search is trigger from the button on map, this shouldn't refresh map again
+                }
+                else {
+                    loadMapData();
+                }
             }
             else if(pageTag=="notes_only"){
                 $("#tb_cityAllNote").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 10 });
@@ -978,6 +986,23 @@
 
     </div>
 </script>
+<script type="text/html" id="btn_refresh_template">
+    <input id="btn_refreshLeftData" type="submit" value="Refresh database" class="btn btn-info" onclick="refreshLeftDataBase()" style="
+	padding-bottom: 5px;
+    padding-top: 5px;
+    position: relative;
+    float: right;
+    margin: 20px 20px 0 0;
+    width: 120px;
+    -webkit-box-shadow: rgba(0,0,0,.2) 0 0 4px 2px;
+    -moz-box-shadow: rgba(0,0,0,.2) 0 0 4px 2px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    z-index: 105;
+    font-size: 12px; ">
+</script>
 
     <script>
         //map
@@ -986,7 +1011,10 @@
         var popLayer;
         var objectId;
         var defaultColor = "blue";
-        var currentState=sessionStorage.getItem("currentState");
+        var currentState = sessionStorage.getItem("currentState");
+        var pointList = new Array();
+        var leftCityList = new Array();
+        var searchFromMap = false;
 
         var mapTable="mi_munv5";
         var mapJson="http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json";
@@ -1020,8 +1048,23 @@
                     });
                     infowindow_model.set('template_type', 'underscore');
                     infowindow_model.set('template', $('#infowindow_template').html());
-                    createSelector();
+                    createSelector(mapMasterData);
                     initAutocomplete();
+                    map.on('moveend', function (e) {
+                        var tempList = new Array();
+                        var bounds = map.getBounds();
+                        for (var i = 0; i < pointList.length; i++) {
+                            if (pointList[i].lat > bounds._southWest.lat && pointList[i].lat < bounds._northEast.lat && pointList[i].lng > bounds._southWest.lng && pointList[i].lng < bounds._northEast.lng) {
+                                tempList.push(pointList[i].objectid)
+                            }
+                        }
+                        if (tempList.toString() != leftCityList.toString()) {
+                            $("#btn_refreshLeftData").css("color", "orangered");
+                            leftCityList = tempList;
+                        }
+                      
+                    })
+                    $(".cartodb-share").after($('#btn_refresh_template').html())
                 })
                 .error(function (err) {
                     console.log(err);
@@ -1042,7 +1085,7 @@
                             mapMasterData.push(data);
                         }
                     }
-                    createSelector();
+                    createSelector(mapMasterData);
                 },
                 complete: function (XMLHttpRequest, textStatus) {
                 },
@@ -1050,18 +1093,19 @@
                 }
             });
         }
-        function createSelector() {
+        
+        function createSelector(dataArr) {
             popLayer.infowindow.set('visibility', false);
             hideSideBar();
             var ids = "'nodata'";
             var cartocss = "#"+mapTable+"{polygon-fill: " + defaultColor + "; line-color: white; }";
 
-            if (mapMasterData.length > 0) {
+            if (dataArr.length > 0) {
                 ids = "";
-                for (var i = 0; i < mapMasterData.length; i++) {
-                    ids += "" + mapMasterData[i].Id + ",";
-                    if (mapMasterData[i].Color.length > 0) {
-                        cartocss += " #"+mapTable+" [objectid=" + mapMasterData[i].Id + "]{polygon-fill: " + mapMasterData[i].Color + "}";
+                for (var i = 0; i < dataArr.length; i++) {
+                    ids += "" + dataArr[i].Id + ",";
+                    if (dataArr[i].Color.length > 0) {
+                        cartocss += " #" + mapTable + " [objectid=" + dataArr[i].Id + "]{polygon-fill: " + dataArr[i].Color + "}";
                     }
                 }
                 ids = ids.substring(0, ids.length - 1);
@@ -1072,18 +1116,30 @@
             layer.setCartoCSS(cartocss);
             sql.getBounds(query).done(function (bounds) {
                 map.fitBounds(bounds);
-                //map.setZoom(7);
+              
+            });
+
+            var queryPoints = "SELECT ST_Y(ST_Centroid(the_geom)) lat, ST_X(ST_Centroid(the_geom)) lng,objectid FROM " + mapTable + " where objectid in (" + ids + ") order by objectid"
+            sql.execute(queryPoints).done(function (data) {
+                if (data.rows != undefined && data.rows.length > 0) {
+                    pointList = new Array();
+                    leftCityList = new Array();
+                    for (var i = 0; i < data.rows.length; i++) {
+                        pointList.push(data.rows[i]);
+                        leftCityList.push(data.rows[i].objectid)
+                    }
+                }
             });
         }
 
         function openMarker(popUpObjectId) {
 
-            var query = "SELECT ST_Y(ST_Centroid(the_geom)) lat, ST_X(ST_Centroid(the_geom)) lon FROM "+mapTable+" where objectid =" + popUpObjectId;
+            var query = "SELECT ST_Y(ST_Centroid(the_geom)) lat, ST_X(ST_Centroid(the_geom)) lng FROM "+mapTable+" where objectid =" + popUpObjectId;
             var sql = new cartodb.SQL({ user: 'achilles' });
             sql.execute(query).done(function (data) {
                 if (data.rows != undefined && data.rows.length == 1) {
                     var row = data.rows[0];
-                    var latlng = [row.lat, row.lon];
+                    var latlng = [row.lat, row.lng];
                     popLayer.trigger('featureClick', null, latlng, null, { objectid: popUpObjectId }, 0);
                 }
             });
@@ -1114,14 +1170,14 @@
 
         function saveMapColer(color) {
 
-            var cartocss = "#"+mapTable+"{polygon-fill: " + defaultColor + "; line-color: white; }";
+            var cartocss = "#" + mapTable + "{polygon-fill: " + defaultColor + "; line-color: white; }";
             if (mapMasterData.length > 0) {
                 for (var i = 0; i < mapMasterData.length; i++) {
                     if (oldPopUpObjectId == mapMasterData[i].Id) {
                         mapMasterData[i].Color = color;
                     }
                     if (mapMasterData[i].Color.length > 0) {
-                        cartocss += " #"+mapTable+"[objectid=" + mapMasterData[i].Id + "]{polygon-fill: " + mapMasterData[i].Color + "}";
+                        cartocss += " #" + mapTable + "[objectid=" + mapMasterData[i].Id + "]{polygon-fill: " + mapMasterData[i].Color + "}";
                     }
                 }
             }
@@ -1141,43 +1197,39 @@
                 }
             });
         }
-        var searchCityObjectIds = "";
-        var searchMapDataColor = new Array();
-        var restore = false;
-        function initAutocomplete() {
+        var idsFromMapSearch = "";
+        var colorFromMapSearch = new Array();
+        var reStoreMap = false;
 
+        function initAutocomplete() {
             var sql = cartodb.SQL({ user: 'achilles' });
-            $( ".cartodb-searchbox .text" ).autocomplete({
-                source: function( request, response ) {
-                    searchCityObjectIds="";
-                    sql.execute("select name, objectid,county,type from "+mapTable+" where name ilike '" + request.term + "%' limit 10").done(function(data) {
+            $(".cartodb-searchbox .text").autocomplete({
+                source: function (request, response) {
+                    idsFromMapSearch = "";
+                    sql.execute("select name, objectid,county,type from " + mapTable + " where name ilike '" + request.term + "%' limit 10").done(function (data) {
                         response(data.rows.map(function (r) {
                             var name = r.name;
-                            if (r.county != "null" && r.county != null)
-                            {
-                                if (r.county.indexOf("County") > -1)
-                                {
+                            if (r.county != "null" && r.county != null) {
+                                if (r.county.indexOf("County") > -1) {
                                     r.county = r.county.replace("County", "");
                                     r.county = r.county.replace(/\s/g, '');
-                                    if(r.type=="T"||r.type=="TC")
-                                    {
-                                        r.type="Township"
+                                    if (r.type == "T" || r.type == "TC") {
+                                        r.type = "Township"
                                     }
-                                    if(r.type=="C")
-                                    {
-                                        r.type="City"
+                                    if (r.type == "C") {
+                                        r.type = "City"
                                     }
-                                    name = name + ', '+r.type+', '+ r.county;
+                                    name = name + ', ' + r.type + ', ' + r.county;
                                 }
                             }
-                            searchCityObjectIds += r.objectid + ",";
+                            idsFromMapSearch += r.objectid + ",";
                             return {
                                 label: name,
                                 value: name,
-                                mapObjectId:r.objectid
+                                mapObjectId: r.objectid
                             }
                         })
-                       )
+                        )
                     })
                 },
                 minLength: 2,
@@ -1185,9 +1237,6 @@
                     event.preventDefault();
                     $(".cartodb-searchbox .text").val(ui.item.label);
                     $(".cartodb-searchbox .text").attr("data-search", ui.item.mapObjectId)
-                   // log( ui.item ?
-                   //   "Selected: " + ui.item.value :
-                    //  "Nothing selected, input was " + this.value );
                 },
                 open: function () {
                     $(".cartodb-searchbox .text").attr("data-search", "");
@@ -1197,23 +1246,21 @@
                         left: (offset.left - 30) + "px",
                         top: (offset.top + 5 - $(document).scrollTop()) + "px",
                         position: "fixed",
-                        width:"240px"
+                        width: "240px"
                     });
-                    //alert($(document).scrollTop());
-                    //alert("left: " + offset.left + ", top: " + offset.top);
-                    if (searchCityObjectIds.length > 0) {
-                        searchMapDataColor = new Array();
+                    if (idsFromMapSearch.length > 0) {
+                        colorFromMapSearch = new Array();
                         $.ajax({
                             url: '@Url.Action("GetCartoSearchResult", "Home")',
                             dataType: 'json',
-                            data: { objectIds: searchCityObjectIds, state: currentState},
+                            data: { objectIds: idsFromMapSearch, state: currentState },
                             type: "GET",
                             cache: false,
                             success: function (result) {
                                 if (result.length > 0) {
                                     for (var i = 0; i < result.length; i++) {
                                         var data = result[i];
-                                        searchMapDataColor.push(data);
+                                        colorFromMapSearch.push(data);
                                     }
                                 }
                             }
@@ -1229,10 +1276,9 @@
                 }
             });
             $('.cartodb-searchbox .text').on('input', function (e) {
-                if($(this).val().length==0&&restore)
-                {
-                    restore=false;
-                    createSelector();
+                if ($(this).val().length == 0 && reStoreMap) {
+                    reStoreMap = false;
+                    createSelector(mapMasterData);
                 }
             });
             $('.cartodb-searchbox .submit').on('click', function (e) {
@@ -1241,49 +1287,43 @@
 
             });
         };
-        function searchBoxResult()
-        {
-            if($('.cartodb-searchbox .text').val().length<2)
-            {
+        function searchBoxResult() {
+            if ($('.cartodb-searchbox .text').val().length < 2) {
                 $('.cartodb-searchbox .text').val("");
-                $('.cartodb-searchbox .text').attr("placeholder","please input at least 2 characters.")
+                $('.cartodb-searchbox .text').attr("placeholder", "please input at least 2 characters.")
                 return;
             }
-            restore=true;
+            reStoreMap = true;
             popLayer.infowindow.set('visibility', false);
-            var ids = "'nodata'";
-            var cartocss = "";
+            var data;
             var id = $(".cartodb-searchbox .text").attr("data-search");
-            if (id == "" || id == null) {
-                ids = " ";
-                for (var i = 0; i < searchMapDataColor.length; i++) {
-                    ids += "" + searchMapDataColor[i].Id + ",";
-                    cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill: " + searchMapDataColor[i].Color + ";line-color: white;}";
-                }
-                ids = ids.substring(0, ids.length - 1);
-
-            }
-            else {
-                ids = "";
-                for (var i = 0; i < searchMapDataColor.length; i++) {
-                    if (id == searchMapDataColor[i].Id) {
-                        ids += "" + searchMapDataColor[i].Id + ",";
-                        cartocss += " #" + mapTable + " [objectid=" + searchMapDataColor[i].Id + "]{polygon-fill:" + searchMapDataColor[i].Color + ";line-color: white;}";
+            if (id.length > 0) {
+                for (var i = 0; i < colorFromMapSearch.length; i++) {
+                    if (id == colorFromMapSearch[i].Id) {
+                        data = colorFromMapSearch[i];
+                        break;
                     }
                 }
-                ids = ids.substring(0, ids.length - 1);
+                colorFromMapSearch = new Array();
+                colorFromMapSearch.push(data);
             }
-
-            var sql = new cartodb.SQL({ user: 'achilles' });
-           // ids="668";
-           // cartocss="#mi_munv5 [objectid=668]{polygon-fill:red}";
-            var query = "SELECT * FROM " + mapTable + " where objectid in (" + ids + ")";
-            layer.setSQL(query);
-            layer.setCartoCSS(cartocss);
-            sql.getBounds(query).done(function (bounds) {
-                map.fitBounds(bounds);
-                //map.setZoom(7);
-            });
+            createSelector(colorFromMapSearch);
         }
-        //moveend
+        
+        function refreshLeftDataBase() {
+            //only move event is triggerd
+            if ($("#btn_refreshLeftData").css("color") == "rgb(255, 69, 0)") {
+                leftCityList = new Array();
+                var bounds = map.getBounds();
+                for (var i = 0; i < pointList.length; i++) {
+                    if (pointList[i].lat > bounds._southWest.lat && pointList[i].lat < bounds._northEast.lat && pointList[i].lng > bounds._southWest.lng && pointList[i].lng < bounds._northEast.lng) {
+                        leftCityList.push(pointList[i].objectid)
+                    }
+                }
+                searchFromMap = true;
+                $("#btn_refreshLeftData").css("color", "white");
+                searchData();
+                searchFromMap = false;
+            }
+        }
     </script>

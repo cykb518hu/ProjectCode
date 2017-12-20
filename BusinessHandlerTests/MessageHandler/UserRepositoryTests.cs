@@ -548,7 +548,8 @@ namespace BusinessHandler.MessageHandler.Tests
                 CityDescirption = "London test",
                 ImageUrl = "http://media.mhb.com/mhb-media/9/6/C/96CB9C49-0EF4-418E-9A7D-E7F71D9FAA08/tpl-half-scratchpad-without.jpg?w=1000&hash=D08B00E543594E4F82B624ACC4A0F7F8",
                 BookingUrl= "https://www.millenniumhotels.com/en/bookings/?city=london",
-                CityUrl= "https://www.millenniumhotels.com/en/london/"
+                CityUrl= "https://www.millenniumhotels.com/en/london/",
+                ImageAnchor="center center"
 
             });
             cityList.Add(new HomeCity
@@ -557,7 +558,8 @@ namespace BusinessHandler.MessageHandler.Tests
                 CityDescirption = "Beijing test",
                 ImageUrl = "http://media.mhb.com/mhb-media/9/6/C/96CB9C49-0EF4-418E-9A7D-E7F71D9FAA08/tpl-half-scratchpad-without.jpg?w=1000&hash=D08B00E543594E4F82B624ACC4A0F7F8",
                 BookingUrl = "https://www.millenniumhotels.com/en/bookings/?city=london",
-                CityUrl = "https://www.millenniumhotels.com/en/london/"
+                CityUrl = "https://www.millenniumhotels.com/en/london/",
+                ImageAnchor = "top left"
 
             });
             cityList.Add(new HomeCity
@@ -569,8 +571,10 @@ namespace BusinessHandler.MessageHandler.Tests
                 CityUrl = "https://www.millenniumhotels.com/en/london/"
 
             });
-
-            var str = JsonConvert.SerializeObject(cityList);
+            var data = new HomeCitySection();
+            data.HomeCityList = cityList;
+            data.AllHotelLink = "https://www.millenniumhotels.com/en/hotel/";
+            var str = JsonConvert.SerializeObject(data);
         }
     }
 
@@ -726,5 +730,17 @@ namespace BusinessHandler.MessageHandler.Tests
 
         [JsonProperty("cityUrl")]
         public string CityUrl { get; set; }
+
+        [JsonProperty("imageAnchor")]
+        public string ImageAnchor { get; set; }
+    }
+
+    public class HomeCitySection
+    {
+        [JsonProperty("allHotelLink")]
+        public string AllHotelLink { get; set; }
+
+        [JsonProperty("homeCityList")]
+        public List<HomeCity> HomeCityList { get; set; }
     }
 }

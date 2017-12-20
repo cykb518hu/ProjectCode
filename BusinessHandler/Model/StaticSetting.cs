@@ -138,6 +138,10 @@ namespace BusinessHandler.Model
             {
                 command.Parameters.AddWithValue("@State", message.State);
             }
+            if (!string.IsNullOrWhiteSpace(message.ObjectIds))
+            {
+                command.Parameters.AddWithValue("@ObjectIds", message.ObjectIds);
+            }
         }
     }
 }
