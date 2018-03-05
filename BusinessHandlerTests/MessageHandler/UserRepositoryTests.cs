@@ -17,6 +17,8 @@ using System.Net;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using QRCoder;
+using System.Drawing;
 
 namespace BusinessHandler.MessageHandler.Tests
 {
@@ -575,6 +577,16 @@ namespace BusinessHandler.MessageHandler.Tests
             data.HomeCityList = cityList;
             data.AllHotelLink = "https://www.millenniumhotels.com/en/hotel/";
             var str = JsonConvert.SerializeObject(data);
+        }
+
+        [TestMethod()]
+        public void QRTest()
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode("http://59.110.217.147:8005/test.html?promoCode=Achilles", QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            qrCodeImage.Save(@"C:\Document\Pen\test.png");
         }
     }
 

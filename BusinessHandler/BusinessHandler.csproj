@@ -55,11 +55,8 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageHandler\CSVFileHelper.cs" />
     <Compile Include="MessageHandler\DocQueryDB.cs" />
-    <Compile Include="MessageHandler\DocQueryFactory.cs" />
     <Compile Include="MessageHandler\CacheRepository.cs" />
-    <Compile Include="MessageHandler\DocQueryRepository.cs" />
     <Compile Include="MessageHandler\GlobalKeyString.cs" />
     <Compile Include="MessageHandler\IMapDataRepository.cs" />
     <Compile Include="MessageHandler\KeyWords.cs" />
@@ -69,7 +66,6 @@
     <Compile Include="MessageHandler\XmlHelper.cs" />
     <Compile Include="Model\CityOrdinance.cs" />
     <Compile Include="Model\DocQueryModel.cs" />
-    <Compile Include="Model\MapCounty.cs" />
     <Compile Include="Model\MapDataModel.cs" />
     <Compile Include="Model\SearchQueryModel.cs" />
     <Compile Include="Model\StaticSetting.cs" />
