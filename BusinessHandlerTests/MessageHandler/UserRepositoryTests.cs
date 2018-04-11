@@ -41,9 +41,7 @@ namespace BusinessHandler.MessageHandler.Tests
         [TestMethod()]
         public void QueryXmlTest()
         {
-            var filePath = @"C:\TestCode\Document\XmlFile\Midland_Queries.xml";
-            XmlHelper helper = new XmlHelper();
-            var list = helper.OpenQuery(filePath);
+      
 
         }
         [TestMethod()]
@@ -71,132 +69,132 @@ namespace BusinessHandler.MessageHandler.Tests
         [TestMethod()]
         public void InsertDoc()
         {
-            var filePath = @"C:\TestCode\Document\XmlFile";
-            XmlHelper xml = new XmlHelper();
-            var DocUrlList = Directory.GetFiles(filePath, "*Docs*");
+            //var filePath = @"C:\TestCode\Document\XmlFile";
+            //XmlHelper xml = new XmlHelper();
+            //var DocUrlList = Directory.GetFiles(filePath, "*Docs*");
 
-            foreach (var r in DocUrlList)
-            {
-                var resultList = new List<DocData>();
-                resultList = xml.OpenDoc(r);
-                string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
-                foreach (var rr in resultList)
-                {
-                    string queryString = @"UPDATE DOCUMENT SET IMPORTANT='" + rr.Important + "' WHERE DOC_GUID='" + rr.DocId + "'";
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
+            //foreach (var r in DocUrlList)
+            //{
+            //    var resultList = new List<DocData>();
+            //    resultList = xml.OpenDoc(r);
+            //    string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
+            //    foreach (var rr in resultList)
+            //    {
+            //        string queryString = @"UPDATE DOCUMENT SET IMPORTANT='" + rr.Important + "' WHERE DOC_GUID='" + rr.DocId + "'";
+            //        using (SqlConnection connection = new SqlConnection(connectionString))
+            //        {
 
-                        SqlCommand command = new SqlCommand(queryString, connection);
+            //            SqlCommand command = new SqlCommand(queryString, connection);
 
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                    }
+            //            connection.Open();
+            //            command.ExecuteNonQuery();
+            //        }
 
-                    //string queryString = @"insert into DOCUMENT(DOC_GUID,CITY_NM,DOC_TYPE, DOC_SOURCE,DOC_PATH,CHECKED,IMPORTANT,READABLE) values ('" + rr.DocId + "','" + rr.CityName + "','" + rr.DocType + "','" + rr.DocUrl + "','" + rr.DocFilePath + "','" + rr.IsViewed + "','" + rr.Important + "','" + rr.CanBeRead + "')";
-                    //using (SqlConnection connection = new SqlConnection(connectionString))
-                    //{
+            //        //string queryString = @"insert into DOCUMENT(DOC_GUID,CITY_NM,DOC_TYPE, DOC_SOURCE,DOC_PATH,CHECKED,IMPORTANT,READABLE) values ('" + rr.DocId + "','" + rr.CityName + "','" + rr.DocType + "','" + rr.DocUrl + "','" + rr.DocFilePath + "','" + rr.IsViewed + "','" + rr.Important + "','" + rr.CanBeRead + "')";
+            //        //using (SqlConnection connection = new SqlConnection(connectionString))
+            //        //{
 
-                    //    SqlCommand command = new SqlCommand(queryString, connection);
+            //        //    SqlCommand command = new SqlCommand(queryString, connection);
 
-                    //    connection.Open();
-                    //    command.ExecuteNonQuery();
-                    //}
-                }
-            }
+            //        //    connection.Open();
+            //        //    command.ExecuteNonQuery();
+            //        //}
+            //    }
+            //}
         }
         [TestMethod()]
         public void InsertQuery()
         {
-            var filePath = @"C:\TestCode\Document\XmlFile";
-            XmlHelper xml = new XmlHelper();
-            var queriesUrlList = Directory.GetFiles(filePath, "*Queries*");
+            //var filePath = @"C:\TestCode\Document\XmlFile";
+            //XmlHelper xml = new XmlHelper();
+            //var queriesUrlList = Directory.GetFiles(filePath, "*Queries*");
 
-            foreach (var r in queriesUrlList)
-            {
-                var xmlDataList = new List<QueryXmlData>();
+            //foreach (var r in queriesUrlList)
+            //{
+            //    var xmlDataList = new List<QueryXmlData>();
 
-                XDocument xdoc = XDocument.Load(r);
-                xmlDataList = (from lv1 in xdoc.Descendants("Query")
-                               select new QueryXmlData
-                               {
-                                   CityName = lv1.Element("CityId").Value,
-                                   DocId = lv1.Element("DocId").Value,
+            //    XDocument xdoc = XDocument.Load(r);
+            //    xmlDataList = (from lv1 in xdoc.Descendants("Query")
+            //                   select new QueryXmlData
+            //                   {
+            //                       CityName = lv1.Element("CityId").Value,
+            //                       DocId = lv1.Element("DocId").Value,
 
-                                   MeetingDate = DateTime.Parse(lv1.Element("MeetingDate").Value),
-                                   MeetingDateDisplay = DateTime.Parse(lv1.Element("MeetingDate").Value).ToString("yyyy-MM-dd"),
-                                   SearchDate = DateTime.Parse(lv1.Element("SearchDate").Value).ToString("yyyy-MM-dd"),
-                                   MeetingTitle = lv1.Element("MeetingTitle").Value,
-                                   MeetingLocation = lv1.Element("MeetingLocation").Value,
-                                   Entries = (from lv2 in lv1.Element("Entries").Elements("Entry")
-                                              select new QueryEntryXmlData
-                                              {
+            //                       MeetingDate = DateTime.Parse(lv1.Element("MeetingDate").Value),
+            //                       MeetingDateDisplay = DateTime.Parse(lv1.Element("MeetingDate").Value).ToString("yyyy-MM-dd"),
+            //                       SearchDate = DateTime.Parse(lv1.Element("SearchDate").Value).ToString("yyyy-MM-dd"),
+            //                       MeetingTitle = lv1.Element("MeetingTitle").Value,
+            //                       MeetingLocation = lv1.Element("MeetingLocation").Value,
+            //                       Entries = (from lv2 in lv1.Element("Entries").Elements("Entry")
+            //                                  select new QueryEntryXmlData
+            //                                  {
 
-                                                  KeyWord = lv2.Element("Keyword").Value,
-                                                  PageNumber = lv2.Element("PageNumber").Value,
-                                                  ContentList = (from lv3 in lv2.Element("Contents").Elements("Content")
-                                                                 select new QueryContentXmlData
-                                                                 {
-                                                                     Content = lv3.Value,
-                                                                     QueryGuid = lv3.Attribute("GUID").Value,
-                                                                     Comment = lv3.Attribute("Comment").Value
-                                                                 }
-                                                               ).ToList()
-                                              }
+            //                                      KeyWord = lv2.Element("Keyword").Value,
+            //                                      PageNumber = lv2.Element("PageNumber").Value,
+            //                                      ContentList = (from lv3 in lv2.Element("Contents").Elements("Content")
+            //                                                     select new QueryContentXmlData
+            //                                                     {
+            //                                                         Content = lv3.Value,
+            //                                                         QueryGuid = lv3.Attribute("GUID").Value,
+            //                                                         Comment = lv3.Attribute("Comment").Value
+            //                                                     }
+            //                                                   ).ToList()
+            //                                  }
 
-                                   ).ToList()
-                               }).ToList();
+            //                       ).ToList()
+            //                   }).ToList();
 
-                string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
-                foreach (var q in xmlDataList)
-                {
-                    string queryString = @"insert into QUERY(QUERY_GUID,DOC_GUID,MEETING_DATE,MEETING_LOCATION, MEETING_TITLE,SEARCH_DATE) values ('" + Guid.NewGuid().ToString() + "','" + q.DocId + "','" + q.MeetingDate + "','" + q.MeetingLocation + "','" + q.MeetingTitle + "','" + q.SearchDate + "')";
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        // Create the Command and Parameter objects.
-                        SqlCommand command = new SqlCommand(queryString, connection);
-                        // Open the connection in a try/catch block. 
-                        // Create and execute the DataReader, writing the result
-                        // set to the console window.
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                    }
-                    var queryGuid = string.Empty;
-                    string queryString2 = @"select top 1 QUERY_GUID from QUERY order by USR_CRTN_TS desc ";
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        // Create the Command and Parameter objects.
-                        SqlCommand command = new SqlCommand(queryString2, connection);
-                        // Open the connection in a try/catch block. 
-                        // Create and execute the DataReader, writing the result
-                        // set to the console window.
-                        connection.Open();
-                        queryGuid = command.ExecuteScalar().ToString();
-                    }
-                    foreach (var d in q.Entries)
-                    {
-                        foreach (var rr in d.ContentList)
-                        {
-                            string queryString3 = @"insert into QUERY_ENTRY(ENTRY_GUID, QUERY_GUID,PAGE_NUMBER,KEYWORD,CONTENT, COMMENT) values (@ENTRY_GUID,@QUERY_GUID,@PAGE_NUMBER,@KEYWORD,@CONTENT,@COMMENT)";
-                            using (SqlConnection connection = new SqlConnection(connectionString))
-                            {
-                                // Create the Command and Parameter objects.
-                                SqlCommand command = new SqlCommand(queryString3, connection);
-                                command.Parameters.AddWithValue("@ENTRY_GUID", rr.QueryGuid);
-                                command.Parameters.AddWithValue("@QUERY_GUID", queryGuid);
-                                command.Parameters.AddWithValue("@PAGE_NUMBER", d.PageNumber);
-                                command.Parameters.AddWithValue("@KEYWORD", d.KeyWord);
-                                command.Parameters.AddWithValue("@CONTENT", rr.Content);
-                                command.Parameters.AddWithValue("@COMMENT", rr.Comment);
-                                // Open the connection in a try/catch block. 
-                                // Create and execute the DataReader, writing the result
-                                // set to the console window.
-                                connection.Open();
-                                command.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-            }
+            //    string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
+            //    foreach (var q in xmlDataList)
+            //    {
+            //        string queryString = @"insert into QUERY(QUERY_GUID,DOC_GUID,MEETING_DATE,MEETING_LOCATION, MEETING_TITLE,SEARCH_DATE) values ('" + Guid.NewGuid().ToString() + "','" + q.DocId + "','" + q.MeetingDate + "','" + q.MeetingLocation + "','" + q.MeetingTitle + "','" + q.SearchDate + "')";
+            //        using (SqlConnection connection = new SqlConnection(connectionString))
+            //        {
+            //            // Create the Command and Parameter objects.
+            //            SqlCommand command = new SqlCommand(queryString, connection);
+            //            // Open the connection in a try/catch block. 
+            //            // Create and execute the DataReader, writing the result
+            //            // set to the console window.
+            //            connection.Open();
+            //            command.ExecuteNonQuery();
+            //        }
+            //        var queryGuid = string.Empty;
+            //        string queryString2 = @"select top 1 QUERY_GUID from QUERY order by USR_CRTN_TS desc ";
+            //        using (SqlConnection connection = new SqlConnection(connectionString))
+            //        {
+            //            // Create the Command and Parameter objects.
+            //            SqlCommand command = new SqlCommand(queryString2, connection);
+            //            // Open the connection in a try/catch block. 
+            //            // Create and execute the DataReader, writing the result
+            //            // set to the console window.
+            //            connection.Open();
+            //            queryGuid = command.ExecuteScalar().ToString();
+            //        }
+            //        foreach (var d in q.Entries)
+            //        {
+            //            foreach (var rr in d.ContentList)
+            //            {
+            //                string queryString3 = @"insert into QUERY_ENTRY(ENTRY_GUID, QUERY_GUID,PAGE_NUMBER,KEYWORD,CONTENT, COMMENT) values (@ENTRY_GUID,@QUERY_GUID,@PAGE_NUMBER,@KEYWORD,@CONTENT,@COMMENT)";
+            //                using (SqlConnection connection = new SqlConnection(connectionString))
+            //                {
+            //                    // Create the Command and Parameter objects.
+            //                    SqlCommand command = new SqlCommand(queryString3, connection);
+            //                    command.Parameters.AddWithValue("@ENTRY_GUID", rr.QueryGuid);
+            //                    command.Parameters.AddWithValue("@QUERY_GUID", queryGuid);
+            //                    command.Parameters.AddWithValue("@PAGE_NUMBER", d.PageNumber);
+            //                    command.Parameters.AddWithValue("@KEYWORD", d.KeyWord);
+            //                    command.Parameters.AddWithValue("@CONTENT", rr.Content);
+            //                    command.Parameters.AddWithValue("@COMMENT", rr.Comment);
+            //                    // Open the connection in a try/catch block. 
+            //                    // Create and execute the DataReader, writing the result
+            //                    // set to the console window.
+            //                    connection.Open();
+            //                    command.ExecuteNonQuery();
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
 
 
@@ -322,39 +320,39 @@ namespace BusinessHandler.MessageHandler.Tests
         [TestMethod()]
         public void TestMapColor()
         {
-            var list = new List<DocQueryParentModel>();
-            list.Add(new DocQueryParentModel { LongName = "City of Portage", Number = 534 });
-            list.Add(new DocQueryParentModel { LongName = "City of Eastpointe", Number = 61 });
-            list.Add(new DocQueryParentModel { LongName = "City of Sterling Heights", Number = 281 });
-            list.Add(new DocQueryParentModel { LongName = "Redford Township", Number = 12 });
-            list.Add(new DocQueryParentModel { LongName = "City of Ann Arbor", Number = 38 });
-            list = list.OrderByDescending(x => x.Number).ToList();
+            //var list = new List<DocQueryParentModel>();
+            //list.Add(new DocQueryParentModel { LongName = "City of Portage", Number = 534 });
+            //list.Add(new DocQueryParentModel { LongName = "City of Eastpointe", Number = 61 });
+            //list.Add(new DocQueryParentModel { LongName = "City of Sterling Heights", Number = 281 });
+            //list.Add(new DocQueryParentModel { LongName = "Redford Township", Number = 12 });
+            //list.Add(new DocQueryParentModel { LongName = "City of Ann Arbor", Number = 38 });
+            //list = list.OrderByDescending(x => x.Number).ToList();
 
-            var result = new List<MapMunicipalityColor>();
+            //var result = new List<MapMunicipalityColor>();
 
-            var colorList = new List<string>();
-            colorList.Add("#00FF7F");
-            colorList.Add("#00EE76");
-            colorList.Add("#00CD66");
-            colorList.Add("#008B45");
+            //var colorList = new List<string>();
+            //colorList.Add("#00FF7F");
+            //colorList.Add("#00EE76");
+            //colorList.Add("#00CD66");
+            //colorList.Add("#008B45");
 
-            int max = list.First().Number;
-            int min = list.Last().Number;
+            //int max = list.First().Number;
+            //int min = list.Last().Number;
 
-            int level = (max - min) / 3;
+            //int level = (max - min) / 3;
 
-            foreach (var l in list)
-            {
-                var data = new MapMunicipalityColor();
-                data.MunicipalityName = l.LongName;
-                var index = l.Number / level;
-                if (index >= colorList.Count)
-                {
-                    index = colorList.Count - 1;
-                }
-                data.Color = "#mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + colorList[index] + "; line-color: white; }";
-                result.Add(data);
-            }
+            //foreach (var l in list)
+            //{
+            //    var data = new MapMunicipalityColor();
+            //    data.MunicipalityName = l.LongName;
+            //    var index = l.Number / level;
+            //    if (index >= colorList.Count)
+            //    {
+            //        index = colorList.Count - 1;
+            //    }
+            //    data.Color = "#mi_mun[label='" + data.MunicipalityName + "']{polygon-fill: " + colorList[index] + "; line-color: white; }";
+            //    result.Add(data);
+            //}
         }
 
         [TestMethod()]

@@ -56,14 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MessageHandler\DocQueryDB.cs" />
-    <Compile Include="MessageHandler\CacheRepository.cs" />
     <Compile Include="MessageHandler\GlobalKeyString.cs" />
     <Compile Include="MessageHandler\IMapDataRepository.cs" />
-    <Compile Include="MessageHandler\KeyWords.cs" />
-    <Compile Include="MessageHandler\MeetingNote.cs" />
-    <Compile Include="MessageHandler\SearchQueryRepository.cs" />
-    <Compile Include="MessageHandler\UserRepository.cs" />
-    <Compile Include="MessageHandler\XmlHelper.cs" />
+    <Compile Include="MessageHandler\IKeyWordsRepository.cs" />
+    <Compile Include="MessageHandler\IMeetingNoteRepository.cs" />
+    <Compile Include="MessageHandler\ISearchQueryRepository.cs" />
+    <Compile Include="MessageHandler\IUserRepository.cs" />
     <Compile Include="Model\CityOrdinance.cs" />
     <Compile Include="Model\DocQueryModel.cs" />
     <Compile Include="Model\MapDataModel.cs" />

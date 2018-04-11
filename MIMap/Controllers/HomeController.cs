@@ -17,11 +17,13 @@ namespace MIMap.Controllers
         ISearchQueryRepository searchQueryRepository;
         IMapDataRepository mapRepository;
         IMeetingNote meetingNoteRepository;
+        IKeyWord _keyWord;
         public HomeController()
         {
             meetingNoteRepository = DependencyResolver.Current.GetService<IMeetingNote>();
             searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
             mapRepository = DependencyResolver.Current.GetService<IMapDataRepository>();
+            _keyWord = DependencyResolver.Current.GetService<IKeyWord>();
 
         }
         public ActionResult Index()
@@ -50,7 +52,7 @@ namespace MIMap.Controllers
             {
                 state = Request.QueryString["state"];
             }
-            var keyWordList = DocQueryDB.GetKeyWordList();
+            var keyWordList = _keyWord.GetKeyWordList();
             ViewData["municipalityList"] = mapRepository.GetFilterData(state);
             ViewData["keyWordList"] = keyWordList;
             var message = new DocQueryMessage();
