@@ -77,7 +77,7 @@ if @State is not null
 		set @sqlstr=@sqlstr+' and C.STATES = '''+ @State+''''
 	end
 
-if @State is not null
+if @ObjectIds is not null
    begin
 		set @sqlstr=@sqlstr+' and C.objectid ('+ @ObjectIds+')'
 	end
