@@ -318,3 +318,18 @@ ALTER table [dbo].[MeetingNote] add Tags varchar(100)
 ALTER table [dbo].[MeetingNote] add FutureDate varchar(20)
 
 --2017-10-23
+--INDEX
+create  NONCLUSTERED         --表示创建唯一聚集索引
+index IDX_DOCUMENT_CITY_NM        --索引名称
+on dbo.DOCUMENT(CITY_NM)        --数据表名称（建立索引的列名）
+go
+
+create  NONCLUSTERED  index IDX_DOCUMENT_CHECKED  on dbo.DOCUMENT(CHECKED)        
+go
+
+create  NONCLUSTERED  index IDX_DOCUMENT_IMPORTANT  on dbo.DOCUMENT(IMPORTANT)        
+go
+
+create  NONCLUSTERED      index IDX_QUERY_MEETING_DATE  on dbo.QUERY(MEETING_DATE)
+GO
+
