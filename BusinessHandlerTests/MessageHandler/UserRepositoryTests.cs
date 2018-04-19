@@ -28,13 +28,13 @@ namespace BusinessHandler.MessageHandler.Tests
         [TestMethod()]
         public void RegisterTest()
         {
-            UserRepository user = new UserRepository();
-            UserAccount message = new UserAccount();
-            message.Email = "Achilles@11.com";
-            message.Password = "dddd";
-            message.Cityes = "chengdu,chongqing";
-            message.Active = "No";
-            user.Register(message);
+            //UserRepository user = new UserRepository();
+            //UserAccount message = new UserAccount();
+            //message.Email = "Achilles@11.com";
+            //message.Password = "dddd";
+            //message.Cityes = "chengdu,chongqing";
+            //message.Active = "No";
+            //user.Register(message);
 
         }
 

@@ -217,27 +217,6 @@
         </div>
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add Comments</h4>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="hid_DocId" />
-                    <input type="hidden" id="hid_FilePath" />
-                    <input type="hidden" id="hid_QueryGuid" />
-                    <textarea class="form-control" rows="3" id="txt_Comments"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="cursor:pointer">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn_Save_Comment">Save changes</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-
 
     <div class="modal fade" tabindex="-1" role="dialog"  id="myNotesModal">
         <div class="modal-dialog" role="document">
@@ -449,13 +428,13 @@
                             field: 'Comment',
                             title: 'Comment',
                             width: '10%'
-                        },
-                        {
-                            field: 'Operation',
-                            title: 'Operation',
-                            align: 'center',
-                            width: '10%'
                         }
+                        //{
+                        //    field: 'Operation',
+                        //    title: 'Operation',
+                        //    align: 'center',
+                        //    width: '10%'
+                        //}
                     ],
 
                 });
@@ -477,14 +456,7 @@
         function collapseAllRows() {
             $("#tb_municipality").bootstrapTable('collapseAllRows');
         }
-        function OpenDataDetail(obj) {
-            var queryGuid = $(obj).attr("data-queryguid");
-            var comment = $(obj).parent().prev().children().html();
-            $("#hid_DocId").val($(obj).attr("data-querydocId"));
-            $("#hid_QueryGuid").val(queryGuid);
-            $("#txt_Comments").val(comment);
-            $("#myModal").modal('show');
-        }
+
         function OpenDocNoteDetail(obj) {
             var docGuid = $(obj).attr("data-docid");
             $("#hid_noteDocId").val(docGuid);
@@ -942,31 +914,6 @@
                     complete: function (XMLHttpRequest, textStatus) {
                         $('#query_' + queryGuid).hide();
                         $("#queryModal").modal('hide');
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-
-                    }
-                });
-            });
-            $("#btn_Save_Comment").click(function () {
-                $.ajax({
-                    url: '@Url.Action("SaveComment", "Home")',
-                    data: { Comment: $("#txt_Comments").val(), QueryGuid: $("#hid_QueryGuid").val() ,DocId: $("#hid_DocId").val()},
-                    dataType: 'json',
-                    type: "POST",
-                    success: function (result) {
-                        successTips();
-                        $('#' + $("#hid_QueryGuid").val()).html($("#txt_Comments").val());
-                        if($("#txt_Comments").val().length>0){
-                            $('#' + $("#hid_QueryGuid").val()).parent().next().children().removeClass("btn-success").removeClass("btn-default").addClass("btn-success");
-                        }
-                        else{
-                            $('#' + $("#hid_QueryGuid").val()).parent().next().children().removeClass("btn-success").removeClass("btn-default").addClass("btn-default");
-                        }
-                        updateDocLevelNoteButton(result, $("#hid_DocId").val());
-                    },
-                    complete: function (XMLHttpRequest, textStatus) {
-                        $("#myModal").modal('hide');
                     },
                     error: function (xhr, textStatus, errorThrown) {
 

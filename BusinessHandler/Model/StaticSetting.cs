@@ -25,26 +25,12 @@ namespace BusinessHandler.Model
 
         public static string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
-        public static string filePath = string.IsNullOrEmpty(ConfigurationManager.AppSettings["FilePath"]) ? "" : ConfigurationManager.AppSettings["FilePath"].ToString();
-
-        public static string userFile = string.IsNullOrEmpty(ConfigurationManager.AppSettings["userFile"]) ? "" : ConfigurationManager.AppSettings["userFile"].ToString();
-
 
         public static string version = string.IsNullOrEmpty(ConfigurationManager.AppSettings["version"]) ? "" : ConfigurationManager.AppSettings["version"].ToString();
 
         public static string uploadPath= string.IsNullOrEmpty(ConfigurationManager.AppSettings["uploadPath"]) ? "" : ConfigurationManager.AppSettings["uploadPath"].ToString();
 
         public static string DefaultTags= string.IsNullOrEmpty(ConfigurationManager.AppSettings["DefaultTags"]) ? "" : ConfigurationManager.AppSettings["DefaultTags"].ToString();
-
-        public static List<string> MapColorList()
-        {
-            List<string> list = new List<string>();
-            list.Add("#00FF7F"); //<50
-            list.Add("#00EE76");//<200
-            list.Add("#00CD66"); //<500
-            list.Add("#008B45"); //>500
-            return list;
-        }
 
         public static string Base64Encode(string plainText)
         {

@@ -273,7 +273,7 @@ namespace BusinessHandler.MessageHandler
                         }
                         var btnType = DBNull.Value == reader["COMMENT"] ? "btn-default" : string.IsNullOrEmpty(reader["COMMENT"].ToString()) ? "btn-default" : "btn-success";
 
-                        result.Operation = @"<button type='button' class='btn " + btnType + " glyphicon glyphicon-edit' aria-label='Left Align'  data-queryguid='" + result.QueryGuid + "' data-querydocId='" + result.DocId + "' onclick='OpenDataDetail(this); return false'></button>";
+                       // result.Operation = @"<button type='button' class='btn " + btnType + " glyphicon glyphicon-edit' aria-label='Left Align'  data-queryguid='" + result.QueryGuid + "' data-querydocId='" + result.DocId + "' onclick='OpenDataDetail(this); return false'></button>";
                         resultList.Add(result);
                     }
                 }
@@ -281,17 +281,6 @@ namespace BusinessHandler.MessageHandler
             foreach (var r in list)
             {
                 var subList = resultList.Where(x => x.DocId == r.DocId).ToList();
-                if (subList.Any(x => x.Operation.IndexOf("btn-success") > 0))
-                {
-                    if (r.MinicipalityOperation.IndexOf("btn-success") < 0)
-                    {
-                        Regex regex = new Regex("btn-default");
-                        r.MinicipalityOperation = regex.Replace(r.MinicipalityOperation, "btn-success", 1);
-                    }
-                }
-                //int count = 0;
-                //subList.ForEach(x => { count += Regex.Matches(x.Content, x.KeyWord, RegexOptions.IgnoreCase).Count; });
-               // r.Number = count;
                 subList = subList.OrderBy(x => x.PageNumber).ToList();
                 r.DocQuerySubList = subList;
             }
