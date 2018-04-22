@@ -29,6 +29,12 @@ namespace BusinessHandler.MessageHandler
 
     public class SqlServerMapDataRepository:IMapDataRepository
     {
+        IKeyWord _keyWord;
+        public SqlServerMapDataRepository(IKeyWord keyWord)
+        {
+            _keyWord = keyWord;
+        }
+
         public List<MapFilterModel> GetAllCities()
         {
             var list = new List<MapFilterModel>();
@@ -112,7 +118,7 @@ namespace BusinessHandler.MessageHandler
         {
             var list = new List<MapMeeting>();
 
-            string queryString = @"[dbo].[GET_DOC_QUERY]";
+            string queryString = @"[dbo].[GET_DOC_CONTENT]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -192,11 +198,11 @@ namespace BusinessHandler.MessageHandler
                     }
                 }
             }
-            GetSubList(list);
+            GetSubList(list, message.KeyWord);
             return list;
         }
 
-        public  void GetSubList(List<MapMeeting> list)
+        public  void GetSubList(List<MapMeeting> list,string keyWord)
         {
             var docIDList = string.Empty;
             foreach (var r in list)
@@ -236,7 +242,7 @@ namespace BusinessHandler.MessageHandler
                 }
             }
 
-            queryString = @"[dbo].[GET_DOC_QUERY_SUBLIST]";
+            queryString = @"[dbo].[GET_DOC_CONTENT_SUBLIST]";
             var resultList = new List<MapMeetingKeyWord>();
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -249,11 +255,9 @@ namespace BusinessHandler.MessageHandler
                     while (reader.Read())
                     {
                         var result = new MapMeetingKeyWord();
-                        result.DocId = reader["DOC_GUID"].ToString();
-                        result.QueryGuid = reader["ENTRY_GUID"].ToString();
+                        result.DocContentId = reader["CONTENT_ID"].ToString();
                         result.PageNumber = DBNull.Value == reader["PAGE_NUMBER"] ? 0 : Convert.ToInt32(reader["PAGE_NUMBER"]);
                         result.KeyWord = reader["KEYWORD"].ToString();
-                        result.Comment = "<span id=" + result.QueryGuid + ">" + (DBNull.Value == reader["COMMENT"] ? "" : reader["COMMENT"].ToString()) + "</span>";
                         result.Content = DBNull.Value == reader["CONTENT"] ? "" : reader["CONTENT"].ToString();
                         if (result.KeyWord.IndexOf('*') >= 0)
                         {
@@ -271,16 +275,34 @@ namespace BusinessHandler.MessageHandler
                         {
                             result.Content = Regex.Replace(result.Content, result.KeyWord, string.Format("<b style='color:red'>{0}</b>", result.KeyWord), RegexOptions.IgnoreCase);
                         }
-                        var btnType = DBNull.Value == reader["COMMENT"] ? "btn-default" : string.IsNullOrEmpty(reader["COMMENT"].ToString()) ? "btn-default" : "btn-success";
-
-                       // result.Operation = @"<button type='button' class='btn " + btnType + " glyphicon glyphicon-edit' aria-label='Left Align'  data-queryguid='" + result.QueryGuid + "' data-querydocId='" + result.DocId + "' onclick='OpenDataDetail(this); return false'></button>";
                         resultList.Add(result);
                     }
                 }
             }
+            var finalList=new  List<MapMeetingKeyWord>();
+            var keyWordList = _keyWord.GetKeyWordList().Select(x=>x.KeyWord).ToArray();
+            if (!string.IsNullOrWhiteSpace(keyWord) && !string.IsNullOrWhiteSpace(StaticSetting.GetArrayQuery(keyWord)))
+            {
+                keyWordList = keyWord.Split(',');
+            }
+
+            foreach (var r in resultList)
+            {
+                for (var i = 0; i < keyWordList.Length; i++)
+                {
+                    var data = new MapMeetingKeyWord();
+                    data.DocId = r.DocId;
+                    data.DocContentId = r.DocContentId;
+                    data.PageNumber = r.PageNumber;
+                    data.KeyWord = keyWordList[i];
+                    data.Content = "ttt";
+                    finalList.Add(data);
+                }
+            }
+
             foreach (var r in list)
             {
-                var subList = resultList.Where(x => x.DocId == r.DocId).ToList();
+                var subList = finalList.Where(x => x.DocId == r.DocId).ToList();
                 subList = subList.OrderBy(x => x.PageNumber).ToList();
                 r.DocQuerySubList = subList;
             }

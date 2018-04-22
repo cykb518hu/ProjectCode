@@ -48,16 +48,15 @@ namespace BusinessHandler.Model
 
     public class MapMeetingKeyWord
     {
-
-        public string QueryGuid { get; set; }
         public string DocId { get; set; }
+        public string DocContentId { get; set; }
 
         public int PageNumber { get; set; }
         public string KeyWord { get; set; }
         public string Content { get; set; }
       
 
-        public string Comment { get; set; }
+       // public string Comment { get; set; }
        // public string Operation { get; set; }
 
 
