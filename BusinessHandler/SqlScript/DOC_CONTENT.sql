@@ -112,7 +112,8 @@ GO
 
 CREATE PROCEDURE [dbo].[GET_DOC_CONTENT_SUBLIST]
 (
-@DocIdList varchar(max) =null
+@DocIdList varchar(max) =null,
+@KeyWord varchar(max) =null
 )
 as
 
@@ -123,12 +124,17 @@ begin
 
 set @sqlstr='
 SELECT  DC.PAGE_NUMBER, DC.CONTENT, DC.CONTENT_ID
- FROM  DBO.DOCUMENT_CONTENT DC   
+ FROM  DBO.DOCUMENT_CONTENT DC   INNER JOIN DBO.DOCUMENT DC ON DC.DOC_GUID=Q.DOC_GUID 
  where 1=1 '
 
  if @DocIdList is not null 
 	begin
 		set @sqlstr=@sqlstr+' and DC.DOC_GUID IN ('+ @DocIdList+')'
+	end
+if @KeyWord is not null 
+	begin
+	
+		set @sqlstr=@sqlstr+' AND CONTAINS (DC.CONTENT,'''+@KeyWord+''')'
 	end
  exec(@sqlstr)
 end

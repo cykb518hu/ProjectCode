@@ -86,13 +86,17 @@ namespace BusinessHandler.MessageHandler
         {
             var list = new List<MapMunicipalityColor>();
 
-            var queryString = @"[dbo].[GET_Municipality]";
+            var queryString = @"[dbo].[GET_Municipality_Modify]";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
-
+                if (string.IsNullOrWhiteSpace(message.KeyWord) || message.KeyWord.Contains("All"))
+                {
+                    message.KeyWord = _keyWord.GetKeyWords();
+                }
+                message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
                 StaticSetting.BuildParameters(command, message);
                 connection.Open();
 
@@ -123,7 +127,11 @@ namespace BusinessHandler.MessageHandler
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
-
+                if (string.IsNullOrWhiteSpace(message.KeyWord) || message.KeyWord.Contains("All"))
+                {
+                    message.KeyWord = _keyWord.GetKeyWords();
+                }
+                message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
                 StaticSetting.BuildParameters(command, message);
 
                 connection.Open();
@@ -249,6 +257,7 @@ namespace BusinessHandler.MessageHandler
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@DocIdList", docIDList);
+                command.Parameters.AddWithValue("@KeyWord", keyWord);
                 connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
@@ -257,24 +266,23 @@ namespace BusinessHandler.MessageHandler
                         var result = new MapMeetingKeyWord();
                         result.DocContentId = reader["CONTENT_ID"].ToString();
                         result.PageNumber = DBNull.Value == reader["PAGE_NUMBER"] ? 0 : Convert.ToInt32(reader["PAGE_NUMBER"]);
-                        result.KeyWord = reader["KEYWORD"].ToString();
                         result.Content = DBNull.Value == reader["CONTENT"] ? "" : reader["CONTENT"].ToString();
-                        if (result.KeyWord.IndexOf('*') >= 0)
-                        {
-                            var arr = result.Content.Split(' ');
-                            for (int i = 0; i < arr.Length; i++)
-                            {
-                                if (Regex.IsMatch(arr[i], result.KeyWord, RegexOptions.IgnoreCase))
-                                {
-                                    arr[i] = string.Format("<b style='color:red'>{0}</b>", arr[i]);
-                                }
-                            }
-                            result.Content = String.Join(" ", arr);
-                        }
-                        else
-                        {
-                            result.Content = Regex.Replace(result.Content, result.KeyWord, string.Format("<b style='color:red'>{0}</b>", result.KeyWord), RegexOptions.IgnoreCase);
-                        }
+                        //if (result.KeyWord.IndexOf('*') >= 0)
+                        //{
+                        //    var arr = result.Content.Split(' ');
+                        //    for (int i = 0; i < arr.Length; i++)
+                        //    {
+                        //        if (Regex.IsMatch(arr[i], result.KeyWord, RegexOptions.IgnoreCase))
+                        //        {
+                        //            arr[i] = string.Format("<b style='color:red'>{0}</b>", arr[i]);
+                        //        }
+                        //    }
+                        //    result.Content = String.Join(" ", arr);
+                        //}
+                        //else
+                        //{
+                        //    result.Content = Regex.Replace(result.Content, result.KeyWord, string.Format("<b style='color:red'>{0}</b>", result.KeyWord), RegexOptions.IgnoreCase);
+                        //}
                         resultList.Add(result);
                     }
                 }
@@ -330,12 +338,18 @@ namespace BusinessHandler.MessageHandler
 
             var list = new List<CityOrdinance>();
 
-            var queryString = @"[dbo].[GET_CITY_ALLNOTE]";
+            var queryString = @"[dbo].[GET_CITY_Ordinance]";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType= CommandType.StoredProcedure;
+                //this is different from other two, becuase if all don't need to join document_content table
+                if (!string.IsNullOrWhiteSpace(message.KeyWord)&&!message.KeyWord.Contains("All"))
+                {
+                    message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
+                }
+               
                 StaticSetting.BuildParameters(command, message);
                 connection.Open();
                 if (string.IsNullOrEmpty(cityGuid))

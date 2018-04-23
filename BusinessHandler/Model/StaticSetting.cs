@@ -61,7 +61,19 @@ namespace BusinessHandler.Model
             return query;
         }
 
-
+        public static string GetKeyWordForFullSearch(string keyWord)
+        {
+            var result = "";
+            foreach (var r in keyWord.Split(','))
+            {
+                result += "\"" + r + "\" or ";
+            }
+            if(result.Length>0)
+            {
+                result = result.Substring(0, result.Length - 3);
+            }
+            return result;
+        }
         public static string GetUserEmail()
         {
 
@@ -83,10 +95,10 @@ namespace BusinessHandler.Model
             {
                 command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
             }
-            if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-            {
-                command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
-            }
+            //if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
+            //}
             if (!string.IsNullOrWhiteSpace(message.MeetingDate))
             {
                 command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);

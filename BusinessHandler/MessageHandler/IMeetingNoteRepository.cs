@@ -318,12 +318,16 @@ AND QE.COMMENT IS NOT NULL AND QE.COMMENT<>''";
         {
             var list = new List<MeetingCalendar>();
 
-            string queryString = @"[dbo].[GET_MeetingCalendar]";
+            string queryString = @"[dbo].[GET_MeetingCalendar_Modify]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
-
+                //this is different from other two, becuase if all don't need to join document_content table
+                if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Contains("All"))
+                {
+                    message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
+                }
                 StaticSetting.BuildParameters(command, message);
                 connection.Open();
 

@@ -14,11 +14,17 @@ namespace BusinessHandler.MessageHandler
     {
         List<KeyWordModel> GetKeyWordList();
 
+        string GetKeyWords();
+
         bool AddKeyWord(string keyWord, out string msg);
     }
 
     public class KeyWordRepository : IKeyWord
     {
+        public string GetKeyWords()
+        {
+           return string.Join(",", GetKeyWordList().Select(x => x.KeyWord));
+        }
         public List<KeyWordModel> GetKeyWordList()
         {
             List<KeyWordModel> list = new List<KeyWordModel>();
