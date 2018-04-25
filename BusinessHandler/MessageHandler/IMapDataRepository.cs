@@ -267,6 +267,7 @@ namespace BusinessHandler.MessageHandler
                         result.DocContentId = reader["CONTENT_ID"].ToString();
                         result.PageNumber = DBNull.Value == reader["PAGE_NUMBER"] ? 0 : Convert.ToInt32(reader["PAGE_NUMBER"]);
                         result.Content = DBNull.Value == reader["CONTENT"] ? "" : reader["CONTENT"].ToString();
+                        result.DocId= DBNull.Value == reader["DOC_GUID"] ? "" : reader["DOC_GUID"].ToString();
                         //if (result.KeyWord.IndexOf('*') >= 0)
                         //{
                         //    var arr = result.Content.Split(' ');
