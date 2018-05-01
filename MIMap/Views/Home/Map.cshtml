@@ -241,6 +241,25 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+<div class="modal fade" tabindex="-1" role="dialog" id="contentDetail">
+    <div class="modal-dialog" role="document" style="padding-top:0px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Page Content Detail</h4>
+            </div>
+            <div class="modal-body" >
+                <div style="height:800px;overflow:auto; ">
+                    <pre id="contentDetail_text"></pre>
+                </div>
+               @*<div id="contentDetail_text"></div>*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
 @Html.Partial("CitySideBar")
 
     <script>
@@ -274,8 +293,8 @@
                     sortable: true,
                     queryParams: oTableInit.queryParams,
                     sidePagination: "server",
-                    pageSize:25,
-                    pageList: [10, 25, 50, 100],
+                    pageSize:15,
+                    pageList: [10,15, 25, 50],
                     showColumns: true,
                     detailView: true,
                     sortName:'MeetingDateDisplay',
@@ -422,19 +441,14 @@
                         {
                             field: 'Content',
                             title: 'Content',
-                            width: '60%'
+                            width: '70%'
                         },
                         {
-                            field: 'Comment',
-                            title: 'Comment',
+                            field: 'Operation',
+                            title: 'Detail',
+                            align: 'center',
                             width: '10%'
                         }
-                        //{
-                        //    field: 'Operation',
-                        //    title: 'Operation',
-                        //    align: 'center',
-                        //    width: '10%'
-                        //}
                     ],
 
                 });
@@ -602,7 +616,7 @@
                 return temp;
             };
             if(pageTag=="all_data"){
-                $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 25 });
+                $("#tb_municipality").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 15 });
                 if (searchFromMap) {
                     //this means the search is trigger from the button on map, this shouldn't refresh map again
                 }
@@ -791,6 +805,30 @@
             $("#sel_search_CityName").html(htm);
             $("#sel_search_CityName").multiselect("rebuild");
         }
+
+        function viewContentDetail(obj) {
+            var contentId= $(obj).attr("data-contentId");
+            var keyWord=$(obj).attr("data-keyword");
+            $.ajax({
+                url: '@Url.Action("GetContentDetail", "Home")',
+                data: { contentId: contentId,keyWord:keyWord },
+                dataType: 'json',
+                type: "GET",
+                success: function (result) {
+                    $("#contentDetail_text").html(result);
+                    $("#contentDetail").find('.modal-dialog').css({
+                        width: '1000px'
+                    });
+                    $("#contentDetail").modal('show');
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+           
+        }
     </script>
     <script>
        
@@ -962,7 +1000,7 @@
                 //search: false,
                 scrollwheel: false,
                 infowindow: true,
-                shareable: false
+                shareable: true
             })
                 .done(function (vis, layers) {
                     map = vis.getNativeMap();
@@ -997,7 +1035,8 @@
                         }
                       
                     })
-                    $(".cartodb-share").after($('#btn_refresh_template').html())
+                    //didn't pay
+                    //$(".cartodb-share").after($('#btn_refresh_template').html())
                 })
                 .error(function (err) {
                     console.log(err);

@@ -438,7 +438,7 @@ namespace MIMap.Controllers
 
         }
 
-
+        [HttpGet]
         public JsonResult GetCartoSearchResult(string objectIds, string state)
         {
             if(string.IsNullOrWhiteSpace(objectIds))
@@ -450,5 +450,13 @@ namespace MIMap.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+
+        [HttpGet]
+        public JsonResult GetContentDetail(string contentId,string keyWord)
+        {
+            var data = mapRepository.GetContentDetail(contentId, keyWord);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

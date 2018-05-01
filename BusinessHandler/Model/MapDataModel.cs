@@ -57,7 +57,7 @@ namespace BusinessHandler.Model
       
 
        // public string Comment { get; set; }
-       // public string Operation { get; set; }
+        public string Operation { get; set; }
 
 
     }

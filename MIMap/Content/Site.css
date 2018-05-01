@@ -383,6 +383,8 @@
 div.cartodb-searchbox
 {
     width:242px !important;
+    /*didn't pay*/
+    display:none !important;
 }
 div.cartodb-searchbox input.text
 {

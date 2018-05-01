@@ -25,6 +25,8 @@ namespace BusinessHandler.MessageHandler
 
         bool UpdateCityOrdinance(CityOrdinance data);
         List<MapMunicipalityColor> GetCartoSearchResult(string objectIds, string state);
+
+        string GetContentDetail(string contentId, string keyWord);
     }
 
     public class SqlServerMapDataRepository:IMapDataRepository
@@ -118,11 +120,12 @@ namespace BusinessHandler.MessageHandler
         }
 
 
-        public  List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total)
+        public List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total)
         {
             var list = new List<MapMeeting>();
 
             string queryString = @"[dbo].[GET_DOC_CONTENT]";
+            var keyWords = message.KeyWord;
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -131,6 +134,7 @@ namespace BusinessHandler.MessageHandler
                 {
                     message.KeyWord = _keyWord.GetKeyWords();
                 }
+               
                 message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
                 StaticSetting.BuildParameters(command, message);
 
@@ -144,7 +148,7 @@ namespace BusinessHandler.MessageHandler
                     case "DocType":
                         orderBy = "DOC_TYPE";
                         break;
-   
+
                     case "MunicipalityDispaly":
                         orderBy = "CITY_NM";
                         break;
@@ -206,11 +210,11 @@ namespace BusinessHandler.MessageHandler
                     }
                 }
             }
-            GetSubList(list, message.KeyWord);
+            GetSubList(list, keyWords, message.KeyWord);
             return list;
         }
 
-        public  void GetSubList(List<MapMeeting> list,string keyWord)
+        public  void GetSubList(List<MapMeeting> list,string keyWord,string sqlKeyWord)
         {
             var docIDList = string.Empty;
             foreach (var r in list)
@@ -257,7 +261,7 @@ namespace BusinessHandler.MessageHandler
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@DocIdList", docIDList);
-                command.Parameters.AddWithValue("@KeyWord", keyWord);
+                command.Parameters.AddWithValue("@KeyWord", sqlKeyWord);
                 connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
@@ -289,22 +293,31 @@ namespace BusinessHandler.MessageHandler
                 }
             }
             var finalList=new  List<MapMeetingKeyWord>();
-            var keyWordList = _keyWord.GetKeyWordList().Select(x=>x.KeyWord).ToArray();
+            var keyWordList = _keyWord.GetKeyWordList().Select(x => x.KeyWord).ToList();
             if (!string.IsNullOrWhiteSpace(keyWord) && !string.IsNullOrWhiteSpace(StaticSetting.GetArrayQuery(keyWord)))
             {
-                keyWordList = keyWord.Split(',');
+                keyWordList = keyWord.Split(',').ToList();
             }
-
+            var index = 35;
             foreach (var r in resultList)
             {
-                for (var i = 0; i < keyWordList.Length; i++)
+                foreach (var k in keyWordList)
                 {
+                    var currentIndex = r.Content.IndexOf(k);
+                    if(currentIndex<0)
+                    {
+                        continue;
+                    }
                     var data = new MapMeetingKeyWord();
                     data.DocId = r.DocId;
                     data.DocContentId = r.DocContentId;
                     data.PageNumber = r.PageNumber;
-                    data.KeyWord = keyWordList[i];
-                    data.Content = "ttt";
+                    data.KeyWord = k;
+                    var startIndex = currentIndex - index >= 0 ? currentIndex - index : 0;
+                    var endIndex = currentIndex + index < r.Content.Length ?currentIndex + index : r.Content.Length ;
+                    data.Content = r.Content.Substring(startIndex, endIndex - startIndex);
+                    data.Content = Regex.Replace(data.Content, k, string.Format("<b style='color:red'>{0}</b>", k), RegexOptions.IgnoreCase);
+                    data.Operation = "<a style='cursor:pointer' data-contentId='" + r.DocContentId + "' data-keyword='" + k + "'  onclick='viewContentDetail(this); return false'>More...</a>";
                     finalList.Add(data);
                 }
             }
@@ -317,6 +330,20 @@ namespace BusinessHandler.MessageHandler
             }
         }
 
+        public string GetContentDetail(string contentId,string keyWord)
+        {
+            var result = string.Empty;
+            string queryString = @"select  CONTENT from DBO.DOCUMENT_CONTENT  WHERE CONTENT_ID=@CONTENT_ID ";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("@CONTENT_ID", contentId);
+                connection.Open();
+                result = command.ExecuteScalar().ToString();
+            }
+            result= Regex.Replace(result, keyWord, string.Format("<b style='color:red'>{0}</b>", keyWord), RegexOptions.IgnoreCase);
+            return result;
+        }
 
         public void UpdateMapColor(string cityGuid, string color)
         {
