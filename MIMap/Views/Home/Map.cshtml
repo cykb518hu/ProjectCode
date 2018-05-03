@@ -1000,7 +1000,7 @@
                 //search: false,
                 scrollwheel: false,
                 infowindow: true,
-                shareable: true
+                shareable: false
             })
                 .done(function (vis, layers) {
                     map = vis.getNativeMap();
@@ -1035,8 +1035,7 @@
                         }
                       
                     })
-                    //didn't pay
-                    //$(".cartodb-share").after($('#btn_refresh_template').html())
+                    $(".cartodb-share").after($('#btn_refresh_template').html());
                 })
                 .error(function (err) {
                     console.log(err);
