@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -299,11 +300,13 @@ namespace BusinessHandler.MessageHandler
                 keyWordList = keyWord.Split(',').ToList();
             }
             var index = 35;
+            CompareInfo Compare = CultureInfo.InvariantCulture.CompareInfo;
             foreach (var r in resultList)
             {
                 foreach (var k in keyWordList)
                 {
-                    var currentIndex = r.Content.IndexOf(k);
+                    var currentIndex = Compare.IndexOf(r.Content, k, CompareOptions.IgnoreCase);
+                    //var currentIndex = r.Content.IndexOf(k, Compare.I);
                     if(currentIndex<0)
                     {
                         continue;

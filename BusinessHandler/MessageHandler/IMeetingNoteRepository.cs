@@ -78,6 +78,7 @@ namespace BusinessHandler.MessageHandler
                 {
                     command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
                 }
+                //no keyword in screen now
                 if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
                 {
                     command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));

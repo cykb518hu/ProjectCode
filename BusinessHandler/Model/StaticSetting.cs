@@ -95,10 +95,10 @@ namespace BusinessHandler.Model
             {
                 command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
             }
-            //if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-            //{
-            //    command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
-            //}
+            if (!string.IsNullOrWhiteSpace(message.KeyWord))
+            {
+                command.Parameters.AddWithValue("@KeyWord", message.KeyWord);
+            }
             if (!string.IsNullOrWhiteSpace(message.MeetingDate))
             {
                 command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);

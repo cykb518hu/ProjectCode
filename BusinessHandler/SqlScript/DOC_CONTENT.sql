@@ -82,7 +82,7 @@ if @State is not null
 
 if @ObjectIds is not null
    begin
-		set @sqlstr=@sqlstr+' and C.OBJECTID ('+ @ObjectIds+')'
+		set @sqlstr=@sqlstr+' and C.OBJECTID IN ('+ @ObjectIds+')'
 	end
 
 if(@Total=0)
