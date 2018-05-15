@@ -259,6 +259,9 @@
                 if (numberColor == "rgb(255, 255, 0)") {
                     color = "yellow";
                 }
+                if (numberColor == "rgb(165, 42, 42)") {
+                    color = "brown";
+                }
                 if (color != currentColor) {
                     saveMapColer(color);
                 }
@@ -419,7 +422,7 @@
                     alreadyinitialized:false,
                     placement: 'bottom',
                     color: currentColor,
-                    swatches: ['red', 'green', 'blue', 'orange', 'yellow'],
+                    swatches: ['red', 'green', 'blue', 'orange', 'yellow', 'brown'],
                     customswatches: false,
                     size: 'sm',
                     order: {}
