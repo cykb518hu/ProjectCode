@@ -3,16 +3,93 @@
 <head>
     <title></title>
 	<meta charset="utf-8" />
-    <link href="Content/bootstrap.css" rel="stylesheet" />
-    <link href="Content/bootstrap-table.css" rel="stylesheet" />
-    <script src="Scripts/jquery-1.10.2.js"></script>
-    <script src="Scripts/jquery.ajaxfileupload.js"></script>
-    <script src="Scripts/bootstrap.js"></script>
-    <script src="Scripts/bootstrap-table.js"></script>
+    <script src="http://localhost:57689/Scripts/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
 </head>
 <body>
-    <div>
-
+    <div id="div-data-map">
+        <div class="h-scroll">
+            <div id="map" style="width:1000px;height:1000px"></div>
+        </div>
     </div>
+    <script type="infowindow/html" id="infowindow_template">
+        <div id="pop-window">
+
+            <a href="#close" class="close" style="opacity:1"><img style="width:50px;" src="http://localhost:57689/Image/6cDGi.png" /></a>
+
+        </div>
+    </script>
+    <script>
+        //map
+        $(function () {
+            initialMap();
+        });
+        var map;
+        var layer;
+        var popLayer;
+        var objectId;
+        var defaultColor = "blue";
+        var mapTable = "mi_munv5";
+        var mapJson="http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json";
+        function initialMap() {
+            cartodb.createVis('map', mapJson, {
+                tiles_loader: true,
+                //search: false,
+                scrollwheel: false,
+                infowindow: true,
+                shareable: false
+            })
+                .done(function (vis, layers) {
+                    map = vis.getNativeMap();
+                    layer = layers[1].getSubLayer(0);
+                  //  layer.set({ interactivity: "objectid" });
+                    layer.setInteraction(true);
+
+                   //  popLayer = layers[1];
+                   // //var infowindow_model = popLayer.infowindow;
+                    //popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+                    //    infowindow_model.set({
+                    //        latlng: latlng,
+                    //        visibility: true
+                    //    });
+                    //    $(".cartodb-infowindow").html($('#infowindow_template').html());
+                    //    showMapPopUp(data.objectid);
+                    //});
+                    var popLayer = layers[1];
+                    var infowindow_model = popLayer.infowindow;
+                    infowindow_model.set('template_type', 'underscore');
+                    infowindow_model.set('template', $('#infowindow_template').html());
+                 
+                    popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+                        infowindow_model.set({
+                            latlng: latlng,
+                            visibility: true
+                        });
+                    });
+                   // infowindow_model.set('template_type', 'underscore');
+                   // infowindow_model.set('template', $('#infowindow_template').html());
+                    createSelector();
+                })
+                .error(function (err) {
+                    console.log(err);
+                });
+        }
+        function createSelector() {
+
+            var cartocss = "#"+mapTable+"{polygon-fill: " + defaultColor + "; line-color: white; }";
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            var query = "SELECT * FROM " + mapTable;
+            layer.setSQL(query);
+            layer.setCartoCSS(cartocss);
+            sql.getBounds(query).done(function (bounds) {
+                map.fitBounds(bounds);
+
+            });
+
+        }
+
+    </script>
 </body>
 </html>
