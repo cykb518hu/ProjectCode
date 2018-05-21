@@ -965,11 +965,8 @@
 
 
 <script type="infowindow/html" id="infowindow_template">
-    <div id="pop-window">
-       
-        <a href="#close" class="close" style="opacity:1"><img style="width:50px;" src="@StaticSetting.uploadPath/Image/6cDGi.png" /></a>
 
-    </div>
+        <a href="#close" class="close" style="opacity:1" ><img style="width:30px;" src="@StaticSetting.uploadPath/Image/6cDGi.png" /></a>
 </script>
 <script type="text/html" id="btn_refresh_template">
     <input id="btn_refreshLeftData" type="submit" value="Refresh database" class="btn btn-info" onclick="refreshLeftDataBase()" style="padding-bottom: 5px; padding-top: 5px;position: relative;float: right; margin: 20px 20px 0 0;width: 120px;-webkit-box-shadow: rgba(0,0,0,.2) 0 0 4px 2px;-moz-box-shadow: rgba(0,0,0,.2) 0 0 4px 2px;-webkit-border-radius: 4px;-moz-border-radius: 4px;-ms-border-radius: 4px;-o-border-radius: 4px;z-index: 105;font-size: 12px; ">
@@ -1015,10 +1012,11 @@
                             latlng: latlng,
                             visibility: true
                         });
+                        setInterval(function () { $(".cartodb-infowindow").html($('#infowindow_template').html()); }, 50);
                         showMapPopUp(data.objectid);
                     });
-                    infowindow_model.set('template_type', 'underscore');
-                    infowindow_model.set('template', $('#infowindow_template').html());
+                   // infowindow_model.set('template_type', 'underscore');
+                   // infowindow_model.set('template', $('#infowindow_template').html());
                     createSelector(mapMasterData);
                     initAutocomplete();
                     map.on('moveend', function (e) {
@@ -1036,6 +1034,7 @@
                       
                     })
                     $(".cartodb-share").after($('#btn_refresh_template').html());
+                  
                 })
                 .error(function (err) {
                     console.log(err);
@@ -1087,7 +1086,6 @@
             layer.setCartoCSS(cartocss);
             sql.getBounds(query).done(function (bounds) {
                 map.fitBounds(bounds);
-              
             });
 
             var queryPoints = "SELECT ST_Y(ST_Centroid(the_geom)) lat, ST_X(ST_Centroid(the_geom)) lng,objectid FROM " + mapTable + " where objectid in (" + ids + ") order by objectid"
@@ -1296,5 +1294,9 @@
                 searchData();
                 searchFromMap = false;
             }
+        }
+        function closeInfoWindow(){
+            alert("1");
+            //popLayer.infowindow.set('visibility', false);
         }
     </script>

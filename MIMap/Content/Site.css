@@ -389,3 +389,7 @@ div.cartodb-searchbox input.text
 {
    width:203px !important;
 }
+div.cartodb-infowindow
+{
+    margin-left:10px;
+}
