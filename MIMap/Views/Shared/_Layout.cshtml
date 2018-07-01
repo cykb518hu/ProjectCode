@@ -11,8 +11,15 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
+
+
     <link href="~/Content/Site.css?version=@StaticSetting.version" rel="stylesheet" />
+   
     <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
+    @{
+        if (Context.Request.Url.AbsoluteUri.ToLower().Contains("home/map"))
+        {
+  
     <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-table.css?version=@StaticSetting.version" rel="stylesheet" />
@@ -21,19 +28,37 @@
     <link href="~/Content/bootstrap-combobox.css?version=@StaticSetting.version" rel="stylesheet" />
     <link href="~/Content/bootstrap-editable.css?version=@StaticSetting.version" rel="stylesheet" />
 
-    <script src="~/Scripts/bootstrap-table.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/bootstrap-datepicker.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/bootstrap-combobox.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/bootstrap-editable.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/bootstrap-table-editable.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/MaintainMeetingNote.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/bootstrap-table.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/bootstrap-datepicker.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/bootstrap-combobox.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/bootstrap-editable.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/bootstrap-table-editable.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/MaintainMeetingNote.js?version=@StaticSetting.version"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
-    <script src="~/Scripts/common.js?version=@StaticSetting.version"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script src="~/Scripts/bootstrap-multiselect.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/common.js?version=@StaticSetting.version"></script>
 
-    <script src="~/Scripts/jquery.tabledit.js?version=@StaticSetting.version"></script>
+        <script src="~/Scripts/jquery.tabledit.js?version=@StaticSetting.version"></script>
+        }
+        }
+    @{
+        if (Context.Request.Url.AbsoluteUri.ToLower().Contains("home/index"))
+        {
+                <!-- MetisMenu CSS -->
+            <link href="~/SBAdmin/vendor/metisMenu/metisMenu.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+            <link href="~/SBAdmin/dist/css/sb-admin-2.css" rel="stylesheet" />
+    <!-- Morris Charts CSS -->
+            <link href="~/SBAdmin/vendor/morrisjs/morris.css" rel="stylesheet" />
+    <!-- Custom Fonts -->
+            <link href="~/SBAdmin/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        }
+    }
+
+
+
 
 
 </head>

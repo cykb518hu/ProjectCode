@@ -28,7 +28,13 @@ namespace MIMap.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            var state = "MI";
+            if (Request.QueryString["state"] != null)
+            {
+                state = Request.QueryString["state"];
+            }
+            var data = mapRepository.GetDashboardData(state);
+            return View(data);
         }
 
         public ActionResult About()
@@ -86,12 +92,6 @@ namespace MIMap.Controllers
         {
             DocQueryDB.UpdateDocImportant(message);
             return Json("Success", JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult SaveComment(DocQueryResultModel message)
-        {
-            DocQueryDB.UpdateQueryComment(message);
-            var amount = meetingNoteRepository.GetMeetingRelatedNotesAmount(message.DocId);
-            return Json(amount, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

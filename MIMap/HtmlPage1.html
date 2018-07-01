@@ -9,6 +9,7 @@
 
 </head>
 <body>
+
     <div id="div-data-map">
         <div class="h-scroll">
             <div id="map" style="width:1000px;height:1000px"></div>
@@ -17,7 +18,7 @@
     <script type="infowindow/html" id="infowindow_template">
         <div id="pop-window">
 
-            <a href="#close" class="close" style="opacity:1"><img style="width:50px;" src="http://localhost:57689/Image/6cDGi.png" /></a>
+            <a href="#close" class="close" style="opacity:1">111</a>
 
         </div>
     </script>
@@ -44,32 +45,22 @@
                 .done(function (vis, layers) {
                     map = vis.getNativeMap();
                     layer = layers[1].getSubLayer(0);
-                  //  layer.set({ interactivity: "objectid" });
-                    layer.setInteraction(true);
+                   // layer.set({ interactivity: "objectid" });
+                    //layer.setInteraction(true);
 
-                   //  popLayer = layers[1];
-                   // //var infowindow_model = popLayer.infowindow;
-                    //popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
-                    //    infowindow_model.set({
-                    //        latlng: latlng,
-                    //        visibility: true
-                    //    });
-                    //    $(".cartodb-infowindow").html($('#infowindow_template').html());
-                    //    showMapPopUp(data.objectid);
-                    //});
-                    var popLayer = layers[1];
+                    popLayer = layers[1];
                     var infowindow_model = popLayer.infowindow;
-                    infowindow_model.set('template_type', 'underscore');
-                    infowindow_model.set('template', $('#infowindow_template').html());
-                 
                     popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
                         infowindow_model.set({
                             latlng: latlng,
                             visibility: true
                         });
+                        setInterval(function () { $(".cartodb-infowindow").html(""); }, 2000);
                     });
-                   // infowindow_model.set('template_type', 'underscore');
-                   // infowindow_model.set('template', $('#infowindow_template').html());
+                   // $(".cartodb-infowindow").html("");
+                   // alert($(".cartodb-infowindow").html())
+                   // infowindow_model.set('sanitizeTemplate', false);
+                    //infowindow_model.set('template', $('#infowindow_template').html());
                     createSelector();
                 })
                 .error(function (err) {

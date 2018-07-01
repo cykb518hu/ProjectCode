@@ -66,6 +66,7 @@
 
                         <ul class="nav navbar-nav navbar-right ">
                             <li><a href="javascript:void(0)">Hello @user.Email</a></li>
+                            <li>@Html.ActionLink("Dashboard", "Index", "Home", routeValues: null, htmlAttributes: new { id = "Dashboard" })</li>
                             <li><a  class="redirectMap" href="javascript:void(0)" data-state="MI" data-menu="MI">Michigan</a></li>
                             <li><a  class="redirectMap" href="javascript:void(0)" data-state="MA" data-menu="MA">Massachusetts</a></li>
                             <li><a class="" href="javascript:void(0)" data-menu="FL">Florida</a></li>
