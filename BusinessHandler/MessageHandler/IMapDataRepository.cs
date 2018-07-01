@@ -28,6 +28,8 @@ namespace BusinessHandler.MessageHandler
         List<MapMunicipalityColor> GetCartoSearchResult(string objectIds, string state);
 
         string GetContentDetail(string contentId, string keyWord);
+
+        Dashboard GetDashboardData(string state);
     }
 
     public class SqlServerMapDataRepository:IMapDataRepository
@@ -89,7 +91,7 @@ namespace BusinessHandler.MessageHandler
         {
             var list = new List<MapMunicipalityColor>();
 
-            var queryString = @"[dbo].[GET_Municipality_Modify]";
+            var queryString = @"[dbo].[GET_Municipality]";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -125,7 +127,7 @@ namespace BusinessHandler.MessageHandler
         {
             var list = new List<MapMeeting>();
 
-            string queryString = @"[dbo].[GET_DOC_CONTENT]";
+            string queryString = @"[dbo].[GET_DOC_CONTENT_Modify]";
             var keyWords = message.KeyWord;
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -646,6 +648,136 @@ namespace BusinessHandler.MessageHandler
                 }
                 return list;
             }
+        }
+
+
+        public Dashboard GetDashboardData(string state)
+        {
+            var result = new Dashboard();
+            result.NumberOfCities = GetNumberOfCities(state);
+            result.RecentScrapes = GetRecentScrape(state);
+            result.RecentMeetings = GetRecentMeeting(state);
+            result.MeetingLineGraphData = GetMeetingLineData(state);
+
+            return result;
+        }
+        public int GetNumberOfCities(string state)
+        {
+            int result = 0;
+            string queryString = @"select  count(*) from [dbo].[CITY] WHERE STATES=@STATES";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("STATES", state);
+                connection.Open();
+                result = Convert.ToInt32(command.ExecuteScalar());
+
+            }
+            return result;
+        }
+
+        public List<RecentScrape> GetRecentScrape(string state)
+        {
+            var result = new List<RecentScrape>();
+            string queryString = @"select top 10 city_nm as NAME, DEPLOYE_DATE  from city WHERE STATES=@STATES order by DEPLOYE_DATE desc";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("STATES", state);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new RecentScrape();
+                    data.CityName = DBNull.Value == reader["NAME"] ? "" : reader["NAME"].ToString();
+                    data.DeployDate = DBNull.Value == reader["DEPLOYE_DATE"] ? "" : Convert.ToDateTime(reader["DEPLOYE_DATE"]).ToString("yyyy-MM-dd");
+                    result.Add(data);
+                }
+            }
+            return result;
+        }
+
+        public List<RecentMeeting> GetRecentMeeting(string state)
+        {
+            var result = new List<RecentMeeting>();
+            string queryString = @"select top 10 C.CITY_NM, DOC_TYPE , MEETING_DATE from DOCUMENT D INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM where C.STATES=@STATES AND MEETING_DATE<GETDATE() order by meeting_date desc";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("STATES", state);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new RecentMeeting();
+                    data.CityName = DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    data.Meeting = DBNull.Value == reader["DOC_TYPE"] ? "" : reader["DOC_TYPE"].ToString();
+                    data.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                    result.Add(data);
+                }
+            }
+            return result;
+        }
+
+
+        public List<MeetingLineGraph> GetMeetingLineData(string state)
+        {
+            var result = new List<MeetingLineGraph>();
+            string queryString = @"select
+ FORMAT(MEETING_DATE, 'yyyy-MM') AS Closing_Month
+ , count(*) AMOUNT 
+
+FROM DOCUMENT D INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM
+WHERE
+C.STATES=@STATES
+ AND MEETING_DATE <=GETDATE()
+ AND MEETING_DATE>'2016'
+GROUP BY FORMAT(MEETING_DATE, 'yyyy-MM')
+ORDER BY Closing_Month";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("STATES", state);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new MeetingLineGraph();
+                    data.Period = DBNull.Value == reader["Closing_Month"] ? "" : reader["Closing_Month"].ToString();
+                    data.MeetingDateAmount = DBNull.Value == reader["AMOUNT"] ? 0 : Convert.ToInt32(reader["AMOUNT"]);
+                    result.Add(data);
+                }
+            }
+
+            queryString = @"select
+ FORMAT(USR_CRTN_TS, 'yyyy-MM') AS Closing_Month
+ , count(*) AMOUNT 
+
+FROM DOCUMENT D INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM
+WHERE
+C.STATES=@STATES
+ AND USR_CRTN_TS <=GETDATE()
+ AND USR_CRTN_TS>'2016'
+GROUP BY FORMAT(USR_CRTN_TS, 'yyyy-MM')
+ORDER BY Closing_Month
+";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("STATES", state);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var period = DBNull.Value == reader["Closing_Month"] ? "" : reader["Closing_Month"].ToString();
+                    var data = result.FirstOrDefault(x => x.Period == period);
+                    if (data != null)
+                    {
+                        data.ScrapeDateAmount = DBNull.Value == reader["AMOUNT"] ? 0 : Convert.ToInt32(reader["AMOUNT"]);
+                    }
+                }
+            }
+            return result;
         }
 
     }

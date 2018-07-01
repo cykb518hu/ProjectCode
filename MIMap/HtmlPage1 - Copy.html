@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>How to add an image to a CARTO infowindow</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <style>
+        html, body, #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <!-- include cartodb.js CSS library -->
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- HTML template for infowindow with image src -->
+    <script type="infowindow/html" id="iw_template">
+        <div class="cartodb-popup">
+            <a href="#close" class="cartodb-popup-close-button close">x</a>
+            <div class="cartodb-popup-content-wrapper">
+                <div class="cartodb-popup-header">
+                    <img style="width: 100%" src="{{url_img}}"></src>
+                </div>
+                <div class="cartodb-popup-content">
+                    <h4>Name: </h4>
+                    <h3>{{content.data.name}}</h3>
+                </div>
+            </div>
+            <div class="cartodb-popup-tip-container"></div>
+        </div>
+    </script>
+
+    <script>
+  function main() {
+
+    var map = new L.Map('map', {
+      zoomControl: false,
+      center: [0, 0],
+      zoom: 3
+    });
+    cartodb.createLayer(map, {
+      user_name: 'ramirocartodb',
+      type: 'cartodb',
+      sublayers: [
+        {
+          type: "http",
+          urlTemplate: "http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
+          subdomains: [ "a", "b", "c" ]
+        },
+        {
+           type: "mapnik",
+           sql: 'select * from prestige',
+           cartocss: '#layer{marker-fill-opacity: 1; marker-line-color: #F11810; marker-line-width: 1; marker-line-opacity: 0; marker-placement: point; marker-type: ellipse; marker-width: 5; marker-fill: #F11810; marker-allow-overlap: true; } #layer::point{marker-fill-opacity: 0.5; marker-line-color: #F11810; marker-line-width: 1; marker-line-opacity: 1; marker-placement: point; marker-type: ellipse; marker-width: 17; marker-fill: #F11810; marker-allow-overlap: true; }',
+           interactivity: ['cartodb_id','name','url_img']
+
+        },
+        {
+          type: "http",
+          urlTemplate: "http://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png",
+          subdomains: [ "a", "b", "c" ]
+        }
+      ]
+    })
+  .addTo(map)
+  .done(function(layer) {
+      layer.setInteraction(true);
+      cdb.vis.Vis.addInfowindow(
+          map, layer, ['cartodb_id','name','url_img'],
+          {
+             infowindowTemplate: $('#iw_template').html()
+          });
+        });
+      }
+      window.onload = main;
+    </script>
+</body>
+</html>

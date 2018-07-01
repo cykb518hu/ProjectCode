@@ -247,9 +247,8 @@ namespace BusinessHandler.MessageHandler
         {
             var result = new MapMeetingCity();
             var list = new List<MapMeetingNote>();
-            var queryString = @"SELECT C.LONG_NM,c.color,c.CITY_NM,  Q.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID,D.IMPORTANT FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
-INNER JOIN DBO.QUERY Q ON Q.DOC_GUID=D.DOC_GUID
-WHERE C.guid = '" + cityGuid + "'  order by Q.MEETING_DATE desc";
+            var queryString = @"SELECT C.LONG_NM,c.color,c.CITY_NM,  D.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID,D.IMPORTANT FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
+WHERE C.guid = '" + cityGuid + "'  order by D.MEETING_DATE desc";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -293,13 +292,7 @@ WHERE C.guid = '" + cityGuid + "'  order by Q.MEETING_DATE desc";
         public int GetMeetingRelatedNotesAmount(string guid)
         {
             var amount = 0;
-            var queryString = @"SELECT COUNT(*) AMOUNT FROM MeetingNote WHERE DOC_GUID=@GUid
-UNION
-SELECT COUNT(*) AMOUNT FROM DOCUMENT D INNER JOIN 
-QUERY Q ON D.DOC_GUID=Q.DOC_GUID
-INNER JOIN DBO.QUERY_ENTRY QE ON QE.QUERY_GUID=Q.QUERY_GUID
-WHERE D.DOC_GUID=@GUid
-AND QE.COMMENT IS NOT NULL AND QE.COMMENT<>''";
+            var queryString = @"SELECT COUNT(*) AMOUNT FROM MeetingNote WHERE DOC_GUID=@GUid";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -354,8 +347,8 @@ AND QE.COMMENT IS NOT NULL AND QE.COMMENT<>''";
         public List<MeetingTypeTime> GetMeetingType(string guid)
         {
             var list = new List<MeetingTypeTime>();
-            var queryString = @"select D.DOC_TYPE , max(Q.MEETING_DATE) MEETING_DATE , max(Q.USR_CRTN_TS) USR_CRTN_TS from DOCUMENT D
-INNER JOIN QUERY Q ON D.DOC_GUID=Q.DOC_GUID INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM WHERE C.GUID=@GUID group by D.DOC_TYPE";
+            var queryString = @"select D.DOC_TYPE , max(D.MEETING_DATE) MEETING_DATE , max(D.USR_CRTN_TS) USR_CRTN_TS from DOCUMENT D
+           INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM WHERE C.GUID=@GUID group by D.DOC_TYPE";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
