@@ -655,8 +655,10 @@ namespace BusinessHandler.MessageHandler
         {
             var result = new Dashboard();
             result.NumberOfCities = GetNumberOfCities(state);
+            result.AvgDays = GetAvgDays(state);
             result.RecentScrapes = GetRecentScrape(state);
             result.RecentMeetings = GetRecentMeeting(state);
+            result.UpcomingMeetings = GetUpcomingMeeting(state);
             result.MeetingLineGraphData = GetMeetingLineData(state);
 
             return result;
@@ -665,6 +667,27 @@ namespace BusinessHandler.MessageHandler
         {
             int result = 0;
             string queryString = @"select  count(*) from [dbo].[CITY] WHERE STATES=@STATES";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("STATES", state);
+                connection.Open();
+                result = Convert.ToInt32(command.ExecuteScalar());
+
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// get latest two month data
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public int GetAvgDays(string state)
+        {
+            int result = 0;
+            string queryString = @"SELECT AVG(DaysBetween) FROM (SELECT DISTINCT D.MEETING_DATE,D.USR_CRTN_TS, DATEDIFF(day, D.MEETING_DATE, D.USR_CRTN_TS) AS DaysBetween from DOCUMENT D INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM INNER JOIN DOCUMENT_CONTENT DC ON DC.DOC_GUID=D.DOC_GUID 
+where C.STATES=@STATES AND MEETING_DATE<=GETDATE() and MEETING_DATE>DATEADD(month, -2, GETDATE()) AND MEETING_DATE<D.USR_CRTN_TS) LST";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -700,7 +723,7 @@ namespace BusinessHandler.MessageHandler
         public List<RecentMeeting> GetRecentMeeting(string state)
         {
             var result = new List<RecentMeeting>();
-            string queryString = @"select top 10 C.CITY_NM, DOC_TYPE , MEETING_DATE from DOCUMENT D INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM where C.STATES=@STATES AND MEETING_DATE<GETDATE() order by meeting_date desc";
+            string queryString = @"select distinct top 10 C.CITY_NM, DOC_TYPE , MEETING_DATE from DOCUMENT D INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM where C.STATES=@STATES AND MEETING_DATE<=GETDATE() order by meeting_date desc";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -718,7 +741,27 @@ namespace BusinessHandler.MessageHandler
             }
             return result;
         }
-
+        public List<RecentMeeting> GetUpcomingMeeting(string state)
+        {
+            var result = new List<RecentMeeting>();
+            string queryString = @"select distinct top 10 C.CITY_NM, DOC_TYPE , MEETING_DATE from DOCUMENT D INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM where C.STATES=@STATES AND MEETING_DATE>GETDATE() order by meeting_date asc";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.AddWithValue("STATES", state);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new RecentMeeting();
+                    data.CityName = DBNull.Value == reader["CITY_NM"] ? "" : reader["CITY_NM"].ToString();
+                    data.Meeting = DBNull.Value == reader["DOC_TYPE"] ? "" : reader["DOC_TYPE"].ToString();
+                    data.MeetingDate = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                    result.Add(data);
+                }
+            }
+            return result;
+        }
 
         public List<MeetingLineGraph> GetMeetingLineData(string state)
         {

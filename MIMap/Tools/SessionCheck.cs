@@ -11,6 +11,7 @@ namespace MIMap.Tools
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            return;
             HttpSessionStateBase session = filterContext.HttpContext.Session;
             if (session != null && session["UserAccount"] == null)
             {

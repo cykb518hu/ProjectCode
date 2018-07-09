@@ -11,9 +11,13 @@ namespace BusinessHandler.Model
     {
         public int NumberOfCities { get; set; }
 
+        public int AvgDays{ get; set; }
+
         public List<RecentScrape> RecentScrapes { get; set; }
 
         public List<RecentMeeting> RecentMeetings { get; set; }
+
+        public List<RecentMeeting> UpcomingMeetings { get; set; }
 
         public List<MeetingLineGraph> MeetingLineGraphData { get; set; }
 

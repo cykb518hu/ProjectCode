@@ -66,8 +66,8 @@
                                 <i class="fa fa-tasks fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">12</div>
-                                <div>New Tasks!</div>
+                                <div class="huge">@Model.AvgDays</div>
+                                <div>Average Days of scraper</div>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-bell fa-fw"></i> Recent Scrapes
@@ -150,7 +150,7 @@
                     <!-- /.panel-body -->
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-bell fa-fw"></i> Recent Meetings
@@ -176,6 +176,34 @@
                     <!-- /.panel-body -->
                 </div>
             </div>
+
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bell fa-fw"></i> Upcoming Meetings
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="list-group">
+                            @{
+                                foreach (var r in Model.UpcomingMeetings)
+                                {
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa  fa-fw"></i> @(r.CityName + "--" + r.Meeting)
+                                        <span class="pull-right text-muted small">
+                                            <em>@r.MeetingDate</em>
+                                        </span>
+                                    </a>
+                                }
+                            }
+
+
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+
         </div>
         <!-- /.row -->
         <div class="row">
