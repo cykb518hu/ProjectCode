@@ -4,15 +4,17 @@
         <tr>
             <th colspan="4" rowspan="2" data-valign="middle" data-align="center"></th>
             <th colspan="8" rowspan="2"  data-valign="middle" data-align="center">Buffers(Feets)</th>
-            <th colspan="15" data-valign="middle" data-align="center">Facilities Permitted</th>
+            <th colspan="21" data-valign="middle" data-align="center">Facilities Permitted</th>
             <th colspan="1" rowspan="2" data-valign="middle" data-align="center">Edit</th>
         </tr>
         <tr>
-            <th colspan="3" data-valign="middle" data-align="center">Gr</th>
-            <th colspan="3" data-valign="middle" data-align="center">Prov</th>
-            <th colspan="3" data-valign="middle" data-align="center">Proc</th>
-            <th colspan="3" data-valign="middle" data-align="center">SC</th>
-            <th colspan="3" data-valign="middle" data-align="center">ST</th>
+            <th colspan="3" data-valign="middle" data-align="center">Grower-Class A</th>
+            <th colspan="3" data-valign="middle" data-align="center">Grower-Class B</th>
+            <th colspan="3" data-valign="middle" data-align="center">Grower-Class C</th>
+            <th colspan="3" data-valign="middle" data-align="center">Processor</th>
+            <th colspan="3" data-valign="middle" data-align="center">Provisioning Center</th>
+            <th colspan="3" data-valign="middle" data-align="center">Safety Compliance</th>
+            <th colspan="3" data-valign="middle" data-align="center">Secure Transporters</th>
         </tr>
         <tr>
             <th data-field="Municipality" data-sortable="true" data-align="left" >Municipality</th>
@@ -29,18 +31,27 @@
             <th data-field="BufferRoadFeet" data-align="center" data-sortable="true">Road</th>
             <th data-field="BufferOtherFeet" data-align="center" data-sortable="true">Other MM</th>
 
-            <th data-field="FacililtyGrPermit" data-align="center" data-sortable="true">Permit</th>
-            <th data-field="FacililtyGrZoning" data-align="left" >Zoning  Status</th>
-            <th data-field="FacililtyGrLimit" data-align="center" data-sortable="true">Limit</th>
+            <th data-field="FacililtyGrowerClassAPermit" data-align="center" data-sortable="true">Permit</th>
+            <th data-field="FacililtyGrowerClassAZoning" data-align="left" >Zoning  Status</th>
+            <th data-field="FacililtyGrowerClassALimit" data-align="center" data-sortable="true">Limit</th>
+
+            <th data-field="FacililtyGrowerClassBPermit" data-align="center" data-sortable="true">Permit</th>
+            <th data-field="FacililtyGrowerClassBZoning" data-align="left">Zoning  Status</th>
+            <th data-field="FacililtyGrowerClassBLimit" data-align="center" data-sortable="true">Limit</th>
+
+            <th data-field="FacililtyGrowerClassCPermit" data-align="center" data-sortable="true">Permit</th>
+            <th data-field="FacililtyGrowerClassCZoning" data-align="left">Zoning  Status</th>
+            <th data-field="FacililtyGrowerClassCLimit" data-align="center" data-sortable="true">Limit</th>
+
+            <th data-field="FacililtyProcPermit" data-align="center" data-sortable="true">Permit</th>
+            <th data-field="FacililtyProcZoning" data-align="left">Zoning  Status</th>
+            <th data-field="FacililtyProcLimit" data-align="center" data-sortable="true">Limit</th>
 
             <th data-field="FacililtyProvPermit" data-align="center" data-sortable="true">Permit</th>
             <th data-field="FacililtyProvZoning" data-align="left" >Zoning  Status</th>
             <th data-field="FacililtyProvLimit" data-align="center" data-sortable="true">Limit</th>
 
-            <th data-field="FacililtyProcPermit" data-align="center" data-sortable="true">Permit</th>
-            <th data-field="FacililtyProcZoning" data-align="left" >Zoning  Status</th>
-            <th data-field="FacililtyProcLimit" data-align="center" data-sortable="true">Limit</th>
-
+          
             <th data-field="FacililtySCPermit" data-align="center" data-sortable="true">Permit</th>
             <th data-field="FacililtySCZoning" data-align="left" >Zoning  Status</th>
             <th data-field="FacililtySCLimit" data-align="center" data-sortable="true">Limit</th>
@@ -60,6 +71,7 @@
         function editCityNote(obj)
         {
             var guid = $(obj).attr("data-cityGuid");
+            popUpCityGuid = guid;
             showSideBar(guid, false);
         }
 </script>

@@ -99,6 +99,11 @@ namespace BusinessHandler.Model
             {
                 command.Parameters.AddWithValue("@KeyWord", message.KeyWord);
             }
+
+            if (!string.IsNullOrWhiteSpace(message.OptStatus) && !message.OptStatus.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+            {
+                command.Parameters.AddWithValue("@OptStatus", StaticSetting.GetArrayQuery(message.OptStatus));
+            }
             if (!string.IsNullOrWhiteSpace(message.MeetingDate))
             {
                 command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);

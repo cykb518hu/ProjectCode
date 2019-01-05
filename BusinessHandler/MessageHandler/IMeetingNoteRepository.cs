@@ -312,7 +312,7 @@ WHERE C.guid = '" + cityGuid + "'  order by D.MEETING_DATE desc";
         {
             var list = new List<MeetingCalendar>();
 
-            string queryString = @"[dbo].[GET_MeetingCalendar_Modify]";
+            string queryString = @"[dbo].[GET_MeetingCalendar]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);

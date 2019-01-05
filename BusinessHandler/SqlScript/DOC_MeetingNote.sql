@@ -83,8 +83,8 @@ GO
 
 
 
-IF EXISTS (SELECT * FROM SYS.OBJECTS WHERE OBJECT_ID = OBJECT_ID(N'[dbo].[GET_MeetingCalendar_Modify]') AND TYPE IN (N'P', N'PC'))
-DROP PROCEDURE [dbo].[GET_MeetingCalendar_Modify]
+IF EXISTS (SELECT * FROM SYS.OBJECTS WHERE OBJECT_ID = OBJECT_ID(N'[dbo].[GET_MeetingCalendar]') AND TYPE IN (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GET_MeetingCalendar]
 GO
 SET ANSI_NULLS ON
 GO
@@ -92,13 +92,14 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[GET_MeetingCalendar_Modify]
+CREATE PROCEDURE [dbo].[GET_MeetingCalendar]
 (
 @CityName varchar(max) =null,
 @CountyName varchar(max) =null,
 @KeyWord varchar(max) =null,
 @StartMeetingDate varchar(50)=null,
 @EndMeetingDate varchar(50)=null,
+@OptStatus varchar(50)=null,
 @DeployeDate varchar(50)=null,
 @UserEmail varchar(100)=null,
 @State varchar(50)=null
@@ -111,7 +112,8 @@ set @sqlstr='
 SELECT DISTINCT M.FutureDate,M.Notes, D.CITY_NM,D.DOC_TYPE,D.DOC_GUID
  FROM  DBO.DOCUMENT D INNER JOIN DBO.DOCUMENT_CONTENT DC ON DC.DOC_GUID=D.DOC_GUID 
  inner JOIN DBO.MeetingNote M ON M.DOC_GUID=D.DOC_GUID 
- INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM  INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID  where 1=1 and  D.IMPORTANT=''false'' and M.FutureDate is not null and M.FutureDate <> '''' '
+ INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM  INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID  
+  LEFT JOIN DBO.CITY_Ordinance CO ON CO.city_guid=C.GUID where 1=1 and  D.IMPORTANT=''false'' and M.FutureDate is not null and M.FutureDate <> '''' '
 
 if @CityName is not null 
 	begin
@@ -136,6 +138,10 @@ if @EndMeetingDate is not null
 if @DeployeDate is not null 
 	begin
 		set @sqlstr=@sqlstr+' and C.DEPLOYE_DATE IN ('+ @DeployeDate+')'
+	end
+if @OptStatus is not null 
+	begin
+		set @sqlstr=@sqlstr+' and CO.OptStatus IN ('+ @OptStatus+')'
 	end
 
 if @UserEmail is not null

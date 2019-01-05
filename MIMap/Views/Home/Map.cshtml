@@ -93,7 +93,16 @@
                         }
                     </select>
                 </div>
-                <div class="col-xs-12 col-sm-2 form-group">
+                <div class="col-xs-12 col-sm-1 form-group">
+                    <select name="sel_search_OptStatus" id="sel_search_OptStatus" class="form-control" multiple="multiple">
+                     
+                        <option value="OptIn">Opt-in</option>
+                        <option value="OptOut">Opt-out</option>
+                        <option value="none">None</option>
+                       
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
                     <select name="sel_search_DeployDate" id="sel_search_DeployDate" class="form-control" multiple="multiple">
                         @{
                             foreach (var r in municipalityList.Select(x => x.DeployDate).Distinct())
@@ -593,11 +602,21 @@
                     deployDate = $("#sel_search_DeployDate").val().toString();
                 }
             }
+            var optStatus = "";
+            if ($("#sel_search_OptStatus").val() != null) {
+                if ($("#sel_search_OptStatus").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    optStatus = "All";
+                }
+                else {
+                    optStatus = $("#sel_search_OptStatus").val().toString();
+                }
+            }
             var result = {
                 CountyName: countyName,
                 CityName: cityName,
                 KeyWord: keyWord,
                 DeployDate: deployDate,
+                OptStatus:optStatus,
                 StartMeetingDate: $("#txt_search_StartMeetingDate").val(),
                 EndMeetingDate: $("#txt_search_EndMeetingDate").val()
 
@@ -737,6 +756,14 @@
             $("#sel_search_DeployDate").val(dateArray);
             $("#sel_search_DeployDate").multiselect("refresh");
 
+            
+            var optStatus = "";
+            if (temp.OptStatus != null) {
+                optStatus = temp.OptStatus;
+            }
+            var optStatusArray = optStatus.split(",");
+            $("#sel_search_OptStatus").val(optStatusArray);
+            $("#sel_search_OptStatus").multiselect("refresh");
 
           
             //old data
@@ -839,7 +866,7 @@
                 includeSelectAllOption: true,
                 selectAllText: 'All',
                 maxHeight:'300',
-                nonSelectedText: 'No County Selected',
+                nonSelectedText: 'Select County',
                 onChange: function (element, checked) {
                     rebuildMuniciplitySelect();
                 },
@@ -852,7 +879,7 @@
             });
             $("#sel_search_CityName").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'No Municipality Selected',
+                nonSelectedText: 'Select Municipality',
                 includeSelectAllOption: true,
                 maxHeight:'300',
                 selectAllText: 'All'
@@ -860,14 +887,21 @@
 
             $("#sel_search_KeyWord").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'No Key Word Selected',
+                nonSelectedText: 'Select Key Word',
                 includeSelectAllOption: true,
                 maxHeight:'300',
                 selectAllText: 'All'
             });
             $("#sel_search_DeployDate").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'No Deploy Date Selected',
+                nonSelectedText: 'Select Deploy Date',
+                includeSelectAllOption: true,
+                maxHeight:'300',
+                selectAllText: 'All'
+            });
+            $("#sel_search_OptStatus").multiselect({
+                buttonWidth: '100%',
+                nonSelectedText: 'Select OptStatus',
                 includeSelectAllOption: true,
                 maxHeight:'300',
                 selectAllText: 'All'

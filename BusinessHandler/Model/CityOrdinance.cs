@@ -38,12 +38,27 @@ namespace BusinessHandler.Model
         public string BufferRoadFeet { get; set; }
         public string BufferRoadNote { get; set; }
 
-        public string FacililtyGrPermit { get; set; }
-        public string FacililtyGrZoningInd { get; set; }
-        public string FacililtyGrZoningCom { get; set; }
-        public string FacililtyGrLimit { get; set; }
-        public string FacililtyGrNote { get; set; }
-        public string FacililtyGrZoning { get; set; }
+        public string FacililtyGrowerClassAPermit { get; set; }
+        public string FacililtyGrowerClassAZoningInd { get; set; }
+        public string FacililtyGrowerClassAZoningCom { get; set; }
+        public string FacililtyGrowerClassALimit { get; set; }
+        public string FacililtyGrowerClassANote { get; set; }
+        public string FacililtyGrowerClassAZoning { get; set; }
+
+
+        public string FacililtyGrowerClassBPermit { get; set; }
+        public string FacililtyGrowerClassBZoningInd { get; set; }
+        public string FacililtyGrowerClassBZoningCom { get; set; }
+        public string FacililtyGrowerClassBLimit { get; set; }
+        public string FacililtyGrowerClassBNote { get; set; }
+        public string FacililtyGrowerClassBZoning { get; set; }
+
+        public string FacililtyGrowerClassCPermit { get; set; }
+        public string FacililtyGrowerClassCZoningInd { get; set; }
+        public string FacililtyGrowerClassCZoningCom { get; set; }
+        public string FacililtyGrowerClassCLimit { get; set; }
+        public string FacililtyGrowerClassCNote { get; set; }
+        public string FacililtyGrowerClassCZoning { get; set; }
 
         public string FacililtyProvPermit { get; set; }
         public string FacililtyProvZoningInd { get; set; }

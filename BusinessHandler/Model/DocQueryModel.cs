@@ -14,6 +14,8 @@ namespace BusinessHandler.Model
         public string CountyName { get; set; }
         public string MeetingDate { get; set; }
         public string KeyWord { get; set; }
+
+        public string OptStatus { get; set; }
         public string DeployDate { get; set; }
         public string sortName { get; set; }
         public string sortOrder { get; set; }

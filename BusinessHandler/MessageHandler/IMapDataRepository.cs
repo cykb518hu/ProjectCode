@@ -127,7 +127,7 @@ namespace BusinessHandler.MessageHandler
         {
             var list = new List<MapMeeting>();
 
-            string queryString = @"[dbo].[GET_DOC_CONTENT_Modify]";
+            string queryString = @"[dbo].[GET_DOC_CONTENT]";
             var keyWords = message.KeyWord;
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
@@ -449,34 +449,47 @@ namespace BusinessHandler.MessageHandler
                         data.BufferRoadFeet = DBNull.Value == reader["BufferRoadFeet"] ? "" : reader["BufferRoadFeet"].ToString();
                         data.BufferRoadNote = DBNull.Value == reader["BufferRoadNote"] ? "" : reader["BufferRoadNote"].ToString();
 
-                        data.FacililtyGrPermit = DBNull.Value == reader["FacililtyGrPermit"] ? "" : reader["FacililtyGrPermit"].ToString();  
-                        data.FacililtyGrZoningInd = DBNull.Value == reader["FacililtyGrZoningInd"] ? "--" : reader["FacililtyGrZoningInd"].ToString();
-                        data.FacililtyGrZoningCom = DBNull.Value == reader["FacililtyGrZoningCom"] ? "--" : reader["FacililtyGrZoningCom"].ToString();
-                        data.FacililtyGrLimit = DBNull.Value == reader["FacililtyGrLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtyGrLimit"].ToString()) ? "None" : reader["FacililtyGrLimit"].ToString();
-                        data.FacililtyGrNote = DBNull.Value == reader["FacililtyGrNote"] ? "" : reader["FacililtyGrNote"].ToString();
+                        data.FacililtyGrowerClassAPermit = DBNull.Value == reader["FacililtyGrowerClassAPermit"] ? "" : reader["FacililtyGrowerClassAPermit"].ToString();  
+                        data.FacililtyGrowerClassAZoningInd = DBNull.Value == reader["FacililtyGrowerClassAZoningInd"] ? "--" : reader["FacililtyGrowerClassAZoningInd"].ToString();
+                        data.FacililtyGrowerClassAZoningCom = DBNull.Value == reader["FacililtyGrowerClassAZoningCom"] ? "--" : reader["FacililtyGrowerClassAZoningCom"].ToString();
+                        data.FacililtyGrowerClassALimit = DBNull.Value == reader["FacililtyGrowerClassALimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtyGrowerClassALimit"].ToString()) ? "No Cap" : reader["FacililtyGrowerClassALimit"].ToString();
+                        data.FacililtyGrowerClassANote = DBNull.Value == reader["FacililtyGrowerClassANote"] ? "" : reader["FacililtyGrowerClassANote"].ToString();
+
+                        data.FacililtyGrowerClassBPermit = DBNull.Value == reader["FacililtyGrowerClassBPermit"] ? "" : reader["FacililtyGrowerClassBPermit"].ToString();
+                        data.FacililtyGrowerClassBZoningInd = DBNull.Value == reader["FacililtyGrowerClassBZoningInd"] ? "--" : reader["FacililtyGrowerClassBZoningInd"].ToString();
+                        data.FacililtyGrowerClassBZoningCom = DBNull.Value == reader["FacililtyGrowerClassBZoningCom"] ? "--" : reader["FacililtyGrowerClassBZoningCom"].ToString();
+                        data.FacililtyGrowerClassBLimit = DBNull.Value == reader["FacililtyGrowerClassBLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtyGrowerClassBLimit"].ToString()) ? "No Cap" : reader["FacililtyGrowerClassBLimit"].ToString();
+                        data.FacililtyGrowerClassBNote = DBNull.Value == reader["FacililtyGrowerClassBNote"] ? "" : reader["FacililtyGrowerClassBNote"].ToString();
+
+                        data.FacililtyGrowerClassCPermit = DBNull.Value == reader["FacililtyGrowerClassCPermit"] ? "" : reader["FacililtyGrowerClassCPermit"].ToString();
+                        data.FacililtyGrowerClassCZoningInd = DBNull.Value == reader["FacililtyGrowerClassCZoningInd"] ? "--" : reader["FacililtyGrowerClassCZoningInd"].ToString();
+                        data.FacililtyGrowerClassCZoningCom = DBNull.Value == reader["FacililtyGrowerClassCZoningCom"] ? "--" : reader["FacililtyGrowerClassCZoningCom"].ToString();
+                        data.FacililtyGrowerClassCLimit = DBNull.Value == reader["FacililtyGrowerClassCLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtyGrowerClassCLimit"].ToString()) ? "No Cap" : reader["FacililtyGrowerClassCLimit"].ToString();
+                        data.FacililtyGrowerClassCNote = DBNull.Value == reader["FacililtyGrowerClassCNote"] ? "" : reader["FacililtyGrowerClassCNote"].ToString();
+
 
                         data.FacililtyProvPermit = DBNull.Value == reader["FacililtyProvPermit"] ? "" : reader["FacililtyProvPermit"].ToString();
                         data.FacililtyProvZoningInd = DBNull.Value == reader["FacililtyProvZoningInd"] ? "--" : reader["FacililtyProvZoningInd"].ToString();
                         data.FacililtyProvZoningCom = DBNull.Value == reader["FacililtyProvZoningCom"] ? "--" : reader["FacililtyProvZoningCom"].ToString();
-                        data.FacililtyProvLimit = DBNull.Value == reader["FacililtyProvLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtyProvLimit"].ToString()) ? "None" : reader["FacililtyProvLimit"].ToString();
+                        data.FacililtyProvLimit = DBNull.Value == reader["FacililtyProvLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtyProvLimit"].ToString()) ? "No Cap" : reader["FacililtyProvLimit"].ToString();
                         data.FacililtyProvNote = DBNull.Value == reader["FacililtyProvNote"] ? "" : reader["FacililtyProvNote"].ToString();
 
                         data.FacililtyProcPermit = DBNull.Value == reader["FacililtyProcPermit"] ? "" : reader["FacililtyProcPermit"].ToString();
                         data.FacililtyProcZoningInd = DBNull.Value == reader["FacililtyProcZoningInd"] ? "--" : reader["FacililtyProcZoningInd"].ToString();
                         data.FacililtyProcZoningCom = DBNull.Value == reader["FacililtyProcZoningCom"] ? "--" : reader["FacililtyProcZoningCom"].ToString();
-                        data.FacililtyProcLimit = DBNull.Value == reader["FacililtyProcLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtyProcLimit"].ToString()) ? "None" : reader["FacililtyProcLimit"].ToString();
+                        data.FacililtyProcLimit = DBNull.Value == reader["FacililtyProcLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtyProcLimit"].ToString()) ? "No Cap" : reader["FacililtyProcLimit"].ToString();
                         data.FacililtyProcNote = DBNull.Value == reader["FacililtyProcNote"] ? "" : reader["FacililtyProcNote"].ToString();
 
                         data.FacililtySCPermit = DBNull.Value == reader["FacililtySCPermit"] ? "" : reader["FacililtySCPermit"].ToString();
                         data.FacililtySCZoningInd = DBNull.Value == reader["FacililtySCZoningInd"] ? "--" : reader["FacililtySCZoningInd"].ToString();
                         data.FacililtySCZoningCom = DBNull.Value == reader["FacililtySCZoningCom"] ? "--" : reader["FacililtySCZoningCom"].ToString();
-                        data.FacililtySCLimit = DBNull.Value == reader["FacililtySCLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtySCLimit"].ToString()) ? "None" : reader["FacililtySCLimit"].ToString();
+                        data.FacililtySCLimit = DBNull.Value == reader["FacililtySCLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtySCLimit"].ToString()) ? "No Cap" : reader["FacililtySCLimit"].ToString();
                         data.FacililtySCNote = DBNull.Value == reader["FacililtySCNote"] ? "" : reader["FacililtySCNote"].ToString();
 
                         data.FacililtySTPermit = DBNull.Value == reader["FacililtySTPermit"] ? "" : reader["FacililtySTPermit"].ToString();
                         data.FacililtySTZoningInd = DBNull.Value == reader["FacililtySTZoningInd"] ? "--" : reader["FacililtySTZoningInd"].ToString();
                         data.FacililtySTZoningCom = DBNull.Value == reader["FacililtySTZoningCom"] ? "--" : reader["FacililtySTZoningCom"].ToString();
-                        data.FacililtySTLimit = DBNull.Value == reader["FacililtySTLimit"] ? "None" : String.IsNullOrEmpty(reader["FacililtySTLimit"].ToString()) ? "None" : reader["FacililtySTLimit"].ToString();
+                        data.FacililtySTLimit = DBNull.Value == reader["FacililtySTLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtySTLimit"].ToString()) ? "No Cap" : reader["FacililtySTLimit"].ToString();
                         data.FacililtySTNote = DBNull.Value == reader["FacililtySTNote"] ? "" : reader["FacililtySTNote"].ToString();
 
                         data.CityFileName= DBNull.Value == reader["CityFileName"] ? "" : reader["CityFileName"].ToString();
@@ -560,7 +573,7 @@ namespace BusinessHandler.MessageHandler
                 var str = "UPDATE CITY_Ordinance SET ";
                 foreach (System.Reflection.PropertyInfo info in properties)
                 {
-                    if (info.Name == "Municipality" || info.Name == "CityGuid" || info.Name == "Action" || info.Name == "FacililtySTZoning" || info.Name == "FacililtySCZoning" || info.Name == "FacililtyProcZoning" || info.Name == "FacililtyProvZoning" || info.Name == "FacililtyGrZoning" || info.Name == "OrdinanceTime" || info.Name == "CityFileDisplayName")
+                    if (info.Name == "Municipality" || info.Name == "CityGuid" || info.Name == "Action" || info.Name == "FacililtySTZoning" || info.Name == "FacililtySCZoning" || info.Name == "FacililtyProcZoning" || info.Name == "FacililtyProvZoning" || info.Name == "FacililtyGrowerClassAZoning" || info.Name == "FacililtyGrowerClassBZoning" || info.Name == "FacililtyGrowerClassCZoning" || info.Name == "OrdinanceTime" || info.Name == "CityFileDisplayName")
                     {
                         continue;
                     }

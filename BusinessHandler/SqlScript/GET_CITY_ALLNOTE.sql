@@ -23,6 +23,7 @@ create PROCEDURE [dbo].[GET_CITY_Ordinance]
 @KeyWord varchar(max) =null,
 @StartMeetingDate varchar(50)=null,
 @EndMeetingDate varchar(50)=null,
+@OptStatus varchar(50)=null,
 @DeployeDate varchar(50)=null,
 @IsChecked varchar(5)=null,
 @IsImportant varchar(5)=null,
@@ -41,7 +42,7 @@ set @sqlstr='
 SELECT DISTINCT CO.*,C.CITY_NM
  FROM  DBO.DOCUMENT D  INNER JOIN DBO.DOCUMENT_CONTENT DC ON DC.DOC_GUID=D.DOC_GUID 
  INNER JOIN DBO.CITY C ON C.CITY_NM=D.CITY_NM INNER JOIN DBO.ACCOUNT_CITY AC ON AC.City_Guid=C.GUID 
- INNER JOIN DBO.CITY_Ordinance CO ON CO.CITY_GUID=C.GUID where 1=1'
+ INNER JOIN DBO.CITY_Ordinance CO ON CO.CITY_GUID=C.GUID  where 1=1'
 
 if @CityName is not null 
 	begin
@@ -63,6 +64,12 @@ if @EndMeetingDate is not null
 	begin
 		set @sqlstr=@sqlstr+' and D.MEETING_DATE <= '''+ @EndMeetingDate+''''
 	end
+if @OptStatus is not null 
+	begin
+		set @sqlstr=@sqlstr+' and CO.OptStatus IN ('+ @OptStatus+')'
+	end
+
+
 if @DeployeDate is not null 
 	begin
 		set @sqlstr=@sqlstr+' and C.DEPLOYE_DATE IN ('+ @DeployeDate+')'

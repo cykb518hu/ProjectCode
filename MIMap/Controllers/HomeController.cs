@@ -194,25 +194,33 @@ namespace MIMap.Controllers
             message.limit = 10;
             var list = mapRepository.GetCityOrdinanceList(message, out total, guid);
             var data = new CityOrdinance();
-            data.FacililtyGrZoningInd = "--";
-            data.FacililtyGrZoningCom = "--";
-            data.FacililtyGrLimit = "None";
+            data.FacililtyGrowerClassAZoningInd = "--";
+            data.FacililtyGrowerClassAZoningCom = "--";
+            data.FacililtyGrowerClassALimit = "No Cap";
+
+            data.FacililtyGrowerClassBZoningInd = "--";
+            data.FacililtyGrowerClassBZoningCom = "--";
+            data.FacililtyGrowerClassBLimit = "No Cap";
+
+            data.FacililtyGrowerClassCZoningInd = "--";
+            data.FacililtyGrowerClassCZoningCom = "--";
+            data.FacililtyGrowerClassCLimit = "No Cap";
 
             data.FacililtyProvZoningInd = "--";
             data.FacililtyProvZoningCom = "--";
-            data.FacililtyProvLimit = "None";
+            data.FacililtyProvLimit = "No Cap";
 
             data.FacililtyProcZoningInd = "--";
             data.FacililtyProcZoningCom = "--";
-            data.FacililtyProcLimit = "None";
+            data.FacililtyProcLimit = "No Cap";
 
             data.FacililtySTZoningInd = "--";
             data.FacililtySTZoningCom = "--";
-            data.FacililtySTLimit = "None";
+            data.FacililtySTLimit = "No Cap";
 
             data.FacililtySCZoningInd = "--";
             data.FacililtySCZoningCom = "--";
-            data.FacililtySCLimit = "None";
+            data.FacililtySCLimit = "No Cap";
             if (list.Any())
             {
                 data = list.FirstOrDefault();
@@ -261,6 +269,8 @@ namespace MIMap.Controllers
 
             foreach (var r in result)
             {
+
+                // these information is used for ordinances tab page
                 if (!string.IsNullOrEmpty(r.DraftDate))
                 {
                     r.OrdinanceTime = "Draft:" + r.DraftDate;
@@ -273,9 +283,17 @@ namespace MIMap.Controllers
                     }
                     r.OrdinanceTime += "Final:" + r.FinalDate;
                 }
-                r.FacililtyGrZoning += "Industrial " + r.FacililtyGrZoningInd;
-                r.FacililtyGrZoning += "<br>";
-                r.FacililtyGrZoning += "Commercial " + r.FacililtyGrZoningCom;
+                r.FacililtyGrowerClassAZoning += "Industrial " + r.FacililtyGrowerClassAZoningInd;
+                r.FacililtyGrowerClassAZoning += "<br>";
+                r.FacililtyGrowerClassAZoning += "Commercial " + r.FacililtyGrowerClassAZoningCom;
+
+                r.FacililtyGrowerClassBZoning += "Industrial " + r.FacililtyGrowerClassBZoningInd;
+                r.FacililtyGrowerClassBZoning += "<br>";
+                r.FacililtyGrowerClassBZoning += "Commercial " + r.FacililtyGrowerClassBZoningCom;
+
+                r.FacililtyGrowerClassCZoning += "Industrial " + r.FacililtyGrowerClassCZoningInd;
+                r.FacililtyGrowerClassCZoning += "<br>";
+                r.FacililtyGrowerClassCZoning += "Commercial " + r.FacililtyGrowerClassCZoningCom;
 
                 r.FacililtyProvZoning += "Industrial " + r.FacililtyProvZoningInd;
                 r.FacililtyProvZoning += "<br>";
@@ -292,6 +310,7 @@ namespace MIMap.Controllers
                 r.FacililtySCZoning += "Industrial " + r.FacililtySCZoningInd;
                 r.FacililtySCZoning += "<br>";
                 r.FacililtySCZoning += "Commercial " + r.FacililtySCZoningCom;
+
                 //r.BufferSchoolFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferSchoolNote.Replace("'", "") + "'>" + r.BufferSchoolFeet + "</a>";
                 //r.BufferDaycareFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferDaycareNote.Replace("'", "") + "'>" + r.BufferDaycareFeet + "</a>";
                 //r.BufferParkFeet = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.BufferParkNote.Replace("'", "") + "'>" + r.BufferParkFeet + "</a>";
@@ -306,7 +325,7 @@ namespace MIMap.Controllers
                 //r.FacililtyProcPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtyProcNote.Replace("'", "") + "'>" + r.FacililtyProcPermit + "</a>";
                 //r.FacililtyGrPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtyGrNote.Replace("'", "") + "'>" + r.FacililtyGrPermit + "</a>";
                 //r.FacililtySTPermit = @"<a  data-toggle='tooltip' data-placement='right' title='" + r.FacililtySTNote.Replace("'", "") + "'>" + r.FacililtySTPermit + "</a>" class='btn btn-sm btn-info' role='button' ;
-            
+
                 if (string.IsNullOrEmpty(r.BufferSchoolFeet) && !string.IsNullOrEmpty(r.BufferSchoolNote))
                 {
                     r.BufferSchoolFeet = "Note.";
@@ -399,13 +418,21 @@ namespace MIMap.Controllers
                 {
                     r.FacililtyProcPermit = @"<a tabindex='10' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyProcNote.Replace("'", "") + "'>" + r.FacililtyProcPermit + "</a>";
                 }
-                if (!string.IsNullOrEmpty(r.FacililtyGrPermit) && !string.IsNullOrEmpty(r.FacililtyGrNote))
+                if (!string.IsNullOrEmpty(r.FacililtyGrowerClassAPermit) && !string.IsNullOrEmpty(r.FacililtyGrowerClassANote))
                 {
-                    r.FacililtyGrPermit = @"<a tabindex='11' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyGrNote.Replace("'", "") + "'>" + r.FacililtyGrPermit + "</a>";
+                    r.FacililtyGrowerClassAPermit = @"<a tabindex='11' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyGrowerClassANote.Replace("'", "") + "'>" + r.FacililtyGrowerClassAPermit + "</a>";
                 }
                 if (!string.IsNullOrEmpty(r.FacililtySTPermit) && !string.IsNullOrEmpty(r.FacililtySTNote))
                 {
                     r.FacililtySTPermit = @"<a tabindex='12' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='left' data-content='" + r.FacililtySTNote.Replace("'", "") + "'>" + r.FacililtySTPermit + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.FacililtyGrowerClassBPermit) && !string.IsNullOrEmpty(r.FacililtyGrowerClassBNote))
+                {
+                    r.FacililtyGrowerClassBPermit = @"<a tabindex='13' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyGrowerClassBNote.Replace("'", "") + "'>" + r.FacililtyGrowerClassBPermit + "</a>";
+                }
+                if (!string.IsNullOrEmpty(r.FacililtyGrowerClassCPermit) && !string.IsNullOrEmpty(r.FacililtyGrowerClassCNote))
+                {
+                    r.FacililtyGrowerClassCPermit = @"<a tabindex='14' data-toggle='popover' data-trigger='focus' title='Note'  data-placement='right' data-content='" + r.FacililtyGrowerClassCNote.Replace("'", "") + "'>" + r.FacililtyGrowerClassCPermit + "</a>";
                 }
                 r.Action = "<button type='button' class='btn btn-default'   data-cityGuid='" + r.CityGuid + "'  onclick='editCityNote(this); return false'>Edit</button>";
                 if (!string.IsNullOrEmpty(r.CityFileName))
