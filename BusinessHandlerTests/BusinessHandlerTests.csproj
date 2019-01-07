@@ -102,6 +102,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="json1 - Copy - Copy.json" />
+    <None Include="json1 - Copy.json" />
+    <None Include="json1.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

@@ -19,6 +19,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using QRCoder;
 using System.Drawing;
+using System.Data;
 
 namespace BusinessHandler.MessageHandler.Tests
 {
@@ -586,6 +587,205 @@ namespace BusinessHandler.MessageHandler.Tests
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             qrCodeImage.Save(@"C:\Document\Pen\test.png");
         }
+
+        [TestMethod()]
+        public void CreateJsonData()
+        {
+            ArcadeReservationDate date1 = new ArcadeReservationDate();
+            date1.TimeList = new List<ArcadeReservationTime>();
+
+            date1.TimeList.Add(new ArcadeReservationTime { Hour = "11:00" });
+            date1.TimeList.Add(new ArcadeReservationTime { Hour = "16:00" });
+
+            date1.WeekDay = "Thu";
+            date1.Day = "2018-09-25";
+
+            ArcadeReservationDate date2 = new ArcadeReservationDate();
+            date2.TimeList = new List<ArcadeReservationTime>();
+
+            date2.TimeList.Add(new ArcadeReservationTime { Hour = "11:00" });
+            date2.TimeList.Add(new ArcadeReservationTime { Hour = "16:00" });
+
+            date2.WeekDay = "Wed";
+            date2.Day = "2018-09-26";
+
+            var dateList = new List<ArcadeReservationDate>();
+
+            dateList.Add(date1);
+
+            dateList.Add(date2);
+
+            var str = JsonConvert.SerializeObject(dateList);
+
+
+
+        }
+
+        [TestMethod()]
+        public void ReadJsonData()
+        {
+
+            var str = File.ReadAllText(@"C:\Users\Achilles.Hu\Desktop\ArcadeReservationTime.json");
+
+            var dateList = JsonConvert.DeserializeObject<List<ArcadeReservationDate>>(str);
+       
+            foreach(var date in dateList)
+            {
+                foreach(var time in date.TimeList)
+                {
+                    time.DayAndTime = date.Day + " " + time.Hour;
+                }
+                date.Day = Convert.ToDateTime(date.Day).ToString("dd/MM/yy");
+            }
+
+
+        }
+
+        [TestMethod()]
+        public void BuildDateStr()
+        {
+
+            var str = "2018-11-01 10am - 1pm";
+            var index = str.IndexOf(' ');
+
+            var newStr = str.Substring(0, index) + "," + str.Substring(index);
+
+
+
+        }
+
+        [TestMethod()]
+        public void GetOptStatusData()
+        {
+
+            var str = File.ReadAllText(@"C:\Users\Achilles.Hu\Downloads\Data.txt");
+
+            var dataList = JsonConvert.DeserializeObject<List<OptStatusUpdate>>(str);
+
+
+            List<MuniciplityCounty> dblist = new List<MuniciplityCounty>();
+            string connectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
+
+            string queryString = @"select * from city WHERE STATES='MI'";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Create the Command and Parameter objects.
+                SqlCommand command = new SqlCommand(queryString, connection);
+                // Open the connection in a try/catch block. 
+                // Create and execute the DataReader, writing the result
+                // set to the console window.
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new MuniciplityCounty();
+                    data.LongNm = reader["LONG_NM"].ToString();
+                    data.County = reader["COUNTY_NM"].ToString();
+                    data.ShortNm = reader["SHORT_NM"].ToString();
+                    data.Typ = reader["TYP"].ToString();
+                    data.Municiplity = reader["CITY_NM"].ToString();
+                    data.CityGuid = reader["GUID"].ToString();
+                    dblist.Add(data);
+                }
+            }
+
+            foreach(var r in dblist)
+            {
+                r.County = r.County.Replace(" ", "").Trim().ToLower();
+                r.ShortNm = r.ShortNm.Replace(" ", "").Trim().ToLower();
+                foreach(var da in dataList)
+                {
+                    var data = da;
+                    data.County = data.County.Replace(" ", "").Trim().ToLower();
+                    //  if (d.Municipality == "Madison Township" && r.ShortNm == "madison")
+                    // {
+
+                    // }
+                    data.Municipality = data.Municipality.Replace(" ", "").Trim().ToLower();
+
+                    if(data.Municipality.Contains("township"))
+                    {
+                        data.Type = "Township";
+                    }
+                   
+                    else if (data.Municipality.Contains("villageof"))
+                    {
+                        data.Type = "Village";
+                    }
+                    else if (data.Municipality.Contains("village"))
+                    {
+                        data.Type = "Village";
+                    }
+                    else
+                    {
+                        data.Type = "City";                      
+                    }
+                    if (data.Municipality.ToLower().Contains(r.ShortNm.ToLower()) && data.County.ToLower() == r.County.ToLower() && data.Type.ToLower()==r.Typ.ToLower())
+                    {
+                        r.UseData = data;
+                        break;
+                    }
+                }
+            }
+
+            var result= JsonConvert.SerializeObject(dblist);
+        }
+
+        [TestMethod()]
+        public void UpdateOptStatusData()
+        {
+
+            var str = File.ReadAllText(@"C:\TestCode\Project\BusinessHandlerTests\json1.json");
+
+            var dataList = JsonConvert.DeserializeObject<List<MuniciplityCounty>>(str);
+
+            var count = dataList.Where(x => x.UseData != null).ToList().Count;
+
+            string connectionString = ConfigurationManager.ConnectionStrings["TargetDB"].ToString();
+
+            //string queryString = @"[dbo].[UpdateOptStatus]";
+            string updateCityStr = "UPDATE CITY SET COLOR='green' where guid=@guid";
+            foreach (var r in dataList)
+            {
+                if (r.UseData != null )
+                {
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            // Create the Command and Parameter objects.
+                            //SqlCommand command = new SqlCommand(queryString, connection);
+                            //command.CommandType = CommandType.StoredProcedure;
+                            //command.Parameters.AddWithValue("@city_guid", r.CityGuid);
+                            //command.Parameters.AddWithValue("@FacililtyGrowerClassALimit", r.UseData.GrowerClassA);
+                            //command.Parameters.AddWithValue("@FacililtyGrowerClassBLimit", r.UseData.GrowerClassB);
+                            //command.Parameters.AddWithValue("@FacililtyGrowerClassCLimit", r.UseData.GrowerClassC);
+                            //command.Parameters.AddWithValue("@FacililtyProvLimit", r.UseData.ProvisioningCenter);
+                            //command.Parameters.AddWithValue("@FacililtyProcLimit", r.UseData.Processor);
+                            //command.Parameters.AddWithValue("@FacililtySCLimit", r.UseData.SafetyCompliance);
+                            //command.Parameters.AddWithValue("@FacililtySTLimit", r.UseData.SecureTransporters);
+                            //command.Parameters.AddWithValue("@Note", r.UseData.Note);
+                            //// Open the connection in a try/catch block. 
+                            //// Create and execute the DataReader, writing the result
+                            //// set to the console window.
+                            //connection.Open();
+                            //command.ExecuteNonQuery();
+
+                            SqlCommand cityCommand = new SqlCommand(updateCityStr, connection);
+                            cityCommand.Parameters.AddWithValue("@guid", r.CityGuid);
+                            connection.Open();
+                            cityCommand.ExecuteNonQuery();
+                            r.Success = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        r.Success = false;
+                    }
+                }
+            }
+            var resultStr = JsonConvert.SerializeObject(dataList);
+        }
     }
 
     public class PaymentResult
@@ -722,6 +922,10 @@ namespace BusinessHandler.MessageHandler.Tests
         public string Typ { get; set; }
         public string LongNm { get; set; }
         public string objectId { get; set; }
+        public string CityGuid { get; set; }
+        public OptStatusUpdate UseData { get; set; }
+
+        public bool Success { get; set; }
     }
 
     public class HomeCity
@@ -752,5 +956,59 @@ namespace BusinessHandler.MessageHandler.Tests
 
         [JsonProperty("homeCityList")]
         public List<HomeCity> HomeCityList { get; set; }
+    }
+
+
+    public class ArcadeReservationDate
+    {
+        [JsonProperty("weekDay")]
+        public string WeekDay { get; set; }
+
+        [JsonProperty("day")]
+        public string Day { get; set; }
+
+        [JsonProperty("timeList")]
+        public List<ArcadeReservationTime> TimeList { get; set; }
+    }
+    public class ArcadeReservationTime
+    {
+        [JsonProperty("hour")]
+        public string Hour { get; set; }
+
+        [JsonProperty("dayAndHour")]
+        public string DayAndTime { get; set; }
+    }
+
+
+    public class OptStatusUpdate
+    {
+        public string County { get; set; }
+        public string Municipality { get; set; }
+        public string GrowerClassA { get; set; }
+        public string GrowerClassB { get; set; }
+        public string GrowerClassC { get; set; }
+        public string Processor { get; set; }
+        public string ProvisioningCenter { get; set; }
+
+        public string SafetyCompliance { get; set; }
+
+        public string SecureTransporters { get; set; }
+
+        public string Note { get; set; }
+
+        public string Type { get; set; }
+    }
+
+    public class CitiesModel
+    {
+        public string CountyName { get; set; }
+        public string MunicipalityName { get; set; }
+
+        public string Type { get; set; }
+        public string CityGuid { get; set; }
+
+        public string New { get; set; }
+
+        public OptStatusUpdate UseData { get; set; }
     }
 }
