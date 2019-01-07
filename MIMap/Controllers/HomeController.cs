@@ -18,12 +18,14 @@ namespace MIMap.Controllers
         IMapDataRepository mapRepository;
         IMeetingNote meetingNoteRepository;
         IKeyWord _keyWord;
+        IDocumentRepository _documentRepository;
         public HomeController()
         {
             meetingNoteRepository = DependencyResolver.Current.GetService<IMeetingNote>();
             searchQueryRepository = DependencyResolver.Current.GetService<ISearchQueryRepository>();
             mapRepository = DependencyResolver.Current.GetService<IMapDataRepository>();
             _keyWord = DependencyResolver.Current.GetService<IKeyWord>();
+            _documentRepository= DependencyResolver.Current.GetService<IDocumentRepository>();
 
         }
         public ActionResult Index()
@@ -483,6 +485,31 @@ namespace MIMap.Controllers
         {
             var data = mapRepository.GetContentDetail(contentId, keyWord);
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public JsonResult UpdateDocumentMeetingDate(string docGuid, string meetingDateStr)
+        {
+            var result = "Success";
+            if (!string.IsNullOrWhiteSpace(docGuid) && !string.IsNullOrWhiteSpace(meetingDateStr))
+            {
+                var meetingDate = new DateTime();
+                if (DateTime.TryParse(meetingDateStr, out meetingDate))
+                {
+                    _documentRepository.UpdateDocumentMeetingDate(docGuid, meetingDate.ToString("yyyy-MM-dd"));
+                }
+                else
+                {
+                    result = "meeting date is invalid";
+                }
+                
+            }
+            else
+            {
+                result = "parameter is empty";
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="MessageHandler\DocQueryDB.cs" />
     <Compile Include="MessageHandler\GlobalKeyString.cs" />
+    <Compile Include="MessageHandler\IDocumentRepository.cs" />
     <Compile Include="MessageHandler\IMapDataRepository.cs" />
     <Compile Include="MessageHandler\IKeyWordsRepository.cs" />
     <Compile Include="MessageHandler\IMeetingNoteRepository.cs" />

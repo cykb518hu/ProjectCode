@@ -327,6 +327,7 @@
                               field: 'MeetingDateDisplay',
                               title: 'Meeting Date',
                               sortable: true,
+                              editable: true,
                               order:"desc",
                               width: '10%'
                         },
@@ -990,6 +991,25 @@
                     error: function (xhr, textStatus, errorThrown) {
 
                     }
+                });
+            });
+            $('#tb_municipality').on('editable-save.bs.table', function (e, field, row, oldValue, $el) {
+                //row.oldCategory = oldValue;
+                //console.log(row);
+                $.ajax({
+                    data: {
+                        'meetingDateStr': row[field],
+                        'docGuid': row["DocId"],
+                    },
+                    dataType: 'json',
+                    type: "POST",
+                    url: '/Home/UpdateDocumentMeetingDate'
+                }).done(function (response) {
+                    // If successful
+                    console.log(response);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // If fail
+                    console.log(textStatus + ': ' + errorThrown);
                 });
             });
         
