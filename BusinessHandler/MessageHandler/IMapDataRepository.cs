@@ -187,7 +187,7 @@ namespace BusinessHandler.MessageHandler
                         docType = docType.Replace("Commission Meeting", "").Replace("Appeals Meetings", "").Replace("Commission, City", "").Replace("Commissioners", "").Replace("Community Meetings", "").Replace("Force Meetings", "").Replace("of Appeals", "").Replace("Appeals", "").Replace("Commission", "");
                         result.DocType = docType;
 
-                        result.MeetingDateDisplay = DBNull.Value == reader["MEETING_DATE"] ? "" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
+                        result.MeetingDateDisplay = DBNull.Value == reader["MEETING_DATE"] ? "--" : Convert.ToDateTime(reader["MEETING_DATE"]).ToString("yyyy-MM-dd");
                         result.ScrapeDate = DBNull.Value == reader["SEARCH_DATE"] ? "" : Convert.ToDateTime(reader["SEARCH_DATE"]).ToString("yyyy-MM-dd");
                         result.CityDeployDate = DBNull.Value == reader["DEPLOYE_DATE"] ? "" : Convert.ToDateTime(reader["DEPLOYE_DATE"]).ToString("yyyy-MM-dd");
 
@@ -483,7 +483,7 @@ namespace BusinessHandler.MessageHandler
                         data.FacililtySCPermit = DBNull.Value == reader["FacililtySCPermit"] ? "" : reader["FacililtySCPermit"].ToString();
                         data.FacililtySCZoningInd = DBNull.Value == reader["FacililtySCZoningInd"] ? "--" : reader["FacililtySCZoningInd"].ToString();
                         data.FacililtySCZoningCom = DBNull.Value == reader["FacililtySCZoningCom"] ? "--" : reader["FacililtySCZoningCom"].ToString();
-                        data.FacililtySCLimit = DBNull.Value == reader["FacililtySCLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtySCLimit"].ToString()) ? "No Cap" : reader["FacililtySCLimit"].ToString();
+                        data.FacililtySCLimit = DBNull.Value == reader["FacililtySCLimit"] ? "No Cap" : String.IsNullOrEmpty(reader["FacililtySCLimit"].ToString()) ? "No Cap" : reader["FacililtySCLimit"].ToString();                     
                         data.FacililtySCNote = DBNull.Value == reader["FacililtySCNote"] ? "" : reader["FacililtySCNote"].ToString();
 
                         data.FacililtySTPermit = DBNull.Value == reader["FacililtySTPermit"] ? "" : reader["FacililtySTPermit"].ToString();
@@ -568,12 +568,44 @@ namespace BusinessHandler.MessageHandler
                         command.ExecuteNonQuery();
                     }
                 }
+                //com cap field is used to write some customize info
+                if (!string.IsNullOrWhiteSpace(data.FacililtyGrowerClassAComCap))
+                {
+                    data.FacililtyGrowerClassALimit = data.FacililtyGrowerClassAComCap;
+                }
+                if (!string.IsNullOrWhiteSpace(data.FacililtyGrowerClassBComCap))
+                {
+                    data.FacililtyGrowerClassBLimit = data.FacililtyGrowerClassBComCap;
+                }
+                if (!string.IsNullOrWhiteSpace(data.FacililtyGrowerClassCComCap))
+                {
+                    data.FacililtyGrowerClassCLimit = data.FacililtyGrowerClassCComCap;
+                }
+                if (!string.IsNullOrWhiteSpace(data.FacililtyProcComCap))
+                {
+                    data.FacililtyProcLimit = data.FacililtyProcComCap;
+                }
+                if (!string.IsNullOrWhiteSpace(data.FacililtyProvComCap))
+                {
+                    data.FacililtyProvLimit = data.FacililtyProvComCap;
+                }
+                if (!string.IsNullOrWhiteSpace(data.FacililtySCComCap))
+                {
+                    data.FacililtySCLimit = data.FacililtySCComCap;
+                }
+                if (!string.IsNullOrWhiteSpace(data.FacililtySTComCap))
+                {
+                    data.FacililtySTLimit = data.FacililtySTComCap;
+                }
                 Type t = typeof(CityOrdinance);
                 System.Reflection.PropertyInfo[] properties = t.GetProperties();
                 var str = "UPDATE CITY_Ordinance SET ";
                 foreach (System.Reflection.PropertyInfo info in properties)
                 {
-                    if (info.Name == "Municipality" || info.Name == "CityGuid" || info.Name == "Action" || info.Name == "FacililtySTZoning" || info.Name == "FacililtySCZoning" || info.Name == "FacililtyProcZoning" || info.Name == "FacililtyProvZoning" || info.Name == "FacililtyGrowerClassAZoning" || info.Name == "FacililtyGrowerClassBZoning" || info.Name == "FacililtyGrowerClassCZoning" || info.Name == "OrdinanceTime" || info.Name == "CityFileDisplayName")
+                    if (info.Name == "Municipality" || info.Name == "CityGuid" || info.Name == "Action" 
+                        || info.Name == "FacililtySTZoning" || info.Name == "FacililtySCZoning" || info.Name == "FacililtyProcZoning" || info.Name == "FacililtyProvZoning" || info.Name == "FacililtyGrowerClassAZoning" || info.Name == "FacililtyGrowerClassBZoning" || info.Name == "FacililtyGrowerClassCZoning"
+                         || info.Name == "FacililtyGrowerClassAComCap" || info.Name == "FacililtyGrowerClassBComCap" || info.Name == "FacililtyGrowerClassCComCap" || info.Name == "FacililtyProcComCap" || info.Name == "FacililtyProvComCap" || info.Name == "FacililtySCComCap" || info.Name == "FacililtySTComCap"
+                        || info.Name == "OrdinanceTime" || info.Name == "CityFileDisplayName")
                     {
                         continue;
                     }
@@ -834,6 +866,33 @@ ORDER BY Closing_Month
                 }
             }
             return result;
+        }
+
+        public string GetOrdianceLimit(string data,bool limit)
+        {
+            var limitStr = "";
+            var comCap = "";
+            int i = 0;
+            if (int.TryParse(data, out i))
+            {
+                limitStr = data;
+            }
+            else if (data.ToLower() == "no cap")
+            {
+                limitStr = data;
+            }
+            else
+            {
+                comCap = data;
+            }
+            if(limit)
+            {
+                return limitStr;
+            }
+            else
+            {
+                return comCap;
+            }
         }
 
     }

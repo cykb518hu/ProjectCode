@@ -42,6 +42,7 @@ namespace BusinessHandler.Model
         public string FacililtyGrowerClassAZoningInd { get; set; }
         public string FacililtyGrowerClassAZoningCom { get; set; }
         public string FacililtyGrowerClassALimit { get; set; }
+        public string FacililtyGrowerClassAComCap { get; set; }
         public string FacililtyGrowerClassANote { get; set; }
         public string FacililtyGrowerClassAZoning { get; set; }
 
@@ -50,6 +51,7 @@ namespace BusinessHandler.Model
         public string FacililtyGrowerClassBZoningInd { get; set; }
         public string FacililtyGrowerClassBZoningCom { get; set; }
         public string FacililtyGrowerClassBLimit { get; set; }
+        public string FacililtyGrowerClassBComCap { get; set; }
         public string FacililtyGrowerClassBNote { get; set; }
         public string FacililtyGrowerClassBZoning { get; set; }
 
@@ -57,6 +59,7 @@ namespace BusinessHandler.Model
         public string FacililtyGrowerClassCZoningInd { get; set; }
         public string FacililtyGrowerClassCZoningCom { get; set; }
         public string FacililtyGrowerClassCLimit { get; set; }
+        public string FacililtyGrowerClassCComCap { get; set; }
         public string FacililtyGrowerClassCNote { get; set; }
         public string FacililtyGrowerClassCZoning { get; set; }
 
@@ -64,6 +67,7 @@ namespace BusinessHandler.Model
         public string FacililtyProvZoningInd { get; set; }
         public string FacililtyProvZoningCom { get; set; }
         public string FacililtyProvLimit { get; set; }
+        public string FacililtyProvComCap { get; set; }
         public string FacililtyProvNote { get; set; }
         public string FacililtyProvZoning { get; set; }
 
@@ -71,6 +75,7 @@ namespace BusinessHandler.Model
         public string FacililtyProcZoningInd { get; set; }
         public string FacililtyProcZoningCom { get; set; }
         public string FacililtyProcLimit { get; set; }
+        public string FacililtyProcComCap { get; set; }
         public string FacililtyProcNote { get; set; }
         public string FacililtyProcZoning { get; set; }
 
@@ -79,6 +84,7 @@ namespace BusinessHandler.Model
         public string FacililtySCZoningInd { get; set; }
         public string FacililtySCZoningCom { get; set; }
         public string FacililtySCLimit { get; set; }
+        public string FacililtySCComCap { get; set; }
         public string FacililtySCNote { get; set; }
         public string FacililtySCZoning { get; set; }
 
@@ -86,6 +92,7 @@ namespace BusinessHandler.Model
         public string FacililtySTZoningInd { get; set; }
         public string FacililtySTZoningCom { get; set; }
         public string FacililtySTLimit { get; set; }
+        public string FacililtySTComCap { get; set; }
         public string FacililtySTNote { get; set; }
         public string FacililtySTZoning { get; set; }
 

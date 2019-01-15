@@ -134,16 +134,16 @@
                 <div id="collapse5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading5">
                     <table class="table" id="facility_table">
                         <thead>
-                            <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="15%">Limit</th><th>Note</th></tr>
+                            <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="15%">Limit</th><th>Com Cap</th><th>Note</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td>Grower-Class A</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                            <tr><td>Grower-Class B</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                            <tr><td>Grower-Class C</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                            <tr><td>Processor</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                            <tr><td>Provisioning Center</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                            <tr><td>Safety Compliance</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
-                            <tr><td>Secure Transporters</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                            <tr><td>Grower-Class A</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td><td></td></tr>
+                            <tr><td>Grower-Class B</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td><td></td></tr>
+                            <tr><td>Grower-Class C</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td><td></td></tr>
+                            <tr><td>Processor</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td><td></td></tr>
+                            <tr><td>Provisioning Center</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td><td></td></tr>
+                            <tr><td>Safety Compliance</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td><td></td></tr>
+                            <tr><td>Secure Transporters</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td><td></td></tr>
 
                         </tbody>
                     </table>
@@ -299,6 +299,7 @@
             type: "GET",
             cache: false,
             success: function (result) {
+                $("#headingHeader").find("span").text(result.Municipality);
                 if (result.CityFileName != null && result.CityFileName != undefined && result.CityFileName.length > 0) {
                     $("#span_uploadedFile").parent().show();
                     $("#span_uploadedFile").html(result.CityFileDisplayName);
@@ -346,7 +347,8 @@
                 $("#facility_table").find("tr").eq(1).find("a").eq(0).html("").html(result.FacililtyGrowerClassAZoningInd);
                 $("#facility_table").find("tr").eq(1).find("a").eq(1).html("").html(result.FacililtyGrowerClassAZoningCom);
                 $("#facility_table").find("tr").eq(1).find("td").eq(3).html("").html(result.FacililtyGrowerClassALimit);
-                $("#facility_table").find("tr").eq(1).find("td").eq(4).html("").html(result.FacililtyGrowerClassANote);
+                $("#facility_table").find("tr").eq(1).find("td").eq(4).html("").html(result.FacililtyGrowerClassAComCap);
+                $("#facility_table").find("tr").eq(1).find("td").eq(5).html("").html(result.FacililtyGrowerClassANote);
 
                 $("#facility_table").find("tr").eq(2).find("td").eq(1).children().prop("checked", false);
                 if (result.FacililtyGrowerClassBPermit == "Yes") {
@@ -355,7 +357,8 @@
                 $("#facility_table").find("tr").eq(2).find("a").eq(0).html("").html(result.FacililtyGrowerClassBZoningInd);
                 $("#facility_table").find("tr").eq(2).find("a").eq(1).html("").html(result.FacililtyGrowerClassBZoningCom);
                 $("#facility_table").find("tr").eq(2).find("td").eq(3).html("").html(result.FacililtyGrowerClassBLimit);
-                $("#facility_table").find("tr").eq(2).find("td").eq(4).html("").html(result.FacililtyGrowerClassBNote);
+                $("#facility_table").find("tr").eq(2).find("td").eq(4).html("").html(result.FacililtyGrowerClassBComCap);
+                $("#facility_table").find("tr").eq(2).find("td").eq(5).html("").html(result.FacililtyGrowerClassBNote);
 
                 $("#facility_table").find("tr").eq(3).find("td").eq(1).children().prop("checked", false);
                 if (result.FacililtyGrowerClassCPermit == "Yes") {
@@ -364,7 +367,8 @@
                 $("#facility_table").find("tr").eq(3).find("a").eq(0).html("").html(result.FacililtyGrowerClassCZoningInd);
                 $("#facility_table").find("tr").eq(3).find("a").eq(1).html("").html(result.FacililtyGrowerClassCZoningCom);
                 $("#facility_table").find("tr").eq(3).find("td").eq(3).html("").html(result.FacililtyGrowerClassCLimit);
-                $("#facility_table").find("tr").eq(3).find("td").eq(4).html("").html(result.FacililtyGrowerClassCNote);
+                $("#facility_table").find("tr").eq(3).find("td").eq(4).html("").html(result.FacililtyGrowerClassCComCap);
+                $("#facility_table").find("tr").eq(3).find("td").eq(5).html("").html(result.FacililtyGrowerClassCNote);
 
                 $("#facility_table").find("tr").eq(4).find("td").eq(1).children().prop("checked", false);
                 if (result.FacililtyProcPermit == "Yes") {
@@ -373,7 +377,8 @@
                 $("#facility_table").find("tr").eq(4).find("a").eq(0).html("").html(result.FacililtyProcZoningInd);
                 $("#facility_table").find("tr").eq(4).find("a").eq(1).html("").html(result.FacililtyProcZoningCom);
                 $("#facility_table").find("tr").eq(4).find("td").eq(3).html("").html(result.FacililtyProcLimit);
-                $("#facility_table").find("tr").eq(4).find("td").eq(4).html("").html(result.FacililtyProcNote);
+                $("#facility_table").find("tr").eq(4).find("td").eq(4).html("").html(result.FacililtyProcComCap);
+                $("#facility_table").find("tr").eq(4).find("td").eq(5).html("").html(result.FacililtyProcNote);
 
 
                 $("#facility_table").find("tr").eq(5).find("td").eq(1).children().prop("checked", false);
@@ -383,8 +388,8 @@
                 $("#facility_table").find("tr").eq(5).find("a").eq(0).html("").html(result.FacililtyProvZoningInd);
                 $("#facility_table").find("tr").eq(5).find("a").eq(1).html("").html(result.FacililtyProvZoningCom);
                 $("#facility_table").find("tr").eq(5).find("td").eq(3).html("").html(result.FacililtyProvLimit);
-                $("#facility_table").find("tr").eq(5).find("td").eq(4).html("").html(result.FacililtyProvNote);
-
+                $("#facility_table").find("tr").eq(5).find("td").eq(4).html("").html(result.FacililtyProvComCap);
+                $("#facility_table").find("tr").eq(5).find("td").eq(5).html("").html(result.FacililtyProvNote);
               
                 $("#facility_table").find("tr").eq(6).find("td").eq(1).children().prop("checked", false);
                 if (result.FacililtySCPermit == "Yes") {
@@ -393,7 +398,8 @@
                 $("#facility_table").find("tr").eq(6).find("a").eq(0).html("").html(result.FacililtySCZoningInd);
                 $("#facility_table").find("tr").eq(6).find("a").eq(1).html("").html(result.FacililtySCZoningCom);
                 $("#facility_table").find("tr").eq(6).find("td").eq(3).html("").html(result.FacililtySCLimit);
-                $("#facility_table").find("tr").eq(6).find("td").eq(4).html("").html(result.FacililtySCNote);
+                $("#facility_table").find("tr").eq(6).find("td").eq(4).html("").html(result.FacililtySCComCap);
+                $("#facility_table").find("tr").eq(6).find("td").eq(5).html("").html(result.FacililtySCNote);
 
                 $("#facility_table").find("tr").eq(7).find("td").eq(1).children().prop("checked", false);
                 if (result.FacililtySTPermit == "Yes") {
@@ -402,8 +408,8 @@
                 $("#facility_table").find("tr").eq(7).find("a").eq(0).html("").html(result.FacililtySTZoningInd);
                 $("#facility_table").find("tr").eq(7).find("a").eq(1).html("").html(result.FacililtySTZoningCom);
                 $("#facility_table").find("tr").eq(7).find("td").eq(3).html("").html(result.FacililtySTLimit);
-                $("#facility_table").find("tr").eq(7).find("td").eq(4).html("").html(result.FacililtySTNote);
-
+                $("#facility_table").find("tr").eq(7).find("td").eq(4).html("").html(result.FacililtySTComCap);
+                $("#facility_table").find("tr").eq(7).find("td").eq(5).html("").html(result.FacililtySTNote);
 
                 $("#buffer_table").off();
                 $("#facility_table").off();
@@ -421,7 +427,7 @@
                     deleteButton: false,
                     columns: {
                         identifier: [0, 'Facililty'],
-                        editable: [[3, 'Limited', '{"No Cap": "No Cap", "0": "0","1": "1","2": "2","3": "3","4": "4","5": "5","6": "6","7": "7","8": "8","9": "9","10": "10","11": "11","12": "12","13": "13","14": "14","15": "15","16": "16","17": "17","18": "18","19": "19","20": "20","21": "21","22": "22","23": "23","24": "24","25": "25","26": "26","27": "27","28": "28","29": "29","30": "30","31": "31","32": "32","33": "33","34": "34","35": "35","36": "36","37": "37","38": "38","39": "39","40": "40","41": "41","42": "42","43": "43","44": "44","45": "45","46": "46","47": "47","48": "48","49": "49","50": "50"}'], [4, 'Note']]
+                        editable: [[3, 'Limited', '{"": "","No Cap": "No Cap", "0": "0","1": "1","2": "2","3": "3","4": "4","5": "5","6": "6","7": "7","8": "8","9": "9","10": "10","11": "11","12": "12","13": "13","14": "14","15": "15","16": "16","17": "17","18": "18","19": "19","20": "20","21": "21","22": "22","23": "23","24": "24","25": "25","26": "26","27": "27","28": "28","29": "29","30": "30","31": "31","32": "32","33": "33","34": "34","35": "35","36": "36","37": "37","38": "38","39": "39","40": "40","41": "41","42": "42","43": "43","44": "44","45": "45","46": "46","47": "47","48": "48","49": "49","50": "50"}'], [4, 'Com Cap'],  [5, 'Note']]
                     }
                 });
                 $(".facility-zoning").editable({
@@ -447,7 +453,7 @@
             cache: false,
             success: function (result) {
                 $("#sidebar_Meetings").text(result.MeetingList.length);
-                $("#headingHeader").find("span").text(result.CityLongName);
+              
                 if (result.Color.length > 0) {
                     currentColor = result.Color;
                 }
@@ -580,8 +586,8 @@
         data.FacililtyGrowerClassAZoningInd = $("#facility_table").find("tr").eq(1).find("a").eq(0).html();
         data.FacililtyGrowerClassAZoningCom = $("#facility_table").find("tr").eq(1).find("a").eq(1).html();
         data.FacililtyGrowerClassALimit = $("#facility_table").find("tr").eq(1).find("td").eq(3).find("span").html();
-        data.FacililtyGrowerClassANote = $("#facility_table").find("tr").eq(1).find("td").eq(4).find("span").html();
-
+        data.FacililtyGrowerClassAComCap = $("#facility_table").find("tr").eq(1).find("td").eq(4).find("span").html();
+        data.FacililtyGrowerClassANote = $("#facility_table").find("tr").eq(1).find("td").eq(5).find("span").html();
 
         //FacililtyGrowerClassB
         data.FacililtyGrowerClassBPermit = "No";
@@ -591,7 +597,8 @@
         data.FacililtyGrowerClassBZoningInd = $("#facility_table").find("tr").eq(2).find("a").eq(0).html();
         data.FacililtyGrowerClassBZoningCom = $("#facility_table").find("tr").eq(2).find("a").eq(1).html();
         data.FacililtyGrowerClassBLimit = $("#facility_table").find("tr").eq(2).find("td").eq(3).find("span").html();
-        data.FacililtyGrowerClassBNote = $("#facility_table").find("tr").eq(2).find("td").eq(4).find("span").html();
+        data.FacililtyGrowerClassBComCap = $("#facility_table").find("tr").eq(2).find("td").eq(4).find("span").html();
+        data.FacililtyGrowerClassBNote = $("#facility_table").find("tr").eq(2).find("td").eq(5).find("span").html();
 
         //FacililtyGrowerClassC
         data.FacililtyGrowerClassCPermit = "No";
@@ -601,8 +608,8 @@
         data.FacililtyGrowerClassCZoningInd = $("#facility_table").find("tr").eq(3).find("a").eq(0).html();
         data.FacililtyGrowerClassCZoningCom = $("#facility_table").find("tr").eq(3).find("a").eq(1).html();
         data.FacililtyGrowerClassCLimit = $("#facility_table").find("tr").eq(3).find("td").eq(3).find("span").html();
-        data.FacililtyGrowerClassCNote = $("#facility_table").find("tr").eq(3).find("td").eq(4).find("span").html();
-
+        data.FacililtyGrowerClassCComCap = $("#facility_table").find("tr").eq(3).find("td").eq(4).find("span").html();
+        data.FacililtyGrowerClassCNote = $("#facility_table").find("tr").eq(3).find("td").eq(5).find("span").html();
       
         //FacililtyProc
         data.FacililtyProcPermit = "No";
@@ -612,7 +619,8 @@
         data.FacililtyProcZoningInd = $("#facility_table").find("tr").eq(4).find("a").eq(0).html();
         data.FacililtyProcZoningCom = $("#facility_table").find("tr").eq(4).find("a").eq(1).html();
         data.FacililtyProcLimit = $("#facility_table").find("tr").eq(4).find("td").eq(3).find("span").html();
-        data.FacililtyProcNote = $("#facility_table").find("tr").eq(4).find("td").eq(4).find("span").html();
+        data.FacililtyProcComCap = $("#facility_table").find("tr").eq(4).find("td").eq(4).find("span").html();
+        data.FacililtyProcNote = $("#facility_table").find("tr").eq(4).find("td").eq(5).find("span").html();
 
         //FacililtyProv
         data.FacililtyProvPermit = "No";
@@ -622,8 +630,8 @@
         data.FacililtyProvZoningInd = $("#facility_table").find("tr").eq(5).find("a").eq(0).html();
         data.FacililtyProvZoningCom = $("#facility_table").find("tr").eq(5).find("a").eq(1).html();
         data.FacililtyProvLimit = $("#facility_table").find("tr").eq(5).find("td").eq(3).find("span").html();
-        data.FacililtyProvNote = $("#facility_table").find("tr").eq(5).find("td").eq(4).find("span").html();
-
+        data.FacililtyProvComCap = $("#facility_table").find("tr").eq(5).find("td").eq(4).find("span").html();
+        data.FacililtyProvNote = $("#facility_table").find("tr").eq(5).find("td").eq(5).find("span").html();
 
         //FacililtySafetyCompliance
         data.FacililtySCPermit = "No";
@@ -633,7 +641,8 @@
         data.FacililtySCZoningInd = $("#facility_table").find("tr").eq(6).find("a").eq(0).html();
         data.FacililtySCZoningCom = $("#facility_table").find("tr").eq(6).find("a").eq(1).html();
         data.FacililtySCLimit = $("#facility_table").find("tr").eq(6).find("td").eq(3).find("span").html();
-        data.FacililtySCNote = $("#facility_table").find("tr").eq(6).find("td").eq(4).find("span").html();
+        data.FacililtySCComCap = $("#facility_table").find("tr").eq(6).find("td").eq(4).find("span").html();
+        data.FacililtySCNote = $("#facility_table").find("tr").eq(6).find("td").eq(5).find("span").html();
 
         //FacililtySecureTransporters
         data.FacililtySTPermit = "No";
@@ -643,7 +652,8 @@
         data.FacililtySTZoningInd = $("#facility_table").find("tr").eq(7).find("a").eq(0).html();
         data.FacililtySTZoningCom = $("#facility_table").find("tr").eq(7).find("a").eq(1).html();
         data.FacililtySTLimit = $("#facility_table").find("tr").eq(7).find("td").eq(3).find("span").html();
-        data.FacililtySTNote = $("#facility_table").find("tr").eq(7).find("td").eq(4).find("span").html();
+        data.FacililtySTComCap = $("#facility_table").find("tr").eq(7).find("td").eq(4).find("span").html();
+        data.FacililtySTNote = $("#facility_table").find("tr").eq(7).find("td").eq(5).find("span").html();
         data.CityGuid = guid;
         if (fileName.length > 0) {
             data.CityFileName = fileName;

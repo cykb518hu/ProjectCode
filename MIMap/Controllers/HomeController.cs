@@ -226,6 +226,33 @@ namespace MIMap.Controllers
             if (list.Any())
             {
                 data = list.FirstOrDefault();
+                var limitA = data.FacililtyGrowerClassALimit;
+                data.FacililtyGrowerClassALimit = GetOrdianceLimit(limitA, true);
+                data.FacililtyGrowerClassAComCap = GetOrdianceLimit(limitA, false);
+
+                var limitB = data.FacililtyGrowerClassBLimit;
+                data.FacililtyGrowerClassBLimit = GetOrdianceLimit(limitB, true);
+                data.FacililtyGrowerClassBComCap = GetOrdianceLimit(limitB, false);
+
+                var limitC = data.FacililtyGrowerClassCLimit;
+                data.FacililtyGrowerClassCLimit = GetOrdianceLimit(limitC, true);
+                data.FacililtyGrowerClassCComCap = GetOrdianceLimit(limitC, false);
+
+                var limitpProc = data.FacililtyProcLimit;
+                data.FacililtyProcLimit = GetOrdianceLimit(limitpProc, true);
+                data.FacililtyProcComCap = GetOrdianceLimit(limitpProc, false);
+
+                var limitProv = data.FacililtyProvLimit;
+                data.FacililtyProvLimit = GetOrdianceLimit(limitProv, true);
+                data.FacililtyProvComCap = GetOrdianceLimit(limitProv, false);
+
+                var limitSC = data.FacililtySCLimit;
+                data.FacililtySCLimit = GetOrdianceLimit(limitSC, true);
+                data.FacililtySCComCap = GetOrdianceLimit(limitSC, false);
+
+                var limitST = data.FacililtySTLimit;
+                data.FacililtySTLimit = GetOrdianceLimit(limitST, true);
+                data.FacililtySTComCap = GetOrdianceLimit(limitST, false);
             }
             if(!string.IsNullOrEmpty(data.CityFileName))
             {
@@ -510,6 +537,34 @@ namespace MIMap.Controllers
                 result = "parameter is empty";
             }
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public string GetOrdianceLimit(string data, bool limit)
+        {
+            var limitStr = "";
+            var comCap = "";
+            int i = 0;
+            if (int.TryParse(data, out i))
+            {
+                limitStr = data;
+            }
+            else if (data.ToLower() == "no cap")
+            {
+                limitStr = data;
+            }
+            else
+            {
+                comCap = data;
+            }
+            if (limit)
+            {
+                return limitStr;
+            }
+            else
+            {
+                return comCap;
+            }
         }
 
     }
