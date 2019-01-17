@@ -100,10 +100,7 @@ namespace BusinessHandler.Model
                 command.Parameters.AddWithValue("@KeyWord", message.KeyWord);
             }
 
-            if (!string.IsNullOrWhiteSpace(message.OptStatus) && !message.OptStatus.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-            {
-                command.Parameters.AddWithValue("@OptStatus", StaticSetting.GetArrayQuery(message.OptStatus));
-            }
+           
             if (!string.IsNullOrWhiteSpace(message.MeetingDate))
             {
                 command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);
@@ -144,6 +141,22 @@ namespace BusinessHandler.Model
             if (!string.IsNullOrWhiteSpace(message.ObjectIds))
             {
                 command.Parameters.AddWithValue("@ObjectIds", message.ObjectIds);
+            }
+
+            if (!string.IsNullOrWhiteSpace(message.FacilityType) )
+            {
+                message.OptStatus = "OptIn";
+                var arr = message.FacilityType.Split(',');
+                var facilityStr = "";
+                foreach(var r in arr)
+                {
+                    facilityStr += string.Format(" and CO.{0} is not null and CO.{0}<>'' and CO.{0}<>'0' ", r);
+                }
+                command.Parameters.AddWithValue("@FacilityType", facilityStr);
+            }
+            if (!string.IsNullOrWhiteSpace(message.OptStatus) && !message.OptStatus.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+            {
+                command.Parameters.AddWithValue("@OptStatus", StaticSetting.GetArrayQuery(message.OptStatus));
             }
         }
     }

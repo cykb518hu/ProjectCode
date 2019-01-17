@@ -15,6 +15,7 @@ CREATE PROCEDURE [dbo].[GET_Municipality]
 @StartMeetingDate varchar(50)=null,
 @EndMeetingDate varchar(50)=null,
 @OptStatus varchar(50)=null,
+@FacilityType varchar(500)=null,
 @DeployeDate varchar(50)=null,
 @IsChecked varchar(5)=null,
 @IsImportant varchar(5)=null,
@@ -56,7 +57,10 @@ if @OptStatus is not null
 	begin
 		set @sqlstr=@sqlstr+' and CO.OptStatus IN ('+ @OptStatus+')'
 	end
-
+if @FacilityType is not null 
+	begin
+		set @sqlstr=@sqlstr + @FacilityType
+	end
 if @DeployeDate is not null 
 	begin
 		set @sqlstr=@sqlstr+' and C.DEPLOYE_DATE IN ('+ @DeployeDate+')'

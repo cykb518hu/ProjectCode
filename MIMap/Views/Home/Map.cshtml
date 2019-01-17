@@ -83,7 +83,7 @@
                     </select>
                 </div>
 
-                <div class="col-xs-12 col-sm-2 form-group">
+                <div class="col-xs-12 col-sm-1 form-group">
                     <select name="sel_search_KeyWord" id="sel_search_KeyWord" class="form-control" multiple="multiple">
                         @{
                             foreach (var r in keyWords)
@@ -100,6 +100,19 @@
                         <option value="OptOut">Opt-out</option>
                         <option value="none">None</option>
                        
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
+                    <select name="sel_search_Facility" id="sel_search_Facility" class="form-control" multiple="multiple">
+
+                        <option value="FacililtyGrowerClassALimit">Grower-Class A</option>
+                        <option value="FacililtyGrowerClassBLimit">Grower-Class B</option>
+                        <option value="FacililtyGrowerClassCLimit">Grower-Class C</option>
+                        <option value="FacililtyProvLimit">Processor</option>
+                        <option value="FacililtyProcLimit">Provisioning Center</option>
+                        <option value="FacililtySCLimit">Safety Compliance</option>
+                        <option value="FacililtySTLimit">Secure Transporters</option>
+
                     </select>
                 </div>
                 <div class="col-xs-12 col-sm-1 form-group">
@@ -612,12 +625,22 @@
                     optStatus = $("#sel_search_OptStatus").val().toString();
                 }
             }
+            var facilityType = "";
+            if ($("#sel_search_Facility").val() != null) {
+                if ($("#sel_search_Facility").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                    facilityType = "All";
+                }
+                else {
+                    facilityType = $("#sel_search_Facility").val().toString();
+                }
+            }
             var result = {
                 CountyName: countyName,
                 CityName: cityName,
                 KeyWord: keyWord,
                 DeployDate: deployDate,
-                OptStatus:optStatus,
+                OptStatus: optStatus,
+                FacilityType: facilityType,
                 StartMeetingDate: $("#txt_search_StartMeetingDate").val(),
                 EndMeetingDate: $("#txt_search_EndMeetingDate").val()
 
@@ -766,6 +789,14 @@
             $("#sel_search_OptStatus").val(optStatusArray);
             $("#sel_search_OptStatus").multiselect("refresh");
 
+            var facilityType = "";
+            if (temp.facilityType != null) {
+                facilityType = temp.facilityType;
+            }
+            var facilityTypeArray = facilityType.split(",");
+            $("#sel_search_Facility").val(facilityTypeArray);
+            $("#sel_search_Facility").multiselect("refresh");
+
           
             //old data
             if (temp.MeetingDate != null) {
@@ -867,7 +898,7 @@
                 includeSelectAllOption: true,
                 selectAllText: 'All',
                 maxHeight:'300',
-                nonSelectedText: 'Select County',
+                nonSelectedText: 'County',
                 onChange: function (element, checked) {
                     rebuildMuniciplitySelect();
                 },
@@ -880,7 +911,7 @@
             });
             $("#sel_search_CityName").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'Select Municipality',
+                nonSelectedText: 'Municipality',
                 includeSelectAllOption: true,
                 maxHeight:'300',
                 selectAllText: 'All'
@@ -888,23 +919,28 @@
 
             $("#sel_search_KeyWord").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'Select Key Word',
+                nonSelectedText: 'Key Word',
                 includeSelectAllOption: true,
                 maxHeight:'300',
                 selectAllText: 'All'
             });
             $("#sel_search_DeployDate").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'Select Deploy Date',
+                nonSelectedText: 'Deploy Date',
                 includeSelectAllOption: true,
                 maxHeight:'300',
                 selectAllText: 'All'
             });
             $("#sel_search_OptStatus").multiselect({
                 buttonWidth: '100%',
-                nonSelectedText: 'Select OptStatus',
-                includeSelectAllOption: true,
+                nonSelectedText: 'OptStatus',
                 maxHeight:'300',
+                selectAllText: 'All'
+            });
+            $("#sel_search_Facility").multiselect({
+                buttonWidth: '100%',
+                nonSelectedText: 'Facility Type',
+                maxHeight: '300',
                 selectAllText: 'All'
             });
             $('#txt_search_StartMeetingDate').datepicker({

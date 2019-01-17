@@ -100,6 +100,7 @@ CREATE PROCEDURE [dbo].[GET_MeetingCalendar]
 @StartMeetingDate varchar(50)=null,
 @EndMeetingDate varchar(50)=null,
 @OptStatus varchar(50)=null,
+@FacilityType varchar(500)=null,
 @DeployeDate varchar(50)=null,
 @UserEmail varchar(100)=null,
 @State varchar(50)=null
@@ -143,7 +144,10 @@ if @OptStatus is not null
 	begin
 		set @sqlstr=@sqlstr+' and CO.OptStatus IN ('+ @OptStatus+')'
 	end
-
+if @FacilityType is not null 
+	begin
+		set @sqlstr=@sqlstr + @FacilityType
+	end
 if @UserEmail is not null
    begin
 		set @sqlstr=@sqlstr+' and AC.EMAIL = '''+ @UserEmail+''''

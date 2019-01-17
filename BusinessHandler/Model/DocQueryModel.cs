@@ -16,6 +16,7 @@ namespace BusinessHandler.Model
         public string KeyWord { get; set; }
 
         public string OptStatus { get; set; }
+        public string FacilityType { get; set; }
         public string DeployDate { get; set; }
         public string sortName { get; set; }
         public string sortOrder { get; set; }
