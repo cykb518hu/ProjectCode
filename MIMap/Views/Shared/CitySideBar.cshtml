@@ -299,7 +299,6 @@
             type: "GET",
             cache: false,
             success: function (result) {
-                $("#headingHeader").find("span").text(result.Municipality);
                 if (result.CityFileName != null && result.CityFileName != undefined && result.CityFileName.length > 0) {
                     $("#span_uploadedFile").parent().show();
                     $("#span_uploadedFile").html(result.CityFileDisplayName);
@@ -452,6 +451,7 @@
             type: "GET",
             cache: false,
             success: function (result) {
+                $("#headingHeader").find("span").text(result.CityLongName);
                 $("#sidebar_Meetings").text(result.MeetingList.length);
               
                 if (result.Color.length > 0) {

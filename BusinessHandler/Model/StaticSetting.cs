@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessHandler.MessageHandler;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -11,6 +12,7 @@ namespace BusinessHandler.Model
 {
     public static class StaticSetting
     {
+
         static StaticSetting()
         {
         }
@@ -74,6 +76,13 @@ namespace BusinessHandler.Model
             }
             return result;
         }
+
+        public static string GetKeyWordForFullSearch()
+        {
+            var keyWordRepository = new KeyWordRepository();
+            var keyWord = keyWordRepository.GetKeyWords();
+            return GetKeyWordForFullSearch(keyWord);
+        }
         public static string GetUserEmail()
         {
 
@@ -95,12 +104,17 @@ namespace BusinessHandler.Model
             {
                 command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
             }
+            if (string.IsNullOrWhiteSpace(message.KeyWord) || message.KeyWord.Contains("All"))
+            {
+                var keyWordRepository = new KeyWordRepository();
+                message.KeyWord = keyWordRepository.GetKeyWords();  
+            }
             if (!string.IsNullOrWhiteSpace(message.KeyWord))
             {
+                message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
                 command.Parameters.AddWithValue("@KeyWord", message.KeyWord);
             }
-
-           
+          
             if (!string.IsNullOrWhiteSpace(message.MeetingDate))
             {
                 command.Parameters.AddWithValue("@StartMeetingDate", message.MeetingDate);
@@ -159,5 +173,7 @@ namespace BusinessHandler.Model
                 command.Parameters.AddWithValue("@OptStatus", StaticSetting.GetArrayQuery(message.OptStatus));
             }
         }
+
+        
     }
 }

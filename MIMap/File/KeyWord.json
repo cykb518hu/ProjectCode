@@ -28,11 +28,23 @@
     "AddDate": "2017-07-20"
   },
   {
-    "KeyWord": "Ordinance",
+    "KeyWord": "moratorium",
     "AddDate": "2017-07-20"
   },
   {
-    "KeyWord": "moratorium",
-    "AddDate": "2017-07-20"
-  }
+    "KeyWord": "opt-in",
+    "AddDate": "7/28/2017 11:47:16 PM"
+  },
+  {
+    "KeyWord": "opt-out",
+    "AddDate": "7/28/2017 11:47:25 PM"
+  },
+  {
+    "KeyWord": "17-2210",
+    "AddDate": "8/10/2017 9:05:39 AM"
+  },
+  {
+    "KeyWord": "DNVK",
+    "AddDate": "2019-01-09"
+  }  
 ]

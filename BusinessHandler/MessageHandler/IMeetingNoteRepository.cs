@@ -78,11 +78,7 @@ namespace BusinessHandler.MessageHandler
                 {
                     command.Parameters.AddWithValue("@CountyName", StaticSetting.GetArrayQuery(message.CountyName));
                 }
-                //no keyword in screen now
-                if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
-                {
-                    command.Parameters.AddWithValue("@KeyWord", StaticSetting.GetArrayQuery(message.KeyWord));
-                }
+
                 if (!string.IsNullOrWhiteSpace(message.StartMeetingDate))
                 {
                     command.Parameters.AddWithValue("@StartNoteDate", message.StartMeetingDate);
@@ -247,12 +243,15 @@ namespace BusinessHandler.MessageHandler
         {
             var result = new MapMeetingCity();
             var list = new List<MapMeetingNote>();
-            var queryString = @"SELECT C.LONG_NM,c.color,c.CITY_NM,  D.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID,D.IMPORTANT FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
-WHERE C.guid = '" + cityGuid + "'  order by D.MEETING_DATE desc";
+            var queryString = @"SELECT distinct C.LONG_NM,c.color,c.CITY_NM,  D.MEETING_DATE,D.DOC_TYPE, D.DOC_GUID,D.IMPORTANT FROM DBO.CITY C INNER JOIN DBO.DOCUMENT D ON C.CITY_NM=D.CITY_NM
+ INNER JOIN DBO.DOCUMENT_CONTENT DC ON DC.DOC_GUID=D.DOC_GUID 
+WHERE C.guid = @GUid AND CONTAINS (DC.CONTENT,'" + StaticSetting.GetKeyWordForFullSearch() + " ') order by D.MEETING_DATE desc";
 
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.AddWithValue("@GUID", cityGuid);
                 connection.Open();
                 var reader = command.ExecuteReader();
                 while (reader.Read())
@@ -311,17 +310,13 @@ WHERE C.guid = '" + cityGuid + "'  order by D.MEETING_DATE desc";
         public List<MeetingCalendar> GetMeetingCalendar(DocQueryMessage message)
         {
             var list = new List<MeetingCalendar>();
-
+            
             string queryString = @"[dbo].[GET_MeetingCalendar]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
-                //this is different from other two, becuase if all don't need to join document_content table
-                if (!string.IsNullOrWhiteSpace(message.KeyWord) && !message.KeyWord.Contains("All"))
-                {
-                    message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
-                }
+       
                 StaticSetting.BuildParameters(command, message);
                 connection.Open();
 
@@ -347,8 +342,9 @@ WHERE C.guid = '" + cityGuid + "'  order by D.MEETING_DATE desc";
         public List<MeetingTypeTime> GetMeetingType(string guid)
         {
             var list = new List<MeetingTypeTime>();
-            var queryString = @"select D.DOC_TYPE , max(D.MEETING_DATE) MEETING_DATE , max(D.USR_CRTN_TS) USR_CRTN_TS from DOCUMENT D
-           INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM WHERE C.GUID=@GUID group by D.DOC_TYPE";
+            var queryString = @"select D.DOC_TYPE , max(D.MEETING_DATE) MEETING_DATE , max(D.USR_CRTN_TS) USR_CRTN_TS from DOCUMENT D 
+           INNER JOIN DBO.DOCUMENT_CONTENT DC ON DC.DOC_GUID=D.DOC_GUID 
+           INNER JOIN CITY C ON C.CITY_NM=D.CITY_NM WHERE C.GUID=@GUID  AND CONTAINS (DC.CONTENT,'" + StaticSetting.GetKeyWordForFullSearch() + " ') group by D.DOC_TYPE";
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);

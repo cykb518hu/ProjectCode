@@ -97,11 +97,7 @@ namespace BusinessHandler.MessageHandler
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
-                if (string.IsNullOrWhiteSpace(message.KeyWord) || message.KeyWord.Contains("All"))
-                {
-                    message.KeyWord = _keyWord.GetKeyWords();
-                }
-                message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
+            
                 StaticSetting.BuildParameters(command, message);
                 connection.Open();
 
@@ -126,19 +122,13 @@ namespace BusinessHandler.MessageHandler
         public List<MapMeeting> GetMainDataList(DocQueryMessage message, out int total)
         {
             var list = new List<MapMeeting>();
-
+            var keyWord = message.KeyWord;
             string queryString = @"[dbo].[GET_DOC_CONTENT]";
-            var keyWords = message.KeyWord;
             using (SqlConnection connection = new SqlConnection(StaticSetting.connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
-                if (string.IsNullOrWhiteSpace(message.KeyWord) || message.KeyWord.Contains("All"))
-                {
-                    message.KeyWord = _keyWord.GetKeyWords();
-                }
-               
-                message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
+
                 StaticSetting.BuildParameters(command, message);
 
                 connection.Open();
@@ -213,12 +203,19 @@ namespace BusinessHandler.MessageHandler
                     }
                 }
             }
-            GetSubList(list, keyWords, message.KeyWord);
+            GetSubList(list, keyWord);
             return list;
         }
 
-        public  void GetSubList(List<MapMeeting> list,string keyWord,string sqlKeyWord)
+        public  void GetSubList(List<MapMeeting> list,string keyWord )
         {
+            var sqlKeyWord = "";
+            if (string.IsNullOrWhiteSpace(keyWord) || keyWord.Contains("All"))
+            {
+                keyWord = _keyWord.GetKeyWords();
+            }
+            sqlKeyWord = StaticSetting.GetKeyWordForFullSearch(keyWord);
+
             var docIDList = string.Empty;
             foreach (var r in list)
             {
@@ -296,11 +293,7 @@ namespace BusinessHandler.MessageHandler
                 }
             }
             var finalList=new  List<MapMeetingKeyWord>();
-            var keyWordList = _keyWord.GetKeyWordList().Select(x => x.KeyWord).ToList();
-            if (!string.IsNullOrWhiteSpace(keyWord) && !string.IsNullOrWhiteSpace(StaticSetting.GetArrayQuery(keyWord)))
-            {
-                keyWordList = keyWord.Split(',').ToList();
-            }
+            var keyWordList = keyWord.Split(',').ToList();
             var index = 35;
             CompareInfo Compare = CultureInfo.InvariantCulture.CompareInfo;
             foreach (var r in resultList)
@@ -378,10 +371,10 @@ namespace BusinessHandler.MessageHandler
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType= CommandType.StoredProcedure;
                 //this is different from other two, becuase if all don't need to join document_content table
-                if (!string.IsNullOrWhiteSpace(message.KeyWord)&&!message.KeyWord.Contains("All"))
-                {
-                    message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
-                }
+                //if (!string.IsNullOrWhiteSpace(message.KeyWord)&&!message.KeyWord.Contains("All"))
+              //  {
+              //      message.KeyWord = StaticSetting.GetKeyWordForFullSearch(message.KeyWord);
+              //  }
                
                 StaticSetting.BuildParameters(command, message);
                 connection.Open();
