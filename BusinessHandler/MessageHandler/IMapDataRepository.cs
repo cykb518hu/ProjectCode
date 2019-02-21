@@ -861,32 +861,5 @@ ORDER BY Closing_Month
             return result;
         }
 
-        public string GetOrdianceLimit(string data,bool limit)
-        {
-            var limitStr = "";
-            var comCap = "";
-            int i = 0;
-            if (int.TryParse(data, out i))
-            {
-                limitStr = data;
-            }
-            else if (data.ToLower() == "no cap")
-            {
-                limitStr = data;
-            }
-            else
-            {
-                comCap = data;
-            }
-            if(limit)
-            {
-                return limitStr;
-            }
-            else
-            {
-                return comCap;
-            }
-        }
-
     }
 }

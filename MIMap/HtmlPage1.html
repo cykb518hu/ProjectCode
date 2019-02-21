@@ -9,7 +9,25 @@
 
 </head>
 <body>
+    <div id="collapse5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading5">
+        <table class="table" id="facility_table">
+            <thead>
+                <tr><th width="10%">Facililty</th><th style="width:10%">Permit</th><th width="25%">Zoning</th><th width="15%">Limit</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+                <tr id="Grower_ClassA"><td>Grower-Class A</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                <tr><td>Grower-Class B</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                <tr><td>Grower-Class C</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                <tr><td>Processor</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                <tr><td>Provisioning Center</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                <tr><td>Safety Compliance</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
+                <tr><td>Secure Transporters</td><td><input type="checkbox" value="Yes" /></td><td>Industrial <a class="facility-zoning" data-type="text"></a><br> Commercial <a class="facility-zoning" data-type="text"></a></td><td></td><td></td></tr>
 
+            </tbody>
+        </table>
+    </div>
+
+    <input type="button" value="test"  id="btn_test"/>
     <div id="div-data-map">
         <div class="h-scroll">
             <div id="map" style="width:1000px;height:1000px"></div>
@@ -23,9 +41,16 @@
         </div>
     </script>
     <script>
+        jQuery(document).ready(function ($) {
+            $("#btn_test").click(function () {
+                alert($("#Grower_ClassA").find("td").eq(1).children().prop("checked"));
+            });
+        });
+    </script>
+    <script>
         //map
         $(function () {
-            initialMap();
+           // initialMap();
         });
         var map;
         var layer;
