@@ -1075,11 +1075,16 @@
         var searchFromMap = false;
 
         var mapTable="mi_munv5";
-        var mapJson="http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json";
-        if(currentState=="MA")
+        var mapJson = "http://achilles.cartodb.com/u/achilles/api/v2/viz/9d779336-b8c9-4d7e-a701-46d83baceeaf/viz.json";
+        if (currentState.toUpperCase() == "MA")
         {
             mapJson="http://achilles.cartodb.com/u/achilles/api/v2/viz/e2708ddb-5c54-479d-a0cb-66806763ed19/viz.json";
             mapTable="mass_geojson";
+        }
+        if (currentState.toUpperCase() == "MO")
+        {
+            mapJson = "http://achilles.cartodb.com/u/achilles/api/v2/viz/127a62e7-f618-496c-9076-6707390d5348/viz.json";
+            mapTable = "mo_geojson";
         }
         function initialMap() {
             cartodb.createVis('map', mapJson, {
