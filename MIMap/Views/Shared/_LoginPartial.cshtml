@@ -24,7 +24,7 @@
         });
         $("a.redirectMap").click(function () {
             sessionStorage.setItem("currentMenu", $(this).attr("data-menu"));
-            if ($(this).attr("data-menu") == "MI" || $(this).attr("data-menu") == "MA") {
+            if ($(this).attr("data-menu") == "MI" || $(this).attr("data-menu") == "MA" || $(this).attr("data-menu") == "MO") {
                 sessionStorage.setItem("currentState", $(this).attr("data-state"));
                 var url = '@Url.Action("Map", "Home")';
                 window.location.href = url + "?state=" + $(this).attr("data-state");
@@ -69,6 +69,7 @@
                             <li>@Html.ActionLink("Dashboard", "Index", "Home", routeValues: null, htmlAttributes: new { id = "Dashboard" })</li>
                             <li><a  class="redirectMap" href="javascript:void(0)" data-state="MI" data-menu="MI">Michigan</a></li>
                             <li><a  class="redirectMap" href="javascript:void(0)" data-state="MA" data-menu="MA">Massachusetts</a></li>
+                            <li><a class="redirectMap" href="javascript:void(0)" data-state="MO" data-menu="MO">Missouri</a></li>
                             <li><a class="" href="javascript:void(0)" data-menu="FL">Florida</a></li>
                             <li><a  class="redirectMap" href="javascript:void(0)" data-menu="NO">Notes</a></li>
                             @{
