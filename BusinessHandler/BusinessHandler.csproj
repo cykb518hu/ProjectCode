@@ -53,7 +53,9 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageHandler\DocQueryDB.cs" />
+    <Compile Include="MessageHandler\DocQueryDB.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="MessageHandler\GlobalKeyString.cs" />
     <Compile Include="MessageHandler\IDocumentRepository.cs" />
     <Compile Include="MessageHandler\IMapDataRepository.cs" />

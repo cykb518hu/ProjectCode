@@ -1,6 +1,4 @@
-﻿using BusinessHandler.Model;
-using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace MIMap
 {

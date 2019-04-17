@@ -1,15 +1,7 @@
 ﻿using BusinessHandler.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 
