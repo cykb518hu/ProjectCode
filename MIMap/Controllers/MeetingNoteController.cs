@@ -80,15 +80,19 @@ namespace MIMap.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetMapPopUpInfo(string guid)
+        public JsonResult GetMapPopupInfo(string guid)
         {
-            var data = meetingNoteRepository.GetMapPopUpInfo(guid);
+            var data = meetingNoteRepository.GetMapPopupInfo(guid);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult GetMeetingCalendar(DocQueryMessage message)
         {
+            if(message==null)
+            {
+                message = new DocQueryMessage();
+            }
             message.Important = "";
             message.IsViewed = "";
             var result = meetingNoteRepository.GetMeetingCalendar(message);

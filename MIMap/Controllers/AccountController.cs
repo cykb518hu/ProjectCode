@@ -37,8 +37,8 @@ namespace MIMap.Controllers
         public ActionResult Login(LoginViewModel model)
         {
             UserAccount user = new UserAccount();
-            user.Email = model.Email;
-            user.Password = model.Password;
+            user.Email = model?.Email;
+            user.Password = model?.Password;
             string result = string.Empty;
             user = userRepository.Login(user, out result);
             if (result != "sccuess")
@@ -69,8 +69,8 @@ namespace MIMap.Controllers
         public ActionResult Register(RegisterViewModel model)
         {
             UserAccount user = new UserAccount();
-            user.Email = model.Email;
-            user.Password = model.Password;
+            user.Email = model?.Email;
+            user.Password = model?.Password;
             user.Cityes = "";
             user.Active = "No";
             user.RoleType = GlobalKeyString.roleTypeGeneral;

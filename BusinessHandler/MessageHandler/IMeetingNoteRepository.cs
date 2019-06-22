@@ -12,7 +12,7 @@ namespace BusinessHandler.MessageHandler
         List<MeetingNote> GetMeetingNotes(string docGuid, string note);
         void UpdateMeetingNotes(List<MeetingNote> notes);
         List<MapMeetingNote> GetAllDataList(DocQueryMessage message, out int total);
-        MapMeetingCity GetMapPopUpInfo(string cityGuid);
+        MapMeetingCity GetMapPopupInfo(string cityGuid);
         int GetMeetingRelatedNotesAmount(string guid);
         List<MeetingCalendar> GetMeetingCalendar(DocQueryMessage message);
         List<MeetingTypeTime> GetMeetingType(string guid);
@@ -237,7 +237,7 @@ namespace BusinessHandler.MessageHandler
         }
 
 
-        public MapMeetingCity GetMapPopUpInfo(string cityGuid)
+        public MapMeetingCity GetMapPopupInfo(string cityGuid)
         {
             var result = new MapMeetingCity();
             var list = new List<MapMeetingNote>();
