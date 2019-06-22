@@ -1163,7 +1163,8 @@
             popLayer.infowindow.set('visibility', false);
             hideSideBar();
             var ids = "'nodata'";
-            var cartocss = "#"+mapTable+"{polygon-fill: " + defaultColor + "; line-color: white; }";
+            var cartocss=popLayer.layers[0].options.cartocss;//" #layer [zoom>=4]{text-name: 11; } ";
+            cartocss += " #"+mapTable+"{polygon-fill: " + defaultColor + "; line-color: white; }";
 
             if (dataArr.length > 0) {
                 ids = "";
@@ -1171,6 +1172,7 @@
                     ids += "" + dataArr[i].Id + ",";
                     if (dataArr[i].Color.length > 0) {
                         cartocss += " #" + mapTable + " [objectid=" + dataArr[i].Id + "]{polygon-fill: " + dataArr[i].Color + "}";
+                       
                     }
                 }
                 ids = ids.substring(0, ids.length - 1);
