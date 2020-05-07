@@ -1,0 +1,201 @@
+﻿@using BusinessHandler.Model;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css?version=@StaticSetting.version">
+<script src="~/Scripts/jquery-ui.js?version=@StaticSetting.version"></script>
+
+<div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px; width:100%" id="div_tab_header">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active" data-controls="table_data"><a href="#table_data" aria-controls="table_data" role="tab" data-toggle="tab">Pricing Tool</a></li>
+        <li role="presentation" data-controls="map_data"><a href="#map_data" aria-controls="map_data" role="tab" data-toggle="tab">Location Background Comparision</a></li>
+
+    </ul>
+    <div class="row" style="display:none">
+        <div class="search-container">
+            <div class="row property-search-form">
+
+                <div class="col-xs-12 col-sm-1 form-group">
+                    <select name="sel_search_OptStatus" id="sel_search_OptStatus" class="form-control" multiple="multiple">
+
+                        <option value="OptIn">Opt-in</option>
+                        <option value="OptOut">Opt-out</option>
+                        <option value="none">None</option>
+
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
+                    <select name="sel_search_Facility" id="sel_search_Facility" class="form-control" multiple="multiple">
+
+                        <option value="FacililtyGrowerClassALimit">Grower-Class A</option>
+                        <option value="FacililtyGrowerClassBLimit">Grower-Class B</option>
+                        <option value="FacililtyGrowerClassCLimit">Grower-Class C</option>
+                        <option value="FacililtyProvLimit">Processor</option>
+                        <option value="FacililtyProcLimit">Provisioning Center</option>
+                        <option value="FacililtySCLimit">Safety Compliance</option>
+                        <option value="FacililtySTLimit">Secure Transporters</option>
+
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-1 form-group">
+
+                    <input type="submit" value="Search" id="btn_Search" class="btn btn-primary btn-block form-control" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="tab-content" style="margin-top:125px;">
+    <div role="tabpanel" class="tab-pane active" id="table_data">
+
+        <div class="row">
+            <div id="div-data-area">
+                <table id="tb_dynamicPrice"></table>
+            </div>
+
+        </div>
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="map_data" style="padding-left:15px;padding-right:15px;">
+        map
+    </div>
+</div>
+<script>
+    $(function () {
+        loadListData();
+    });
+
+    function loadListData() {
+        var oTable = new TableInit();
+        oTable.Init();
+    }
+    var TableInit = function () {
+        var oTableInit = new Object();
+        oTableInit.Init = function () {
+            $('#tb_dynamicPrice').bootstrapTable({
+                url: '/DynamicPriceDB/GetTableDataList',
+                method: 'get',
+                cache: false,
+                pagination: true,
+                sortable: true,
+                queryParams: oTableInit.queryParams,
+                sidePagination: "server",
+                pageSize: 15,
+                pageList: [10, 15, 25, 50],
+                showColumns: true,
+                detailView: true,
+                sortName: 'StoreName',
+                sortOrder: 'asc',
+                achillesToolbar: false,
+                columns: [
+                    {
+                        field: 'ProductName',
+                        title: 'Product Name',
+                        sortable: true,
+                        width: '30%'
+                    },
+                    {
+                        field: 'CategoryName',
+                        title: 'Category',
+                        sortable: true,
+                        width: '10%'
+                    },
+
+                    {
+                        field: 'Brand',
+                        title: 'Brand',
+                        sortable: true,
+                        width: '10%'
+                    },
+                    {
+                        field: 'StoreName',
+                        title: 'Store',
+                        sortable: true,
+                        width: '20%'
+                    },
+                    {
+                        field: 'City',
+                        title: 'City',
+                        sortable: true,
+                        width: '10%'
+                    },
+                    {
+                        field: 'ScrapeDate',
+                        title: 'Date',
+                        sortable: true,
+                        width: '20%'
+                    }
+                ],
+
+                onExpandRow: function (index, row, $detail) {
+                    oTableInit.InitSubTable(index, row, $detail);
+                }
+            });
+        };
+
+
+        oTableInit.queryParams = function (params) {
+            var temp = {
+                StoreName: "",
+
+            };
+            temp.limit = params.limit;
+            temp.offset = params.offset;
+            temp.sortName = this.sortName;
+            temp.sortOrder = this.sortOrder;
+
+            return temp;
+        };
+
+        oTableInit.InitSubTable = function (index, row, $detail) {
+
+            var dataList = row.SubList;
+            var cur_table = $detail.html('<table></table>').find('table');
+            $(cur_table).bootstrapTable({
+                data: dataList,
+                columns: [
+                    {
+                        field: 'Unit',
+                        title: 'Unit',
+                        width: '20%'
+                    },
+
+                    {
+                        field: 'Qty',
+                        title: 'Qty',
+                        width: '20%'
+                    },
+
+                    {
+                        field: 'QtyAvailable',
+                        title: 'QtyAvailable',
+                        width: '20%'
+                    },
+                    {
+                        field: 'MedicalPrice',
+                        title: 'MedicalPrice',
+                        width: '20%'
+                    },
+                    {
+                        field: 'RecreationalPrice',
+                        title: 'RecreationalPrice',
+                        width: '20%'
+                    }
+                ],
+
+            });
+        };
+
+        return oTableInit;
+    };
+</script>

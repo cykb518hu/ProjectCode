@@ -24,6 +24,7 @@ namespace BusinessHandler.Model
 
         public static string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
+        public static string dynamicPriceDBconnectionString = ConfigurationManager.ConnectionStrings["DynamicPriceDB"].ToString();
 
         public static string version = string.IsNullOrEmpty(ConfigurationManager.AppSettings["version"]) ? "" : ConfigurationManager.AppSettings["version"].ToString();
 

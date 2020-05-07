@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="MessageHandler\GlobalKeyString.cs" />
     <Compile Include="MessageHandler\IDocumentRepository.cs" />
+    <Compile Include="MessageHandler\IDynamicPriceRepository.cs" />
     <Compile Include="MessageHandler\IMapDataRepository.cs" />
     <Compile Include="MessageHandler\IKeyWordsRepository.cs" />
     <Compile Include="MessageHandler\IMeetingNoteRepository.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Model\CityOrdinance.cs" />
     <Compile Include="Model\Dashboard.cs" />
     <Compile Include="Model\DocQueryModel.cs" />
+    <Compile Include="Model\DynamicPricingQueryModel.cs" />
     <Compile Include="Model\MapDataModel.cs" />
     <Compile Include="Model\SearchQueryModel.cs" />
     <Compile Include="Model\StaticSetting.cs" />
@@ -76,6 +78,7 @@
     <Content Include="SqlScript\DOC_CONTENT.sql" />
     <Content Include="SqlScript\GET_CITY_Ordinance.sql" />
     <Content Include="SqlScript\DOC_MeetingNote.sql" />
+    <Content Include="SqlScript\DynamicPrice.sql" />
     <Content Include="SqlScript\GET_Municipality.sql" />
     <Content Include="SqlScript\Project_Master_DDL.sql" />
   </ItemGroup>

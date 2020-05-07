@@ -29,5 +29,7 @@ namespace BusinessHandler.Model
 
         public string CityGuid { get; set; }
 
+        public string Source { get; set; }
+
     }
 }

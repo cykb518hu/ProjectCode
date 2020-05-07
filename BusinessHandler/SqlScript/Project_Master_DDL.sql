@@ -341,3 +341,26 @@ create  NONCLUSTERED      index IDX_DOCUMENT_CONTENT_DOC_GUID  on dbo.DOCUMENT_C
 GO
 
 
+
+
+-- for DynamicPriceDB database
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[ACCOUNT](
+    [EMAIL] [nvarchar](50) NOT NULL,
+	[Password] [nvarchar](50) NOT NULL,
+	[Active] [nvarchar](5),
+	[RoleType] [nvarchar](10),
+	[USR_CRTN_ID] [varchar](50)  DEFAULT (user_name()) ,
+	[USR_CRTN_TS] [datetime] DEFAULT (getdate()),
+	[USR_MDFN_ID] [varchar](50) DEFAULT (user_name()),
+	[USR_MDFN_TS] [datetime] DEFAULT (getdate())
+) ON [PRIMARY]
+GO
+
+SET ANSI_PADDING OFF
+GO
