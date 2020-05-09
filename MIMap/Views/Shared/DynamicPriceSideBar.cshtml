@@ -1,0 +1,73 @@
+﻿
+
+<div  id="dynamicPrice_Sidebar" style="display:none;">
+    <div id="sidebar_content" >
+        <div class="panel panel-default" style="position:fixed;width:500px;z-index:1002">
+            <div class="panel-heading" role="tab" id="headingHeader" style="text-align:center; font-size:16px; border-bottom:none">
+                <span>Store Information</span> <div style="float:right; margin-right:17px;"><a href="#" onclick="hideSideBar(); return false">close</a></div>
+            </div>
+
+        </div>
+
+        <div style="padding-top:44px"  id="sidebar_sub_content" >
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading7">
+                    <a role="button" data-toggle="collapse" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
+                        Detail:
+                    </a>
+                </div>
+                <div id="collapse7" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading7">
+                    <div class="panel-body">
+                        <p>Store Name:  <span id="sp_storeName"></span></p>
+                        <p>Address:  <span id="sp_storeAddress"></span></p>
+                        <p>Phone:  <span id="sp_storePhone"></span></p>
+                        <p>Email:  <span id="sp_storeEmail"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+<script>
+    jQuery(document).ready(function ($) {
+
+    });
+
+    function loadCityOrdinance(guid) {
+        $.ajax({
+            url: '@Url.Action("GetStoreDetail", "DynamicPriceDB")',
+            dataType: 'json',
+            data: { storeId: guid },
+            type: "GET",
+            cache: false,
+            success: function (result) {
+                $("#sp_storeName").html(result.StoreName);
+                $("#sp_storeAddress").html(result.Address);
+                $("#sp_storePhone").html(result.Phone);
+                $("#sp_storeEmail").html(result.Email);
+
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+            }
+        });
+    }
+    function showSideBar(guid) {
+        $("#dynamicPrice_Sidebar").slideDown();
+        loadCityOrdinance(guid);
+    }
+
+    $("#dynamicPrice_Sidebar").on('blur', function () {
+        $(this).fadeOut(300);
+    });
+    function hideSideBar() {
+        $("#dynamicPrice_Sidebar").hide();
+    }
+
+</script>

@@ -20,6 +20,9 @@ namespace MIMap.Controllers
         // GET: DynamicPriceDB
         public ActionResult Index()
         {
+            ViewData["storeList"] = dynamicPriceRepository.GetStoreList();
+            var message = new DynamicPricingMapStoreQueryModel();
+            ViewData["storeColorList"] = dynamicPriceRepository.GetStoreIdWithColorList(message);
             return View();
         }
 
@@ -31,5 +34,19 @@ namespace MIMap.Controllers
             return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
 
         }
+
+        public JsonResult GetStoreIdWithColorList(DynamicPricingMapStoreQueryModel message)
+        {
+            var result = dynamicPriceRepository.GetStoreIdWithColorList(message);
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult GetStoreDetail(string storeId)
+        {
+            var result = dynamicPriceRepository.GetStoreDetail(storeId);
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
     }
 }

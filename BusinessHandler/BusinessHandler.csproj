@@ -80,6 +80,7 @@
     <Content Include="SqlScript\DOC_MeetingNote.sql" />
     <Content Include="SqlScript\DynamicPrice.sql" />
     <Content Include="SqlScript\GET_Municipality.sql" />
+    <Content Include="SqlScript\DynamicPrice_DDL.sql" />
     <Content Include="SqlScript\Project_Master_DDL.sql" />
   </ItemGroup>
   <ItemGroup>

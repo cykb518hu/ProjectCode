@@ -172,6 +172,37 @@ namespace BusinessHandler.Model
             }
         }
 
-        
+        public static void BuildParameters(SqlCommand command, DynamicPricingQueryModel message)
+        {
+            if (!string.IsNullOrWhiteSpace(message.StoreIds) && !message.StoreIds.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+            {
+                command.Parameters.AddWithValue("@StoreIds", StaticSetting.GetArrayQuery(message.StoreIds));
+            }
+
+            if (!string.IsNullOrWhiteSpace(message.City))
+            {
+                command.Parameters.AddWithValue("@City", message.City);
+            }
+            if (!string.IsNullOrWhiteSpace(message.CategoryName))
+            {
+                command.Parameters.AddWithValue("@CategoryName", message.CategoryName);
+            }
+            if (!string.IsNullOrWhiteSpace(message.ProductName))
+            {
+                command.Parameters.AddWithValue("@ProductName", message.ProductName);
+            }
+        }
+
+        public static void BuildParameters(SqlCommand command, DynamicPricingMapStoreQueryModel message)
+        {
+            if (!string.IsNullOrWhiteSpace(message.City))
+            {
+                command.Parameters.AddWithValue("@City", message.City);
+            }
+            if (!string.IsNullOrWhiteSpace(message.CategoryName))
+            {
+                command.Parameters.AddWithValue("@CategoryName", message.CategoryName);
+            }
+        }
     }
 }
