@@ -112,7 +112,7 @@
 
 <script type="infowindow/html" id="infowindow_template">
 
-    <a href="#close" class="close" style="opacity:1"><img style="width:30px;" src="@StaticSetting.uploadPath/Image/6cDGi.png" /></a>
+    <a href="#close" class="close" style="opacity:1"><img style="width:30px;" src="@StaticSetting.uploadPath/Image/locator.png" /></a>
 </script>
 
 <script>
@@ -201,13 +201,13 @@
         var tempQueryParams = function () {
             return temp;
         };
-       // $("#tb_dynamicPrice").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 15 });
+        $("#tb_dynamicPrice").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 15 });
     }
 </script>
 
 <script>
     $(function () {
-        //loadListData();
+        loadListData();
         initialMap();
     });
 
@@ -354,13 +354,13 @@
 
             layer.set({ interactivity: "storeid" });
             layer.setInteraction(true);
-
             var infowindow_model = popLayer.infowindow;
             popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
                 infowindow_model.set({
                     latlng: latlng,
                     visibility: false
                 });
+                //setInterval(function () { $(".cartodb-infowindow").html($('#infowindow_template').html()); }, 50);
                 showMapPopUp(data.storeid);
 
             });
@@ -371,9 +371,6 @@
     }
 
     function createSelector(dataArr) {
-
-        //var cartocss = popLayer.layers[0].options.cartocss;//" #layer [zoom>=4]{text-name: 11; } ";
-        //cartocss += " #" + mapTable + "{ marker-fill:#EE4D5A;}";
         var cartocss = popLayer.layers[0].options.cartocss;
         var ids = "'nodata'";
         if (dataArr.length > 0) {
@@ -388,7 +385,6 @@
         }
         var sql = new cartodb.SQL({ user: 'achilles' });
         var query = "SELECT * FROM " + mapTable + " where storeid in (" + ids + ")";
-        // query = "SELECT * FROM " + mapTable;
         layer.setSQL(query);
         layer.setCartoCSS(cartocss);
         sql.getBounds(query).done(function (bounds) {

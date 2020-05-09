@@ -181,8 +181,10 @@
     <Content Include="Content\Site.css" />
     <Content Include="HtmlPage1 - Copy.html" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="Image\3Fifteen_HLogo_Web.svg" />
     <Content Include="Image\6cDGi.png" />
     <Content Include="Image\Loading_icon.gif" />
+    <Content Include="Image\locator.png" />
     <Content Include="Image\MiMapLogo.png" />
     <Content Include="Image\MiMapLogo1.png" />
     <Content Include="Image\pleasewait.gif" />
