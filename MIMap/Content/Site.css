@@ -399,7 +399,7 @@ div.cartodb-infowindow
     position: fixed;
     top: 145px;
     bottom: 0px;
-    width: 500px;
+    width: 400px;
     right: 0px;
     z-index: 1000;
     background-color: #ffffff;

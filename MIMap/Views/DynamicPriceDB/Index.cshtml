@@ -110,11 +110,14 @@
 </div>
 @Html.Partial("DynamicPriceSideBar")
 
-<script type="infowindow/html" id="infowindow_template">
+<script type="infowindow/html" id="infowindow_template_yellow">
 
-    <a href="#close" class="close" style="opacity:1"><img style="width:30px;" src="@StaticSetting.uploadPath/Image/locator.png" /></a>
+    <a href="#close" class="close" style="opacity:1"><img style="width:40px;" src="@StaticSetting.uploadPath/Image/yellow_location_icon.png" /></a>
 </script>
+<script type="infowindow/html" id="infowindow_template_black">
 
+    <a href="#close" class="close" style="opacity:1"><img style="width:40px;" src="@StaticSetting.uploadPath/Image/black_location_icon.png" /></a>
+</script>
 <script>
     jQuery(document).ready(function ($) {
         $("#sel_search_Store").multiselect({
@@ -358,9 +361,9 @@
             popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
                 infowindow_model.set({
                     latlng: latlng,
-                    visibility: false
+                    visibility: true
                 });
-                //setInterval(function () { $(".cartodb-infowindow").html($('#infowindow_template').html()); }, 50);
+                
                 showMapPopUp(data.storeid);
 
             });
@@ -397,6 +400,17 @@
             if ($("#dynamicPrice_Sidebar").css("display") == "block") {
                 return;
             }
+        }
+        for (var i = 0; i < mapMasterData.length; i++) {
+            if (mapMasterData[i].StoreId == storeId) {
+                if (mapMasterData[i].Color == "yellow") {
+                    setTimeout(function () { $(".cartodb-infowindow").html($('#infowindow_template_yellow').html()); }, 1000);
+                }
+                else {
+                    setTimeout(function () { $(".cartodb-infowindow").html($('#infowindow_template_black').html()); }, 1000);
+                }
+            }
+           
         }
         oldstoreId = storeId;
         showSideBar(oldstoreId);
