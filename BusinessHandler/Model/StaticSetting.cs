@@ -178,14 +178,18 @@ namespace BusinessHandler.Model
             {
                 command.Parameters.AddWithValue("@StoreIds", StaticSetting.GetArrayQuery(message.StoreIds));
             }
+            if (!string.IsNullOrWhiteSpace(message.CategoryIds) && !message.CategoryIds.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+            {
+                command.Parameters.AddWithValue("@CategoryIds", StaticSetting.GetArrayQuery(message.CategoryIds));
+            }
 
             if (!string.IsNullOrWhiteSpace(message.City))
             {
                 command.Parameters.AddWithValue("@City", message.City);
             }
-            if (!string.IsNullOrWhiteSpace(message.CategoryName))
+            if (!string.IsNullOrWhiteSpace(message.Brand))
             {
-                command.Parameters.AddWithValue("@CategoryName", message.CategoryName);
+                command.Parameters.AddWithValue("@BrandName", message.Brand);
             }
             if (!string.IsNullOrWhiteSpace(message.ProductName))
             {

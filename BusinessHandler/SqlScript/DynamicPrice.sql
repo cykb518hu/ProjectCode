@@ -15,15 +15,16 @@ CREATE PROCEDURE [dbo].[GET_DATA_List]
 @Total int =1,
 @StoreIds varchar(max) =null,
 @City varchar(max) =null,
-@CategoryName varchar(max) =null,
-@ProductName varchar(max) =null
+@CategoryIds varchar(max) =null,
+@ProductName varchar(max) =null,
+@BrandName varchar(max) =null
 )
 as
 declare @sqlstr varchar(max)
 begin
 
 set @sqlstr='
-SELECT SF.StoreName, ST.City, AP.ProductId, AP.ProductName, CR.CategoryName, PR.Brand, AP.Date FROM ActiveProduct AP
+SELECT SF.StoreName, ST.City, AP.ProductId, AP.ProductName, CR.CategoryName, PR.Brand, PR.StrainType, PR.THCPercentage, PR.CBDPercentage,PR.isSpecial,AP.Date FROM ActiveProduct AP
 LEFT JOIN StoreFront SF ON SF.StoreId=AP.StoreId
 LEFT JOIN Store ST ON SF.StoreId=ST.StoreId
 LEFT JOIN Product PR ON AP.ProductId=PR.ProductId
@@ -33,17 +34,23 @@ if @StoreIds is not null
 	begin
 		set @sqlstr=@sqlstr+' and SF.StoreId IN ('+ @StoreIds+')'
 	end
+if @CategoryIds is not null
+   begin
+		set @sqlstr=@sqlstr+' and PR.CategoryId IN ('+ @CategoryIds+')'
+	end
+
 if @City is not null
    begin
 		set @sqlstr=@sqlstr+' and ST.City like ''%'+ @City+'%'''
 	end
-if @CategoryName is not null
-   begin
-		set @sqlstr=@sqlstr+' and CR.CategoryName like ''%'+ @CategoryName+'%'''
-	end
+
 if @ProductName is not null
    begin
 		set @sqlstr=@sqlstr+' and AP.ProductName like ''%'+ @ProductName+'%'''
+	end
+if @BrandName is not null
+   begin
+		set @sqlstr=@sqlstr+' and PR.Brand like ''%'+ @BrandName+'%'''
 	end
 
 if(@Total=0)
@@ -116,10 +123,10 @@ declare @sqlstr varchar(max)
 begin
 
 set @sqlstr='
-SELECT DISTINCT SF.StoreId,ST.City FROM StoreFront SF 
+SELECT DISTINCT SF.StoreId,ST.City,SF.StoreName,SF.Location,ST.Address,ST.DeliveryHours, ST.DeliveryFeesUSD, ST.MaxDeliveryDistance,ST.MinDeliveryOrder,ST.MaxDeliveryOrder,ST.MedicalOnly,ST.OfferDelivery FROM StoreFront SF 
 LEFT JOIN Store ST ON SF.StoreId=ST.StoreId
 LEFT JOIN ActiveCategory AC ON SF.StoreId=AC.StoreId
-LEFT JOIN CategoryRepository CR ON CR.CategoryId=AC.CategoryId where 1=1'
+LEFT JOIN CategoryRepository CR ON CR.CategoryId=AC.CategoryId  where 1=1'
 
 if @City is not null
    begin

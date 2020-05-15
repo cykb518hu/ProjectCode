@@ -13,8 +13,10 @@ namespace BusinessHandler.MessageHandler
     {
         List<DynamicPricingTableModel> GetDataList(DynamicPricingQueryModel message, out int total);
         List<DynamicPricingStoreModel> GetStoreList();
+        List<DynamicPricingStoreDetailModel> GetStoreDetailList(DynamicPricingMapStoreQueryModel message);
         List<DynamicPricingStoreColorModel> GetStoreIdWithColorList(DynamicPricingMapStoreQueryModel message);
         DynamicPricingStoreDetailModel GetStoreDetail(string storeId);
+        List<DynamicPriceCategoryModel> GetCategoryList();
     }
 
     public class DynamicPriceRepository:IDynamicPriceRepository
@@ -53,6 +55,9 @@ namespace BusinessHandler.MessageHandler
                     case "City":
                         orderBy = "City";
                         break;
+                    case "IsSpecial":
+                        orderBy = "IsSpecial";
+                        break;
                     default:
                         orderBy = "StoreName asc, ProductName";
                         break;
@@ -75,6 +80,10 @@ namespace BusinessHandler.MessageHandler
                         result.Brand = reader["Brand"]?.ToString();
                         result.StoreName = reader["StoreName"]?.ToString();
                         result.City= reader["City"]?.ToString();
+                        result.StrainType = reader["StrainType"]?.ToString();
+                        result.THCPercentage = reader["THCPercentage"]?.ToString();
+                        result.CBDPercentage = reader["CBDPercentage"]?.ToString();
+                        result.IsSpecial = reader["IsSpecial"]?.ToString();
                         result.ScrapeDate = Convert.ToDateTime(reader["Date"]).ToString("yyyy-MM-dd");
                         list.Add(result);
 
@@ -149,10 +158,9 @@ namespace BusinessHandler.MessageHandler
             }
             return list;
         }
-
-        public List<DynamicPricingStoreColorModel> GetStoreIdWithColorList(DynamicPricingMapStoreQueryModel message)
+        public List<DynamicPricingStoreDetailModel> GetStoreDetailList(DynamicPricingMapStoreQueryModel message)
         {
-            var list = new List<DynamicPricingStoreColorModel>();
+            var list = new List<DynamicPricingStoreDetailModel>();
             string queryString = @"[dbo].[GET_STORE_List]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.dynamicPriceDBconnectionString))
             {
@@ -165,16 +173,24 @@ namespace BusinessHandler.MessageHandler
                 {
                     while (reader.Read())
                     {
-                        var result = new DynamicPricingStoreColorModel();
+                        var result = new DynamicPricingStoreDetailModel();
                         result.StoreId = reader["StoreId"]?.ToString();
+                        result.StoreName = reader["StoreName"]?.ToString();
                         result.City = reader["City"]?.ToString();
+                        result.Address = reader["Address"]?.ToString();
+                        result.OfferDelivery = reader["OfferDelivery"]?.ToString();
+                        result.MedicalOnly = reader["MedicalOnly"]?.ToString();
+                        result.MinDeliveryOrder = reader["MinDeliveryOrder"]?.ToString();
+                        result.MaxDeliveryOrder = reader["MaxDeliveryOrder"]?.ToString();
+                        result.DeliveryFeesUSD = reader["DeliveryFeesUSD"]?.ToString();
+                        result.MaxDeliveryDistance = reader["MaxDeliveryDistance"]?.ToString();
                         result.Color = "black";
                         list.Add(result);
                     }
                 }
             }
             CalculateStoreColor(list);
-            if(message.MyLocation=="Yes")
+            if (message.MyLocation == "Yes")
             {
                 list = list.Where(x => x.Color == "yellow").ToList();
             }
@@ -184,8 +200,22 @@ namespace BusinessHandler.MessageHandler
             }
             return list;
         }
+        public List<DynamicPricingStoreColorModel> GetStoreIdWithColorList(DynamicPricingMapStoreQueryModel message)
+        {
+            var list = new List<DynamicPricingStoreColorModel>();
+            var storeList = GetStoreDetailList(message);
+            foreach(var r in storeList)
+            {
+                var result = new DynamicPricingStoreColorModel();
+                result.StoreId = r.StoreId;
+                result.Color = r.Color;
+                result.City = r.City;
+                list.Add(result);
+            }
+            return list;
+        }
 
-        public void CalculateStoreColor(List<DynamicPricingStoreColorModel> list)
+        public void CalculateStoreColor(List<DynamicPricingStoreDetailModel> list)
         {
 
             string queryString = @"select * from MyLocation";
@@ -241,6 +271,30 @@ where SF.StoreId=@StoreId";
             }
             return result;
         }
+
+        public List<DynamicPriceCategoryModel> GetCategoryList()
+        {
+            var list = new List<DynamicPriceCategoryModel>();
+            string queryString = @"SELECT DISTINCT  CategoryId, CategoryName FROM [dbo].[CategoryRepository] WHERE CategoryName <>''";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.dynamicPriceDBconnectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.CommandType = CommandType.Text;
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var result = new DynamicPriceCategoryModel();
+                        result.CategoryId = reader["CategoryId"]?.ToString();
+                        result.CategoryName = reader["CategoryName"]?.ToString();
+                        list.Add(result);
+                    }
+                }
+            }
+            return list;
+        }
+
 
     }
 }

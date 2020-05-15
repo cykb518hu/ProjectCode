@@ -16,7 +16,9 @@ namespace BusinessHandler.Model
 
         public string StoreIds { get; set; }
 
-        public string CategoryName { get; set; }
+        public string CategoryIds { get; set; }
+
+        public string Brand { get; set; }
 
         public string City { get; set; }
 
@@ -37,6 +39,10 @@ namespace BusinessHandler.Model
         public string City { get; set; }
 
         public string ScrapeDate { get; set; }
+        public string StrainType { get; set; }
+        public string THCPercentage { get; set; }
+        public string CBDPercentage { get; set; }
+        public string IsSpecial { get; set; }
 
         public List<DynamicPricingTableSubDataModel> SubList { get; set; }
     }
@@ -87,5 +93,19 @@ namespace BusinessHandler.Model
         public string City { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string DeliveryHours { get; set; }
+        public string DeliveryFeesUSD { get; set; }
+        public string MaxDeliveryDistance { get; set; }
+        public string MinDeliveryOrder { get; set; }
+        public string MaxDeliveryOrder { get; set; }
+        public string MedicalOnly { get; set; }
+        public string OfferDelivery { get; set; }
+        public string Color { get; set; }
+    }
+
+    public class DynamicPriceCategoryModel
+    {
+        public string CategoryName { get; set; }
+        public string CategoryId { get; set; }
     }
 }

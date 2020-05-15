@@ -412,3 +412,11 @@ div.cartodb-infowindow
     #dynamicPrice_Sidebar a {
         text-decoration: none;
     }
+
+#storeMap {
+    height: 700px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    margin-top:15px;
+}
