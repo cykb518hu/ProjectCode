@@ -67,7 +67,7 @@ namespace MIMap.Controllers
             if (result != "sccuess")
             {
                 ModelState.AddModelError("", result);
-                return View(model);
+                return View("Login",model);
             }
             else
             {

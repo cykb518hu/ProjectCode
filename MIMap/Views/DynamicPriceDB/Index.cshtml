@@ -425,7 +425,7 @@
                     pagination: true,
                     sortable: true,
                     queryParams: oStoreTableInit.queryParams,
-                    //  sidePagination: "server",
+                    sidePagination: "server",
                     pageSize: 15,
                     pageList: [10, 15, 25, 50],
                     showColumns: true,
@@ -438,7 +438,7 @@
                             field: 'StoreName',
                             title: 'Store',
                             sortable: true,
-                            width: '15%'
+                            width: '20%'
                         },
                         {
                             field: 'Address',
@@ -447,23 +447,17 @@
                             width: '20%'
                         },
                         {
-                            field: 'DeliveryHours',
-                            title: 'Delivery Hours',
-                            sortable: true,
-                            width: '7%'
-                        },
-                        {
                             field: 'OfferDelivery',
                             title: 'Offer Delivery',
                             sortable: true,
-                            width: '7%'
+                            width: '10%'
                         },
 
                         {
                             field: 'MedicalOnly',
                             title: 'Medical Only',
                             sortable: true,
-                            width: '7%'
+                            width: '10%'
                         },
 
 
@@ -471,27 +465,30 @@
                             field: 'DeliveryFeesUSD',
                             title: 'DeliveryFeesUSD',
                             sortable: true,
-                            width: '7%'
+                            width: '10%'
                         },
                         {
                             field: 'MaxDeliveryDistance',
                             title: 'MaxDeliveryDistance',
                             sortable: true,
-                            width: '7%'
+                            width: '10%'
                         },
                         {
                             field: 'MinDeliveryOrder',
                             title: 'MinDeliveryOrder',
                             sortable: true,
-                            width: '7%'
+                            width: '10%'
                         },
                         {
                             field: 'MaxDeliveryOrder',
                             title: 'MaxDeliveryOrder',
                             sortable: true,
-                            width: '7%'
+                            width: '10%'
                         }
-                    ]
+                    ],
+                    onExpandRow: function (index, row, $detail) {
+                        oStoreTableInit.InitSubTable(index, row, $detail);
+                    }
                 });
             };
             oStoreTableInit.queryParams = function (params) {
@@ -501,6 +498,55 @@
                 temp.sortName = this.sortName;
                 temp.sortOrder = this.sortOrder;
                 return temp;
+            };
+
+            oStoreTableInit.InitSubTable = function (index, row, $detail) {
+
+                var dataList = row.OpenHours;
+                var cur_table = $detail.html('<table></table>').find('table');
+                $(cur_table).bootstrapTable({
+                    data: dataList,
+                    columns: [
+                        {
+                            field: 'Monday',
+                            title: 'Monday',
+                            width: '15%'
+                        },
+
+                        {
+                            field: 'Tuesday',
+                            title: 'Tuesday',
+                            width: '15%'
+                        },
+
+                        {
+                            field: 'Wednesday',
+                            title: 'Wednesday',
+                            width: '15%'
+                        },
+                        {
+                            field: 'Thursday',
+                            title: 'Thursday',
+                            width: '15%'
+                        },
+                        {
+                            field: 'Friday',
+                            title: 'Friday',
+                            width: '15%'
+                        },
+                        {
+                            field: 'Saturday',
+                            title: 'Saturday',
+                            width: '15%'
+                        },
+                        {
+                            field: 'Sunday',
+                            title: 'Sunday',
+                            width: '10%'
+                        }
+                    ],
+
+                });
             };
             return oStoreTableInit;
         };

@@ -41,7 +41,9 @@ namespace MIMap.Controllers
         public JsonResult GetStoreDetailList(DynamicPricingMapStoreQueryModel message)
         {
             var result = dynamicPriceRepository.GetStoreDetailList(message);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var total = result.Count;
+            result = result.Skip(message.offset).Take(message.limit).ToList();
+            return Json(new { total = total, rows = result }, JsonRequestBehavior.AllowGet);
 
         }
 

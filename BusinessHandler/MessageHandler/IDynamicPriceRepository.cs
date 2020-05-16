@@ -1,4 +1,5 @@
 ﻿using BusinessHandler.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +7,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Caching;
 
 namespace BusinessHandler.MessageHandler
 {
@@ -139,28 +142,26 @@ namespace BusinessHandler.MessageHandler
         public List<DynamicPricingStoreModel> GetStoreList()
         {
             var list = new List<DynamicPricingStoreModel>();
-            string queryString = @"select StoreId,StoreName from [dbo].[StoreFront] order by StoreName";
-            using (SqlConnection connection = new SqlConnection(StaticSetting.dynamicPriceDBconnectionString))
+            DynamicPricingMapStoreQueryModel message = new DynamicPricingMapStoreQueryModel();
+            var storeList = GetStoreDetailList(message);
+            foreach (var r in storeList)
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.CommandType = CommandType.Text;
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var result = new DynamicPricingStoreModel();
-                        result.StoreId = reader["StoreId"]?.ToString();
-                        result.StoreName = reader["StoreName"]?.ToString();
-                        list.Add(result);
-                    }
-                }
+                var result = new DynamicPricingStoreModel();
+                result.StoreId = r.StoreId;
+                result.StoreName = r.StoreName;
+                list.Add(result);
             }
             return list;
         }
         public List<DynamicPricingStoreDetailModel> GetStoreDetailList(DynamicPricingMapStoreQueryModel message)
         {
             var list = new List<DynamicPricingStoreDetailModel>();
+            var key = StaticSetting.storeListKey + message.MyLocation + message.City;
+            if (HttpRuntime.Cache.Get(key) != null)
+            {
+                list = (List<DynamicPricingStoreDetailModel>)HttpRuntime.Cache.Get(key);
+                return list;
+            }
             string queryString = @"[dbo].[GET_STORE_List]";
             using (SqlConnection connection = new SqlConnection(StaticSetting.dynamicPriceDBconnectionString))
             {
@@ -184,6 +185,76 @@ namespace BusinessHandler.MessageHandler
                         result.MaxDeliveryOrder = reader["MaxDeliveryOrder"]?.ToString();
                         result.DeliveryFeesUSD = reader["DeliveryFeesUSD"]?.ToString();
                         result.MaxDeliveryDistance = reader["MaxDeliveryDistance"]?.ToString();
+                      //  var str = reader["DeliveryHours"]?.ToString();
+                        var openHour = JsonConvert.DeserializeObject<StoreOpenDetail>(reader["DeliveryHours"]?.ToString());
+                        var openHourDisplay = new StoreOpenDetailDisplay();
+                        if(!string.IsNullOrWhiteSpace(openHour.Monday.Active)&& openHour.Monday.Active.ToLower().Equals("true"))
+                        {
+                            openHourDisplay.Monday = openHour.Monday.Start + " - " + openHour.Monday.End;
+                        }
+                        else
+                        {
+                            openHourDisplay.Monday = "Not active";
+
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(openHour.Tuesday.Active) && openHour.Tuesday.Active.ToLower().Equals("true"))
+                        {
+                            openHourDisplay.Tuesday = openHour.Tuesday.Start + " - " + openHour.Tuesday.End;
+                        }
+                        else
+                        {
+                            openHourDisplay.Tuesday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Wednesday.Active) && openHour.Wednesday.Active.ToLower().Equals("true"))
+                        {
+                            openHourDisplay.Wednesday = openHour.Wednesday.Start + " - " + openHour.Wednesday.End;
+                        }
+                        else
+                        {
+                            openHourDisplay.Wednesday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Thursday.Active) && openHour.Thursday.Active.ToLower().Equals("true"))
+                        {
+                            openHourDisplay.Thursday = openHour.Thursday.Start + " - " + openHour.Thursday.End;
+                        }
+                        else
+                        {
+                            openHourDisplay.Thursday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Friday.Active) && openHour.Friday.Active.ToLower().Equals("true"))
+                        {
+                            openHourDisplay.Friday = openHour.Friday.Start + " - " + openHour.Friday.End;
+                        }
+                        else
+                        {
+                            openHourDisplay.Friday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Saturday.Active) && openHour.Saturday.Active.ToLower().Equals("true"))
+                        {
+                            openHourDisplay.Saturday = openHour.Saturday.Start + " - " + openHour.Saturday.End;
+                        }
+                        else
+                        {
+                            openHourDisplay.Saturday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Sunday.Active) && openHour.Sunday.Active.ToLower().Equals("true"))
+                        {
+                            openHourDisplay.Sunday = openHour.Sunday.Start + " - " + openHour.Sunday.End;
+                        }
+                        else
+                        {
+                            openHourDisplay.Sunday = "Not active";
+
+                        }
+                        result.OpenHours = new List<StoreOpenDetailDisplay>();
+                        result.OpenHours.Add(openHourDisplay);
+                        
                         result.Color = "black";
                         list.Add(result);
                     }
@@ -198,6 +269,7 @@ namespace BusinessHandler.MessageHandler
             {
                 list = list.Where(x => x.Color == "black").ToList();
             }
+            HttpRuntime.Cache.Insert(key, list);
             return list;
         }
         public List<DynamicPricingStoreColorModel> GetStoreIdWithColorList(DynamicPricingMapStoreQueryModel message)

@@ -31,6 +31,7 @@ namespace BusinessHandler.Model
         public static string uploadPath= string.IsNullOrEmpty(ConfigurationManager.AppSettings["uploadPath"]) ? "" : ConfigurationManager.AppSettings["uploadPath"].ToString();
 
         public static string DefaultTags= string.IsNullOrEmpty(ConfigurationManager.AppSettings["DefaultTags"]) ? "" : ConfigurationManager.AppSettings["DefaultTags"].ToString();
+        public static string storeListKey = "storeListKey";
 
         public static string Base64Encode(string plainText)
         {
@@ -203,10 +204,10 @@ namespace BusinessHandler.Model
             {
                 command.Parameters.AddWithValue("@City", message.City);
             }
-            if (!string.IsNullOrWhiteSpace(message.CategoryName))
-            {
-                command.Parameters.AddWithValue("@CategoryName", message.CategoryName);
-            }
+            //if (!string.IsNullOrWhiteSpace(message.CategoryName))
+            //{
+            //    command.Parameters.AddWithValue("@CategoryName", message.CategoryName);
+            //}
         }
     }
 }

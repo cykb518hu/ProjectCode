@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,10 +77,10 @@ namespace BusinessHandler.Model
 
     public class DynamicPricingMapStoreQueryModel
     {
+        public int limit { get; set; }
+        public int offset { get; set; }
 
         public string MyLocation { get; set; }
-
-        public string CategoryName { get; set; }
 
         public string City { get; set; }
 
@@ -101,11 +102,51 @@ namespace BusinessHandler.Model
         public string MedicalOnly { get; set; }
         public string OfferDelivery { get; set; }
         public string Color { get; set; }
+        public List<StoreOpenDetailDisplay> OpenHours { get; set; }
     }
 
     public class DynamicPriceCategoryModel
     {
         public string CategoryName { get; set; }
         public string CategoryId { get; set; }
+    }
+
+    public class StoreOpenDetailDisplay
+    {
+        public string Monday { get; set; }
+        public string Tuesday { get; set; }
+        public string Wednesday { get; set; }
+        public string Thursday { get; set; }
+        public string Friday { get; set; }
+        public string Saturday { get; set; }
+        public string Sunday { get; set; }
+    }
+
+    public class StoreOpenDetail
+    {
+        [JsonProperty("Monday")]
+        public StoreOpenHours Monday { get; set; }
+        [JsonProperty("Tuesday")]
+        public StoreOpenHours Tuesday { get; set; }
+        [JsonProperty("Wednesday")]
+        public StoreOpenHours Wednesday { get; set; }
+        [JsonProperty("Thursday")]
+        public StoreOpenHours Thursday { get; set; }
+        [JsonProperty("Friday")]
+        public StoreOpenHours Friday { get; set; }
+        [JsonProperty("Saturday")]
+        public StoreOpenHours Saturday { get; set; }
+        [JsonProperty("Sunday")]
+        public StoreOpenHours Sunday { get; set; }
+    }
+    public class StoreOpenHours
+    {
+        [JsonProperty("active")]
+        public string Active { get; set; }
+
+        [JsonProperty("end")]
+        public string End { get; set; }
+        [JsonProperty("start")]
+        public string Start { get; set; }
     }
 }
