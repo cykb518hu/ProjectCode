@@ -113,6 +113,7 @@ namespace BusinessHandler.Model
 
     public class StoreOpenDetailDisplay
     {
+        public string Type { get; set; }
         public string Monday { get; set; }
         public string Tuesday { get; set; }
         public string Wednesday { get; set; }

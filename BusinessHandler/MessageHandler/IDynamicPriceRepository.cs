@@ -185,75 +185,147 @@ namespace BusinessHandler.MessageHandler
                         result.MaxDeliveryOrder = reader["MaxDeliveryOrder"]?.ToString();
                         result.DeliveryFeesUSD = reader["DeliveryFeesUSD"]?.ToString();
                         result.MaxDeliveryDistance = reader["MaxDeliveryDistance"]?.ToString();
-                      //  var str = reader["DeliveryHours"]?.ToString();
-                        var openHour = JsonConvert.DeserializeObject<StoreOpenDetail>(reader["DeliveryHours"]?.ToString());
-                        var openHourDisplay = new StoreOpenDetailDisplay();
-                        if(!string.IsNullOrWhiteSpace(openHour.Monday.Active)&& openHour.Monday.Active.ToLower().Equals("true"))
+                        //  var str = reader["DeliveryHours"]?.ToString();
+                        result.OpenHours = new List<StoreOpenDetailDisplay>();
+
+                        var openHour = JsonConvert.DeserializeObject<StoreOpenDetail>(reader["PickupHours"]?.ToString());
+                        var pickupHours = new StoreOpenDetailDisplay();
+                        pickupHours.Type = "Pickup hours";
+                        if (!string.IsNullOrWhiteSpace(openHour.Monday.Active) && openHour.Monday.Active.ToLower().Equals("true"))
                         {
-                            openHourDisplay.Monday = openHour.Monday.Start + " - " + openHour.Monday.End;
+                            pickupHours.Monday = openHour.Monday.Start + " - " + openHour.Monday.End;
                         }
                         else
                         {
-                            openHourDisplay.Monday = "Not active";
+                            pickupHours.Monday = "Not active";
 
                         }
 
                         if (!string.IsNullOrWhiteSpace(openHour.Tuesday.Active) && openHour.Tuesday.Active.ToLower().Equals("true"))
                         {
-                            openHourDisplay.Tuesday = openHour.Tuesday.Start + " - " + openHour.Tuesday.End;
+                            pickupHours.Tuesday = openHour.Tuesday.Start + " - " + openHour.Tuesday.End;
                         }
                         else
                         {
-                            openHourDisplay.Tuesday = "Not active";
+                            pickupHours.Tuesday = "Not active";
 
                         }
                         if (!string.IsNullOrWhiteSpace(openHour.Wednesday.Active) && openHour.Wednesday.Active.ToLower().Equals("true"))
                         {
-                            openHourDisplay.Wednesday = openHour.Wednesday.Start + " - " + openHour.Wednesday.End;
+                            pickupHours.Wednesday = openHour.Wednesday.Start + " - " + openHour.Wednesday.End;
                         }
                         else
                         {
-                            openHourDisplay.Wednesday = "Not active";
+                            pickupHours.Wednesday = "Not active";
 
                         }
                         if (!string.IsNullOrWhiteSpace(openHour.Thursday.Active) && openHour.Thursday.Active.ToLower().Equals("true"))
                         {
-                            openHourDisplay.Thursday = openHour.Thursday.Start + " - " + openHour.Thursday.End;
+                            pickupHours.Thursday = openHour.Thursday.Start + " - " + openHour.Thursday.End;
                         }
                         else
                         {
-                            openHourDisplay.Thursday = "Not active";
+                            pickupHours.Thursday = "Not active";
 
                         }
                         if (!string.IsNullOrWhiteSpace(openHour.Friday.Active) && openHour.Friday.Active.ToLower().Equals("true"))
                         {
-                            openHourDisplay.Friday = openHour.Friday.Start + " - " + openHour.Friday.End;
+                            pickupHours.Friday = openHour.Friday.Start + " - " + openHour.Friday.End;
                         }
                         else
                         {
-                            openHourDisplay.Friday = "Not active";
+                            pickupHours.Friday = "Not active";
 
                         }
                         if (!string.IsNullOrWhiteSpace(openHour.Saturday.Active) && openHour.Saturday.Active.ToLower().Equals("true"))
                         {
-                            openHourDisplay.Saturday = openHour.Saturday.Start + " - " + openHour.Saturday.End;
+                            pickupHours.Saturday = openHour.Saturday.Start + " - " + openHour.Saturday.End;
                         }
                         else
                         {
-                            openHourDisplay.Saturday = "Not active";
+                            pickupHours.Saturday = "Not active";
 
                         }
                         if (!string.IsNullOrWhiteSpace(openHour.Sunday.Active) && openHour.Sunday.Active.ToLower().Equals("true"))
                         {
-                            openHourDisplay.Sunday = openHour.Sunday.Start + " - " + openHour.Sunday.End;
+                            pickupHours.Sunday = openHour.Sunday.Start + " - " + openHour.Sunday.End;
                         }
                         else
                         {
-                            openHourDisplay.Sunday = "Not active";
+                            pickupHours.Sunday = "Not active";
 
                         }
-                        result.OpenHours = new List<StoreOpenDetailDisplay>();
-                        result.OpenHours.Add(openHourDisplay);
+                        result.OpenHours.Add(pickupHours);
+
+
+                        openHour = JsonConvert.DeserializeObject<StoreOpenDetail>(reader["DeliveryHours"]?.ToString());
+                        var deliveryHours = new StoreOpenDetailDisplay();
+                        deliveryHours.Type = "Delivery hours";
+                        if (!string.IsNullOrWhiteSpace(openHour.Monday.Active)&& openHour.Monday.Active.ToLower().Equals("true"))
+                        {
+                            deliveryHours.Monday = openHour.Monday.Start + " - " + openHour.Monday.End;
+                        }
+                        else
+                        {
+                            deliveryHours.Monday = "Not active";
+
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(openHour.Tuesday.Active) && openHour.Tuesday.Active.ToLower().Equals("true"))
+                        {
+                            deliveryHours.Tuesday = openHour.Tuesday.Start + " - " + openHour.Tuesday.End;
+                        }
+                        else
+                        {
+                            deliveryHours.Tuesday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Wednesday.Active) && openHour.Wednesday.Active.ToLower().Equals("true"))
+                        {
+                            deliveryHours.Wednesday = openHour.Wednesday.Start + " - " + openHour.Wednesday.End;
+                        }
+                        else
+                        {
+                            deliveryHours.Wednesday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Thursday.Active) && openHour.Thursday.Active.ToLower().Equals("true"))
+                        {
+                            deliveryHours.Thursday = openHour.Thursday.Start + " - " + openHour.Thursday.End;
+                        }
+                        else
+                        {
+                            deliveryHours.Thursday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Friday.Active) && openHour.Friday.Active.ToLower().Equals("true"))
+                        {
+                            deliveryHours.Friday = openHour.Friday.Start + " - " + openHour.Friday.End;
+                        }
+                        else
+                        {
+                            deliveryHours.Friday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Saturday.Active) && openHour.Saturday.Active.ToLower().Equals("true"))
+                        {
+                            deliveryHours.Saturday = openHour.Saturday.Start + " - " + openHour.Saturday.End;
+                        }
+                        else
+                        {
+                            deliveryHours.Saturday = "Not active";
+
+                        }
+                        if (!string.IsNullOrWhiteSpace(openHour.Sunday.Active) && openHour.Sunday.Active.ToLower().Equals("true"))
+                        {
+                            deliveryHours.Sunday = openHour.Sunday.Start + " - " + openHour.Sunday.End;
+                        }
+                        else
+                        {
+                            deliveryHours.Sunday = "Not active";
+
+                        }
+                        result.OpenHours.Add(deliveryHours);
                         
                         result.Color = "black";
                         list.Add(result);

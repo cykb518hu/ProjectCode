@@ -123,7 +123,7 @@ declare @sqlstr varchar(max)
 begin
 
 set @sqlstr='
-SELECT DISTINCT SF.StoreId,ST.City,SF.StoreName,SF.Location,ST.Address,ST.DeliveryHours, ST.DeliveryFeesUSD, ST.MaxDeliveryDistance,ST.MinDeliveryOrder,ST.MaxDeliveryOrder,ST.MedicalOnly,ST.OfferDelivery FROM StoreFront SF 
+SELECT DISTINCT SF.StoreId,ST.City,SF.StoreName,SF.Location,ST.Address,ST.PickupHours, ST.DeliveryHours, ST.DeliveryFeesUSD, ST.MaxDeliveryDistance,ST.MinDeliveryOrder,ST.MaxDeliveryOrder,ST.MedicalOnly,ST.OfferDelivery FROM StoreFront SF 
 LEFT JOIN Store ST ON SF.StoreId=ST.StoreId
 LEFT JOIN ActiveCategory AC ON SF.StoreId=AC.StoreId
 LEFT JOIN CategoryRepository CR ON CR.CategoryId=AC.CategoryId  where 1=1'
