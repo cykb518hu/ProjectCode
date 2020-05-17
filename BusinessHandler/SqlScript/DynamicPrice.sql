@@ -25,10 +25,10 @@ begin
 
 set @sqlstr='
 SELECT SF.StoreName, ST.City, AP.ProductId, AP.ProductName, CR.CategoryName, PR.Brand, PR.StrainType, PR.THCPercentage, PR.CBDPercentage,PR.isSpecial,AP.Date FROM ActiveProduct AP
-LEFT JOIN StoreFront SF ON SF.StoreId=AP.StoreId
-LEFT JOIN Store ST ON SF.StoreId=ST.StoreId
-LEFT JOIN Product PR ON AP.ProductId=PR.ProductId
-LEFT JOIN CategoryRepository CR ON CR.CategoryId=PR.CategoryId where 1=1'
+INNER JOIN StoreFront SF ON SF.StoreId=AP.StoreId
+INNER JOIN Store ST ON SF.StoreId=ST.StoreId
+INNER JOIN Product PR ON AP.ProductId=PR.ProductId
+INNER JOIN CategoryRepository CR ON CR.CategoryId=PR.CategoryId where 1=1'
 
 if @StoreIds is not null 
 	begin
@@ -90,8 +90,8 @@ begin
 
 set @sqlstr='
 SELECT PR.ProductId, PP.Unit,SF.Qty, SF.QtyAvailable, PP.MedicalPrice, PP.RecreationalPrice FROM Product PR 
-LEFT JOIN StockInformation SF ON SF.ProductId=PR.ProductId 
-LEFT JOIN ProductPrice PP ON PR.ProductId=PP.ProductId AND SF.Unit=PP.Unit where 1=1'
+INNER JOIN StockInformation SF ON SF.ProductId=PR.ProductId 
+INNER JOIN ProductPrice PP ON PR.ProductId=PP.ProductId AND SF.Unit=PP.Unit where 1=1'
 
 if @ProductIdList is not null 
 	begin
@@ -124,9 +124,9 @@ begin
 
 set @sqlstr='
 SELECT DISTINCT SF.StoreId,ST.City,SF.StoreName,SF.Location,ST.Address,ST.PickupHours, ST.DeliveryHours, ST.DeliveryFeesUSD, ST.MaxDeliveryDistance,ST.MinDeliveryOrder,ST.MaxDeliveryOrder,ST.MedicalOnly,ST.OfferDelivery FROM StoreFront SF 
-LEFT JOIN Store ST ON SF.StoreId=ST.StoreId
-LEFT JOIN ActiveCategory AC ON SF.StoreId=AC.StoreId
-LEFT JOIN CategoryRepository CR ON CR.CategoryId=AC.CategoryId  where 1=1'
+INNER JOIN Store ST ON SF.StoreId=ST.StoreId
+INNER JOIN ActiveCategory AC ON SF.StoreId=AC.StoreId
+INNER JOIN CategoryRepository CR ON CR.CategoryId=AC.CategoryId  where 1=1'
 
 if @City is not null
    begin
