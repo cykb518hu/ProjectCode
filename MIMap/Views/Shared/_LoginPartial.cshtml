@@ -66,17 +66,20 @@
 
                         <ul class="nav navbar-nav navbar-right ">
                             <li><a href="javascript:void(0)">Hello @user.Email</a></li>
-                            <li>@Html.ActionLink("Dashboard", "Index", "Home", routeValues: null, htmlAttributes: new { id = "Dashboard" })</li>
-                            <li><a  class="redirectMap" href="javascript:void(0)" data-state="MI" data-menu="MI">Michigan</a></li>
-                            <li><a  class="redirectMap" href="javascript:void(0)" data-state="MA" data-menu="MA">Massachusetts</a></li>
-                            <li><a class="redirectMap" href="javascript:void(0)" data-state="MO" data-menu="MO">Missouri</a></li>
-                            <li><a class="" href="javascript:void(0)" data-menu="FL">Florida</a></li>
-                            <li><a  class="redirectMap" href="javascript:void(0)" data-menu="NO">Notes</a></li>
                             @{
-                                if (user.RoleType == GlobalKeyString.roleTypeAdmin)
+                                if (user.Source == "CitiesDB")
                                 {
-                                    <li><a class="redirectMap"  href="javascript:void(0)" data-menu="MC">Manage Account</a></li>
-                                } 
+                                    <li>@Html.ActionLink("Dashboard", "Index", "Home", routeValues: null, htmlAttributes: new { id = "Dashboard" })</li>
+                                    <li><a class="redirectMap" href="javascript:void(0)" data-state="MI" data-menu="MI">Michigan</a></li>
+                                    <li><a class="redirectMap" href="javascript:void(0)" data-state="MA" data-menu="MA">Massachusetts</a></li>
+                                    <li><a class="redirectMap" href="javascript:void(0)" data-state="MO" data-menu="MO">Missouri</a></li>
+                                    <li><a class="" href="javascript:void(0)" data-menu="FL">Florida</a></li>
+                                    <li><a class="redirectMap" href="javascript:void(0)" data-menu="NO">Notes</a></li>
+                                    if (user.RoleType == GlobalKeyString.roleTypeAdmin)
+                                    {
+                                        <li><a class="redirectMap" href="javascript:void(0)" data-menu="MC">Manage Account</a></li>
+                                    }
+                                }
                             }
                             <li>@Html.ActionLink("Log off", "Login", "Account", routeValues: null, htmlAttributes: new { id = "logoffLink" })</li>
                         </ul>
@@ -90,7 +93,7 @@
         <div class="container">
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                    @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
                     <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                 </ul>
             </div>

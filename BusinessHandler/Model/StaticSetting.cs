@@ -24,12 +24,14 @@ namespace BusinessHandler.Model
 
         public static string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
+        public static string dynamicPriceDBconnectionString = ConfigurationManager.ConnectionStrings["DynamicPriceDB"].ToString();
 
         public static string version = string.IsNullOrEmpty(ConfigurationManager.AppSettings["version"]) ? "" : ConfigurationManager.AppSettings["version"].ToString();
 
         public static string uploadPath= string.IsNullOrEmpty(ConfigurationManager.AppSettings["uploadPath"]) ? "" : ConfigurationManager.AppSettings["uploadPath"].ToString();
 
         public static string DefaultTags= string.IsNullOrEmpty(ConfigurationManager.AppSettings["DefaultTags"]) ? "" : ConfigurationManager.AppSettings["DefaultTags"].ToString();
+        public static string storeListKey = "storeListKey";
 
         public static string Base64Encode(string plainText)
         {
@@ -171,6 +173,41 @@ namespace BusinessHandler.Model
             }
         }
 
-        
+        public static void BuildParameters(SqlCommand command, DynamicPricingQueryModel message)
+        {
+            if (!string.IsNullOrWhiteSpace(message.StoreIds) && !message.StoreIds.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+            {
+                command.Parameters.AddWithValue("@StoreIds", StaticSetting.GetArrayQuery(message.StoreIds));
+            }
+            if (!string.IsNullOrWhiteSpace(message.CategoryIds) && !message.CategoryIds.Split(',').Any(x => x.Equals("All", StringComparison.OrdinalIgnoreCase)))
+            {
+                command.Parameters.AddWithValue("@CategoryIds", StaticSetting.GetArrayQuery(message.CategoryIds));
+            }
+
+            if (!string.IsNullOrWhiteSpace(message.City))
+            {
+                command.Parameters.AddWithValue("@City", message.City);
+            }
+            if (!string.IsNullOrWhiteSpace(message.Brand))
+            {
+                command.Parameters.AddWithValue("@BrandName", message.Brand);
+            }
+            if (!string.IsNullOrWhiteSpace(message.ProductName))
+            {
+                command.Parameters.AddWithValue("@ProductName", message.ProductName);
+            }
+        }
+
+        public static void BuildParameters(SqlCommand command, DynamicPricingMapStoreQueryModel message)
+        {
+            if (!string.IsNullOrWhiteSpace(message.City))
+            {
+                command.Parameters.AddWithValue("@City", message.City);
+            }
+            //if (!string.IsNullOrWhiteSpace(message.CategoryName))
+            //{
+            //    command.Parameters.AddWithValue("@CategoryName", message.CategoryName);
+            //}
+        }
     }
 }

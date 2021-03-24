@@ -4,8 +4,19 @@
 }
 <div class="container body-content login-form" style="padding-top:30px">
     <h2>@ViewBag.Title.</h2>
+    @{ 
+        var action = "Register";
+        if (!string.IsNullOrEmpty(Request.QueryString["type"]) && Request.QueryString["type"] == "DynamicPriceDB")
+        {
+            action = "DynamicPriceDBRegister";
+        }
+        if(!string.IsNullOrEmpty(ViewData["type"]?.ToString()) &&ViewData["type"]?.ToString()== "DynamicPriceDB")
+        {
+            action = "DynamicPriceDBRegister";
+        }
+    }
 
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm(action, "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
         <h4>Create a new account.</h4>
@@ -36,9 +47,6 @@
         </div>
     }
     <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - My Application</p>
-    </footer>
     </div>
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")

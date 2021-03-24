@@ -13,6 +13,7 @@ namespace MIMap.Controllers
         {
             userRepository = DependencyResolver.Current.GetService<IUserRepository>();
             mapRepository = DependencyResolver.Current.GetService<IMapDataRepository>();
+  
 
         }
         // GET: Account
@@ -48,11 +49,32 @@ namespace MIMap.Controllers
             }
             else
             {
+                user.Source = "CitiesDB";
                 Session["UserAccount"] = user;
                 return RedirectToAction("Map", "Home");
             }
+        }
 
-
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult DynamicPriceDBLogin(LoginViewModel model)
+        {
+            UserAccount user = new UserAccount();
+            user.Email = model?.Email;
+            user.Password = model?.Password;
+            string result = string.Empty;
+            user = userRepository.DynamicPriceDBLogin(user, out result);
+            if (result != "sccuess")
+            {
+                ModelState.AddModelError("", result);
+                return View("Login",model);
+            }
+            else
+            {
+                user.Source = "DynamicPriceDB";
+                Session["UserAccount"] = user;
+                return RedirectToAction("Index", "DynamicPriceDB");
+            }
         }
 
         //
@@ -86,6 +108,29 @@ namespace MIMap.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult DynamicPriceDBRegister(RegisterViewModel model)
+        {
+            UserAccount user = new UserAccount();
+            user.Email = model?.Email;
+            user.Password = model?.Password;
+            user.Active = "Yes";
+            user.RoleType = GlobalKeyString.roleTypeGeneral;
+            string result = userRepository.DynamicPriceDBRegister(user);
+            if (result != "sccuess")
+            {
+                ModelState.AddModelError("", result);
+            }
+            else
+            {
+                ModelState.AddModelError("", "You are successfully registered, please go to login page");
+            }
+            ViewData["type"] = "DynamicPriceDB";
+            return View("Register", model);
+        }
+
         public ActionResult MaintainUser()
         {
             var user = (UserAccount)Session["UserAccount"];

@@ -1,0 +1,640 @@
+﻿@using BusinessHandler.Model;
+@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var storeList = (List<DynamicPricingStoreModel>)ViewData["storeList"];
+    var categoryList = (List<DynamicPriceCategoryModel>)ViewData["categoryList"];
+}
+
+<script>
+    var mapMasterData = new Array();
+    @{
+        var mapInitialData = (List<DynamicPricingStoreColorModel>)ViewData["storeColorList"];
+        <text>
+      mapMasterData=@Html.Raw(JsonConvert.SerializeObject(mapInitialData));
+    </text>
+    }
+</script>
+
+
+
+<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+<link rel="stylesheet" href="~/Content/jquery-ui.css?version=@StaticSetting.version">
+
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+<script src="~/Scripts/jquery-ui.js?version=@StaticSetting.version"></script>
+
+
+<div style="margin-top:30px; position:fixed; z-index:1000;background-color:#fff; padding-bottom:10px;padding-top:5px; width:100%" id="div_tab_header">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active" data-controls="store_data"><a href="#store_data" aria-controls="store_data" role="tab" data-toggle="tab">Location Background Comparision</a></li>
+        <li role="presentation" data-controls="product_data"><a href="#product_data" aria-controls="product_data" role="tab" data-toggle="tab">Pricing Tool</a></li>
+    </ul>
+
+</div>
+<div class="tab-content" style="margin-top:85px;margin-right:15px; margin-left:15px">
+    <div role="tabpanel" class="tab-pane active" id="store_data">
+        <div class="row">
+            <div class="search-container">
+                <div class="tab-content">
+                    <div class="row property-search-form">
+                        <div class="col-xs-12 col-sm-4 form-group">
+                            <select name="sel_store_Location" id="sel_store_Location" class="form-control" multiple="multiple">
+                                <option value="Yes">My location</option>
+                                <option value="No">Other Location</option>
+                            </select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3 form-group">
+                            <input type="text" name="txt_store_City" id="txt_store_City" placeholder="City" class="form-control" minlength="5" />
+                        </div>
+
+                        <div class="col-xs-12 col-sm-2 form-group">
+
+                            <input type="submit" value="Search" id="btn_store_Search" class="btn btn-primary btn-block form-control" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <div class="row">
+                <div>
+                    <table id="tb_store"></table>
+                </div>
+
+            </div>
+            <div style="height:600px">
+                 <div id="storeMap"></div>
+            </div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="product_data">
+        <div class="row">
+            <div class="search-container">
+                <div class="tab-content">
+                    <div class="row property-search-form">
+                        <div class="col-xs-12 col-sm-2 form-group">
+                            <select name="sel_search_Store" id="sel_search_Store" class="form-control" multiple="multiple">
+                                @{
+                                foreach (var r in storeList)
+                                {
+                            <option value="@r.StoreId">@r.StoreName</option>
+
+                                }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-2 form-group">
+                            <select name="sel_search_Category" id="sel_search_Category" class="form-control" multiple="multiple">
+                                @{
+                                foreach (var r in categoryList)
+                                {
+                            <option value="@r.CategoryId">@r.CategoryName</option>
+
+                                }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-2 form-group">
+                            <input type="text" name="txt_search_Brand" id="txt_search_Brand" placeholder="Brand" class="form-control" minlength="5" />
+                        </div>
+                        <div class="col-xs-12 col-sm-2 form-group">
+                            <input type="text" name="txt_search_City" id="txt_search_City" placeholder="City" class="form-control" minlength="5" />
+                        </div>
+                        <div class="col-xs-12 col-sm-2 form-group">
+                            <input type="text" name="txt_search_Product" id="txt_search_Product" placeholder="Product Name" class="form-control" minlength="5" />
+                        </div>
+
+                        <div class="col-xs-12 col-sm-2 form-group">
+
+                            <input type="submit" value="Search" id="btn_product_Search" class="btn btn-primary btn-block form-control" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <div class="row">
+                <div>
+                    <table id="tb_dynamicPrice"></table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    @Html.Partial("DynamicPriceSideBar")
+
+    <script type="infowindow/html" id="infowindow_template_yellow">
+
+        <a href="#close" class="close" style="opacity:1"><img style="width:40px;" src="@StaticSetting.uploadPath/Image/yellow_location_icon.png" /></a>
+    </script>
+    <script type="infowindow/html" id="infowindow_template_black">
+
+        <a href="#close" class="close" style="opacity:1"><img style="width:40px;" src="@StaticSetting.uploadPath/Image/black_location_icon.png" /></a>
+    </script>
+    <script>
+    jQuery(document).ready(function ($) {
+        $("#sel_search_Store").multiselect({
+            buttonWidth: '100%',
+            nonSelectedText: 'Store Name',
+            maxHeight: '300',
+            selectAllText: 'All'
+        });
+        $("#sel_search_Category").multiselect({
+            buttonWidth: '100%',
+            nonSelectedText: 'Category',
+            maxHeight: '300',
+            selectAllText: 'All'
+        });
+
+        $("#sel_store_Location").multiselect({
+            buttonWidth: '100%',
+            nonSelectedText: 'Location',
+            maxHeight: '300',
+            selectAllText: 'All'
+        });
+
+        $("#btn_product_Search").click(function () {
+            searchProductData();
+        });
+
+        $("#btn_store_Search").click(function () {
+            searchStoreData();
+            mapMasterData = new Array();
+            $.ajax({
+                url: '@Url.Action("GetStoreIdWithColorList", "DynamicPriceDB")',
+                dataType: 'json',
+                data: getStoreSearchDataQuery(),
+                type: "GET",
+                cache: false,
+                success: function (result) {
+                    if (result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            var data = result[i];
+                            mapMasterData.push(data);
+                        }
+                    }
+                    createSelector(mapMasterData);
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                }
+            });
+        });
+
+    })
+    function getStoreSearchDataQuery() {
+        var myLocation = "";
+        if ($("#sel_store_Location").val() != null) {
+            if ($("#sel_store_Location").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                myLocation = "All";
+            }
+            else {
+                myLocation = $("#sel_store_Location").val().toString();
+            }
+        }
+        var result = {
+            MyLocation: myLocation,
+            //CategoryName: $("#txt_map_Category").val(),
+            City: $("#txt_store_City").val(),
+        };
+        return result;
+    }
+
+    function getProductSearchDataQuery() {
+        var storeIds = "";
+        if ($("#sel_search_Store").val() != null) {
+            if ($("#sel_search_Store").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                storeIds = "All";
+            }
+            else {
+                storeIds = $("#sel_search_Store").val().toString();
+            }
+        }
+        var categoryIds = "";
+        if ($("#sel_search_Category").val() != null) {
+            if ($("#sel_search_Category").next().children().eq(0).text().indexOf("All selected") >= 0) {
+                categoryIds = "All";
+            }
+            else {
+                categoryIds = $("#sel_search_Category").val().toString();
+            }
+        }
+        var result = {
+            StoreIds: storeIds,
+            CategoryIds: categoryIds,
+            Brand: $("#txt_search_Brand").val(),
+            City: $("#txt_search_City").val(),
+            ProductName: $("#txt_search_Product").val()
+        };
+        return result;
+    }
+    function searchProductData() {
+        var temp = getProductSearchDataQuery();
+        var tempQueryParams = function () {
+            return temp;
+        };
+        $("#tb_dynamicPrice").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 15 });
+    }
+    function searchStoreData() {
+        var temp = getStoreSearchDataQuery();
+        var tempQueryParams = function () {
+            return temp;
+        };
+        $("#tb_store").bootstrapTable('refresh', { queryParams: tempQueryParams, pageNumber: 1, pageSize: 15 });
+    }
+    </script>
+
+    <script>
+        $(function () {
+            loadListData();
+            initialMap();
+        });
+
+        function loadListData() {
+            var storeTable = new StoreTableInit();
+            storeTable.Init();
+            var oTable = new TableInit();
+            oTable.Init();
+        }
+        var TableInit = function () {
+            var oTableInit = new Object();
+            oTableInit.Init = function () {
+                $('#tb_dynamicPrice').bootstrapTable({
+                    url: '/DynamicPriceDB/GetTableDataList',
+                    method: 'get',
+                    cache: false,
+                    pagination: true,
+                    sortable: true,
+                    queryParams: oTableInit.queryParams,
+                    sidePagination: "server",
+                    pageSize: 15,
+                    pageList: [10, 15, 25, 50],
+                    showColumns: true,
+                    detailView: true,
+                    sortName: 'StoreName',
+                    sortOrder: 'asc',
+                    achillesToolbar: false,
+                    columns: [
+                        {
+                            field: 'StoreName',
+                            title: 'Store',
+                            sortable: true,
+                            width: '15%'
+                        },
+                        {
+                            field: 'ProductName',
+                            title: 'Product Name',
+                            sortable: true,
+                            width: '20%'
+                        },
+                        {
+                            field: 'CategoryName',
+                            title: 'Category',
+                            sortable: true,
+                            width: '7%'
+                        },
+
+                        {
+                            field: 'Brand',
+                            title: 'Brand',
+                            sortable: true,
+                            width: '10%'
+                        },
+
+                        {
+                            field: 'City',
+                            title: 'City',
+                            sortable: true,
+                            width: '7%'
+                        },
+                        {
+                            field: 'IsSpecial',
+                            title: 'IsSpecial',
+                            sortable: true,
+                            width: '7%'
+                        },
+                        {
+                            field: 'StrainType',
+                            title: 'Strain Type',
+                            sortable: false,
+                            width: '7%'
+                        },
+                        {
+                            field: 'THCPercentage',
+                            title: 'THC %',
+                            sortable: false,
+                            width: '7%'
+                        },
+                        {
+                            field: 'CBDPercentage',
+                            title: 'CBD %',
+                            sortable: false,
+                            width: '7%'
+                        },
+
+                        {
+                            field: 'ScrapeDate',
+                            title: 'Date',
+                            sortable: true,
+                            width: '7%'
+                        }
+                    ],
+
+                    onExpandRow: function (index, row, $detail) {
+                        oTableInit.InitSubTable(index, row, $detail);
+                    }
+                });
+            };
+
+
+            oTableInit.queryParams = function (params) {
+                var temp = getProductSearchDataQuery();
+                temp.limit = params.limit;
+                temp.offset = params.offset;
+                temp.sortName = this.sortName;
+                temp.sortOrder = this.sortOrder;
+                return temp;
+            };
+
+            oTableInit.InitSubTable = function (index, row, $detail) {
+
+                var dataList = row.SubList;
+                var cur_table = $detail.html('<table></table>').find('table');
+                $(cur_table).bootstrapTable({
+                    data: dataList,
+                    columns: [
+                        {
+                            field: 'Unit',
+                            title: 'Unit',
+                            width: '20%'
+                        },
+
+                        {
+                            field: 'Qty',
+                            title: 'Qty',
+                            width: '20%'
+                        },
+
+                        {
+                            field: 'QtyAvailable',
+                            title: 'QtyAvailable',
+                            width: '20%'
+                        },
+                        {
+                            field: 'MedicalPrice',
+                            title: 'MedicalPrice',
+                            width: '20%'
+                        },
+                        {
+                            field: 'RecreationalPrice',
+                            title: 'RecreationalPrice',
+                            width: '20%'
+                        }
+                    ],
+
+                });
+            };
+
+            return oTableInit;
+        };
+
+        var StoreTableInit = function () {
+            var oStoreTableInit = new Object();
+            oStoreTableInit.Init = function () {
+                $('#tb_store').bootstrapTable({
+                    url: '/DynamicPriceDB/GetStoreDetailList',
+                    method: 'get',
+                    cache: false,
+                    pagination: true,
+                    sortable: true,
+                    queryParams: oStoreTableInit.queryParams,
+                    sidePagination: "server",
+                    pageSize: 15,
+                    pageList: [10, 15, 25, 50],
+                    showColumns: true,
+                    detailView: true,
+                    sortName: 'StoreName',
+                    sortOrder: 'asc',
+                    achillesToolbar: false,
+                    columns: [
+                        {
+                            field: 'StoreName',
+                            title: 'Store',
+                            sortable: true,
+                            width: '20%'
+                        },
+                        {
+                            field: 'Address',
+                            title: 'Address',
+                            sortable: true,
+                            width: '20%'
+                        },
+                        {
+                            field: 'OfferDelivery',
+                            title: 'Offer Delivery',
+                            sortable: true,
+                            width: '10%'
+                        },
+
+                        {
+                            field: 'MedicalOnly',
+                            title: 'Medical Only',
+                            sortable: true,
+                            width: '10%'
+                        },
+
+
+                        {
+                            field: 'DeliveryFeesUSD',
+                            title: 'DeliveryFeesUSD',
+                            sortable: true,
+                            width: '10%'
+                        },
+                        {
+                            field: 'MaxDeliveryDistance',
+                            title: 'MaxDeliveryDistance',
+                            sortable: true,
+                            width: '10%'
+                        },
+                        {
+                            field: 'MinDeliveryOrder',
+                            title: 'MinDeliveryOrder',
+                            sortable: true,
+                            width: '10%'
+                        },
+                        {
+                            field: 'MaxDeliveryOrder',
+                            title: 'MaxDeliveryOrder',
+                            sortable: true,
+                            width: '10%'
+                        }
+                    ],
+                    onExpandRow: function (index, row, $detail) {
+                        oStoreTableInit.InitSubTable(index, row, $detail);
+                    }
+                });
+            };
+            oStoreTableInit.queryParams = function (params) {
+                var temp = getStoreSearchDataQuery();
+                temp.limit = params.limit;
+                temp.offset = params.offset;
+                temp.sortName = this.sortName;
+                temp.sortOrder = this.sortOrder;
+                return temp;
+            };
+
+            oStoreTableInit.InitSubTable = function (index, row, $detail) {
+
+                var dataList = row.OpenHours;
+                var cur_table = $detail.html('<table></table>').find('table');
+                $(cur_table).bootstrapTable({
+                    data: dataList,
+                    columns: [
+                        {
+                            field: 'Type',
+                            title: 'Type',
+                            width: '15%'
+                        },
+                        {
+                            field: 'Monday',
+                            title: 'Monday',
+                            width: '15%'
+                        },
+
+                        {
+                            field: 'Tuesday',
+                            title: 'Tuesday',
+                            width: '15%'
+                        },
+
+                        {
+                            field: 'Wednesday',
+                            title: 'Wednesday',
+                            width: '15%'
+                        },
+                        {
+                            field: 'Thursday',
+                            title: 'Thursday',
+                            width: '10%'
+                        },
+                        {
+                            field: 'Friday',
+                            title: 'Friday',
+                            width: '10%'
+                        },
+                        {
+                            field: 'Saturday',
+                            title: 'Saturday',
+                            width: '10%'
+                        },
+                        {
+                            field: 'Sunday',
+                            title: 'Sunday',
+                            width: '10%'
+                        }
+                    ],
+
+                });
+            };
+            return oStoreTableInit;
+        };
+    </script>
+
+    <script>
+        var map;
+        var layer;
+        var popLayer;
+        var mapTable = "dynamicprice_data"
+        var mapJson = "http://achilles.cartodb.com/u/achilles/api/v2/viz/fd2c7282-b6cb-45ff-8c09-946d6d821052/viz.json";
+
+        function initialMap() {
+            cartodb.createVis('storeMap', mapJson, {
+                tiles_loader: true,
+                //search: false,
+                scrollwheel: false,
+                infowindow: true,
+                shareable: false
+            }).done(function (vis, layers) {
+                map = vis.getNativeMap();
+                layer = layers[1].getSubLayer(0);
+                popLayer = layers[1];
+
+                layer.set({ interactivity: "storeid" });
+                layer.setInteraction(true);
+                var infowindow_model = popLayer.infowindow;
+                popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+                    infowindow_model.set({
+                        latlng: latlng,
+                        visibility: true
+                    });
+
+                    showMapPopUp(data.storeid);
+
+                });
+                createSelector(mapMasterData);
+            }).error(function (err) {
+                console.log(err);
+            });
+        }
+
+        function createSelector(dataArr) {
+            var cartocss = popLayer.layers[0].options.cartocss;
+            var ids = "'nodata'";
+            if (dataArr.length > 0) {
+                ids = "";
+                for (var i = 0; i < dataArr.length; i++) {
+                    ids += " '" + dataArr[i].StoreId + "',"
+                    if (dataArr[i].Color.length > 0 && dataArr[i].Color == "yellow") {
+                        cartocss += " #" + mapTable + " [storeid='" + dataArr[i].StoreId + "']{marker-fill: " + dataArr[i].Color + "}";
+                    }
+                }
+                ids = ids.substring(0, ids.length - 1);
+            }
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            var query = "SELECT * FROM " + mapTable + " where storeid in (" + ids + ")";
+            layer.setSQL(query);
+            layer.setCartoCSS(cartocss);
+            sql.getBounds(query).done(function (bounds) {
+                map.fitBounds(bounds);
+            });
+        }
+        var oldstoreId = "";
+        function showMapPopUp(storeId) {
+            if (oldstoreId == storeId) {
+                if ($("#dynamicPrice_Sidebar").css("display") == "block") {
+                    return;
+                }
+            }
+            for (var i = 0; i < mapMasterData.length; i++) {
+                if (mapMasterData[i].StoreId == storeId) {
+                    if (mapMasterData[i].Color == "yellow") {
+                        setTimeout(function () { $(".cartodb-infowindow").html($('#infowindow_template_yellow').html()); }, 1000);
+                    }
+                    else {
+                        setTimeout(function () { $(".cartodb-infowindow").html($('#infowindow_template_black').html()); }, 1000);
+                    }
+                }
+
+            }
+            oldstoreId = storeId;
+            showSideBar(oldstoreId);
+        }
+
+    </script>

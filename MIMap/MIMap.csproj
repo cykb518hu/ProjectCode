@@ -150,6 +150,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\VersionHandler.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DynamicPriceDBController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MeetingNoteController.cs" />
     <Compile Include="Global.asax.cs">
@@ -178,13 +179,18 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="price.html" />
     <Content Include="HtmlPage1 - Copy.html" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="Image\3Fifteen_HLogo_Web.svg" />
     <Content Include="Image\6cDGi.png" />
+    <Content Include="Image\black_location_icon.png" />
     <Content Include="Image\Loading_icon.gif" />
+    <Content Include="Image\locator.png" />
     <Content Include="Image\MiMapLogo.png" />
     <Content Include="Image\MiMapLogo1.png" />
     <Content Include="Image\pleasewait.gif" />
+    <Content Include="Image\yellow_location_icon.png" />
     <Content Include="img\dark_wood.png" />
     <Content Include="img\slide-bg.png" />
     <Content Include="img\tick.png" />
@@ -443,6 +449,9 @@
     <Content Include="Web.Dev.Release.config">
       <DependentUpon>Web.Dev.config</DependentUpon>
     </Content>
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\DynamicPriceDB\Index.cshtml" />
+    <Content Include="Views\Shared\DynamicPriceSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

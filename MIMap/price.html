@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="http://localhost:57689/Scripts/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+</head>
+<body>
+    <script>
+        var mapMasterData = new Array();
+
+        mapMasterData = [{ "StoreId": "4TADr3EsiM7M8JZjG", "City": "Morenci", "Color": "yellow" }, { "StoreId": "5DHCzxwGfCzHJhs4L", "City": "Detroit", "Color": "yellow" }, { "StoreId": "5e25ebcdb2e013006cb93eef", "City": "Battle Creek", "Color": "yellow" }, { "StoreId": "5e28a31f5f6c640079e842d1", "City": "Detroit", "Color": "yellow" }, { "StoreId": "5e28b8bbe67a5300752a2c02", "City": "Detroit", "Color": "yellow" }, { "StoreId": "5e31e00060c20003d5930cb8", "City": "Adrian", "Color": "black" }, { "StoreId": "5e331da26b9a45006aa05185", "City": "Hazel Park", "Color": "black" }, { "StoreId": "5e46d443aec31e006a3021e5", "City": "Lapeer", "Color": "black" }, { "StoreId": "5e4ae1143ef9cb638e129135", "City": "Ann Arbor", "Color": "yellow" }, { "StoreId": "5e66df5aab1d080071d1c872", "City": "Walled Lake", "Color": "black" }, { "StoreId": "5e72722f01ce0a006ae47844", "City": "Gobles", "Color": "black" }, { "StoreId": "5e73cf22f73955006b658a19", "City": "Flint", "Color": "yellow" }, { "StoreId": "5e7917610f5b4900a7b7d8b5", "City": "Burton", "Color": "black" }, { "StoreId": "5e7958490f68e7009ef34e29", "City": "Ypsilanti", "Color": "black" }, { "StoreId": "5e7a6de0d1915c00b4631087", "City": "Ann Arbor", "Color": "yellow" }, { "StoreId": "5e7d27e6e1290c00aeeb7901", "City": "Ypsilanti", "Color": "black" }, { "StoreId": "5e7fd1316c11ed0099784d94", "City": "Albion", "Color": "black" }, { "StoreId": "5e83bfc68922a100bcaba04d", "City": "Ann Arbor", "Color": "yellow" }, { "StoreId": "5e853b78e0e4380097d49363", "City": "Detroit", "Color": "yellow" }, { "StoreId": "5e90a45d63c18c00bae5360b", "City": "Morenci", "Color": "yellow" }, { "StoreId": "5e9f6ed2ef452000cb6f1b8b", "City": "Grand Rapids", "Color": "yellow" }, { "StoreId": "5iARYxhdGSMt8RxKG", "City": "Ann Arbor", "Color": "yellow" }, { "StoreId": "7SmgLFTwG4pipf8pP", "City": "Detroit", "Color": "yellow" }, { "StoreId": "agJBDhqiEuqLBcyCp", "City": "Detroit", "Color": "yellow" }, { "StoreId": "cF6a8Wb2ocAaXeFEE", "City": "Muskegon", "Color": "black" }, { "StoreId": "CtYaeAfGHbEasdJv2", "City": "Detroit", "Color": "yellow" }, { "StoreId": "EFcKgxFsAHwfW56xc", "City": "Detroit", "Color": "yellow" }, { "StoreId": "EK7g2JsLQeZ8u2TB6", "City": "Detroit", "Color": "yellow" }, { "StoreId": "eTZAtgCujNXnJCWYL", "City": "Portage", "Color": "black" }, { "StoreId": "ex2Wfa7XTCELSD8Pv", "City": "Detroit", "Color": "yellow" }, { "StoreId": "fZ7X2iXjoEChGrHTC", "City": "Flint", "Color": "yellow" }, { "StoreId": "GEui4M4EGZQusJHhA", "City": "Ann Arbor", "Color": "yellow" }, { "StoreId": "GHQWi3TywfgL3B7bh", "City": "Detroit", "Color": "yellow" }, { "StoreId": "gs5YZFKxxJLoPgTj2", "City": "Flint", "Color": "yellow" }, { "StoreId": "iiQxuFQeyv8rdQgNf", "City": "Battle Creek", "Color": "yellow" }, { "StoreId": "J6jBWXwmkZgdttxaT", "City": "Muskegon", "Color": "black" }, { "StoreId": "LxzgLTpaY5wYic4jb", "City": "Ferndale", "Color": "black" }, { "StoreId": "MGstFnTCxbqxZCnRS", "City": "Walled Lake", "Color": "black" }, { "StoreId": "NHZnDnzFRtNnhhFXt", "City": "Ann Arbor", "Color": "yellow" }, { "StoreId": "qXt9FBTbcErfQFvYg", "City": "Battle Creek", "Color": "yellow" }, { "StoreId": "S8iBdZqzKWc9jdNs5", "City": "Adrian", "Color": "black" }, { "StoreId": "scQfntsbQSXWZEp4M", "City": "Ann Arbor", "Color": "yellow" }, { "StoreId": "sPiwPoJtL6ShEXmMo", "City": "Detroit", "Color": "yellow" }, { "StoreId": "xLmYvNMy96jPXugQx", "City": "Hazel Park", "Color": "black" }, { "StoreId": "y3M8HCqWbYtDSv4A3", "City": "Morenci", "Color": "yellow" }, { "StoreId": "Zx7RPfBuHmKLHGGjf", "City": "Clio", "Color": "black" }, { "StoreId": "ZyogFm98cnp4NihHS", "City": "Nunica", "Color": "black" }];
+
+
+    </script>
+
+    <div id="div-data-map">
+        <div class="h-scroll">
+            <div id="map" style="width:1000px;height:1000px"></div>
+        </div>
+    </div>
+    <script type="infowindow/html" id="infowindow_template_yellow">
+
+        <a href="#close" class="close" style="opacity:1"><img style="width:50px;" src="http://localhost:57689/Image/yellow_location_icon.png" /></a>
+    </script>
+    <script type="infowindow/html" id="infowindow_template_black">
+
+        <a href="#close" class="close" style="opacity:1"><img style="width:50px;" src="http://localhost:57689/Image/black_location_icon.png" /></a>
+    </script>
+
+    <script>
+        $(function () {
+            initialMap();
+        });
+
+        var map;
+        var layer;
+        var popLayer;
+        var mapTable = "dynamicprice_data"
+        var mapJson = "http://achilles.cartodb.com/u/achilles/api/v2/viz/fd2c7282-b6cb-45ff-8c09-946d6d821052/viz.json";
+
+        function initialMap() {
+            cartodb.createVis('map', mapJson, {
+                tiles_loader: true,
+                //search: false,
+                scrollwheel: false,
+                infowindow: true,
+                shareable: false
+            }).done(function (vis, layers) {
+                map = vis.getNativeMap();
+                layer = layers[1].getSubLayer(0);
+                popLayer = layers[1];
+
+                layer.set({ interactivity: "storeid" });
+                layer.setInteraction(true);
+                var infowindow_model = popLayer.infowindow;
+                popLayer.bind('featureClick', function (ev, latlng, pos, data, layerIndex) {
+                    infowindow_model.set({
+                        latlng: latlng,
+                        visibility: true
+                    });
+
+                    showMapPopUp(data.storeid);
+
+                });
+                createSelector(mapMasterData);
+            }).error(function (err) {
+                console.log(err);
+            });
+        }
+
+        function createSelector(dataArr) {
+            var cartocss = popLayer.layers[0].options.cartocss;
+            var ids = "'nodata'";
+            if (dataArr.length > 0) {
+                ids = "";
+                for (var i = 0; i < dataArr.length; i++) {
+                    ids += " '" + dataArr[i].StoreId + "',"
+                    if (dataArr[i].Color.length > 0 && dataArr[i].Color == "yellow") {
+                        cartocss += " #" + mapTable + " [storeid='" + dataArr[i].StoreId + "']{marker-fill: " + dataArr[i].Color + "}";
+                    }
+                }
+                ids = ids.substring(0, ids.length - 1);
+            }
+            var sql = new cartodb.SQL({ user: 'achilles' });
+            var query = "SELECT * FROM " + mapTable + " where storeid in (" + ids + ")";
+            layer.setSQL(query);
+            layer.setCartoCSS(cartocss);
+            sql.getBounds(query).done(function (bounds) {
+                map.fitBounds(bounds);
+            });
+        }
+        var oldstoreId = "";
+        function showMapPopUp(storeId) {
+            if (oldstoreId == storeId) {
+                if ($("#dynamicPrice_Sidebar").css("display") == "block") {
+                    return;
+                }
+            }
+            for (var i = 0; i < mapMasterData.length; i++) {
+                if (mapMasterData[i].StoreId == storeId) {
+                    if (mapMasterData[i].Color == "yellow") {
+                        setTimeout(function () { $(".cartodb-infowindow").html($('#infowindow_template_yellow').html()); }, 500);
+                    }
+                    else {
+                        setTimeout(function () { $(".cartodb-infowindow").html($('#infowindow_template_black').html()); }, 500);
+                    }
+                }
+
+            }
+            oldstoreId = storeId;
+        }
+
+    </script>
+</body>
+</html>

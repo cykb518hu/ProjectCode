@@ -393,3 +393,30 @@ div.cartodb-infowindow
 {
     margin-left:10px;
 }
+
+#dynamicPrice_Sidebar {
+    overflow-y: auto;
+    position: fixed;
+    top: 145px;
+    bottom: 0px;
+    width: 400px;
+    right: 0px;
+    z-index: 1000;
+    background-color: #ffffff;
+}
+    #dynamicPrice_Sidebar .panel {
+        margin-bottom: 0px;
+        border-radius: unset;
+    }
+
+    #dynamicPrice_Sidebar a {
+        text-decoration: none;
+    }
+
+#storeMap {
+    height: 700px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    margin-top:15px;
+}

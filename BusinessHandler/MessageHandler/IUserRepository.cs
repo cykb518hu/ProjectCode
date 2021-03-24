@@ -17,6 +17,10 @@ namespace BusinessHandler.MessageHandler
 
         void SaveUser(UserAccount message);
 
+        UserAccount DynamicPriceDBLogin(UserAccount message, out string result);
+
+        string DynamicPriceDBRegister(UserAccount message);
+
 
     }
 
@@ -76,7 +80,7 @@ namespace BusinessHandler.MessageHandler
             }
             else
             {
-                result = "Your login credentials has proplem, incorrect email or passwrod ";
+                result = "Your login credentials has problem, incorrect email or passwrod ";
             }
             return user;
         }
@@ -173,6 +177,80 @@ namespace BusinessHandler.MessageHandler
             }
         }
 
+
+        public string DynamicPriceDBRegister(UserAccount message)
+        {
+            var result = "sccuess";
+            var userList = DynamicPriceDBGetUserList();
+            if (userList.Count(x => x.Email.Equals(message.Email, StringComparison.OrdinalIgnoreCase)) > 0)
+            {
+                result = "This email has been registered";
+            }
+            else
+            {
+                message.Password = StaticSetting.Base64Encode(message.Password);
+                string queryString = @"INSERT INTO dbo.ACCOUNT (EMAIL,Password,Active,RoleType) values (@Email,@Password,@Active,@RoleType)";
+                using (SqlConnection connection = new SqlConnection(StaticSetting.dynamicPriceDBconnectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.AddWithValue("@Email", message.Email);
+                    command.Parameters.AddWithValue("@Password", message.Password);
+                    command.Parameters.AddWithValue("@Active", message.Active);
+                    command.Parameters.AddWithValue("@RoleType", message.RoleType);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+
+  
+        public UserAccount DynamicPriceDBLogin(UserAccount message, out string result)
+        {
+            result = "sccuess";
+            var userList = DynamicPriceDBGetUserList();
+            var user = userList.FirstOrDefault((x => x.Email.Equals(message.Email, StringComparison.OrdinalIgnoreCase) && x.Password.Equals(StaticSetting.Base64Encode(message.Password), StringComparison.OrdinalIgnoreCase)));
+
+            if (user != null)
+            {
+                if (user.Active == "No")
+                {
+                    result = "Your account it not activated, please reach out to admnistrator";
+                }
+                else
+                {
+                    result = "sccuess";
+                }
+            }
+            else
+            {
+                result = "Your login credentials has problem, incorrect email or passwrod ";
+            }
+            return user;
+        }
+        public List<UserAccount> DynamicPriceDBGetUserList()
+        {
+            List<UserAccount> userList = new List<UserAccount>();
+            string queryString = @"SELECT * FROM ACCOUNT";
+            using (SqlConnection connection = new SqlConnection(StaticSetting.dynamicPriceDBconnectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new UserAccount();
+                    data.Email = DBNull.Value == reader["EMAIL"] ? "" : reader["EMAIL"].ToString();
+                    data.Password = DBNull.Value == reader["Password"] ? "" : reader["Password"].ToString();
+                    data.Active = DBNull.Value == reader["Active"] ? "" : reader["Active"].ToString();
+                    data.RoleType = DBNull.Value == reader["RoleType"] ? "" : reader["RoleType"].ToString();
+                    data.AddDate = Convert.ToDateTime(reader["USR_CRTN_TS"]).ToString("yyyy-MM-dd");
+                    userList.Add(data);
+                }
+            }
+            return userList;
+        }
 
     }
 

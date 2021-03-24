@@ -17,9 +17,9 @@
    
     <link href="~/Content/bootstrap.css?version=@StaticSetting.version" rel="stylesheet" />
     @{
-        if (Context.Request.Url.AbsoluteUri.ToLower().Contains("home/map"))
+        if (Context.Request.Url.AbsoluteUri.ToLower().Contains("home/map")|| Context.Request.Url.AbsoluteUri.ToLower().Contains("DynamicPriceDB/Index".ToLower()))
         {
-  
+
     <link href="~/Content/bootstrap-multiselect.css?version=@StaticSetting.version" rel="stylesheet" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-table.css?version=@StaticSetting.version" rel="stylesheet" />
@@ -67,5 +67,6 @@
 
     @RenderBody()
 
+    @Html.Partial("_Footer")
 </body>
 </html>
